@@ -8,6 +8,7 @@ import { ProgressRing } from "@/components/ProgressRing";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef, useState } from "react";
 
 const halvingQuery = queryOptions({
@@ -46,6 +47,7 @@ export const Route = createFileRoute("/")({
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(halvingQuery),
   component: Index,
+  pendingComponent: Pending,
   errorComponent: ({ error }) => (
     <div className="flex min-h-screen items-center justify-center p-8 text-center">
       <div>
@@ -122,8 +124,8 @@ function Index() {
 
           {/* Section 1: Waiting to Buy (Main hero card) */}
           <motion.section
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: 12 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_60px_-20px_rgba(0,0,0,0.08)] sm:p-12"
           >
@@ -243,8 +245,8 @@ function Index() {
 
           {/* Section 2: Waiting to Sell (Secondary card) */}
           <motion.section
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
+            initial={{ y: 8 }}
+            animate={{ y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
             className="flex flex-col gap-4 rounded-[24px] border border-border/60 bg-card p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
           >
@@ -284,13 +286,20 @@ function Index() {
                 </div>
                 <div className="text-sm font-semibold">{formatDate(cycle.sellDate)}</div>
               </div>
-              {priceRes.data && isSellActive ? (
-                <div className="text-sm text-muted-foreground">
-                  BTC{" "}
-                  <span className="font-semibold text-foreground">
-                    {formatUsd(priceRes.data.price)}
-                  </span>
-                </div>
+              {isSellActive ? (
+                priceRes.data ? (
+                  <div className="text-sm text-muted-foreground">
+                    BTC{" "}
+                    <span className="font-semibold text-foreground">
+                      {formatUsd(priceRes.data.price)}
+                    </span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-4 w-10 rounded-md" />
+                    <Skeleton className="h-5 w-24 rounded-md" />
+                  </div>
+                )
               ) : null}
               <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
                 {isSellActive ? "Active" : "Not Active"}
@@ -308,6 +317,99 @@ function Index() {
       <div className="flex justify-center pb-12">
         <ShareButton captureRef={heroRef} />
       </div>
+    </div>
+  );
+}
+
+function Pending() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
+        <div className="flex flex-col gap-6 p-5">
+          {/* Header skeleton */}
+          <header className="mb-8 text-center sm:mb-12">
+            <div className="flex items-center justify-center gap-4">
+              <Skeleton className="h-14 w-14 rounded-full" />
+              <Skeleton className="h-14 w-48 rounded-lg" />
+            </div>
+            <Skeleton className="mx-auto mt-4 h-6 w-80 rounded-md" />
+          </header>
+
+          {/* Main hero card skeleton */}
+          <section className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-8 shadow-sm sm:p-12">
+            <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-14">
+              {/* Countdown block skeleton */}
+              <div>
+                <div className="mb-6 flex items-center gap-3">
+                  <Skeleton className="h-11 w-11 rounded-full" />
+                  <div>
+                    <Skeleton className="h-3 w-28 rounded-md" />
+                    <Skeleton className="mt-1.5 h-5 w-44 rounded-md" />
+                  </div>
+                </div>
+                <div className="mt-4">
+                  <Skeleton className="h-3 w-20 rounded-md" />
+                  <div className="mt-2 flex items-baseline gap-3">
+                    <Skeleton className="h-32 w-48 rounded-lg sm:h-40" />
+                    <Skeleton className="h-8 w-12 rounded-md" />
+                  </div>
+                  <div className="mt-6">
+                    <Skeleton className="h-2 w-full rounded-full" />
+                  </div>
+                  <div className="mt-2 flex justify-between">
+                    <Skeleton className="h-4 w-28 rounded-md" />
+                    <Skeleton className="h-4 w-24 rounded-md" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Next halving skeleton */}
+              <div className="flex flex-col justify-center md:border-l md:border-border/60 md:pl-14">
+                <Skeleton className="h-3 w-24 rounded-md" />
+                <div className="mt-3 flex items-center gap-3">
+                  <Skeleton className="h-8 w-8 rounded-md" />
+                  <Skeleton className="h-10 w-44 rounded-lg sm:h-12" />
+                </div>
+                <Skeleton className="mt-2 h-4 w-36 rounded-md" />
+                <div className="mt-8 grid grid-cols-2 gap-4">
+                  <Skeleton className="h-16 rounded-2xl" />
+                  <Skeleton className="h-16 rounded-2xl" />
+                </div>
+                <div className="mt-8 rounded-2xl bg-muted/60 px-4 py-4">
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-4 w-4 rounded-md" />
+                    <Skeleton className="h-3 w-28 rounded-md" />
+                  </div>
+                  <Skeleton className="mt-3 h-2 w-full rounded-full" />
+                  <div className="mt-2 flex items-center justify-between">
+                    <Skeleton className="h-4 w-24 rounded-md" />
+                    <Skeleton className="h-4 w-24 rounded-md" />
+                  </div>
+                  <Skeleton className="mx-auto mt-2 h-4 w-32 rounded-md" />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Secondary card skeleton */}
+          <section className="flex flex-col gap-4 rounded-[24px] border border-border/60 bg-card p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-11 w-11 rounded-full" />
+              <div>
+                <Skeleton className="h-3 w-28 rounded-md" />
+                <Skeleton className="mt-1.5 h-5 w-44 rounded-md" />
+              </div>
+            </div>
+            <div className="flex items-center gap-4">
+              <Skeleton className="h-12 w-20 rounded-md" />
+              <Skeleton className="h-12 w-24 rounded-md" />
+              <Skeleton className="h-6 w-24 rounded-full" />
+            </div>
+          </section>
+        </div>
+
+        <Skeleton className="mx-auto mt-16 h-4 w-96 rounded-md" />
+      </main>
     </div>
   );
 }
