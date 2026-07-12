@@ -24,6 +24,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
   const completeColor = "#2563eb";
   const accent = buy ? primaryColor : sell ? sellColor : completeColor;
   const accentSoft = buy ? "#fef3e7" : sell ? "#e6f7ed" : "#f1f5f9";
+  const accentBg = buy ? "#fff7ed" : sell ? "#f0fdf4" : "#eff6ff";
 
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -34,269 +35,313 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
     <div
       ref={ref}
       style={{
-        width: 1600,
-        height: 900,
+        width: 1080,
+        height: 1350,
         fontFamily: "'Inter', system-ui, sans-serif",
         background: "#fff",
-        borderRadius: 32,
+        borderRadius: 0,
         overflow: "hidden",
         position: "relative",
-        border: "1px solid rgba(0,0,0,0.06)",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
-        padding: 48,
+        display: "flex",
+        flexDirection: "column",
       }}
     >
+      {/* Full-height accent stripe on the left */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: 0,
+          bottom: 0,
+          width: 16,
+          background: accent,
+        }}
+      />
+
       {/* watermark */}
       <div
         style={{
           pointerEvents: "none",
           position: "absolute",
-          right: -64,
-          bottom: -64,
-          opacity: 0.06,
+          right: -60,
+          bottom: -60,
+          opacity: 0.05,
         }}
       >
-        <BtcLogo size={420} color="#000" />
+        <BtcLogo size={440} color="#000" />
       </div>
 
+      {/* ========== TOP SECTION ========== */}
       <div
         style={{
-          display: "grid",
-          gap: 40,
-          gridTemplateColumns: "1.2fr 1fr",
-          height: "100%",
+          padding: "44px 48px 0",
           position: "relative",
           zIndex: 1,
         }}
       >
-        {/* Countdown block */}
-        <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 24 }}>
-            <span
-              style={{
-                display: "inline-flex",
-                height: 44,
-                width: 44,
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "50%",
-                background: accentSoft,
-              }}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke={accent}
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-            </span>
+        {/* Header row */}
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <BtcLogo size={52} color="#000" />
             <div>
               <div
                 style={{
-                  fontSize: 12,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.18em",
-                  color: accent,
-                }}
-              >
-                {buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete"}
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: "#0f172a" }}>
-                {buy
-                  ? "500 days before halving"
-                  : sell
-                    ? "500 days after halving"
-                    : "Next cycle loading"}
-              </div>
-            </div>
-          </div>
-
-          <div style={{ marginTop: 16 }}>
-            <div
-              style={{
-                fontSize: 12,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.18em",
-                color: "#64748b",
-                marginBottom: 8,
-              }}
-            >
-              Days Left
-            </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
-              <span
-                style={{
-                  fontSize: 160,
-                  fontWeight: 700,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.05em",
-                  color: accent,
-                }}
-              >
-                {days}
-              </span>
-              <span
-                style={{
                   fontSize: 30,
-                  fontWeight: 500,
-                  color: "#64748b",
-                  paddingBottom: 16,
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                  color: "#0f172a",
                 }}
               >
-                days
-              </span>
-            </div>
-
-            {/* Progress bar */}
-            <div
-              style={{
-                marginTop: 24,
-                height: 8,
-                width: "100%",
-                overflow: "hidden",
-                borderRadius: 999,
-                background: "#f1f5f9",
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  borderRadius: 999,
-                  background: accent,
-                  width: `${progress * 100}%`,
-                }}
-              />
-            </div>
-            <div
-              style={{
-                marginTop: 8,
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: 14,
-                color: "#64748b",
-              }}
-            >
-              <span>{Math.max(0, elapsed)} days elapsed</span>
-              <span>{totalDays} days total</span>
+                BTC 500
+              </div>
             </div>
           </div>
-
-          {/* Sell phase stats */}
-          {sell && price ? (
-            <div
-              style={{ marginTop: 24, display: "flex", gap: 48, fontSize: 30, color: "#334155" }}
-            >
-              <div>
-                <div
-                  style={{
-                    fontSize: 20,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    opacity: 0.6,
-                  }}
-                >
-                  Value
-                </div>
-                <div style={{ fontWeight: 600 }}>{formatUsd(value)}</div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 20,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    opacity: 0.6,
-                  }}
-                >
-                  Profit
-                </div>
-                <div style={{ fontWeight: 600, color: sellColor }}>
-                  +{formatUsd(pnl)} ({pnlPct.toFixed(0)}%)
-                </div>
-              </div>
-              <div>
-                <div
-                  style={{
-                    fontSize: 20,
-                    textTransform: "uppercase",
-                    letterSpacing: "0.1em",
-                    opacity: 0.6,
-                  }}
-                >
-                  BTC
-                </div>
-                <div style={{ fontWeight: 600 }}>{formatUsd(price)}</div>
-              </div>
-            </div>
-          ) : null}
-        </div>
-
-        {/* Next halving block */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            borderLeft: "1px solid rgba(0,0,0,0.06)",
-            paddingLeft: 56,
-          }}
-        >
           <div
             style={{
-              fontSize: 12,
-              fontWeight: 600,
-              textTransform: "uppercase",
-              letterSpacing: "0.18em",
-              color: "#64748b",
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "10px 20px",
+              borderRadius: 100,
+              background: accentSoft,
             }}
           >
-            Next Halving
-          </div>
-          <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 12 }}>
             <svg
-              width="32"
-              height="32"
+              width="20"
+              height="20"
               viewBox="0 0 24 24"
               fill="none"
-              stroke="#0f172a"
-              strokeWidth="1.5"
+              stroke={accent}
+              strokeWidth="2.5"
               strokeLinecap="round"
               strokeLinejoin="round"
-              style={{ opacity: 0.8 }}
             >
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
             </svg>
             <span
               style={{
-                fontSize: 48,
+                fontSize: 15,
                 fontWeight: 700,
-                letterSpacing: "-0.03em",
-                color: "#0f172a",
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: accent,
               }}
             >
-              {formatDate(cycle.nextHalving)}
+              {buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete"}
             </span>
           </div>
-          <div style={{ marginTop: 8, fontSize: 14, color: "#64748b" }}>
-            {formatUtc(cycle.nextHalving)}
-          </div>
+        </div>
+      </div>
 
-          <div style={{ marginTop: 32, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-            <MiniStat label="Buy Date" value={formatDate(cycle.buyDate)} />
-            <MiniStat label="Sell Date" value={formatDate(cycle.sellDate)} />
+      {/* ========== HERO COUNTDOWN ========== */}
+      <div
+        style={{
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "0 44px",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div
+          style={{
+            fontSize: 16,
+            fontWeight: 600,
+            textTransform: "uppercase",
+            letterSpacing: "0.25em",
+            color: "#94a3b8",
+            marginBottom: 6,
+          }}
+        >
+          {buy ? "Days Until Buy Window" : sell ? "Days Until Sell Window" : "Cycle Complete"}
+        </div>
+
+        <div
+          style={{
+            fontSize: 17,
+            color: "#64748b",
+            marginBottom: 24,
+          }}
+        >
+          {buy ? "500 days before halving" : sell ? "500 days after halving" : "Next cycle loading"}
+        </div>
+
+        <div style={{ display: "flex", alignItems: "baseline", gap: 12 }}>
+          <span
+            style={{
+              fontSize: 280,
+              fontWeight: 800,
+              lineHeight: 0.8,
+              letterSpacing: "-0.07em",
+              color: accent,
+            }}
+          >
+            {days}
+          </span>
+          <span
+            style={{
+              fontSize: 40,
+              fontWeight: 500,
+              color: "#94a3b8",
+              paddingBottom: 32,
+            }}
+          >
+            days
+          </span>
+        </div>
+
+        {/* Progress bar */}
+        <div style={{ width: "100%", maxWidth: 700, marginTop: 36 }}>
+          <div
+            style={{
+              height: 14,
+              width: "100%",
+              overflow: "hidden",
+              borderRadius: 999,
+              background: "#f1f5f9",
+            }}
+          >
+            <div
+              style={{
+                height: "100%",
+                borderRadius: 999,
+                background: accent,
+                width: `${progress * 100}%`,
+              }}
+            />
           </div>
+          <div
+            style={{
+              marginTop: 12,
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 16,
+              color: "#94a3b8",
+            }}
+          >
+            <span style={{ fontWeight: 600, color: "#475569" }}>
+              {Math.max(0, elapsed)} days elapsed
+            </span>
+            <span style={{ fontWeight: 600, color: "#475569" }}>{totalDays} days total</span>
+          </div>
+        </div>
+
+        {/* Sell stats badge */}
+        {sell && price ? (
+          <div
+            style={{
+              marginTop: 28,
+              display: "flex",
+              gap: 32,
+              fontSize: 24,
+              color: "#334155",
+              background: accentBg,
+              borderRadius: 16,
+              padding: "16px 28px",
+              border: `1px solid ${accentSoft}`,
+            }}
+          >
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "#64748b",
+                  marginBottom: 2,
+                }}
+              >
+                Value
+              </div>
+              <div style={{ fontWeight: 700 }}>{formatUsd(value)}</div>
+            </div>
+            <div style={{ width: 1, background: accentSoft }} />
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "#64748b",
+                  marginBottom: 2,
+                }}
+              >
+                Profit
+              </div>
+              <div style={{ fontWeight: 700, color: sellColor }}>
+                +{formatUsd(pnl)} ({pnlPct.toFixed(0)}%)
+              </div>
+            </div>
+            <div style={{ width: 1, background: accentSoft }} />
+            <div>
+              <div
+                style={{
+                  fontSize: 11,
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "#64748b",
+                  marginBottom: 2,
+                }}
+              >
+                BTC Price
+              </div>
+              <div style={{ fontWeight: 700 }}>{formatUsd(price)}</div>
+            </div>
+          </div>
+        ) : null}
+      </div>
+
+      {/* ========== BOTTOM BAR ========== */}
+      <div
+        style={{
+          padding: "32px 48px 36px",
+          borderTop: "1px solid rgba(0,0,0,0.06)",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 24 }}>
+          <div>
+            <div
+              style={{
+                fontSize: 12,
+                fontWeight: 700,
+                textTransform: "uppercase",
+                letterSpacing: "0.18em",
+                color: "#94a3b8",
+                marginBottom: 6,
+              }}
+            >
+              Next Halving
+            </div>
+            <div style={{ fontSize: 24, fontWeight: 700, color: "#0f172a" }}>
+              {formatDate(cycle.nextHalving)}
+            </div>
+            <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 2 }}>
+              {formatUtc(cycle.nextHalving)}
+            </div>
+          </div>
+          <MiniStat label="Buy Date" value={formatDate(cycle.buyDate)} />
+          <MiniStat label="Sell Date" value={formatDate(cycle.sellDate)} />
+        </div>
+        <div
+          style={{
+            marginTop: 20,
+            textAlign: "center",
+            fontSize: 13,
+            color: "#94a3b8",
+            letterSpacing: "0.08em",
+            fontWeight: 500,
+          }}
+        >
+          btc500.vercel.app
         </div>
       </div>
     </div>
@@ -305,25 +350,20 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
 
 function MiniStat({ label, value }: { label: string; value: string }) {
   return (
-    <div
-      style={{
-        borderRadius: 16,
-        background: "rgba(0,0,0,0.03)",
-        padding: "12px 16px",
-      }}
-    >
+    <div>
       <div
         style={{
-          fontSize: 10,
+          fontSize: 12,
           fontWeight: 700,
           textTransform: "uppercase",
           letterSpacing: "0.18em",
-          color: "#64748b",
+          color: "#94a3b8",
+          marginBottom: 6,
         }}
       >
         {label}
       </div>
-      <div style={{ marginTop: 4, fontSize: 14, fontWeight: 600, color: "#0f172a" }}>{value}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "#0f172a" }}>{value}</div>
     </div>
   );
 }

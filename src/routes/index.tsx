@@ -7,6 +7,7 @@ import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { ProgressRing } from "@/components/ProgressRing";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
+import { ShareCard } from "@/components/ShareCard";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useEffect, useRef, useState } from "react";
@@ -83,6 +84,7 @@ function Index() {
   const priceRes = useQuery(priceQuery);
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
+  const shareCardRef = useRef<HTMLDivElement>(null);
 
   const cycle = computeCycle(
     now,
@@ -323,8 +325,13 @@ function Index() {
         </p>
       </main>
 
+      {/* Hidden share card for social media image generation */}
+      <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
+        <ShareCard ref={shareCardRef} cycle={cycle} price={priceRes.data?.price ?? null} />
+      </div>
+
       <div className="flex justify-center pb-12">
-        <ShareButton captureRef={heroRef} />
+        <ShareButton captureRef={shareCardRef} />
       </div>
     </div>
   );
