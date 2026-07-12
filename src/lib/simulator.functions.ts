@@ -39,35 +39,62 @@ function dateToMs(dateStr: string): number {
 }
 
 async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
-  // Binance klines API — get the daily candle for the given date
-  const startTime = dateToMs(dateStr);
-  const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=${startTime}&limit=1`;
-  try {
-    const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
-    if (!r.ok) return null;
-    const j = (await r.json()) as Array<
-      [
-        number,
-        string,
-        string,
-        string,
-        string,
-        string,
-        number,
-        string,
-        number,
-        string,
-        string,
-        string,
-      ]
-    >;
-    if (!Array.isArray(j) || j.length === 0) return null;
-    // Index 4 is the close price
-    const closePrice = parseFloat(j[0][4]);
-    return Number.isFinite(closePrice) && closePrice > 0 ? closePrice : null;
-  } catch {
-    return null;
+  // Sources are tried in order — the first to return a valid price wins.
+  // Binance is tried first, then CoinGecko, then CoinPaprika.
+  const sources: Array<() => Promise<number | null>> = [
+    // ── Source 1: Binance klines ──
+    async () => {
+      const startTime = dateToMs(dateStr);
+      const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=${startTime}&limit=1`;
+      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!r.ok) return null;
+      const j = (await r.json()) as unknown[];
+      if (!Array.isArray(j) || j.length === 0) return null;
+      const closePrice = parseFloat((j[0] as unknown[])[4] as string);
+      return Number.isFinite(closePrice) && closePrice > 0 ? closePrice : null;
+    },
+
+    // ── Source 2: CoinGecko history endpoint ──
+    async () => {
+      // CoinGecko expects DD-MM-YYYY
+      const d = new Date(dateStr + "T00:00:00Z");
+      const parts = [
+        String(d.getUTCDate()).padStart(2, "0"),
+        String(d.getUTCMonth() + 1).padStart(2, "0"),
+        d.getUTCFullYear(),
+      ];
+      const dateParam = parts.join("-");
+      const url = `https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${dateParam}`;
+      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!r.ok) return null;
+      const j = (await r.json()) as {
+        market_data?: { current_price?: { usd?: number } };
+      };
+      return j?.market_data?.current_price?.usd ?? null;
+    },
+
+    // ── Source 3: CoinPaprika historical ticker ──
+    async () => {
+      // CoinPaprika expects YYYY-MM-DD
+      const url = `https://api.coinpaprika.com/v1/tickers/btc-bitcoin/historical?start=${dateStr}&end=${dateStr}`;
+      const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
+      if (!r.ok) return null;
+      const j = (await r.json()) as Array<{ price?: number }>;
+      if (!Array.isArray(j) || j.length === 0) return null;
+      const price = j[0]?.price;
+      return Number.isFinite(price) && price! > 0 ? price! : null;
+    },
+  ];
+
+  for (const src of sources) {
+    try {
+      const price = await src();
+      if (price !== null) return price;
+    } catch {
+      // continue to next source
+    }
   }
+  return null;
 }
 
 export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {
