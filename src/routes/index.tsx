@@ -113,7 +113,6 @@ function Index() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <Nav />
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
         <div
           ref={heroRef}
@@ -426,10 +425,6 @@ function Header() {
       </p>
     </header>
   );
-}
-
-function Nav() {
-  return null;
 }
 
 function MiniStat({ label, value }: { label: string; value: string }) {
