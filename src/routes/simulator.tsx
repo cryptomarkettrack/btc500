@@ -102,16 +102,15 @@ function Simulator() {
   }, [data.cycles, investmentAmount]);
 
   const totals = useMemo(() => {
-    const totalInvestment = investmentAmount * data.cycles.length;
-    const totalReturn = cyclesWithProfit.reduce(
-      (sum, c) => sum + (c.profit !== null ? c.profit + investmentAmount : 0),
-      0,
-    );
-    const totalProfit = cyclesWithProfit.every((c) => c.profit !== null)
-      ? totalReturn - totalInvestment
-      : null;
-    return { totalInvestment, totalReturn, totalProfit };
-  }, [cyclesWithProfit, investmentAmount, data.cycles.length]);
+    // Only count cycles that have price data
+    const cyclesWithData = cyclesWithProfit.filter((c) => c.profit !== null);
+    const activeCycleCount = cyclesWithData.length;
+
+    const totalInvestment = investmentAmount * activeCycleCount;
+    const totalReturn = cyclesWithData.reduce((sum, c) => sum + c.profit! + investmentAmount, 0);
+    const totalProfit = activeCycleCount > 0 ? totalReturn - totalInvestment : null;
+    return { totalInvestment, totalReturn, totalProfit, activeCycleCount };
+  }, [cyclesWithProfit, investmentAmount]);
 
   return (
     <div className="min-h-screen bg-background text-foreground">

@@ -41,96 +41,70 @@ function dateToMs(dateStr: string): number {
 async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
   const logTag = `[fetchBtcPriceOnDate ${dateStr}]`;
 
-  // Sources are tried in order — the first to return a valid price wins.
-  // Binance is tried first, then CoinGecko, then CoinPaprika.
-  const sources: Array<{ name: string; fetch: () => Promise<number | null> }> = [
-    {
-      name: "Binance",
-      fetch: async () => {
-        const startTime = dateToMs(dateStr);
-        const url = `https://api.binance.com/api/v3/klines?symbol=BTCUSDT&interval=1d&startTime=${startTime}&limit=1`;
-        const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
-        if (!r.ok) {
-          console.warn(`${logTag} Binance returned status ${r.status}`);
-          return null;
-        }
-        const j = (await r.json()) as unknown[];
-        if (!Array.isArray(j) || j.length === 0) {
-          console.warn(`${logTag} Binance returned empty array`);
-          return null;
-        }
-        const closePrice = parseFloat((j[0] as unknown[])[4] as string);
-        const valid = Number.isFinite(closePrice) && closePrice > 0;
-        if (!valid) console.warn(`${logTag} Binance returned invalid close price: ${closePrice}`);
-        return valid ? closePrice : null;
-      },
-    },
+  // Target date as start-of-day Unix seconds (Bitstamp timestamps are in seconds)
+  const targetUnixSeconds = Math.floor(dateToMs(dateStr) / 1000);
 
-    {
-      name: "CoinGecko",
-      fetch: async () => {
-        // CoinGecko expects DD-MM-YYYY
-        const d = new Date(dateStr + "T00:00:00Z");
-        const parts = [
-          String(d.getUTCDate()).padStart(2, "0"),
-          String(d.getUTCMonth() + 1).padStart(2, "0"),
-          d.getUTCFullYear(),
-        ];
-        const dateParam = parts.join("-");
-        const url = `https://api.coingecko.com/api/v3/coins/bitcoin/history?date=${dateParam}`;
-        const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
-        if (!r.ok) {
-          console.warn(`${logTag} CoinGecko returned status ${r.status}`);
-          return null;
-        }
-        const j = (await r.json()) as {
-          market_data?: { current_price?: { usd?: number } };
-        };
-        const price = j?.market_data?.current_price?.usd ?? null;
-        if (price === null)
-          console.warn(`${logTag} CoinGecko response missing market_data.current_price.usd`);
-        return price;
-      },
-    },
+  try {
+    // Bitstamp OHLC returns daily candles. Use `start` and `end` to narrow
+    // the window to ±1 day around the target, so we only get the relevant candle(s).
+    const start = targetUnixSeconds - 86400;
+    const end = targetUnixSeconds + 86400;
+    const url = `https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=86400&limit=1000&start=${start}&end=${end}`;
 
-    {
-      name: "CoinPaprika",
-      fetch: async () => {
-        // CoinPaprika expects YYYY-MM-DD
-        const url = `https://api.coinpaprika.com/v1/tickers/btc-bitcoin/historical?start=${dateStr}&end=${dateStr}`;
-        const r = await fetch(url, { signal: AbortSignal.timeout(6000) });
-        if (!r.ok) {
-          console.warn(`${logTag} CoinPaprika returned status ${r.status}`);
-          return null;
-        }
-        const j = (await r.json()) as Array<{ price?: number }>;
-        if (!Array.isArray(j) || j.length === 0) {
-          console.warn(`${logTag} CoinPaprika returned empty array`);
-          return null;
-        }
-        const price = j[0]?.price;
-        const valid = Number.isFinite(price) && price! > 0;
-        if (!valid) console.warn(`${logTag} CoinPaprika returned invalid price: ${price}`);
-        return valid ? price! : null;
-      },
-    },
-  ];
-
-  for (const { name, fetch: fn } of sources) {
-    try {
-      const price = await fn();
-      if (price !== null) {
-        console.log(`${logTag} ${name} → $${price}`);
-        return price;
-      }
-      console.warn(`${logTag} ${name} returned null, trying next source…`);
-    } catch (err) {
-      console.error(`${logTag} ${name} threw:`, err);
+    const r = await fetch(url, { signal: AbortSignal.timeout(8000) });
+    if (!r.ok) {
+      console.error(`${logTag} Bitstamp returned status ${r.status}`);
+      return null;
     }
-  }
 
-  console.error(`${logTag} All sources exhausted — no price available`);
-  return null;
+    const j = (await r.json()) as {
+      data?: {
+        pair?: string;
+        ohlc?: Array<{
+          timestamp: string;
+          open: string;
+          high: string;
+          low: string;
+          close: string;
+          volume: string;
+        }>;
+      };
+    };
+
+    const ohlc = j?.data?.ohlc;
+    if (!Array.isArray(ohlc) || ohlc.length === 0) {
+      console.error(`${logTag} Bitstamp returned no OHLC data`);
+      return null;
+    }
+
+    // Find the candle whose timestamp falls within 1 day of the target date
+    const TOLERANCE_S = 86400;
+    const candle = ohlc.find((c) => {
+      const ts = parseInt(c.timestamp, 10);
+      return Math.abs(ts - targetUnixSeconds) < TOLERANCE_S;
+    });
+
+    if (!candle) {
+      console.error(`${logTag} Bitstamp: no candle found within 1 day of target date`);
+      return null;
+    }
+
+    const closePrice = parseFloat(candle.close);
+    const valid = Number.isFinite(closePrice) && closePrice > 0;
+
+    if (!valid) {
+      console.error(
+        `${logTag} Bitstamp returned invalid close price: ${closePrice} (timestamp: ${candle.timestamp})`,
+      );
+      return null;
+    }
+
+    console.log(`${logTag} Bitstamp → $${closePrice} (timestamp: ${candle.timestamp})`);
+    return closePrice;
+  } catch (err) {
+    console.error(`${logTag} Bitstamp threw:`, err);
+    return null;
+  }
 }
 
 export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {
