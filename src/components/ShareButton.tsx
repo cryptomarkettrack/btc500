@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { toCanvas } from "html-to-image";
-import { Download, Copy, Loader2, Check } from "lucide-react";
+import { Download, Copy, Loader2, Check, Code2 } from "lucide-react";
 
 interface Props {
   captureRef: React.RefObject<HTMLDivElement | null>;
@@ -77,6 +77,7 @@ function inlineComputedStyles(root: HTMLElement): () => void {
 export function ShareButton({ captureRef }: Props) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [iframeCopied, setIframeCopied] = useState(false);
 
   const download = useCallback(async () => {
     const el = captureRef.current;
@@ -116,9 +117,13 @@ export function ShareButton({ captureRef }: Props) {
         backgroundColor: "#fff",
       });
 
+      if (!canvas) {
+        throw new Error("Failed to generate canvas");
+      }
+
       // Convert canvas to blob using the native Canvas API
       const blob = await new Promise<Blob | null>((resolve) => {
-        canvas.toBlob((b) => resolve(b), "image/png");
+        canvas!.toBlob((b) => resolve(b), "image/png");
       });
 
       if (!blob) {
@@ -147,6 +152,19 @@ export function ShareButton({ captureRef }: Props) {
     }
   }, [captureRef]);
 
+  const copyIframeCode = useCallback(async () => {
+    const origin = window.location.origin;
+    const iframeCode = `<iframe src="${origin}/embed" width="600" height="800" frameborder="0" style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>`;
+
+    try {
+      await navigator.clipboard.writeText(iframeCode);
+      setIframeCopied(true);
+      setTimeout(() => setIframeCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy iframe code", err);
+    }
+  }, []);
+
   return (
     <div className="flex items-center gap-3">
       <button
@@ -173,6 +191,23 @@ export function ShareButton({ captureRef }: Props) {
           <>
             <Copy className="h-4 w-4" />
             Copy image to clipboard
+          </>
+        )}
+      </button>
+      <button
+        onClick={copyIframeCode}
+        disabled={busy}
+        className="inline-flex items-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50"
+      >
+        {iframeCopied ? (
+          <>
+            <Check className="h-4 w-4" />
+            Copied!
+          </>
+        ) : (
+          <>
+            <Code2 className="h-4 w-4" />
+            Copy embed code
           </>
         )}
       </button>
