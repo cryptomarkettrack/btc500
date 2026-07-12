@@ -126,7 +126,7 @@ function Index() {
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
         <div
           ref={heroRef}
-          className="flex flex-col gap-6 p-5"
+          className="flex flex-col gap-6 p-0 sm:p-5"
           style={{ background: "var(--background)" }}
         >
           <Header />
@@ -334,7 +334,7 @@ function Pending() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
-        <div className="flex flex-col gap-6 p-5">
+        <div className="flex flex-col gap-6 p-0 sm:p-5">
           {/* Header skeleton */}
           <header className="mb-8 text-center sm:mb-12">
             <div className="flex items-center justify-center gap-4">
