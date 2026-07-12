@@ -1,10 +1,12 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Calculator, Home, Clock } from "lucide-react";
+import { Calculator, Home, Clock, Menu, X } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
+import { useState } from "react";
 
 export function Nav() {
   const router = useRouter();
   const pathname = router.state.location.pathname;
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const links = [
     { to: "/", label: "Home", icon: Home },
@@ -21,8 +23,8 @@ export function Nav() {
           <span className="text-sm font-bold tracking-tight">BTC500</span>
         </Link>
 
-        {/* Nav links */}
-        <div className="flex items-center gap-1">
+        {/* Desktop Nav links */}
+        <div className="hidden md:flex items-center gap-1">
           {links.map((link) => {
             const isActive = pathname === link.to;
             const Icon = link.icon;
@@ -42,7 +44,45 @@ export function Nav() {
             );
           })}
         </div>
+
+        {/* Mobile menu button */}
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="md:hidden inline-flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground"
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+        </button>
       </div>
+
+      {/* Mobile Nav links */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden border-t border-border/60 bg-background/95 backdrop-blur-xl">
+          <div className="mx-auto max-w-6xl px-6 py-3">
+            <div className="flex flex-col gap-2">
+              {links.map((link) => {
+                const isActive = pathname === link.to;
+                const Icon = link.icon;
+                return (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={`inline-flex items-center gap-3 rounded-full px-4 py-3 text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-primary text-primary-foreground shadow-sm"
+                        : "text-muted-foreground hover:bg-muted hover:text-foreground"
+                    }`}
+                  >
+                    <Icon className="h-4 w-4" />
+                    {link.label}
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

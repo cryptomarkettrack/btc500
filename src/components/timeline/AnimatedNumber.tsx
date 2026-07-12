@@ -34,12 +34,29 @@ export function AnimatedNumber({
   const startRef = useRef<number>(0);
   const fromRef = useRef(value);
   const toRef = useRef(value);
+  const isAnimatingRef = useRef(false);
   const duration = 400; // ms
 
   useEffect(() => {
+    // If already animating, just update the target and let the current animation continue
+    if (isAnimatingRef.current) {
+      toRef.current = value;
+      return;
+    }
+
+    // Only animate if the value has changed significantly (more than 0.1%)
+    const diff = Math.abs(value - displayValue);
+    const threshold = Math.max(Math.abs(value) * 0.001, 0.1);
+
+    if (diff < threshold) {
+      setDisplayValue(value);
+      return;
+    }
+
     fromRef.current = displayValue;
     toRef.current = value;
     startRef.current = performance.now();
+    isAnimatingRef.current = true;
 
     const animate = (now: number) => {
       const elapsed = now - startRef.current;
@@ -51,6 +68,8 @@ export function AnimatedNumber({
 
       if (progress < 1) {
         frameRef.current = requestAnimationFrame(animate);
+      } else {
+        isAnimatingRef.current = false;
       }
     };
 
@@ -61,7 +80,7 @@ export function AnimatedNumber({
         cancelAnimationFrame(frameRef.current);
       }
     };
-  }, [value]);
+  }, [value, displayValue]);
 
   const formatted = format
     ? format(displayValue)

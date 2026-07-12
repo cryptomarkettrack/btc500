@@ -330,7 +330,7 @@ function Index() {
         <ShareCard ref={shareCardRef} cycle={cycle} price={priceRes.data?.price ?? null} />
       </div>
 
-      <div className="flex justify-center pb-12">
+      <div className="mt-16 flex justify-center px-6 pb-12">
         <ShareButton captureRef={shareCardRef} />
       </div>
     </div>
