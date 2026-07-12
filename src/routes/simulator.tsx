@@ -18,21 +18,35 @@ const simulatorQuery = queryOptions({
 export const Route = createFileRoute("/simulator")({
   head: () => ({
     meta: [
-      { title: "BTC500 Simulator — How Much Would You Have Earned?" },
+      {
+        title:
+          "BTC500 Simulator — Bitcoin Halving Returns Calculator | How Much Would You Have Earned?",
+      },
       {
         name: "description",
         content:
-          "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount.",
+          "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
       },
-      { property: "og:title", content: "BTC500 Simulator" },
+      { property: "og:title", content: "BTC500 Simulator — Bitcoin Halving Returns Calculator" },
       {
         property: "og:description",
-        content: "Simulate your returns using the BTC500 strategy across past halving cycles.",
+        content:
+          "Simulate your returns using the BTC500 strategy across past halving cycles. See historical buy/sell prices and profit calculations.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/simulator" },
+      { property: "og:url", content: "https://btc500.vercel.app/simulator" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BTC500 Simulator — Bitcoin Halving Returns Calculator" },
+      {
+        name: "twitter:description",
+        content: "Simulate your returns using the BTC500 strategy across past halving cycles.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "/simulator" }],
+    links: [{ rel: "canonical", href: "https://btc500.vercel.app/simulator" }],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(simulatorQuery),
   component: Simulator,

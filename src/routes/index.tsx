@@ -28,22 +28,32 @@ const priceQuery = queryOptions({
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "BTC500 — Buy Bitcoin 500 Days Before Halving" },
+      { title: "BTC500 — Bitcoin Halving Countdown & Investment Strategy | Buy 500 Days Before" },
       {
         name: "description",
         content:
-          "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, investment simulator, historical performance and daily shareable cards.",
+          "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, investment simulator, historical performance data and daily shareable cards. The simplest Bitcoin investment strategy.",
       },
-      { property: "og:title", content: "BTC500 — Buy Bitcoin 500 Days Before Halving" },
+      { property: "og:title", content: "BTC500 — Bitcoin Halving Countdown & Investment Strategy" },
       {
         property: "og:description",
         content:
-          "Buy 500 days before halving. Sell 500 days after. A dead-simple Bitcoin strategy.",
+          "Buy 500 days before halving. Sell 500 days after. Track live countdowns, block progress, and historical returns. The dead-simple Bitcoin strategy.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "/" },
+      { property: "og:url", content: "https://btc500.vercel.app/" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BTC500 — Bitcoin Halving Countdown & Strategy" },
+      {
+        name: "twitter:description",
+        content: "Buy 500 days before halving. Sell 500 days after. Track live countdowns.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "/" }],
+    links: [{ rel: "canonical", href: "https://btc500.vercel.app/" }],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(halvingQuery),
   component: Index,

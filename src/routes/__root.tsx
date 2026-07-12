@@ -13,6 +13,33 @@ import "../styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "../components/Nav";
 
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: "BTC500",
+  alternateName: "BTC500 — Bitcoin Halving Countdown & Strategy",
+  url: "https://btc500.vercel.app/",
+  description:
+    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
+  potentialAction: {
+    "@type": "SearchAction",
+    target: {
+      "@type": "EntryPoint",
+      urlTemplate: "https://btc500.vercel.app/search?q={search_term_string}",
+    },
+    "query-input": "required name=search_term_string",
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "BTC500",
+  url: "https://btc500.vercel.app/",
+  logo: "https://btc500.vercel.app/favicon.svg",
+  description: "Bitcoin halving countdown and investment strategy platform.",
+};
+
 function NotFoundComponent() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -78,21 +105,61 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "BTC500 — Buy Bitcoin 500 Days Before Halving" },
+      { title: "BTC500 — Buy Bitcoin 500 Days Before Halving | Bitcoin Halving Strategy" },
       {
         name: "description",
         content:
-          "Buy Bitcoin exactly 500 days before halving. Sell 500 days after. Live countdown & shareable cards.",
+          "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
       },
-      { property: "og:title", content: "BTC500" },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, buy Bitcoin, crypto halving, Bitcoin investment strategy, halving countdown, Bitcoin trading strategy",
+      },
+      { name: "author", content: "BTC500" },
+      { name: "robots", content: "index, follow" },
+      { name: "googlebot", content: "index, follow" },
+      { name: "theme-color", content: "#F7931A" },
+      { property: "og:title", content: "BTC500 — Buy Bitcoin 500 Days Before Halving" },
       {
         property: "og:description",
-        content: "Buy 500 days before halving. Sell 500 days after.",
+        content:
+          "Buy 500 days before halving. Sell 500 days after. A dead-simple Bitcoin strategy with live countdowns and historical performance data.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://btc500.vercel.app/" },
+      { property: "og:site_name", content: "BTC500" },
+      { property: "og:locale", content: "en_US" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { property: "og:image:alt", content: "BTC500 — Bitcoin Halving Countdown & Strategy" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BTC500 — Buy Bitcoin 500 Days Before Halving" },
+      {
+        name: "twitter:description",
+        content:
+          "Buy 500 days before halving. Sell 500 days after. A dead-simple Bitcoin strategy.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "icon", href: "/favicon.ico", type: "image/x-icon" }],
+    links: [
+      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
+      { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/favicon.svg", sizes: "64x64" },
+      { rel: "canonical", href: "https://btc500.vercel.app/" },
+      { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(websiteSchema),
+      },
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(organizationSchema),
+      },
+    ],
   }),
   shellComponent: RootShell,
   component: RootComponent,

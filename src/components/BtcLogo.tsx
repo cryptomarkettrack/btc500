@@ -6,6 +6,8 @@ export function BtcLogo({ size = 56, color }: { size?: number; color?: string })
       viewBox="0 0 64 64"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      role="img"
+      aria-label="Bitcoin logo"
     >
       <circle cx="32" cy="32" r="32" fill={color ?? "var(--primary)"} />
       <path
