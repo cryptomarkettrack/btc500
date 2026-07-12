@@ -21,7 +21,11 @@ export function addDays(d: Date, n: number): Date {
 }
 
 export function daysBetween(a: Date, b: Date): number {
-  return Math.ceil((b.getTime() - a.getTime()) / DAY);
+  // Normalize to local midnight so the countdown changes at calendar-day boundaries,
+  // not at arbitrary times of day that depend on when the halving was estimated.
+  const aLocal = new Date(a.getFullYear(), a.getMonth(), a.getDate());
+  const bLocal = new Date(b.getFullYear(), b.getMonth(), b.getDate());
+  return Math.round((bLocal.getTime() - aLocal.getTime()) / DAY);
 }
 
 export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): CycleInfo {
