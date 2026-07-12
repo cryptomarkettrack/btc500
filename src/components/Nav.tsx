@@ -1,5 +1,5 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Calculator, Home } from "lucide-react";
+import { Calculator, Home, Clock } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 
 export function Nav() {
@@ -9,6 +9,7 @@ export function Nav() {
   const links = [
     { to: "/", label: "Home", icon: Home },
     { to: "/simulator", label: "Simulator", icon: Calculator },
+    { to: "/timeline", label: "Timeline", icon: Clock },
   ];
 
   return (

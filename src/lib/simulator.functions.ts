@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { getBtcPriceFromCsv } from "./csv-price-loader";
 
 // Known halving dates (approximate, based on block heights)
 const HALVINGS: Array<{ date: string; block: number; label: string }> = [
@@ -41,6 +42,13 @@ function dateToMs(dateStr: string): number {
 async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
   const logTag = `[fetchBtcPriceOnDate ${dateStr}]`;
 
+  // First, try to get price from CSV for dates before 2016-07-12
+  const csvPrice = await getBtcPriceFromCsv(dateStr);
+  if (csvPrice !== null) {
+    return csvPrice;
+  }
+
+  // If not in CSV or date is on/after 2016-07-12, use Bitstamp
   // Target date as start-of-day Unix seconds (Bitstamp timestamps are in seconds)
   const targetUnixSeconds = Math.floor(dateToMs(dateStr) / 1000);
 
