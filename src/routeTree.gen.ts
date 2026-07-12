@@ -12,7 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as EmbedRouteImport } from './routes/embed'
+import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 
 const TimelineRoute = TimelineRouteImport.update({
   id: '/timeline',
@@ -29,41 +31,77 @@ const EmbedRoute = EmbedRouteImport.update({
   path: '/embed',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
+  id: '/btc500-strategy',
+  path: '/btc500-strategy',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/embed': typeof EmbedRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/embed': typeof EmbedRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/articles': typeof ArticlesRouteWithChildren
   '/embed': typeof EmbedRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/embed' | '/simulator' | '/timeline'
+  fullPaths:
+    | '/'
+    | '/articles'
+    | '/embed'
+    | '/simulator'
+    | '/timeline'
+    | '/articles/btc500-strategy'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/embed' | '/simulator' | '/timeline'
-  id: '__root__' | '/' | '/embed' | '/simulator' | '/timeline'
+  to:
+    | '/'
+    | '/articles'
+    | '/embed'
+    | '/simulator'
+    | '/timeline'
+    | '/articles/btc500-strategy'
+  id:
+    | '__root__'
+    | '/'
+    | '/articles'
+    | '/embed'
+    | '/simulator'
+    | '/timeline'
+    | '/articles/btc500-strategy'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ArticlesRoute: typeof ArticlesRouteWithChildren
   EmbedRoute: typeof EmbedRoute
   SimulatorRoute: typeof SimulatorRoute
   TimelineRoute: typeof TimelineRoute
@@ -92,6 +130,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EmbedRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -99,11 +144,31 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/btc500-strategy': {
+      id: '/articles/btc500-strategy'
+      path: '/btc500-strategy'
+      fullPath: '/articles/btc500-strategy'
+      preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
   }
 }
 
+interface ArticlesRouteChildren {
+  ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
+}
+
+const ArticlesRouteChildren: ArticlesRouteChildren = {
+  ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
+}
+
+const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(
+  ArticlesRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ArticlesRoute: ArticlesRouteWithChildren,
   EmbedRoute: EmbedRoute,
   SimulatorRoute: SimulatorRoute,
   TimelineRoute: TimelineRoute,
