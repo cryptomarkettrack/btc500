@@ -2,139 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { Btc500StrategyArticle } from "@/components/articles/Btc500StrategyArticle";
+import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "The BTC500 Strategy: Buy 500 Days Before Halving, Sell 500 Days After",
-  description:
-    "A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.",
-  author: {
-    "@type": "Organization",
-    name: "BTC500",
-    url: "https://btc500.vercel.app/",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "BTC500",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://btc500.vercel.app/favicon.svg",
-    },
-  },
-  datePublished: "2024-01-15",
-  dateModified: "2026-07-13",
-  image: "https://btc500.vercel.app/og/default.png",
-  url: "https://btc500.vercel.app/articles/btc500-strategy",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://btc500.vercel.app/articles/btc500-strategy",
-  },
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://btc500.vercel.app/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Articles",
-        item: "https://btc500.vercel.app/articles",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "The BTC500 Strategy",
-        item: "https://btc500.vercel.app/articles/btc500-strategy",
-      },
-    ],
-  },
-  articleSection: "Bitcoin Investment Strategy",
-  wordCount: 2500,
-  timeRequired: "PT8M",
-  keywords:
-    "Bitcoin halving, BTC500, Bitcoin strategy, investment strategy, halving countdown, Bitcoin trading",
-};
+const article = getArticleBySlug("btc500-strategy")!;
 
 export const Route = createFileRoute("/articles/btc500-strategy")({
-  head: () => ({
-    meta: [
-      { title: "The BTC500 Strategy — Articles | BTC500" },
-      {
-        name: "description",
-        content:
-          "A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.",
-      },
-      {
-        name: "keywords",
-        content:
-          "Bitcoin halving strategy, BTC500 strategy, buy 500 days before halving, sell 500 days after, Bitcoin investment timing, halving cycle strategy",
-      },
-      { property: "og:title", content: "The BTC500 Strategy — Articles | BTC500" },
-      {
-        property: "og:description",
-        content: "A deep dive into the simplest and most effective Bitcoin investment strategy.",
-      },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: "https://btc500.vercel.app/articles/btc500-strategy" },
-      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: "The BTC500 Strategy — Bitcoin Halving Investment Guide",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "The BTC500 Strategy — Articles | BTC500" },
-      {
-        name: "twitter:description",
-        content: "A deep dive into the simplest and most effective Bitcoin investment strategy.",
-      },
-      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
-      {
-        property: "article:published_time",
-        content: "2024-01-15T00:00:00Z",
-      },
-      {
-        property: "article:modified_time",
-        content: "2026-07-13T00:00:00Z",
-      },
-    ],
-    links: [
-      { rel: "canonical", href: "https://btc500.vercel.app/articles/btc500-strategy" },
-      {
-        rel: "alternate",
-        hrefLang: "en",
-        href: "https://btc500.vercel.app/articles/btc500-strategy",
-      },
-      {
-        rel: "alternate",
-        hrefLang: "x-default",
-        href: "https://btc500.vercel.app/articles/btc500-strategy",
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(articleSchema),
-      },
-    ],
-  }),
+  head: () => generateArticleHead(article),
   component: Btc500StrategyPage,
 });
 
 function Btc500StrategyPage() {
-  const article = {
-    id: "btc500-strategy",
-    title: "The BTC500 Strategy: Buy 500 Days Before Halving, Sell 500 Days After",
-    date: "January 15, 2024",
-    readTime: "8 min read",
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

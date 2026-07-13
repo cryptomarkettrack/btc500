@@ -2,141 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { WhyBtc500ExistsArticle } from "@/components/articles/WhyBtc500ExistsArticle";
+import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Why BTC500 Exists: The Most Expensive Mistake Bitcoin Investors Keep Repeating",
-  description:
-    "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing - buying too early during bear markets.",
-  author: {
-    "@type": "Organization",
-    name: "BTC500",
-    url: "https://btc500.vercel.app/",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "BTC500",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://btc500.vercel.app/favicon.svg",
-    },
-  },
-  datePublished: "2026-07-13",
-  dateModified: "2026-07-13",
-  image: "https://btc500.vercel.app/og/default.png",
-  url: "https://btc500.vercel.app/articles/why-btc500-exists",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://btc500.vercel.app/articles/why-btc500-exists",
-  },
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://btc500.vercel.app/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Articles",
-        item: "https://btc500.vercel.app/articles",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "Why BTC500 Exists",
-        item: "https://btc500.vercel.app/articles/why-btc500-exists",
-      },
-    ],
-  },
-  articleSection: "Bitcoin Investment Strategy",
-  wordCount: 1800,
-  timeRequired: "PT7M",
-  keywords:
-    "Bitcoin investing mistakes, BTC500 strategy, Bitcoin bear market, buying the bottom, Bitcoin investment timing, halving cycle strategy",
-};
+const article = getArticleBySlug("why-btc500-exists")!;
 
 export const Route = createFileRoute("/articles/why-btc500-exists")({
-  head: () => ({
-    meta: [
-      { title: "Why BTC500 Exists — Articles | BTC500" },
-      {
-        name: "description",
-        content:
-          "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing.",
-      },
-      {
-        name: "keywords",
-        content:
-          "Bitcoin investing mistakes, BTC500 strategy, buying the bottom, Bitcoin bear market, investment timing, halving cycle",
-      },
-      { property: "og:title", content: "Why BTC500 Exists — Articles | BTC500" },
-      {
-        property: "og:description",
-        content:
-          "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing.",
-      },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: "https://btc500.vercel.app/articles/why-btc500-exists" },
-      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: "Why BTC500 Exists — Bitcoin Investment Strategy",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "Why BTC500 Exists — Articles | BTC500" },
-      {
-        name: "twitter:description",
-        content:
-          "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing.",
-      },
-      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
-      {
-        property: "article:published_time",
-        content: "2026-07-13T00:00:00Z",
-      },
-      {
-        property: "article:modified_time",
-        content: "2026-07-13T00:00:00Z",
-      },
-    ],
-    links: [
-      { rel: "canonical", href: "https://btc500.vercel.app/articles/why-btc500-exists" },
-      {
-        rel: "alternate",
-        hrefLang: "en",
-        href: "https://btc500.vercel.app/articles/why-btc500-exists",
-      },
-      {
-        rel: "alternate",
-        hrefLang: "x-default",
-        href: "https://btc500.vercel.app/articles/why-btc500-exists",
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(articleSchema),
-      },
-    ],
-  }),
+  head: () => generateArticleHead(article),
   component: WhyBtc500ExistsPage,
 });
 
 function WhyBtc500ExistsPage() {
-  const article = {
-    id: "why-btc500-exists",
-    title: "Why BTC500 Exists: The Most Expensive Mistake Bitcoin Investors Keep Repeating",
-    date: "July 13, 2026",
-    readTime: "7 min read",
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

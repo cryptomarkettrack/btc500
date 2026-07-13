@@ -2,149 +2,16 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowLeft } from "lucide-react";
 import { motion } from "framer-motion";
 import { RuplArticle } from "@/components/articles/RuplArticle";
+import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const articleSchema = {
-  "@context": "https://schema.org",
-  "@type": "Article",
-  headline: "Net Unrealized Profit/Loss (NUPL): The Complete Guide to Bitcoin Market Psychology",
-  description:
-    "Understand Bitcoin's NUPL indicator — what it measures, the five phases of market sentiment, and how to use Relative Unrealized Profit/Loss to time the halving cycle alongside the BTC500 strategy.",
-  author: {
-    "@type": "Organization",
-    name: "BTC500",
-    url: "https://btc500.vercel.app/",
-  },
-  publisher: {
-    "@type": "Organization",
-    name: "BTC500",
-    logo: {
-      "@type": "ImageObject",
-      url: "https://btc500.vercel.app/favicon.svg",
-    },
-  },
-  datePublished: "2026-07-13",
-  dateModified: "2026-07-13",
-  image: "https://btc500.vercel.app/og/default.png",
-  url: "https://btc500.vercel.app/articles/rupl",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://btc500.vercel.app/articles/rupl",
-  },
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://btc500.vercel.app/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Articles",
-        item: "https://btc500.vercel.app/articles",
-      },
-      {
-        "@type": "ListItem",
-        position: 3,
-        name: "NUPL Guide",
-        item: "https://btc500.vercel.app/articles/rupl",
-      },
-    ],
-  },
-  articleSection: "Bitcoin On-Chain Analysis",
-  wordCount: 2000,
-  timeRequired: "PT8M",
-  keywords:
-    "Bitcoin NUPL, Relative Unrealized Profit Loss, Bitcoin on-chain analysis, market sentiment, Bitcoin halving, BTC500, unrealized profit, realized cap, Bitcoin cycle indicator",
-};
+const article = getArticleBySlug("rupl")!;
 
 export const Route = createFileRoute("/articles/rupl")({
-  head: () => ({
-    meta: [
-      {
-        title: "Net Unrealized Profit/Loss (NUPL) Guide — Articles | BTC500",
-      },
-      {
-        name: "description",
-        content:
-          "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss alongside the BTC500 strategy.",
-      },
-      {
-        name: "keywords",
-        content:
-          "Bitcoin NUPL, Relative Unrealized Profit Loss, Bitcoin on-chain analysis, market sentiment, Bitcoin halving, BTC500 strategy, unrealized profit, realized cap, Bitcoin cycle indicator",
-      },
-      {
-        property: "og:title",
-        content: "Net Unrealized Profit/Loss (NUPL) Guide — Articles | BTC500",
-      },
-      {
-        property: "og:description",
-        content:
-          "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss alongside the BTC500 strategy.",
-      },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: "https://btc500.vercel.app/articles/rupl" },
-      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: "Net Unrealized Profit/Loss (NUPL) — Bitcoin Market Psychology Guide",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      {
-        name: "twitter:title",
-        content: "Net Unrealized Profit/Loss (NUPL) Guide — Articles | BTC500",
-      },
-      {
-        name: "twitter:description",
-        content:
-          "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss alongside the BTC500 strategy.",
-      },
-      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
-      {
-        property: "article:published_time",
-        content: "2026-07-13T00:00:00Z",
-      },
-      {
-        property: "article:modified_time",
-        content: "2026-07-13T00:00:00Z",
-      },
-    ],
-    links: [
-      { rel: "canonical", href: "https://btc500.vercel.app/articles/rupl" },
-      {
-        rel: "alternate",
-        hrefLang: "en",
-        href: "https://btc500.vercel.app/articles/rupl",
-      },
-      {
-        rel: "alternate",
-        hrefLang: "x-default",
-        href: "https://btc500.vercel.app/articles/rupl",
-      },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(articleSchema),
-      },
-    ],
-  }),
+  head: () => generateArticleHead(article),
   component: RuplPage,
 });
 
 function RuplPage() {
-  const article = {
-    id: "rupl",
-    title: "Net Unrealized Profit/Loss (NUPL): The Complete Guide to Bitcoin Market Psychology",
-    date: "July 13, 2026",
-    readTime: "8 min read",
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

@@ -1,17 +1,18 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { getArticlesSorted, SITE_URL } from "@/lib/articles";
 
 const articlesPageSchema = {
   "@context": "https://schema.org",
   "@type": "WebPage",
   name: "Articles — BTC500 Strategy & Insights",
-  url: "https://btc500.vercel.app/articles",
+  url: `${SITE_URL}/articles`,
   description:
     "Learn about the BTC500 investment strategy. Articles explaining the Bitcoin halving cycle, buy/sell timing, and historical performance.",
   dateModified: "2026-07-13",
   datePublished: "2024-01-15",
   mainEntityOfPage: {
     "@type": "WebPage",
-    "@id": "https://btc500.vercel.app/articles",
+    "@id": `${SITE_URL}/articles`,
   },
   breadcrumb: {
     "@type": "BreadcrumbList",
@@ -20,13 +21,13 @@ const articlesPageSchema = {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://btc500.vercel.app/",
+        item: `${SITE_URL}/`,
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Articles",
-        item: "https://btc500.vercel.app/articles",
+        item: `${SITE_URL}/articles`,
       },
     ],
   },
@@ -52,8 +53,8 @@ export const Route = createFileRoute("/articles")({
         content: "Learn about the BTC500 investment strategy and Bitcoin halving cycles.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://btc500.vercel.app/articles" },
-      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:url", content: `${SITE_URL}/articles` },
+      { property: "og:image", content: `${SITE_URL}/og/default.png` },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
       {
@@ -66,12 +67,12 @@ export const Route = createFileRoute("/articles")({
         name: "twitter:description",
         content: "Learn about the BTC500 investment strategy and Bitcoin halving cycles.",
       },
-      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
+      { name: "twitter:image", content: `${SITE_URL}/og/default.png` },
     ],
     links: [
-      { rel: "canonical", href: "https://btc500.vercel.app/articles" },
-      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/articles" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/articles" },
+      { rel: "canonical", href: `${SITE_URL}/articles` },
+      { rel: "alternate", hrefLang: "en", href: `${SITE_URL}/articles` },
+      { rel: "alternate", hrefLang: "x-default", href: `${SITE_URL}/articles` },
     ],
     scripts: [
       {
@@ -84,35 +85,7 @@ export const Route = createFileRoute("/articles")({
 });
 
 function Articles() {
-  const articles = [
-    {
-      id: "btc500-strategy",
-      title: "The BTC500 Strategy: Buy 500 Days Before Halving, Sell 500 Days After",
-      description:
-        "A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.",
-      date: "2024-01-15",
-      readTime: "8 min read",
-      url: "/articles/btc500-strategy",
-    },
-    {
-      id: "why-btc500-exists",
-      title: "Why BTC500 Exists: The Most Expensive Mistake Bitcoin Investors Keep Repeating",
-      description:
-        "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing - buying too early during bear markets.",
-      date: "2026-07-13",
-      readTime: "7 min read",
-      url: "/articles/why-btc500-exists",
-    },
-    {
-      id: "rupl",
-      title: "Net Unrealized Profit/Loss (NUPL): The Complete Guide to Bitcoin Market Psychology",
-      description:
-        "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss to time the halving cycle.",
-      date: "2026-07-13",
-      readTime: "8 min read",
-      url: "/articles/rupl",
-    },
-  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+  const sortedArticles = getArticlesSorted();
 
   // Check if we're on a child route (article page)
   const location = useLocation();
@@ -140,10 +113,10 @@ function Articles() {
         </div>
 
         <div className="grid gap-6">
-          {articles.map((article) => (
+          {sortedArticles.map((article) => (
             <Link
               key={article.id}
-              to={article.url}
+              to={`/articles/${article.slug}` as "/articles/btc500-strategy"}
               className="group block rounded-2xl border border-border/60 bg-card p-6 transition-all hover:border-primary/50 hover:shadow-lg"
             >
               <div className="flex flex-col gap-3">
