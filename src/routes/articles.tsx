@@ -112,7 +112,7 @@ function Articles() {
       readTime: "8 min read",
       url: "/articles/rupl",
     },
-  ];
+  ].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   // Check if we're on a child route (article page)
   const location = useLocation();
