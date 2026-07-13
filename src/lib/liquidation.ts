@@ -112,9 +112,9 @@ export interface LiquidationData {
   fetchDate: string;
 }
 
-// --- Fetch helpers ---
+// --- Source configuration ---
 
-// Binance mirrors — try all CDN nodes, then fall back to OKX
+// Binance CDN mirrors — may bypass regional blocks
 const BINANCE_MIRRORS = [
   "https://fapi.binance.com",
   "https://fapi1.binance.com",
@@ -128,10 +128,13 @@ const BINANCE_MIRRORS = [
 ];
 
 const OKX_BASE = "https://www.okx.com";
+
 const HEADERS = {
   "User-Agent":
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
 };
+
+// --- Core fetch helpers ---
 
 /**
  * Try fetching a single URL with retries and timeout.
@@ -165,7 +168,7 @@ async function tryFetch<T>(url: string, retries = MAX_RETRIES): Promise<T | null
 }
 
 /**
- * Try multiple Binance mirrors; return first successful response.
+ * Try all Binance mirrors; return first successful response.
  */
 async function tryBinanceMirrors<T>(path: string): Promise<T | null> {
   for (const base of BINANCE_MIRRORS) {
@@ -175,12 +178,11 @@ async function tryBinanceMirrors<T>(path: string): Promise<T | null> {
   return null;
 }
 
-// ---- Binance fetch helpers ----
+// ============================================================
+// BINANCE data fetchers
+// ============================================================
 
-async function fetchOpenInterestHist(
-  period: string,
-  limit: number,
-): Promise<OpenInterestHistory[]> {
+async function binanceOI(period: string, limit: number): Promise<OpenInterestHistory[]> {
   return (
     (await tryBinanceMirrors<OpenInterestHistory[]>(
       `/futures/data/openInterestHist?symbol=BTCUSDT&period=${period}&limit=${limit}`,
@@ -188,7 +190,7 @@ async function fetchOpenInterestHist(
   );
 }
 
-async function fetchGlobalLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
+async function binanceGlobalLS(period: string, limit: number): Promise<LongShortRatio[]> {
   return (
     (await tryBinanceMirrors<LongShortRatio[]>(
       `/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=${period}&limit=${limit}`,
@@ -196,7 +198,7 @@ async function fetchGlobalLongShort(period: string, limit: number): Promise<Long
   );
 }
 
-async function fetchTopTraderLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
+async function binanceTopTraderLS(period: string, limit: number): Promise<LongShortRatio[]> {
   return (
     (await tryBinanceMirrors<LongShortRatio[]>(
       `/futures/data/topLongShortPositionRatio?symbol=BTCUSDT&period=${period}&limit=${limit}`,
@@ -204,7 +206,7 @@ async function fetchTopTraderLongShort(period: string, limit: number): Promise<L
   );
 }
 
-async function fetchFundingRates(limit: number): Promise<FundingRate[]> {
+async function binanceFunding(limit: number): Promise<FundingRate[]> {
   return (
     (await tryBinanceMirrors<FundingRate[]>(
       `/fapi/v1/fundingRate?symbol=BTCUSDT&limit=${limit}`,
@@ -212,7 +214,7 @@ async function fetchFundingRates(limit: number): Promise<FundingRate[]> {
   );
 }
 
-async function fetchTakerLongShort(period: string, limit: number): Promise<TakerRatio[]> {
+async function binanceTaker(period: string, limit: number): Promise<TakerRatio[]> {
   return (
     (await tryBinanceMirrors<TakerRatio[]>(
       `/futures/data/takerlongshortRatio?symbol=BTCUSDT&period=${period}&limit=${limit}`,
@@ -220,7 +222,7 @@ async function fetchTakerLongShort(period: string, limit: number): Promise<Taker
   );
 }
 
-async function fetchKlines(interval: string, limit: number): Promise<Kline[]> {
+async function binanceKlines(interval: string, limit: number): Promise<Kline[]> {
   const raw = await tryBinanceMirrors<any[]>(
     `/fapi/v1/klines?symbol=BTCUSDT&interval=${interval}&limit=${limit}`,
   );
@@ -238,65 +240,85 @@ async function fetchKlines(interval: string, limit: number): Promise<Kline[]> {
   }));
 }
 
-async function fetchCurrentOI() {
-  const data = await tryBinanceMirrors<{ symbol: string; openInterest: string; time: number }>(
+async function binanceCurrentOI(): Promise<{
+  symbol: string;
+  openInterest: string;
+  time: number;
+} | null> {
+  return tryBinanceMirrors<{ symbol: string; openInterest: string; time: number }>(
     `/fapi/v1/openInterest?symbol=BTCUSDT`,
   );
-  return data ?? { symbol: "BTCUSDT", openInterest: "0", time: Date.now() };
 }
 
-// ---- OKX fallback helpers ----
+// ============================================================
+// OKX data fetchers (fallback)
+// ============================================================
 
-async function okxFetch<T>(url: string): Promise<T | null> {
-  return tryFetch<T>(url);
-}
-
-async function okxFallbackOI(period: string, limit: number): Promise<OpenInterestHistory[]> {
-  const data = await okxFetch<{ code: string; data: string[][] }>(
-    `${OKX_BASE}/api/v5/rubik/stat/contracts/open-interest-history?instId=BTC-USDT-SWAP&period=${period}`,
+/**
+ * OKX Open Interest History
+ * Endpoint: /api/v5/rubik/stat/contracts/open-interest-history
+ * Returns: [[timestamp, oi_contracts, oi_btc, oi_usd], ...]
+ */
+async function okxOI(period: string, limit: number): Promise<OpenInterestHistory[]> {
+  // OKX supports 5m, 4H, 1D — we use 4H to match Binance
+  const data = await tryFetch<{ code: string; data: string[][] }>(
+    `${OKX_BASE}/api/v5/rubik/stat/contracts/open-interest-history?instId=BTC-USDT-SWAP&period=${period === "4h" ? "4H" : period}`,
   );
-  if (!data || data.code !== "0" || !data.data) return [];
+  if (!data || data.code !== "0" || !data.data?.length) return [];
   return data.data.slice(-limit).map((row) => ({
     timestamp: parseInt(row[0]),
-    sumOpenInterest: parseFloat(row[1]),
-    sumOpenInterestValue: parseFloat(row[1]) * (parseFloat(row[2]) || 100000), // fallback BTC price approx
+    sumOpenInterest: parseFloat(row[2] || row[1]), // row[2] = BTC amount
+    sumOpenInterestValue: parseFloat(row[3] || "0"), // row[3] = USD value
   }));
 }
 
-async function okxFallbackGlobalLS(period: string, limit: number): Promise<LongShortRatio[]> {
-  const data = await okxFetch<{ code: string; data: string[][] }>(
-    `${OKX_BASE}/api/v5/rubik/stat/contracts/long-short-account-ratio?instId=BTC-USDT-SWAP&period=${period}`,
+/**
+ * OKX Long/Short Ratio
+ * Endpoint: /api/v5/rubik/stat/contracts/long-short-account-ratio
+ * Returns: [[timestamp, ratio], ...]
+ * Periods: 5m, 1H, 1D
+ */
+async function okxGlobalLS(_period: string, limit: number): Promise<LongShortRatio[]> {
+  const data = await tryFetch<{ code: string; data: string[][] }>(
+    `${OKX_BASE}/api/v5/rubik/stat/contracts/long-short-account-ratio?instId=BTC-USDT-SWAP&period=1H&ccy=BTC`,
   );
-  if (!data || data.code !== "0" || !data.data) return [];
-  return data.data.slice(-limit).map((row) => ({
-    symbol: "BTCUSDT",
-    longAccount: row[1],
-    shortAccount: row[2],
-    longShortRatio: (parseFloat(row[1]) / parseFloat(row[2])).toString(),
-    timestamp: parseInt(row[0]),
-  }));
+  if (!data || data.code !== "0" || !data.data?.length) return [];
+  // OKX only returns ratio, not long/short splits — compute approximate splits
+  return data.data.slice(-limit).map((row) => {
+    const ratio = parseFloat(row[1]);
+    // ratio = longAccounts / shortAccounts
+    // longRatio = ratio / (1 + ratio), shortRatio = 1 / (1 + ratio)
+    const longRatio = ratio / (1 + ratio);
+    const shortRatio = 1 / (1 + ratio);
+    return {
+      symbol: "BTCUSDT",
+      longAccount: longRatio.toFixed(4),
+      shortAccount: shortRatio.toFixed(4),
+      longShortRatio: row[1],
+      timestamp: parseInt(row[0]),
+    };
+  });
 }
 
-async function okxFallbackTopTraderLS(period: string, limit: number): Promise<LongShortRatio[]> {
-  const data = await okxFetch<{ code: string; data: string[][] }>(
-    `${OKX_BASE}/api/v5/rubik/stat/contracts/long-short-account-ratio/position?instId=BTC-USDT-SWAP&period=${period}`,
-  );
-  if (!data || data.code !== "0" || !data.data) return [];
-  return data.data.slice(-limit).map((row) => ({
-    symbol: "BTCUSDT",
-    longAccount: row[1],
-    shortAccount: row[2],
-    longShortRatio: (parseFloat(row[1]) / parseFloat(row[2])).toString(),
-    timestamp: parseInt(row[0]),
-  }));
+/**
+ * OKX Top Trader L/S — no direct equivalent on OKX public API.
+ * Returns empty array (Binance data only for this metric).
+ */
+async function okxTopTraderLS(_period: string, _limit: number): Promise<LongShortRatio[]> {
+  return [];
 }
 
-async function okxFallbackFunding(limit: number): Promise<FundingRate[]> {
-  const data = await okxFetch<{
+/**
+ * OKX Funding Rate History
+ * Endpoint: /api/v5/public/funding-rate-history
+ * Returns: { data: [{ fundingRate, fundingTime, ... }, ...] }
+ */
+async function okxFunding(limit: number): Promise<FundingRate[]> {
+  const data = await tryFetch<{
     code: string;
-    data: { fundingTime: string; fundingRate: string; fundingRateTimestamp: string }[];
-  }>(`${OKX_BASE}/api/v5/rubik/stat/funding-rate?instId=BTC-USDT-SWAP`);
-  if (!data || data.code !== "0" || !data.data) return [];
+    data: { fundingRate: string; fundingTime: string }[];
+  }>(`${OKX_BASE}/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&limit=${limit}`);
+  if (!data || data.code !== "0" || !data.data?.length) return [];
   return data.data.slice(-limit).map((row) => ({
     symbol: "BTCUSDT",
     fundingTime: parseInt(row.fundingTime),
@@ -305,11 +327,16 @@ async function okxFallbackFunding(limit: number): Promise<FundingRate[]> {
   }));
 }
 
-async function okxFallbackTaker(period: string, limit: number): Promise<TakerRatio[]> {
-  const data = await okxFetch<{ code: string; data: string[][] }>(
-    `${OKX_BASE}/api/v5/rubik/stat/taker-volume-contract?ccy=BTC&instType=CONTRACTS`,
+/**
+ * OKX Taker Buy/Sell Volume
+ * Endpoint: /api/v5/rubik/stat/taker-volume-contract
+ * Returns: [[timestamp, buyVol, sellVol], ...]
+ */
+async function okxTaker(_period: string, limit: number): Promise<TakerRatio[]> {
+  const data = await tryFetch<{ code: string; data: string[][] }>(
+    `${OKX_BASE}/api/v5/rubik/stat/taker-volume-contract?instId=BTC-USDT-SWAP&ccy=BTC&instType=CONTRACTS`,
   );
-  if (!data || data.code !== "0" || !data.data) return [];
+  if (!data || data.code !== "0" || !data.data?.length) return [];
   return data.data.slice(-limit).map((row) => {
     const buyVol = parseFloat(row[1]);
     const sellVol = parseFloat(row[2]);
@@ -323,11 +350,16 @@ async function okxFallbackTaker(period: string, limit: number): Promise<TakerRat
   });
 }
 
-async function okxFallbackKlines(limit: number): Promise<Kline[]> {
-  const data = await okxFetch<{ code: string; data: string[][] }>(
+/**
+ * OKX Klines (candles)
+ * Endpoint: /api/v5/market/candles
+ * Returns: [[ts, open, high, low, close, vol, volCcy, ...], ...] newest first
+ */
+async function okxKlines(limit: number): Promise<Kline[]> {
+  const data = await tryFetch<{ code: string; data: string[][] }>(
     `${OKX_BASE}/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=4H&limit=${Math.min(limit, 300).toString()}`,
   );
-  if (!data || data.code !== "0" || !data.data) return [];
+  if (!data || data.code !== "0" || !data.data?.length) return [];
   // OKX returns newest-first, reverse for chronological
   return data.data.reverse().map((k) => ({
     openTime: parseInt(k[0]),
@@ -338,14 +370,23 @@ async function okxFallbackKlines(limit: number): Promise<Kline[]> {
     volume: parseFloat(k[5]),
     closeTime: parseInt(k[0]) + 4 * 3600_000 - 1,
     quoteVolume: parseFloat(k[7]),
-    trades: parseInt(k[8]),
+    trades: 0,
   }));
 }
 
-async function okxFallbackCurrentOI() {
-  const data = await okxFetch<{ code: string; data: { instId: string; oi: string; ts: string }[] }>(
-    `${OKX_BASE}/api/v5/public/open-interest?instType=SWAP&instId=BTC-USDT-SWAP`,
-  );
+/**
+ * OKX Current Open Interest
+ * Endpoint: /api/v5/public/open-interest
+ */
+async function okxCurrentOI(): Promise<{
+  symbol: string;
+  openInterest: string;
+  time: number;
+} | null> {
+  const data = await tryFetch<{
+    code: string;
+    data: { instId: string; oi: string; ts: string }[];
+  }>(`${OKX_BASE}/api/v5/public/open-interest?instType=SWAP&instId=BTC-USDT-SWAP`);
   if (data?.code === "0" && data.data?.[0]) {
     return {
       symbol: data.data[0].instId,
@@ -353,65 +394,69 @@ async function okxFallbackCurrentOI() {
       time: parseInt(data.data[0].ts),
     };
   }
-  return { symbol: "BTCUSDT", openInterest: "0", time: Date.now() };
+  return null;
 }
 
-// ---- Orchestration: Binance → OKX fallback ----
+// ============================================================
+// Orchestration: try Binance mirrors first, then OKX fallback
+// ============================================================
 
 async function getOpenInterestHist(period: string, limit: number): Promise<OpenInterestHistory[]> {
-  const binance = await fetchOpenInterestHist(period, limit);
+  const binance = await binanceOI(period, limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for OI hist, falling back to OKX");
-  return okxFallbackOI(period, limit);
+  console.warn("[liquidation] Binance OI hist unavailable, using OKX fallback");
+  return okxOI(period, limit);
 }
 
 async function getGlobalLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
-  const binance = await fetchGlobalLongShort(period, limit);
+  const binance = await binanceGlobalLS(period, limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for global LS, falling back to OKX");
-  return okxFallbackGlobalLS(period, limit);
+  console.warn("[liquidation] Binance global LS unavailable, using OKX fallback");
+  return okxGlobalLS(period, limit);
 }
 
 async function getTopTraderLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
-  const binance = await fetchTopTraderLongShort(period, limit);
+  const binance = await binanceTopTraderLS(period, limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for top LS, falling back to OKX");
-  return okxFallbackTopTraderLS(period, limit);
+  console.warn("[liquidation] Binance top trader LS unavailable, using OKX fallback");
+  return okxTopTraderLS(period, limit);
 }
 
 async function getFundingRates(limit: number): Promise<FundingRate[]> {
-  const binance = await fetchFundingRates(limit);
+  const binance = await binanceFunding(limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for funding, falling back to OKX");
-  return okxFallbackFunding(limit);
+  console.warn("[liquidation] Binance funding unavailable, using OKX fallback");
+  return okxFunding(limit);
 }
 
 async function getTakerLongShort(period: string, limit: number): Promise<TakerRatio[]> {
-  const binance = await fetchTakerLongShort(period, limit);
+  const binance = await binanceTaker(period, limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for taker, falling back to OKX");
-  return okxFallbackTaker(period, limit);
+  console.warn("[liquidation] Binance taker unavailable, using OKX fallback");
+  return okxTaker(period, limit);
 }
 
 async function getKlines(interval: string, limit: number): Promise<Kline[]> {
-  const binance = await fetchKlines(interval, limit);
+  const binance = await binanceKlines(interval, limit);
   if (binance.length > 0) return binance;
-  console.warn("[liquidation] All Binance mirrors failed for klines, falling back to OKX");
-  return okxFallbackKlines(limit);
+  console.warn("[liquidation] Binance klines unavailable, using OKX fallback");
+  return okxKlines(limit);
 }
 
 async function getCurrentOI() {
-  const binance = await fetchCurrentOI();
-  if (binance.openInterest !== "0") return binance;
-  console.warn("[liquidation] All Binance mirrors failed for current OI, falling back to OKX");
-  return okxFallbackCurrentOI();
+  const binance = await binanceCurrentOI();
+  if (binance && binance.openInterest !== "0") return binance;
+  console.warn("[liquidation] Binance current OI unavailable, using OKX fallback");
+  const okx = await okxCurrentOI();
+  return okx ?? { symbol: "BTCUSDT", openInterest: "0", time: Date.now() };
 }
 
-// --- Main server function ---
+// ============================================================
+// Main server function
+// ============================================================
 
 async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
   console.log("[liquidation] Starting data fetch...");
-  // Fetch all data in parallel — enough for 30d+ at 4h intervals (180+ candles)
   const [oiHist, globalLS, topLS, funding, taker, klines, currentOI] = await Promise.all([
     getOpenInterestHist("4h", 200),
     getGlobalLongShort("4h", 200),
