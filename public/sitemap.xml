@@ -49,19 +49,30 @@
     </image:image>
   </url>
   
-  <url>
-    <loc>https://btc500.vercel.app/articles/btc500-strategy</loc>
-    <lastmod>2026-07-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>The BTC500 Strategy — Articles</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://btc500.vercel.app/articles/rupl</loc>
+   <url>
+     <loc>https://btc500.vercel.app/articles/btc500-strategy</loc>
+     <lastmod>2026-07-13</lastmod>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+     <image:image>
+       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+       <image:caption>The BTC500 Strategy — Articles</image:caption>
+     </image:image>
+   </url>
+   
+   <url>
+     <loc>https://btc500.vercel.app/articles/why-btc500-exists</loc>
+     <lastmod>2026-07-13</lastmod>
+     <changefreq>monthly</changefreq>
+     <priority>0.8</priority>
+     <image:image>
+       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+       <image:caption>Why BTC500 Exists — Bitcoin Investment Strategy</image:caption>
+     </image:image>
+   </url>
+   
+   <url>
+     <loc>https://btc500.vercel.app/articles/rupl</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>

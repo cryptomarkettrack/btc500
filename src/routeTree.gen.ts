@@ -15,6 +15,7 @@ import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 
@@ -48,6 +49,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
+  id: '/why-btc500-exists',
+  path: '/why-btc500-exists',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
   id: '/rupl',
   path: '/rupl',
@@ -68,6 +74,7 @@ export interface FileRoutesByFullPath {
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,6 +85,7 @@ export interface FileRoutesByTo {
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -89,6 +97,7 @@ export interface FileRoutesById {
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +110,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/btc500-strategy'
     | '/articles/rupl'
+    | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,6 +121,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/btc500-strategy'
     | '/articles/rupl'
+    | '/articles/why-btc500-exists'
   id:
     | '__root__'
     | '/'
@@ -121,6 +132,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/btc500-strategy'
     | '/articles/rupl'
+    | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -176,6 +188,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/why-btc500-exists': {
+      id: '/articles/why-btc500-exists'
+      path: '/why-btc500-exists'
+      fullPath: '/articles/why-btc500-exists'
+      preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/rupl': {
       id: '/articles/rupl'
       path: '/rupl'
@@ -196,11 +215,13 @@ declare module '@tanstack/react-router' {
 interface ArticlesRouteChildren {
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
+  ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
+  ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }
 
 const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(
