@@ -1,3 +1,5 @@
+import { createServerFn } from "@tanstack/react-start";
+
 export interface InsiderTransaction {
   ticker: string;
   company: string;
@@ -172,3 +174,7 @@ function extractTableCells(rowHtml: string): string[] {
   }
   return cells;
 }
+
+export const getInsiderTrading = createServerFn({ method: "GET" }).handler(async () => {
+  return fetchInsiderTrading();
+});

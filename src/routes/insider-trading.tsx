@@ -1,7 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  fetchInsiderTrading,
+  getInsiderTrading,
   type InsiderSummary,
   type InsiderTransaction,
 } from "@/lib/insider-trading";
@@ -14,7 +13,7 @@ export const Route = createFileRoute("/insider-trading")({
   component: InsiderTradingPage,
   loader: async (): Promise<InsiderSummary | null> => {
     try {
-      const data = await fetchInsiderTrading();
+      const data = await getInsiderTrading();
       return data;
     } catch (e) {
       return null;
@@ -65,12 +64,22 @@ function InsiderTradingPage() {
 
   const serverData = Route.useLoaderData();
 
-  const { data, isLoading, error, refetch } = useQuery<InsiderSummary>({
-    queryKey: ["insider-trading"],
-    queryFn: () => fetchInsiderTrading(),
-    initialData: serverData ?? undefined,
-    refetchInterval: 5 * 60 * 1000,
-  });
+  const [data, setData] = useState<InsiderSummary | null>(serverData ?? null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<Error | null>(null);
+
+  const refetch = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await getInsiderTrading();
+      setData(result);
+    } catch (e) {
+      setError(e instanceof Error ? e : new Error("Failed to fetch insider trading data"));
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   // Derive unique tickers for the datalist
   const allTickers = useMemo(() => {
