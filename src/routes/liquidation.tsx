@@ -579,7 +579,27 @@ function LiquidationPage() {
     const rewardPct = direction ? Math.abs((tp - entry) / entry) * 100 : 0;
     const rr = riskPct > 0 ? rewardPct / riskPct : 0;
 
-    return { direction, entry, tp, sl, leverage, riskPct, rewardPct, rr, reasoning };
+    // Example: $1,000 invested
+    const investment = 1000;
+    const notional = investment * leverage;
+    const pnlTP = direction ? (rewardPct / 100) * notional : 0;
+    const pnlSL = direction ? -(riskPct / 100) * notional : 0;
+
+    return {
+      direction,
+      entry,
+      tp,
+      sl,
+      leverage,
+      riskPct,
+      rewardPct,
+      rr,
+      reasoning,
+      investment,
+      notional,
+      pnlTP,
+      pnlSL,
+    };
   }, [marketSituation, latestPrice, data]);
 
   if (!data) {
@@ -911,7 +931,27 @@ function LiquidationPage() {
                     </p>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground leading-relaxed">
+                <div className="mt-3 rounded bg-muted/50 border border-border p-3">
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-wide mb-1.5">
+                    Example: ${proposedPosition.investment.toLocaleString()} invested @{" "}
+                    {proposedPosition.leverage}× leverage
+                  </p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Notional position size:{" "}
+                    <strong className="text-foreground">
+                      ${proposedPosition.notional.toLocaleString()}
+                    </strong>
+                    {" — "}
+                    <span className="text-green-400 font-semibold">
+                      If TP hit: +${proposedPosition.pnlTP.toFixed(0)}
+                    </span>{" "}
+                    <span className="text-muted-foreground">|</span>{" "}
+                    <span className="text-red-400 font-semibold">
+                      If SL hit: ${proposedPosition.pnlSL.toFixed(0)}
+                    </span>
+                  </p>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed mt-3">
                   <strong className="text-foreground">Reasoning:</strong>{" "}
                   {proposedPosition.reasoning}
                 </p>
