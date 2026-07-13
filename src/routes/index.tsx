@@ -224,7 +224,6 @@ function Index() {
                       decimals={0}
                       style={{ color: buyAccent }}
                     />
-                    <span className="pb-4 text-3xl font-medium text-muted-foreground">days</span>
                   </div>
 
                   <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-muted">
