@@ -14,6 +14,7 @@ import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 
 const TimelineRoute = TimelineRouteImport.update({
@@ -41,6 +42,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
+  id: '/rupl',
+  path: '/rupl',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   id: '/btc500-strategy',
   path: '/btc500-strategy',
@@ -54,6 +60,7 @@ export interface FileRoutesByFullPath {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/rupl': typeof ArticlesRuplRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -62,6 +69,7 @@ export interface FileRoutesByTo {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/rupl': typeof ArticlesRuplRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -71,6 +79,7 @@ export interface FileRoutesById {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/rupl': typeof ArticlesRuplRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -81,6 +90,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/rupl'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -89,6 +99,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/rupl'
   id:
     | '__root__'
     | '/'
@@ -97,6 +108,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/rupl'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -144,6 +156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/articles/rupl': {
+      id: '/articles/rupl'
+      path: '/rupl'
+      fullPath: '/articles/rupl'
+      preLoaderRoute: typeof ArticlesRuplRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/btc500-strategy': {
       id: '/articles/btc500-strategy'
       path: '/btc500-strategy'
@@ -156,10 +175,12 @@ declare module '@tanstack/react-router' {
 
 interface ArticlesRouteChildren {
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
+  ArticlesRuplRoute: typeof ArticlesRuplRoute
 }
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
+  ArticlesRuplRoute: ArticlesRuplRoute,
 }
 
 const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(

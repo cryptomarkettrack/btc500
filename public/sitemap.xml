@@ -60,4 +60,15 @@
     </image:image>
   </url>
   
+  <url>
+    <loc>https://btc500.vercel.app/articles/rupl</loc>
+    <lastmod>2026-07-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:caption>NUPL Guide — Bitcoin Market Psychology</image:caption>
+    </image:image>
+  </url>
+  
 </urlset>

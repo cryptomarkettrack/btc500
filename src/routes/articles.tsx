@@ -94,6 +94,15 @@ function Articles() {
       readTime: "8 min read",
       url: "/articles/btc500-strategy",
     },
+    {
+      id: "rupl",
+      title: "Net Unrealized Profit/Loss (NUPL): The Complete Guide to Bitcoin Market Psychology",
+      description:
+        "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss to time the halving cycle.",
+      date: "2026-07-13",
+      readTime: "8 min read",
+      url: "/articles/rupl",
+    },
   ];
 
   // Check if we're on a child route (article page)
