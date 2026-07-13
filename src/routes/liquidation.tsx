@@ -434,8 +434,16 @@ function LiquidationPage() {
             <h1 className="text-3xl font-bold tracking-tight">Liquidation Dashboard</h1>
           </div>
           <p className="text-sm text-muted-foreground">
-            BTC perpetual futures — open interest, funding rates, long/short ratios & taker volume
-            from Binance. Updated {fetchTime}.
+            BTC perpetual futures — open interest, funding rates, long/short ratios & taker volume.
+            Source:{" "}
+            <span
+              className={`font-semibold ${
+                data.source.includes("OKX") ? "text-orange-400" : "text-green-400"
+              }`}
+            >
+              {data.source}
+            </span>
+            . Updated {fetchTime}.
           </p>
           <button
             onClick={() => refetch()}
@@ -1018,7 +1026,9 @@ function LiquidationPage() {
 
         {/* Data source footer */}
         <div className="text-center text-xs text-muted-foreground py-4 border-t border-border">
-          Data sourced from Binance Futures API (public, no API key required).
+          Data sourced from {data.source === "Binance" ? "Binance" : "OKX"} Futures API (public, no
+          API key required).{" "}
+          {data.source.includes("OKX") ? "Binance geo-restricted — OKX fallback used." : ""}
           <br />
           Open Interest, Funding Rate, Long/Short Ratio, Taker Buy/Sell Volume.
         </div>

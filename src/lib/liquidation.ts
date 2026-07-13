@@ -110,6 +110,7 @@ export interface LiquidationData {
     time: number;
   };
   fetchDate: string;
+  source: string;
 }
 
 // --- Source configuration ---
@@ -457,6 +458,17 @@ async function getCurrentOI() {
 
 async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
   console.log("[liquidation] Starting data fetch...");
+
+  // Determine primary data source by probing one Binance endpoint
+  let source = "Binance";
+  const probe = await tryBinanceMirrors<unknown[]>(
+    `/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=1`,
+  );
+  if (!probe) {
+    source = "OKX (Binance geo-restricted)";
+    console.warn("[liquidation] Binance unavailable, all data from OKX");
+  }
+
   const [oiHist, globalLS, topLS, funding, taker, klines, currentOI] = await Promise.all([
     getOpenInterestHist("4h", 200),
     getGlobalLongShort("4h", 200),
@@ -511,6 +523,7 @@ async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
       time: currentOI.time,
     },
     fetchDate: new Date().toISOString(),
+    source,
   };
 }
 
