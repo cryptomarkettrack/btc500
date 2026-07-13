@@ -26,6 +26,8 @@ import {
   Zap,
   ShieldCheck,
   AlertCircle,
+  Eye,
+  Crosshair,
 } from "lucide-react";
 
 export const Route = createFileRoute("/liquidation")({
@@ -407,6 +409,179 @@ function LiquidationPage() {
       .slice(0, 15);
   }, [data]);
 
+  // --- Next Levels to Watch ---
+  const nextLevels = useMemo(() => {
+    if (!data || data.klines.length < 20 || latestPrice <= 0) return null;
+
+    const klines = data.klines;
+    const recent = klines.slice(-50); // ~8 days of 4h candles
+
+    // Find swing highs and lows (5-bar lookback on each side)
+    const swingHighs: number[] = [];
+    const swingLows: number[] = [];
+    for (let i = 2; i < recent.length - 2; i++) {
+      if (
+        recent[i].high > recent[i - 1].high &&
+        recent[i].high > recent[i - 2].high &&
+        recent[i].high > recent[i + 1].high &&
+        recent[i].high > recent[i + 2].high
+      ) {
+        swingHighs.push(recent[i].high);
+      }
+      if (
+        recent[i].low < recent[i - 1].low &&
+        recent[i].low < recent[i - 2].low &&
+        recent[i].low < recent[i + 1].low &&
+        recent[i].low < recent[i + 2].low
+      ) {
+        swingLows.push(recent[i].low);
+      }
+    }
+
+    // Volume-weighted levels from liqZones
+    const volLevels = liqZones.map((z) => z.price);
+
+    // Collect all potential levels
+    const allLevels = new Set<number>([...swingHighs, ...swingLows, ...volLevels]);
+
+    // Add psychological round numbers ($1k and $500 increments)
+    const roundBase = Math.floor(latestPrice / 1000) * 1000;
+    for (let i = roundBase - 4000; i <= roundBase + 4000; i += 1000) {
+      if (i > 0) allLevels.add(i);
+    }
+    const roundBase500 = Math.floor(latestPrice / 500) * 500;
+    for (let i = roundBase500 - 2000; i <= roundBase500 + 2000; i += 500) {
+      if (i > 0) allLevels.add(i);
+    }
+
+    // Categorize levels within ~8% of current price
+    const levels = Array.from(allLevels)
+      .filter(
+        (l) => Math.abs(l - latestPrice) / latestPrice < 0.08 && Math.abs(l - latestPrice) > 50,
+      )
+      .map((l) => {
+        const isAbove = l > latestPrice;
+        const isSwingHigh = swingHighs.some((sh) => Math.abs(sh - l) < 300);
+        const isSwingLow = swingLows.some((sl) => Math.abs(sl - l) < 300);
+        const isVolZone = volLevels.some((v) => Math.abs(v - l) < 300);
+        const isRound = l % 1000 === 0;
+
+        let type: string;
+        let expectation: string;
+
+        if (isAbove) {
+          if (isSwingHigh && isVolZone) {
+            type = "Resistance + Liq Zone";
+            expectation =
+              "Major resistance with dense orders — expect sell pressure & short liquidation cascade if broken.";
+          } else if (isSwingHigh) {
+            type = "Swing High";
+            expectation =
+              "Previous rejection point — sellers likely defending. A breakout triggers a short squeeze.";
+          } else if (isVolZone) {
+            type = "Volume Cluster";
+            expectation =
+              "High-volume area — expect consolidation. A clean break accelerates toward the next level.";
+          } else if (isRound) {
+            type = "Psych Level";
+            expectation =
+              "Round number — limit orders typically cluster here. Breakout is a bullish signal.";
+          } else {
+            type = "Minor Resistance";
+            expectation = "Light resistance — may cause a brief pause.";
+          }
+        } else {
+          if (isSwingLow && isVolZone) {
+            type = "Support + Liq Zone";
+            expectation =
+              "Major support with high volume — expect a bounce, but a breakdown triggers long liquidation cascade.";
+          } else if (isSwingLow) {
+            type = "Swing Low";
+            expectation = "Previous bounce zone — buyers likely defending. A breakdown is bearish.";
+          } else if (isVolZone) {
+            type = "Volume Cluster";
+            expectation =
+              "High-volume area — expect buying interest. A breakdown accelerates to the next support.";
+          } else if (isRound) {
+            type = "Psych Level";
+            expectation =
+              "Round number — buy orders typically clustered here. Breakdown is a bearish signal.";
+          } else {
+            type = "Minor Support";
+            expectation = "Light support — may cause a brief bounce.";
+          }
+        }
+
+        return { price: l, type, expectation, isAbove };
+      })
+      .sort((a, b) => a.price - b.price);
+
+    const above = levels.filter((l) => l.isAbove).slice(0, 2);
+    const below = levels
+      .filter((l) => !l.isAbove)
+      .reverse()
+      .slice(0, 2);
+
+    return { above, below };
+  }, [data, latestPrice, liqZones]);
+
+  // --- Proposed Futures Position ---
+  const proposedPosition = useMemo(() => {
+    if (!marketSituation || latestPrice <= 0 || !data) return null;
+
+    const { verdictColor } = marketSituation;
+    const klines = data.klines;
+    const recent = klines.slice(-30); // ~5 days
+
+    // ATR for volatility-based stops
+    const atr =
+      recent.length > 1
+        ? recent.reduce((sum, k) => sum + (k.high - k.low), 0) / recent.length
+        : latestPrice * 0.02;
+
+    // Recent swing points
+    const swingLow = Math.min(...recent.map((k) => k.low));
+    const swingHigh = Math.max(...recent.map((k) => k.high));
+
+    let direction: "LONG" | "SHORT" | null = null;
+    let entry = latestPrice;
+    let tp = 0;
+    let sl = 0;
+    let leverage = 5;
+    let reasoning = "";
+
+    if (verdictColor === "green" || verdictColor === "blue") {
+      direction = "LONG";
+      entry = latestPrice;
+      tp = Math.max(swingHigh, latestPrice + atr * 2.5);
+      sl = Math.min(swingLow - atr * 0.3, latestPrice - atr * 1.5);
+      leverage = verdictColor === "green" ? 8 : 5;
+      reasoning =
+        verdictColor === "green"
+          ? "Strong bullish signals — multiple indicators confirm upside bias. Moderate leverage with defined risk/reward."
+          : "Cautiously bullish — mixed signals leaning positive. Conservative leverage recommended.";
+    } else if (verdictColor === "red" || verdictColor === "orange") {
+      direction = "SHORT";
+      entry = latestPrice;
+      tp = Math.min(swingLow, latestPrice - atr * 2.5);
+      sl = Math.max(swingHigh + atr * 0.3, latestPrice + atr * 1.5);
+      leverage = verdictColor === "red" ? 8 : 5;
+      reasoning =
+        verdictColor === "red"
+          ? "Strong bearish signals — multiple indicators confirm downside bias. Moderate leverage with defined risk/reward."
+          : "Cautiously bearish — mixed signals leaning negative. Conservative leverage recommended.";
+    } else {
+      reasoning =
+        "Market is neutral — no clear edge either way. Wait for a clearer signal before taking a directional position.";
+    }
+
+    const riskPct = direction ? Math.abs((sl - entry) / entry) * 100 : 0;
+    const rewardPct = direction ? Math.abs((tp - entry) / entry) * 100 : 0;
+    const rr = riskPct > 0 ? rewardPct / riskPct : 0;
+
+    return { direction, entry, tp, sl, leverage, riskPct, rewardPct, rr, reasoning };
+  }, [marketSituation, latestPrice, data]);
+
   if (!data) {
     return (
       <div className="min-h-screen bg-background p-6">
@@ -610,6 +785,156 @@ function LiquidationPage() {
                 </div>
               ))}
             </div>
+
+            {/* ── Next Levels to Watch ── */}
+            {nextLevels && (
+              <div className="mt-5 rounded-lg bg-muted/30 border border-border p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Eye className="h-4 w-4 text-purple-400" />
+                  <h3 className="text-sm font-semibold">Next Levels to Watch</h3>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Resistance */}
+                  <div>
+                    <p className="text-xs font-medium text-red-400 mb-2 uppercase tracking-wide">
+                      ↑ Resistance
+                    </p>
+                    {nextLevels.above.length === 0 && (
+                      <p className="text-xs text-muted-foreground">No nearby resistance levels</p>
+                    )}
+                    {nextLevels.above.map((level) => (
+                      <div key={level.price} className="mb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-mono font-bold text-red-400">
+                            {formatPrice(level.price)}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-medium">
+                            {level.type}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                          {level.expectation}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  {/* Support */}
+                  <div>
+                    <p className="text-xs font-medium text-green-400 mb-2 uppercase tracking-wide">
+                      ↓ Support
+                    </p>
+                    {nextLevels.below.length === 0 && (
+                      <p className="text-xs text-muted-foreground">No nearby support levels</p>
+                    )}
+                    {nextLevels.below.map((level) => (
+                      <div key={level.price} className="mb-2.5">
+                        <div className="flex items-center gap-2">
+                          <span className="text-sm font-mono font-bold text-green-400">
+                            {formatPrice(level.price)}
+                          </span>
+                          <span className="text-[10px] px-1.5 py-0.5 rounded bg-green-500/10 text-green-400 font-medium">
+                            {level.type}
+                          </span>
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                          {level.expectation}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ── Proposed Futures Position ── */}
+            {proposedPosition && proposedPosition.direction && (
+              <div className="mt-4 rounded-lg bg-muted/30 border border-border p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <Crosshair className="h-4 w-4 text-cyan-400" />
+                  <h3 className="text-sm font-semibold">Proposed Futures Position</h3>
+                  <span
+                    className={`text-xs font-bold px-2 py-0.5 rounded ${
+                      proposedPosition.direction === "LONG"
+                        ? "bg-green-500/20 text-green-400"
+                        : "bg-red-500/20 text-red-400"
+                    }`}
+                  >
+                    {proposedPosition.direction}
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {proposedPosition.leverage}× leverage
+                  </span>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-3">
+                  <div>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                      Entry
+                    </p>
+                    <p className="text-sm font-bold font-mono">
+                      {formatPrice(proposedPosition.entry)}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-green-400 uppercase tracking-wide">
+                      Take Profit
+                    </p>
+                    <p className="text-sm font-bold font-mono text-green-400">
+                      {formatPrice(proposedPosition.tp)}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      +{proposedPosition.rewardPct.toFixed(1)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-red-400 uppercase tracking-wide">Stop Loss</p>
+                    <p className="text-sm font-bold font-mono text-red-400">
+                      {formatPrice(proposedPosition.sl)}
+                    </p>
+                    <p className="text-[10px] text-muted-foreground">
+                      -{proposedPosition.riskPct.toFixed(1)}%
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                      Risk : Reward
+                    </p>
+                    <p
+                      className={`text-sm font-bold ${
+                        proposedPosition.rr >= 2
+                          ? "text-green-400"
+                          : proposedPosition.rr >= 1.5
+                            ? "text-yellow-400"
+                            : "text-orange-400"
+                      }`}
+                    >
+                      1:{proposedPosition.rr.toFixed(1)}
+                    </p>
+                  </div>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  <strong className="text-foreground">Reasoning:</strong>{" "}
+                  {proposedPosition.reasoning}
+                </p>
+                <p className="text-[10px] text-orange-400/70 mt-2">
+                  ⚠️ Algorithmic suggestion based on current market data — not financial advice.
+                  Always use proper risk management.
+                </p>
+              </div>
+            )}
+            {proposedPosition && !proposedPosition.direction && (
+              <div className="mt-4 rounded-lg bg-muted/30 border border-border p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Crosshair className="h-4 w-4 text-muted-foreground" />
+                  <h3 className="text-sm font-semibold">Proposed Futures Position</h3>
+                </div>
+                <p className="text-xs text-muted-foreground leading-relaxed">
+                  {proposedPosition.reasoning}
+                </p>
+                <p className="text-[10px] text-orange-400/70 mt-2">
+                  ⚠️ Algorithmic suggestion based on current market data — not financial advice.
+                </p>
+              </div>
+            )}
           </div>
         )}
 
