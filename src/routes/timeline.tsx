@@ -16,6 +16,38 @@ const timelineQuery = queryOptions({
   refetchInterval: 60 * 60_000,
 });
 
+const timelinePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "BTC500 Time Machine — Replay Bitcoin Halving Cycles",
+  url: "https://btc500.vercel.app/timeline",
+  description:
+    "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
+  dateModified: "2026-07-13",
+  datePublished: "2024-01-15",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://btc500.vercel.app/timeline",
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://btc500.vercel.app/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Time Machine",
+        item: "https://btc500.vercel.app/timeline",
+      },
+    ],
+  },
+};
+
 export const Route = createFileRoute("/timeline")({
   head: () => ({
     meta: [
@@ -26,6 +58,11 @@ export const Route = createFileRoute("/timeline")({
         name: "description",
         content:
           "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin timeline, BTC500 time machine, Bitcoin halving history, Bitcoin price history, Bitcoin investment timeline, halving cycle comparison, Bitcoin backtest",
       },
       { property: "og:title", content: "BTC500 Time Machine — Interactive Bitcoin Timeline" },
       {
@@ -38,6 +75,10 @@ export const Route = createFileRoute("/timeline")({
       { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "BTC500 Time Machine — Interactive Bitcoin Halving Timeline",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BTC500 Time Machine — Interactive Bitcoin Timeline" },
       {
@@ -46,7 +87,17 @@ export const Route = createFileRoute("/timeline")({
       },
       { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "https://btc500.vercel.app/timeline" }],
+    links: [
+      { rel: "canonical", href: "https://btc500.vercel.app/timeline" },
+      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/timeline" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/timeline" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(timelinePageSchema),
+      },
+    ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(timelineQuery),
   component: Timeline,

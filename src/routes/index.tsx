@@ -26,6 +26,32 @@ const priceQuery = queryOptions({
   refetchInterval: 60_000,
 });
 
+const homePageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
+  url: "https://btc500.vercel.app/",
+  description:
+    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
+  dateModified: "2026-07-13",
+  datePublished: "2024-01-15",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://btc500.vercel.app/",
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://btc500.vercel.app/",
+      },
+    ],
+  },
+};
+
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
@@ -34,6 +60,11 @@ export const Route = createFileRoute("/")({
         name: "description",
         content:
           "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, investment simulator, historical performance data and daily shareable cards. The simplest Bitcoin investment strategy.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, buy Bitcoin, crypto halving, Bitcoin investment, halving countdown, Bitcoin trading, Bitcoin price, block height",
       },
       { property: "og:title", content: "BTC500 — Bitcoin Halving Countdown & Investment Strategy" },
       {
@@ -46,6 +77,10 @@ export const Route = createFileRoute("/")({
       { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "BTC500 — Bitcoin Halving Countdown & Strategy Dashboard",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BTC500 — Bitcoin Halving Countdown & Strategy" },
       {
@@ -54,7 +89,17 @@ export const Route = createFileRoute("/")({
       },
       { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "https://btc500.vercel.app/" }],
+    links: [
+      { rel: "canonical", href: "https://btc500.vercel.app/" },
+      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(homePageSchema),
+      },
+    ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(halvingQuery),
   component: Index,

@@ -1,5 +1,37 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 
+const articlesPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Articles — BTC500 Strategy & Insights",
+  url: "https://btc500.vercel.app/articles",
+  description:
+    "Learn about the BTC500 investment strategy. Articles explaining the Bitcoin halving cycle, buy/sell timing, and historical performance.",
+  dateModified: "2026-07-13",
+  datePublished: "2024-01-15",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://btc500.vercel.app/articles",
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://btc500.vercel.app/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Articles",
+        item: "https://btc500.vercel.app/articles",
+      },
+    ],
+  },
+};
+
 export const Route = createFileRoute("/articles")({
   head: () => ({
     meta: [
@@ -8,6 +40,11 @@ export const Route = createFileRoute("/articles")({
         name: "description",
         content:
           "Learn about the BTC500 investment strategy. Articles explaining the Bitcoin halving cycle, buy/sell timing, and historical performance.",
+      },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin halving articles, BTC500 strategy, Bitcoin investment guide, halving cycle analysis, Bitcoin trading strategy, crypto education",
       },
       { property: "og:title", content: "Articles — BTC500 Strategy & Insights" },
       {
@@ -19,6 +56,10 @@ export const Route = createFileRoute("/articles")({
       { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Articles — BTC500 Strategy & Insights",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Articles — BTC500 Strategy & Insights" },
       {
@@ -27,7 +68,17 @@ export const Route = createFileRoute("/articles")({
       },
       { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "https://btc500.vercel.app/articles" }],
+    links: [
+      { rel: "canonical", href: "https://btc500.vercel.app/articles" },
+      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/articles" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/articles" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(articlesPageSchema),
+      },
+    ],
   }),
   component: Articles,
 });

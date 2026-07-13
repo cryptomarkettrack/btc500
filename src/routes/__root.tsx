@@ -40,6 +40,61 @@ const organizationSchema = {
   url: "https://btc500.vercel.app/",
   logo: "https://btc500.vercel.app/favicon.svg",
   description: "Bitcoin halving countdown and investment strategy platform.",
+  sameAs: ["https://twitter.com/btc500", "https://github.com/cryptomarkettrack/btc500"],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "BTC500",
+  url: "https://btc500.vercel.app/",
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "All",
+  description:
+    "A Bitcoin halving countdown and investment strategy tool that helps track the BTC500 strategy: buy 500 days before halving, sell 500 days after.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+  featureList: [
+    "Live Bitcoin halving countdown",
+    "Block height progress tracking",
+    "Investment simulator with historical data",
+    "Interactive timeline of halving cycles",
+    "Historical returns analysis",
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is the BTC500 strategy?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The BTC500 strategy is a simple Bitcoin investment approach: buy exactly 500 days before each halving event and sell exactly 500 days after. This strategy has historically captured significant gains during Bitcoin's halving cycles.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "When is the next Bitcoin halving?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The next Bitcoin halving is projected for April 2028. The exact date depends on Bitcoin's block height reaching 1,050,000 blocks.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does the Bitcoin halving work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Bitcoin halving is an event that occurs approximately every 4 years (210,000 blocks) where the block reward for miners is cut in half. This reduces the rate of new Bitcoin entering circulation, creating scarcity that historically drives price increases.",
+      },
+    },
+  ],
 };
 
 function NotFoundComponent() {
@@ -160,6 +215,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         type: "application/ld+json",
         content: JSON.stringify(organizationSchema),
+      },
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(webAppSchema),
+      },
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(faqSchema),
       },
     ],
   }),

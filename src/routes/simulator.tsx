@@ -15,6 +15,38 @@ const simulatorQuery = queryOptions({
   refetchInterval: 60 * 60_000,
 });
 
+const simulatorPageSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "BTC500 Simulator — Bitcoin Halving Returns Calculator",
+  url: "https://btc500.vercel.app/simulator",
+  description:
+    "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
+  dateModified: "2026-07-13",
+  datePublished: "2024-01-15",
+  mainEntityOfPage: {
+    "@type": "WebPage",
+    "@id": "https://btc500.vercel.app/simulator",
+  },
+  breadcrumb: {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: "Home",
+        item: "https://btc500.vercel.app/",
+      },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Simulator",
+        item: "https://btc500.vercel.app/simulator",
+      },
+    ],
+  },
+};
+
 export const Route = createFileRoute("/simulator")({
   head: () => ({
     meta: [
@@ -27,6 +59,11 @@ export const Route = createFileRoute("/simulator")({
         content:
           "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
       },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin halving simulator, BTC500 calculator, Bitcoin investment returns, halving cycle returns, Bitcoin strategy backtest, crypto investment calculator, Bitcoin profit calculator",
+      },
       { property: "og:title", content: "BTC500 Simulator — Bitcoin Halving Returns Calculator" },
       {
         property: "og:description",
@@ -38,6 +75,10 @@ export const Route = createFileRoute("/simulator")({
       { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "BTC500 Simulator — Bitcoin Investment Returns Calculator",
+      },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "BTC500 Simulator — Bitcoin Halving Returns Calculator" },
       {
@@ -46,7 +87,17 @@ export const Route = createFileRoute("/simulator")({
       },
       { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
-    links: [{ rel: "canonical", href: "https://btc500.vercel.app/simulator" }],
+    links: [
+      { rel: "canonical", href: "https://btc500.vercel.app/simulator" },
+      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/simulator" },
+      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/simulator" },
+    ],
+    scripts: [
+      {
+        type: "application/ld+json",
+        content: JSON.stringify(simulatorPageSchema),
+      },
+    ],
   }),
   loader: ({ context }) => context.queryClient.ensureQueryData(simulatorQuery),
   component: Simulator,

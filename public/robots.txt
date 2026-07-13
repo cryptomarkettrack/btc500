@@ -1,3 +1,29 @@
+# BTC500 SEO Robots.txt
+# Allow all crawlers to access main content
+
 User-agent: *
 Allow: /
+Disallow: /embed
+
+# Crawl-delay for aggressive bots
+Crawl-delay: 10
+
+# Sitemap
 Sitemap: https://btc500.vercel.app/sitemap.xml
+
+# Specific bot instructions
+User-agent: Googlebot
+Allow: /
+Disallow: /embed
+
+User-agent: Bingbot
+Allow: /
+Disallow: /embed
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /embed
+
+User-agent: YandexBot
+Allow: /
+Disallow: /embed
