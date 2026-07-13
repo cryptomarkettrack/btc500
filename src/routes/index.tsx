@@ -10,6 +10,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { ShareCard } from "@/components/ShareCard";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
+import { AnimatedNumber } from "@/components/timeline/AnimatedNumber";
 import { useEffect, useRef, useState } from "react";
 
 const halvingQuery = queryOptions({
@@ -216,16 +217,13 @@ function Index() {
                     Days Left
                   </div>
                   <div className="mt-2 flex items-baseline gap-3">
-                    <motion.span
-                      key={buyDays}
-                      initial={{ opacity: 0, y: 8 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
+                    <AnimatedNumber
+                      value={buyDays}
+                      initialValue={500}
                       className="text-[8rem] font-bold leading-[0.9] tracking-tighter sm:text-[10rem]"
+                      decimals={0}
                       style={{ color: buyAccent }}
-                    >
-                      {buyDays}
-                    </motion.span>
+                    />
                     <span className="pb-4 text-3xl font-medium text-muted-foreground">days</span>
                   </div>
 

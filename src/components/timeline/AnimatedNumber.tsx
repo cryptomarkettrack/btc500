@@ -1,15 +1,20 @@
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 
+import type { CSSProperties } from "react";
+
 interface AnimatedNumberProps {
   value: number;
   format?: (n: number) => string;
   className?: string;
+  style?: CSSProperties;
   prefix?: string;
   suffix?: string;
   isCurrency?: boolean;
   isPercent?: boolean;
   decimals?: number;
+  /** If set, the animation will start from this value on first mount instead of the current value */
+  initialValue?: number;
 }
 
 function defaultFormat(n: number, decimals = 2): string {
@@ -23,18 +28,23 @@ export function AnimatedNumber({
   value,
   format,
   className = "",
+  style,
   prefix = "",
   suffix = "",
   isCurrency = false,
   isPercent = false,
   decimals = 2,
+  initialValue,
 }: AnimatedNumberProps) {
-  const [displayValue, setDisplayValue] = useState(value);
+  const [displayValue, setDisplayValue] = useState(
+    initialValue !== undefined ? initialValue : value,
+  );
   const frameRef = useRef<number | null>(null);
   const startRef = useRef<number>(0);
-  const fromRef = useRef(value);
+  const fromRef = useRef(initialValue !== undefined ? initialValue : value);
   const toRef = useRef(value);
-  const duration = 400; // ms
+  const initializedRef = useRef(initialValue === undefined);
+  const duration = 5000; // ms — slow, dramatic countdown effect
 
   useEffect(() => {
     fromRef.current = displayValue;
@@ -76,7 +86,13 @@ export function AnimatedNumber({
         : defaultFormat(displayValue, decimals);
 
   return (
-    <motion.span className={className} initial={false} layout transition={{ duration: 0.2 }}>
+    <motion.span
+      className={className}
+      style={style}
+      initial={false}
+      layout
+      transition={{ duration: 0.2 }}
+    >
       {prefix}
       {formatted}
       {suffix}
