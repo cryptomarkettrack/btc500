@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as NewsRouteImport } from './routes/news'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as EmbedRouteImport } from './routes/embed'
@@ -28,6 +29,11 @@ const TimelineRoute = TimelineRouteImport.update({
 const SimulatorRoute = SimulatorRouteImport.update({
   id: '/simulator',
   path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LiquidationRoute = LiquidationRouteImport.update({
@@ -77,6 +83,7 @@ export interface FileRoutesByFullPath {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -89,6 +96,7 @@ export interface FileRoutesByTo {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -102,6 +110,7 @@ export interface FileRoutesById {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -116,6 +125,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/news'
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
@@ -128,6 +138,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/news'
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
@@ -140,6 +151,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/news'
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
@@ -153,6 +165,7 @@ export interface RootRouteChildren {
   EmbedRoute: typeof EmbedRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
+  NewsRoute: typeof NewsRoute
   SimulatorRoute: typeof SimulatorRoute
   TimelineRoute: typeof TimelineRoute
 }
@@ -171,6 +184,13 @@ declare module '@tanstack/react-router' {
       path: '/simulator'
       fullPath: '/simulator'
       preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/liquidation': {
@@ -254,6 +274,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmbedRoute: EmbedRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
+  NewsRoute: NewsRoute,
   SimulatorRoute: SimulatorRoute,
   TimelineRoute: TimelineRoute,
 }

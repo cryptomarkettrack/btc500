@@ -1,5 +1,15 @@
 import { Link, useRouter } from "@tanstack/react-router";
-import { Calculator, Home, Clock, Menu, X, BookOpen, TrendingUp, Flame } from "lucide-react";
+import {
+  Calculator,
+  Home,
+  Clock,
+  Menu,
+  X,
+  BookOpen,
+  TrendingUp,
+  Flame,
+  Newspaper,
+} from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
 
@@ -14,6 +24,7 @@ export function Nav() {
     { to: "/timeline", label: "Timeline", icon: Clock },
     { to: "/liquidation", label: "Liquidation", icon: Flame },
     { to: "/insider-trading", label: "Insider", icon: TrendingUp },
+    { to: "/news", label: "News", icon: Newspaper },
     { to: "/articles", label: "Articles", icon: BookOpen },
   ];
 
