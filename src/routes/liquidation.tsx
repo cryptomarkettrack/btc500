@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getLiquidationData, type LiquidationData } from "@/lib/liquidation";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { formatDistanceToNow } from "date-fns";
 import {
   ResponsiveContainer,
@@ -32,13 +32,6 @@ import {
 
 export const Route = createFileRoute("/liquidation")({
   component: LiquidationPage,
-  loader: async (): Promise<LiquidationData | null> => {
-    try {
-      return await getLiquidationData();
-    } catch {
-      return null;
-    }
-  },
   head: () => ({
     meta: [
       {
@@ -90,10 +83,28 @@ function getRangeIndex(dataLength: number, range: TimeRange): number {
 }
 
 function LiquidationPage() {
-  const serverData = Route.useLoaderData();
-  const [data, setData] = useState<LiquidationData | null>(serverData ?? null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState<LiquidationData | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
   const [timeRange, setTimeRange] = useState<TimeRange>("30d");
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const result = await getLiquidationData();
+        if (!cancelled) setData(result);
+      } catch {
+        // keep null data, will show loading error
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
+    };
+    fetchData();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   const refetch = async () => {
     setIsLoading(true);
