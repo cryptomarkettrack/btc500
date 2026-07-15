@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as MacroImpactRouteImport } from './routes/macro-impact'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as EmbedRouteImport } from './routes/embed'
@@ -34,6 +35,11 @@ const SimulatorRoute = SimulatorRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MacroImpactRoute = MacroImpactRouteImport.update({
+  id: '/macro-impact',
+  path: '/macro-impact',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LiquidationRoute = LiquidationRouteImport.update({
@@ -83,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/macro-impact': typeof MacroImpactRoute
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
@@ -96,6 +103,7 @@ export interface FileRoutesByTo {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/macro-impact': typeof MacroImpactRoute
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
@@ -110,6 +118,7 @@ export interface FileRoutesById {
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/macro-impact': typeof MacroImpactRoute
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
@@ -125,6 +134,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/macro-impact'
     | '/news'
     | '/simulator'
     | '/timeline'
@@ -138,6 +148,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/macro-impact'
     | '/news'
     | '/simulator'
     | '/timeline'
@@ -151,6 +162,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/insider-trading'
     | '/liquidation'
+    | '/macro-impact'
     | '/news'
     | '/simulator'
     | '/timeline'
@@ -165,6 +177,7 @@ export interface RootRouteChildren {
   EmbedRoute: typeof EmbedRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
+  MacroImpactRoute: typeof MacroImpactRoute
   NewsRoute: typeof NewsRoute
   SimulatorRoute: typeof SimulatorRoute
   TimelineRoute: typeof TimelineRoute
@@ -191,6 +204,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/macro-impact': {
+      id: '/macro-impact'
+      path: '/macro-impact'
+      fullPath: '/macro-impact'
+      preLoaderRoute: typeof MacroImpactRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/liquidation': {
@@ -274,6 +294,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmbedRoute: EmbedRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
+  MacroImpactRoute: MacroImpactRoute,
   NewsRoute: NewsRoute,
   SimulatorRoute: SimulatorRoute,
   TimelineRoute: TimelineRoute,
