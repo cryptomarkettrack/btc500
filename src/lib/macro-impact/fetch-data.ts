@@ -124,22 +124,27 @@ export async function fetchFRED_CsvFromWeb(
   return parseFRED_Csv(csvText, indicator);
 }
 
-// Read pre-fetched FRED data from the local JSON file
+// Read pre-fetched FRED data — same pattern as csv-price-loader.ts
 async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
-  // Try to read from public folder (works in both SSR and static)
-  const possiblePaths = ["public/fred-data.json", "./public/fred-data.json"];
-
-  for (const filePath of possiblePaths) {
-    try {
-      const fs = await import("node:fs/promises");
-      const text = await fs.readFile(filePath, "utf-8");
-      return JSON.parse(text);
-    } catch {
-      // Try next path
+  try {
+    // On the server (Node.js/Nitro), read from the filesystem
+    if (typeof window === "undefined") {
+      const fs = await import("node:fs");
+      const path = await import("node:path");
+      const filePath = path.join(process.cwd(), "public", "fred-data.json");
+      const raw = fs.readFileSync(filePath, "utf-8");
+      return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
     }
-  }
 
-  throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
+    // On the client (browser), public/ assets are served at the root via Vite/Nitro
+    const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+    return (await res.json()) as Record<MacroIndicator, MacroRelease[]>;
+  } catch {
+    throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
+  }
 }
 
 export async function fetchMacroReleases(indicator: MacroIndicator): Promise<MacroRelease[]> {
