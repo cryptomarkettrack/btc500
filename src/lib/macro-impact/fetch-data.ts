@@ -126,42 +126,21 @@ export async function fetchFRED_CsvFromWeb(
 
 // Read pre-fetched FRED data
 async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
-  // Server-side: read directly from the filesystem (works on Vercel SSR)
+  // Server-side: try filesystem first (works in local dev where cwd is project root)
   if (typeof window === "undefined") {
     try {
       const { readFileSync } = await import("node:fs");
       const { resolve } = await import("node:path");
-
-      // Try multiple possible paths to find fred-data.json:
-      // - Local dev / Nitro dev: process.cwd() is the project root, file is at public/fred-data.json
-      // - Vercel serverless: process.cwd() varies, but the public/ dir is included in the deployment
-      // - Fallback: just "fred-data.json" if cwd was already set to the public dir
-      const pathsToTry = [
-        resolve(process.cwd(), "public/fred-data.json"),
-        resolve(process.cwd(), "fred-data.json"),
-      ];
-
-      let raw: string | null = null;
-      for (const filePath of pathsToTry) {
-        try {
-          raw = readFileSync(filePath, "utf-8");
-          break;
-        } catch {
-          // try next path
-        }
-      }
-
-      if (raw === null) {
-        throw new Error("fred-data.json not found on server filesystem");
-      }
-
+      const raw = readFileSync(resolve(process.cwd(), "public/fred-data.json"), "utf-8");
       return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
     } catch {
-      throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
+      // filesystem failed (e.g. on Vercel serverless where process.cwd() doesn't point to project root),
+      // fall through to HTTP fetch below
     }
   }
 
-  // Client-side: fetch from the public directory via HTTP
+  // Fetch from the public directory via HTTP
+  // Works on: client-side (browser), and Vercel production (serverless functions can fetch own origin)
   try {
     const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
     if (!res.ok) {
