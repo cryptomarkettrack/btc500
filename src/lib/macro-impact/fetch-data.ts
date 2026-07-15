@@ -126,30 +126,27 @@ export async function fetchFRED_CsvFromWeb(
 
 // Read pre-fetched FRED data
 async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
-  // Server-side: try filesystem first (works in local dev where cwd is project root)
+  // On the server (SSR), read from the filesystem directly.
+  // In the browser, fetch from the public folder via HTTP.
   if (typeof window === "undefined") {
+    // Server-side: use Node/Bun fs to read the file
+    const { readFile } = await import("node:fs/promises");
+    const { join } = await import("node:path");
+    const filePath = join(process.cwd(), "public", "fred-data.json");
     try {
-      const { readFileSync } = await import("node:fs");
-      const { resolve } = await import("node:path");
-      const raw = readFileSync(resolve(process.cwd(), "public/fred-data.json"), "utf-8");
+      const raw = await readFile(filePath, "utf-8");
       return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
     } catch {
-      // filesystem failed (e.g. on Vercel serverless where process.cwd() doesn't point to project root),
-      // fall through to HTTP fetch below
+      throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
     }
   }
 
-  // Fetch from the public directory via HTTP
-  // Works on: client-side (browser), and Vercel production (serverless functions can fetch own origin)
-  try {
-    const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
-    if (!res.ok) {
-      throw new Error(`HTTP ${res.status}`);
-    }
-    return (await res.json()) as Record<MacroIndicator, MacroRelease[]>;
-  } catch {
+  // Browser-side: fetch via HTTP
+  const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
+  if (!res.ok) {
     throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
   }
+  return (await res.json()) as Record<MacroIndicator, MacroRelease[]>;
 }
 
 export async function fetchMacroReleases(indicator: MacroIndicator): Promise<MacroRelease[]> {

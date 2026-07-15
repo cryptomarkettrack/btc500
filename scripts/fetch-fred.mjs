@@ -1,5 +1,5 @@
 /**
- * Fetches CPI and PPI data from FRED and saves to public/fred-data.json.
+ * Fetches CPI and PPI data from FRED and saves to fred-data.json.
  * Run: node scripts/fetch-fred.mjs
  *
  * This script should be run locally before deploying to update the cached data.
@@ -118,9 +118,12 @@ async function main() {
     PPI: ppiReleases,
   };
 
-  const outputPath = resolve("public/fred-data.json");
-  writeFileSync(outputPath, JSON.stringify(data, null, 2));
-  console.log(`\nSaved to ${outputPath}`);
+  const json = JSON.stringify(data, null, 2);
+  const rootPath = resolve("fred-data.json");
+  const publicPath = resolve("public/fred-data.json");
+  writeFileSync(rootPath, json);
+  writeFileSync(publicPath, json);
+  console.log(`\nSaved to ${rootPath} and ${publicPath}`);
   console.log(`Total: CPI=${cpiReleases.length}, PPI=${ppiReleases.length}`);
 }
 
