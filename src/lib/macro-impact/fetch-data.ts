@@ -21,9 +21,10 @@ function parseNumber(value: string): number | null {
   return isNaN(n) ? null : n;
 }
 
-// ─── FRED CSV Data Fetching ──────────────────────────────────────────────────
-// Uses FRED (Federal Reserve Economic Data) public CSV download.
-// No API key required. CPI = CPIAUCSL, PPI = PPIACO.
+// ─── FRED Data Fetching ──────────────────────────────────────────────────────
+// Data is pre-fetched locally and stored as public/fred-data.json.
+// On the server, we read from the local JSON file.
+// Run `bun run fetch-fred` to refresh the data before deploying.
 
 const FRED_SERIES: Record<MacroIndicator, string> = {
   CPI: "CPIAUCSL",
@@ -101,56 +102,60 @@ function parseFRED_Csv(csvText: string, indicator: MacroIndicator): MacroRelease
   return releases;
 }
 
+// Fetch FRED CSV from the web (used by the update script, not the server)
+export async function fetchFRED_CsvFromWeb(
+  indicator: MacroIndicator,
+  startYear: number,
+  endYear: number,
+): Promise<MacroRelease[]> {
+  const seriesID = FRED_SERIES[indicator];
+  const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesID}&cosd=${startYear}-01-01&coed=${endYear}-12-31&fq=Monthly`;
+
+  const response = await fetch(url, {
+    headers: { "User-Agent": "Mozilla/5.0 BTC500 Macro Dashboard" },
+    signal: AbortSignal.timeout(30000),
+  });
+
+  if (!response.ok) {
+    throw new Error(`FRED CSV fetch failed for ${indicator}: ${response.status}`);
+  }
+
+  const csvText = await response.text();
+  return parseFRED_Csv(csvText, indicator);
+}
+
+// Read pre-fetched FRED data from the local JSON file
+async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
+  // Try to read from public folder (works in both SSR and static)
+  const possiblePaths = ["public/fred-data.json", "./public/fred-data.json"];
+
+  for (const filePath of possiblePaths) {
+    try {
+      const fs = await import("node:fs/promises");
+      const text = await fs.readFile(filePath, "utf-8");
+      return JSON.parse(text);
+    } catch {
+      // Try next path
+    }
+  }
+
+  throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
+}
+
 export async function fetchMacroReleases(indicator: MacroIndicator): Promise<MacroRelease[]> {
   const cacheKey = `macro_${indicator}`;
   const cached = getCached<MacroRelease[]>(cacheKey);
   if (cached) return cached;
 
-  const seriesID = FRED_SERIES[indicator];
-  const now = new Date();
-  const year = now.getFullYear();
+  // Read from local pre-fetched data (works on both local dev and production)
+  const allData = await readLocalFREDData();
+  const releases = allData[indicator] ?? [];
 
-  // FRED CSV URL — no auth required
-  // Fetching only current year keeps payload minimal (~7 rows) for fast loading
-  const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesID}&cosd=${year}-01-01&coed=${year}-12-31&fq=Monthly`;
-
-  // Retry up to 2 times on failure
-  const MAX_RETRIES = 2;
-  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
-    try {
-      const response = await fetch(url, {
-        headers: {
-          "User-Agent": "Mozilla/5.0 BTC500 Macro Dashboard",
-        },
-        signal: AbortSignal.timeout(30000),
-      });
-
-      if (!response.ok) {
-        throw new Error(`FRED CSV fetch failed: ${response.status}`);
-      }
-
-      const csvText = await response.text();
-      const releases = parseFRED_Csv(csvText, indicator);
-
-      if (releases.length > 0) {
-        setCache(cacheKey, releases);
-      }
-
-      return releases;
-    } catch (error) {
-      if (attempt < MAX_RETRIES) {
-        console.warn(`Retry ${attempt + 1}/${MAX_RETRIES} for ${indicator} FRED fetch...`);
-        continue;
-      }
-      console.error(
-        `Error fetching ${indicator} from FRED after ${MAX_RETRIES + 1} attempts:`,
-        error,
-      );
-      throw error;
-    }
+  if (releases.length > 0) {
+    setCache(cacheKey, releases);
   }
-  // Should never reach here, but TypeScript needs it
-  throw new Error(`Failed to fetch ${indicator} from FRED`);
+
+  return releases;
 }
 
 // ─── Bitcoin Price Fetching (Binance) ────────────────────────────────────────
