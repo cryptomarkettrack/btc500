@@ -123,30 +123,19 @@ export async function fetchFRED_CsvFromWeb(
   const csvText = await response.text();
   return parseFRED_Csv(csvText, indicator);
 }
-
-// Read pre-fetched FRED data
 async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
-  // On the server (SSR), read from the filesystem directly.
-  // In the browser, fetch from the public folder via HTTP.
-  if (typeof window === "undefined") {
-    // Server-side: use Node/Bun fs to read the file
-    const { readFile } = await import("node:fs/promises");
-    const { join } = await import("node:path");
-    const filePath = join(process.cwd(), "public", "fred-data.json");
-    try {
-      const raw = await readFile(filePath, "utf-8");
-      return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
-    } catch {
-      throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
-    }
+  const url =
+    typeof window === "undefined" ? "https://btc500.vercel.app/fred-data.json" : "/fred-data.json";
+
+  const res = await fetch(url, {
+    signal: AbortSignal.timeout(10000),
+  });
+
+  if (!res.ok) {
+    throw new Error("fred-data.json not found.");
   }
 
-  // Browser-side: fetch via HTTP
-  const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
-  if (!res.ok) {
-    throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
-  }
-  return (await res.json()) as Record<MacroIndicator, MacroRelease[]>;
+  return await res.json();
 }
 
 export async function fetchMacroReleases(indicator: MacroIndicator): Promise<MacroRelease[]> {
