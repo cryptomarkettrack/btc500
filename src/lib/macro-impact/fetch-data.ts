@@ -154,9 +154,9 @@ export async function fetchMacroReleases(indicator: MacroIndicator): Promise<Mac
   return releases;
 }
 
-// ─── Bitcoin Price Fetching (Binance with CSV fallback) ──────────────────────
+// ─── Bitcoin Price Fetching (Bybit with CSV fallback) ───────────────────────
 
-const BINANCE_BASE = "https://api.binance.com";
+const BYBIT_BASE = "https://api.bybit.com";
 const klineCache = new Map<string, BinanceKline[]>();
 
 // ── CSV Fallback Loading ─────────────────────────────────────────────────────
@@ -177,7 +177,10 @@ async function loadBtcCsvData(): Promise<Map<string, number>> {
   if (csvPriceCache) return csvPriceCache;
 
   console.log("[CSV] Loading BTC price data from CSV...");
-  const url = "/btc-usd-max.csv";
+  const url =
+    typeof window === "undefined"
+      ? "https://btc500.vercel.app/btc-usd-max.csv"
+      : "/btc-usd-max.csv";
 
   const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
   if (!response.ok) {
@@ -213,7 +216,7 @@ async function loadBtcCsvData(): Promise<Map<string, number>> {
  * Create synthetic hourly klines from daily CSV data.
  * Each hour in a day gets the same close price (the daily close).
  * This provides reasonable granularity for price interpolation around
- * macro release times when Binance API is unavailable.
+ * macro release times when Bybit API is unavailable.
  */
 function createHourlyKlinesFromCsv(
   priceMap: Map<string, number>,
@@ -251,6 +254,16 @@ function createHourlyKlinesFromCsv(
   return klines;
 }
 
+/**
+ * Fetch monthly hourly klines from Bybit v5 market kline API.
+ * Bybit is a free public API with no API key required for public endpoints.
+ * Rate limit: 50 requests per second for public endpoints.
+ *
+ * Bybit response format (list is newest-first, we reverse it):
+ * [
+ *   ["startTime", "open", "high", "low", "close", "volume", "turnover"]
+ * ]
+ */
 export async function fetchBTCMonthlyKlines(year: number, month: number): Promise<BinanceKline[]> {
   const cacheKey = `btc_kline_${year}_${month}`;
   const cached = klineCache.get(cacheKey);
@@ -259,36 +272,51 @@ export async function fetchBTCMonthlyKlines(year: number, month: number): Promis
   const start = Date.UTC(year, month - 1, 1);
   const end = Date.UTC(year, month, 1);
 
-  const url = `${BINANCE_BASE}/api/v3/klines?symbol=BTCUSDT&interval=1h&startTime=${start}&endTime=${end}&limit=1000`;
+  const url = `${BYBIT_BASE}/v5/market/kline?category=spot&symbol=BTCUSDT&interval=60&start=${start}&end=${end}&limit=1000`;
 
   try {
     const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
 
     if (!response.ok) {
-      console.warn(`[BTC] Binance API error ${response.status} — falling back to CSV`);
-      throw new Error(`Binance API error: ${response.status}`);
+      console.warn(`[BTC] Bybit API error ${response.status} — falling back to CSV`);
+      throw new Error(`Bybit API error: ${response.status}`);
     }
 
-    const raw: unknown[][] = await response.json();
+    const json = await response.json();
+
+    if (json.retCode !== 0) {
+      console.warn(`[BTC] Bybit API retCode ${json.retCode}: ${json.retMsg} — falling back to CSV`);
+      throw new Error(`Bybit API error: ${json.retMsg}`);
+    }
+
+    const raw: string[][] = json.result?.list ?? [];
+
+    if (raw.length === 0) {
+      console.warn(`[BTC] No Bybit data for ${year}-${month}, falling back to CSV`);
+      throw new Error("No Bybit kline data");
+    }
+
+    // Bybit returns newest-first, reverse to get chronological order
+    raw.reverse();
 
     const klines: BinanceKline[] = raw.map((k) => ({
-      openTime: k[0] as number,
-      open: parseFloat(k[1] as string),
-      high: parseFloat(k[2] as string),
-      low: parseFloat(k[3] as string),
-      close: parseFloat(k[4] as string),
-      volume: parseFloat(k[5] as string),
-      closeTime: k[6] as number,
-      quoteAssetVolume: parseFloat(k[7] as string),
-      numberOfTrades: k[8] as number,
-      takerBuyBaseAssetVolume: parseFloat(k[9] as string),
-      takerBuyQuoteAssetVolume: parseFloat(k[10] as string),
+      openTime: parseInt(k[0], 10),
+      open: parseFloat(k[1]),
+      high: parseFloat(k[2]),
+      low: parseFloat(k[3]),
+      close: parseFloat(k[4]),
+      volume: parseFloat(k[5]),
+      closeTime: parseInt(k[0], 10) + 3599000,
+      quoteAssetVolume: 0,
+      numberOfTrades: 0,
+      takerBuyBaseAssetVolume: 0,
+      takerBuyQuoteAssetVolume: 0,
     }));
 
     klineCache.set(cacheKey, klines);
     return klines;
   } catch (error) {
-    // Fall back to CSV data when Binance API is unavailable (e.g. geo-blocked 451)
+    // Fall back to CSV data when Bybit API is unavailable
     console.warn(`[BTC] Falling back to CSV for ${year}-${String(month).padStart(2, "0")}`);
     const priceMap = await loadBtcCsvData();
     const csvKlines = createHourlyKlinesFromCsv(priceMap, year, month);
