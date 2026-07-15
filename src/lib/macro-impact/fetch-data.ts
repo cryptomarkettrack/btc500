@@ -154,10 +154,102 @@ export async function fetchMacroReleases(indicator: MacroIndicator): Promise<Mac
   return releases;
 }
 
-// ─── Bitcoin Price Fetching (Binance) ────────────────────────────────────────
+// ─── Bitcoin Price Fetching (Binance with CSV fallback) ──────────────────────
 
 const BINANCE_BASE = "https://api.binance.com";
 const klineCache = new Map<string, BinanceKline[]>();
+
+// ── CSV Fallback Loading ─────────────────────────────────────────────────────
+
+let csvPriceCache: Map<string, number> | null = null;
+
+function parseBtcCsvDate(dateTimeStr: string): string | null {
+  // Handle formats like "2013-04-28 00:00:00 UTC" -> "2013-04-28"
+  const parts = dateTimeStr.split(" ");
+  if (parts.length < 1) return null;
+  const dateStr = parts[0];
+  // Validate YYYY-MM-DD format
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) return null;
+  return dateStr;
+}
+
+async function loadBtcCsvData(): Promise<Map<string, number>> {
+  if (csvPriceCache) return csvPriceCache;
+
+  console.log("[CSV] Loading BTC price data from CSV...");
+  const url = "/btc-usd-max.csv";
+
+  const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  if (!response.ok) {
+    throw new Error(`BTC CSV fetch failed: ${response.status}`);
+  }
+
+  const text = await response.text();
+  const lines = text.trim().split("\n");
+  const priceMap = new Map<string, number>();
+
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (!line) continue;
+
+    const parts = line.split(",");
+    if (parts.length < 2) continue;
+
+    const dateStr = parseBtcCsvDate(parts[0]);
+    if (!dateStr) continue;
+
+    const price = parseFloat(parts[1]);
+    if (Number.isFinite(price) && price > 0) {
+      priceMap.set(dateStr, price);
+    }
+  }
+
+  console.log(`[CSV] Loaded ${priceMap.size} daily BTC prices`);
+  csvPriceCache = priceMap;
+  return priceMap;
+}
+
+/**
+ * Create synthetic hourly klines from daily CSV data.
+ * Each hour in a day gets the same close price (the daily close).
+ * This provides reasonable granularity for price interpolation around
+ * macro release times when Binance API is unavailable.
+ */
+function createHourlyKlinesFromCsv(
+  priceMap: Map<string, number>,
+  year: number,
+  month: number,
+): BinanceKline[] {
+  const klines: BinanceKline[] = [];
+  const daysInMonth = new Date(year, month, 0).getDate();
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dateStr = `${year}-${String(month).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+    const close = priceMap.get(dateStr);
+    if (close === undefined) continue;
+
+    // Create 24 hourly klines for this day, each using the daily close price
+    for (let hour = 0; hour < 24; hour++) {
+      const openTime = Date.UTC(year, month - 1, day, hour);
+      const closeTime = openTime + 3599000; // just under 1 hour in ms
+      klines.push({
+        openTime,
+        open: close,
+        high: close,
+        low: close,
+        close,
+        volume: 0,
+        closeTime,
+        quoteAssetVolume: 0,
+        numberOfTrades: 0,
+        takerBuyBaseAssetVolume: 0,
+        takerBuyQuoteAssetVolume: 0,
+      });
+    }
+  }
+
+  return klines;
+}
 
 export async function fetchBTCMonthlyKlines(year: number, month: number): Promise<BinanceKline[]> {
   const cacheKey = `btc_kline_${year}_${month}`;
@@ -169,30 +261,51 @@ export async function fetchBTCMonthlyKlines(year: number, month: number): Promis
 
   const url = `${BINANCE_BASE}/api/v3/klines?symbol=BTCUSDT&interval=1h&startTime=${start}&endTime=${end}&limit=1000`;
 
-  const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
+  try {
+    const response = await fetch(url, { signal: AbortSignal.timeout(10000) });
 
-  if (!response.ok) {
-    throw new Error(`Binance API error: ${response.status}`);
+    if (!response.ok) {
+      console.warn(`[BTC] Binance API error ${response.status} — falling back to CSV`);
+      throw new Error(`Binance API error: ${response.status}`);
+    }
+
+    const raw: unknown[][] = await response.json();
+
+    const klines: BinanceKline[] = raw.map((k) => ({
+      openTime: k[0] as number,
+      open: parseFloat(k[1] as string),
+      high: parseFloat(k[2] as string),
+      low: parseFloat(k[3] as string),
+      close: parseFloat(k[4] as string),
+      volume: parseFloat(k[5] as string),
+      closeTime: k[6] as number,
+      quoteAssetVolume: parseFloat(k[7] as string),
+      numberOfTrades: k[8] as number,
+      takerBuyBaseAssetVolume: parseFloat(k[9] as string),
+      takerBuyQuoteAssetVolume: parseFloat(k[10] as string),
+    }));
+
+    klineCache.set(cacheKey, klines);
+    return klines;
+  } catch (error) {
+    // Fall back to CSV data when Binance API is unavailable (e.g. geo-blocked 451)
+    console.warn(`[BTC] Falling back to CSV for ${year}-${String(month).padStart(2, "0")}`);
+    const priceMap = await loadBtcCsvData();
+    const csvKlines = createHourlyKlinesFromCsv(priceMap, year, month);
+
+    if (csvKlines.length === 0) {
+      console.error(
+        `[BTC] CSV has no data for ${year}-${String(month).padStart(2, "0")}, rethrowing`,
+      );
+      throw error;
+    }
+
+    console.log(
+      `[BTC] CSV fallback produced ${csvKlines.length} hourly klines for ${year}-${String(month).padStart(2, "0")}`,
+    );
+    klineCache.set(cacheKey, csvKlines);
+    return csvKlines;
   }
-
-  const raw: unknown[][] = await response.json();
-
-  const klines: BinanceKline[] = raw.map((k) => ({
-    openTime: k[0] as number,
-    open: parseFloat(k[1] as string),
-    high: parseFloat(k[2] as string),
-    low: parseFloat(k[3] as string),
-    close: parseFloat(k[4] as string),
-    volume: parseFloat(k[5] as string),
-    closeTime: k[6] as number,
-    quoteAssetVolume: parseFloat(k[7] as string),
-    numberOfTrades: k[8] as number,
-    takerBuyBaseAssetVolume: parseFloat(k[9] as string),
-    takerBuyQuoteAssetVolume: parseFloat(k[10] as string),
-  }));
-
-  klineCache.set(cacheKey, klines);
-  return klines;
 }
 
 export async function fetchBTCRange(startDate: Date, endDate: Date): Promise<BinanceKline[]> {
