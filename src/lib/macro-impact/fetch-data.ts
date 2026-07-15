@@ -108,36 +108,50 @@ export async function fetchMacroReleases(indicator: MacroIndicator): Promise<Mac
 
   const seriesID = FRED_SERIES[indicator];
   const now = new Date();
-  const startYear = 2010;
+  const startYear = 2018;
   const endYear = now.getFullYear();
 
   // FRED CSV URL — no auth required
+  // Fetching from 2018 onwards keeps payload small (~100 rows) to avoid timeout
   const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesID}&cosd=${startYear}-01-01&coed=${endYear}-12-31&fq=Monthly`;
 
-  try {
-    const response = await fetch(url, {
-      headers: {
-        "User-Agent": "Mozilla/5.0 BTC500 Macro Dashboard",
-      },
-      signal: AbortSignal.timeout(15000),
-    });
+  // Retry up to 2 times on failure
+  const MAX_RETRIES = 2;
+  for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
+    try {
+      const response = await fetch(url, {
+        headers: {
+          "User-Agent": "Mozilla/5.0 BTC500 Macro Dashboard",
+        },
+        signal: AbortSignal.timeout(30000),
+      });
 
-    if (!response.ok) {
-      throw new Error(`FRED CSV fetch failed: ${response.status}`);
+      if (!response.ok) {
+        throw new Error(`FRED CSV fetch failed: ${response.status}`);
+      }
+
+      const csvText = await response.text();
+      const releases = parseFRED_Csv(csvText, indicator);
+
+      if (releases.length > 0) {
+        setCache(cacheKey, releases);
+      }
+
+      return releases;
+    } catch (error) {
+      if (attempt < MAX_RETRIES) {
+        console.warn(`Retry ${attempt + 1}/${MAX_RETRIES} for ${indicator} FRED fetch...`);
+        continue;
+      }
+      console.error(
+        `Error fetching ${indicator} from FRED after ${MAX_RETRIES + 1} attempts:`,
+        error,
+      );
+      throw error;
     }
-
-    const csvText = await response.text();
-    const releases = parseFRED_Csv(csvText, indicator);
-
-    if (releases.length > 0) {
-      setCache(cacheKey, releases);
-    }
-
-    return releases;
-  } catch (error) {
-    console.error(`Error fetching ${indicator} from FRED:`, error);
-    throw error;
   }
+  // Should never reach here, but TypeScript needs it
+  throw new Error(`Failed to fetch ${indicator} from FRED`);
 }
 
 // ─── Bitcoin Price Fetching (Binance) ────────────────────────────────────────
