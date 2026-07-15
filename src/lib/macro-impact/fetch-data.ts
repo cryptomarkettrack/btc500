@@ -124,19 +124,45 @@ export async function fetchFRED_CsvFromWeb(
   return parseFRED_Csv(csvText, indicator);
 }
 
-// Read pre-fetched FRED data — same pattern as csv-price-loader.ts
+// Read pre-fetched FRED data
 async function readLocalFREDData(): Promise<Record<MacroIndicator, MacroRelease[]>> {
-  try {
-    // On the server (Node.js/Nitro), read from the filesystem
-    if (typeof window === "undefined") {
-      const fs = await import("node:fs");
-      const path = await import("node:path");
-      const filePath = path.join(process.cwd(), "public", "fred-data.json");
-      const raw = fs.readFileSync(filePath, "utf-8");
-      return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
-    }
+  // Server-side: read directly from the filesystem (works on Vercel SSR)
+  if (typeof window === "undefined") {
+    try {
+      const { readFileSync } = await import("node:fs");
+      const { resolve } = await import("node:path");
 
-    // On the client (browser), public/ assets are served at the root via Vite/Nitro
+      // Try multiple possible paths to find fred-data.json:
+      // - Local dev / Nitro dev: process.cwd() is the project root, file is at public/fred-data.json
+      // - Vercel serverless: process.cwd() varies, but the public/ dir is included in the deployment
+      // - Fallback: just "fred-data.json" if cwd was already set to the public dir
+      const pathsToTry = [
+        resolve(process.cwd(), "public/fred-data.json"),
+        resolve(process.cwd(), "fred-data.json"),
+      ];
+
+      let raw: string | null = null;
+      for (const filePath of pathsToTry) {
+        try {
+          raw = readFileSync(filePath, "utf-8");
+          break;
+        } catch {
+          // try next path
+        }
+      }
+
+      if (raw === null) {
+        throw new Error("fred-data.json not found on server filesystem");
+      }
+
+      return JSON.parse(raw) as Record<MacroIndicator, MacroRelease[]>;
+    } catch {
+      throw new Error("fred-data.json not found. Run `bun run fetch-fred` to generate it.");
+    }
+  }
+
+  // Client-side: fetch from the public directory via HTTP
+  try {
     const res = await fetch("/fred-data.json", { signal: AbortSignal.timeout(10000) });
     if (!res.ok) {
       throw new Error(`HTTP ${res.status}`);
