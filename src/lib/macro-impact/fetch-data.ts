@@ -108,12 +108,11 @@ export async function fetchMacroReleases(indicator: MacroIndicator): Promise<Mac
 
   const seriesID = FRED_SERIES[indicator];
   const now = new Date();
-  const startYear = 2018;
-  const endYear = now.getFullYear();
+  const year = now.getFullYear();
 
   // FRED CSV URL — no auth required
-  // Fetching from 2018 onwards keeps payload small (~100 rows) to avoid timeout
-  const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesID}&cosd=${startYear}-01-01&coed=${endYear}-12-31&fq=Monthly`;
+  // Fetching only current year keeps payload minimal (~7 rows) for fast loading
+  const url = `https://fred.stlouisfed.org/graph/fredgraph.csv?id=${seriesID}&cosd=${year}-01-01&coed=${year}-12-31&fq=Monthly`;
 
   // Retry up to 2 times on failure
   const MAX_RETRIES = 2;
