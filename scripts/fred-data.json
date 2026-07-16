@@ -1,0 +1,1438 @@
+{
+  "CPI": [
+    {
+      "date": "2019-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.488,
+      "forecast": null,
+      "previous": null
+    },
+    {
+      "date": "2019-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.519,
+      "forecast": 1.488,
+      "previous": 1.488
+    },
+    {
+      "date": "2019-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.883,
+      "forecast": 1.519,
+      "previous": 1.519
+    },
+    {
+      "date": "2019-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.001,
+      "forecast": 1.883,
+      "previous": 1.883
+    },
+    {
+      "date": "2019-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.796,
+      "forecast": 2.001,
+      "previous": 2.001
+    },
+    {
+      "date": "2019-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.671,
+      "forecast": 1.796,
+      "previous": 1.796
+    },
+    {
+      "date": "2019-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.826,
+      "forecast": 1.671,
+      "previous": 1.671
+    },
+    {
+      "date": "2019-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.738,
+      "forecast": 1.826,
+      "previous": 1.826
+    },
+    {
+      "date": "2019-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.684,
+      "forecast": 1.738,
+      "previous": 1.738
+    },
+    {
+      "date": "2019-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.734,
+      "forecast": 1.684,
+      "previous": 1.684
+    },
+    {
+      "date": "2019-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.092,
+      "forecast": 1.734,
+      "previous": 1.734
+    },
+    {
+      "date": "2020-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.32,
+      "forecast": 2.092,
+      "previous": 2.092
+    },
+    {
+      "date": "2020-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.6,
+      "forecast": 2.32,
+      "previous": 2.32
+    },
+    {
+      "date": "2020-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.341,
+      "forecast": 2.6,
+      "previous": 2.6
+    },
+    {
+      "date": "2020-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.494,
+      "forecast": 2.341,
+      "previous": 2.341
+    },
+    {
+      "date": "2020-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 0.313,
+      "forecast": 1.494,
+      "previous": 1.494
+    },
+    {
+      "date": "2020-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 0.198,
+      "forecast": 0.313,
+      "previous": 0.313
+    },
+    {
+      "date": "2020-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 0.717,
+      "forecast": 0.198,
+      "previous": 0.198
+    },
+    {
+      "date": "2020-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 0.997,
+      "forecast": 0.717,
+      "previous": 0.717
+    },
+    {
+      "date": "2020-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.281,
+      "forecast": 0.997,
+      "previous": 0.997
+    },
+    {
+      "date": "2020-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.391,
+      "forecast": 1.281,
+      "previous": 1.281
+    },
+    {
+      "date": "2020-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.23,
+      "forecast": 1.391,
+      "previous": 1.391
+    },
+    {
+      "date": "2020-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.176,
+      "forecast": 1.23,
+      "previous": 1.23
+    },
+    {
+      "date": "2021-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.32,
+      "forecast": 1.176,
+      "previous": 1.176
+    },
+    {
+      "date": "2021-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.374,
+      "forecast": 1.32,
+      "previous": 1.32
+    },
+    {
+      "date": "2021-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 1.67,
+      "forecast": 1.374,
+      "previous": 1.374
+    },
+    {
+      "date": "2021-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.668,
+      "forecast": 1.67,
+      "previous": 1.67
+    },
+    {
+      "date": "2021-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.133,
+      "forecast": 2.668,
+      "previous": 2.668
+    },
+    {
+      "date": "2021-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.918,
+      "forecast": 4.133,
+      "previous": 4.133
+    },
+    {
+      "date": "2021-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 5.296,
+      "forecast": 4.918,
+      "previous": 4.918
+    },
+    {
+      "date": "2021-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 5.245,
+      "forecast": 5.296,
+      "previous": 5.296
+    },
+    {
+      "date": "2021-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 5.152,
+      "forecast": 5.245,
+      "previous": 5.245
+    },
+    {
+      "date": "2021-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 5.351,
+      "forecast": 5.152,
+      "previous": 5.152
+    },
+    {
+      "date": "2021-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 6.235,
+      "forecast": 5.351,
+      "previous": 5.351
+    },
+    {
+      "date": "2021-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 6.902,
+      "forecast": 6.235,
+      "previous": 6.235
+    },
+    {
+      "date": "2022-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 7.174,
+      "forecast": 6.902,
+      "previous": 6.902
+    },
+    {
+      "date": "2022-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 7.559,
+      "forecast": 7.174,
+      "previous": 7.174
+    },
+    {
+      "date": "2022-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 7.937,
+      "forecast": 7.559,
+      "previous": 7.559
+    },
+    {
+      "date": "2022-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.572,
+      "forecast": 7.937,
+      "previous": 7.937
+    },
+    {
+      "date": "2022-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.232,
+      "forecast": 8.572,
+      "previous": 8.572
+    },
+    {
+      "date": "2022-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.538,
+      "forecast": 8.232,
+      "previous": 8.232
+    },
+    {
+      "date": "2022-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.979,
+      "forecast": 8.538,
+      "previous": 8.538
+    },
+    {
+      "date": "2022-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.463,
+      "forecast": 8.979,
+      "previous": 8.979
+    },
+    {
+      "date": "2022-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.223,
+      "forecast": 8.463,
+      "previous": 8.463
+    },
+    {
+      "date": "2022-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 8.192,
+      "forecast": 8.223,
+      "previous": 8.223
+    },
+    {
+      "date": "2022-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 7.759,
+      "forecast": 8.192,
+      "previous": 8.192
+    },
+    {
+      "date": "2022-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 7.123,
+      "forecast": 7.759,
+      "previous": 7.759
+    },
+    {
+      "date": "2023-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 6.405,
+      "forecast": 7.123,
+      "previous": 7.123
+    },
+    {
+      "date": "2023-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 6.327,
+      "forecast": 6.405,
+      "previous": 6.405
+    },
+    {
+      "date": "2023-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 5.958,
+      "forecast": 6.327,
+      "previous": 6.327
+    },
+    {
+      "date": "2023-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.918,
+      "forecast": 5.958,
+      "previous": 5.958
+    },
+    {
+      "date": "2023-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.95,
+      "forecast": 4.918,
+      "previous": 4.918
+    },
+    {
+      "date": "2023-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.132,
+      "forecast": 4.95,
+      "previous": 4.95
+    },
+    {
+      "date": "2023-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.071,
+      "forecast": 4.132,
+      "previous": 4.132
+    },
+    {
+      "date": "2023-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.288,
+      "forecast": 3.071,
+      "previous": 3.071
+    },
+    {
+      "date": "2023-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.723,
+      "forecast": 3.288,
+      "previous": 3.288
+    },
+    {
+      "date": "2023-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.687,
+      "forecast": 3.723,
+      "previous": 3.723
+    },
+    {
+      "date": "2023-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.251,
+      "forecast": 3.687,
+      "previous": 3.687
+    },
+    {
+      "date": "2023-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.133,
+      "forecast": 3.251,
+      "previous": 3.251
+    },
+    {
+      "date": "2024-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.316,
+      "forecast": 3.133,
+      "previous": 3.133
+    },
+    {
+      "date": "2024-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.088,
+      "forecast": 3.316,
+      "previous": 3.316
+    },
+    {
+      "date": "2024-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.157,
+      "forecast": 3.088,
+      "previous": 3.088
+    },
+    {
+      "date": "2024-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.487,
+      "forecast": 3.157,
+      "previous": 3.157
+    },
+    {
+      "date": "2024-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.361,
+      "forecast": 3.487,
+      "previous": 3.487
+    },
+    {
+      "date": "2024-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.244,
+      "forecast": 3.361,
+      "previous": 3.361
+    },
+    {
+      "date": "2024-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.97,
+      "forecast": 3.244,
+      "previous": 3.244
+    },
+    {
+      "date": "2024-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.941,
+      "forecast": 2.97,
+      "previous": 2.97
+    },
+    {
+      "date": "2024-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.607,
+      "forecast": 2.941,
+      "previous": 2.941
+    },
+    {
+      "date": "2024-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.426,
+      "forecast": 2.607,
+      "previous": 2.607
+    },
+    {
+      "date": "2024-11-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.579,
+      "forecast": 2.426,
+      "previous": 2.426
+    },
+    {
+      "date": "2024-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.719,
+      "forecast": 2.579,
+      "previous": 2.579
+    },
+    {
+      "date": "2025-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.871,
+      "forecast": 2.719,
+      "previous": 2.719
+    },
+    {
+      "date": "2025-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.991,
+      "forecast": 2.871,
+      "previous": 2.871
+    },
+    {
+      "date": "2025-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.802,
+      "forecast": 2.991,
+      "previous": 2.991
+    },
+    {
+      "date": "2025-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.382,
+      "forecast": 2.802,
+      "previous": 2.802
+    },
+    {
+      "date": "2025-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.325,
+      "forecast": 2.382,
+      "previous": 2.382
+    },
+    {
+      "date": "2025-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.377,
+      "forecast": 2.325,
+      "previous": 2.325
+    },
+    {
+      "date": "2025-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.68,
+      "forecast": 2.377,
+      "previous": 2.377
+    },
+    {
+      "date": "2025-08-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.743,
+      "forecast": 2.68,
+      "previous": 2.68
+    },
+    {
+      "date": "2025-09-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.939,
+      "forecast": 2.743,
+      "previous": 2.743
+    },
+    {
+      "date": "2025-10-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.023,
+      "forecast": 2.939,
+      "previous": 2.939
+    },
+    {
+      "date": "2025-12-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.988,
+      "forecast": 3.023,
+      "previous": 3.023
+    },
+    {
+      "date": "2026-01-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.002,
+      "forecast": 2.988,
+      "previous": 2.988
+    },
+    {
+      "date": "2026-02-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.829,
+      "forecast": 3.002,
+      "previous": 3.002
+    },
+    {
+      "date": "2026-03-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 2.665,
+      "forecast": 2.829,
+      "previous": 2.829
+    },
+    {
+      "date": "2026-04-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.32,
+      "forecast": 2.665,
+      "previous": 2.665
+    },
+    {
+      "date": "2026-05-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.947,
+      "forecast": 3.32,
+      "previous": 3.32
+    },
+    {
+      "date": "2026-06-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 4.27,
+      "forecast": 3.947,
+      "previous": 3.947
+    },
+    {
+      "date": "2026-07-13",
+      "releaseTimeUTC": "12:30",
+      "indicator": "CPI",
+      "actual": 3.727,
+      "forecast": 4.27,
+      "previous": 4.27
+    }
+  ],
+  "PPI": [
+    {
+      "date": "2019-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.606,
+      "forecast": null,
+      "previous": null
+    },
+    {
+      "date": "2019-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.05,
+      "forecast": 0.606,
+      "previous": 0.606
+    },
+    {
+      "date": "2019-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.753,
+      "forecast": -0.05,
+      "previous": -0.05
+    },
+    {
+      "date": "2019-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.899,
+      "forecast": 0.753,
+      "previous": 0.753
+    },
+    {
+      "date": "2019-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.738,
+      "forecast": 0.899,
+      "previous": 0.899
+    },
+    {
+      "date": "2019-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.91,
+      "forecast": -0.738,
+      "previous": -0.738
+    },
+    {
+      "date": "2019-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.762,
+      "forecast": -1.91,
+      "previous": -1.91
+    },
+    {
+      "date": "2019-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -2.065,
+      "forecast": -1.762,
+      "previous": -1.762
+    },
+    {
+      "date": "2019-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -2.554,
+      "forecast": -2.065,
+      "previous": -2.065
+    },
+    {
+      "date": "2019-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -2.933,
+      "forecast": -2.554,
+      "previous": -2.554
+    },
+    {
+      "date": "2019-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.631,
+      "forecast": -2.933,
+      "previous": -2.933
+    },
+    {
+      "date": "2020-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.995,
+      "forecast": -1.631,
+      "previous": -1.631
+    },
+    {
+      "date": "2020-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.1,
+      "forecast": -0.995,
+      "previous": -0.995
+    },
+    {
+      "date": "2020-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.255,
+      "forecast": 0.1,
+      "previous": 0.1
+    },
+    {
+      "date": "2020-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.835,
+      "forecast": -1.255,
+      "previous": -1.255
+    },
+    {
+      "date": "2020-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -8.214,
+      "forecast": -3.835,
+      "previous": -3.835
+    },
+    {
+      "date": "2020-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -6.495,
+      "forecast": -8.214,
+      "previous": -8.214
+    },
+    {
+      "date": "2020-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -4.543,
+      "forecast": -6.495,
+      "previous": -6.495
+    },
+    {
+      "date": "2020-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.837,
+      "forecast": -4.543,
+      "previous": -4.543
+    },
+    {
+      "date": "2020-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -2.46,
+      "forecast": -3.837,
+      "previous": -3.837
+    },
+    {
+      "date": "2020-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.462,
+      "forecast": -2.46,
+      "previous": -2.46
+    },
+    {
+      "date": "2020-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.057,
+      "forecast": -1.462,
+      "previous": -1.462
+    },
+    {
+      "date": "2020-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.352,
+      "forecast": -1.057,
+      "previous": -1.057
+    },
+    {
+      "date": "2021-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.754,
+      "forecast": -0.352,
+      "previous": -0.352
+    },
+    {
+      "date": "2021-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.76,
+      "forecast": 0.754,
+      "previous": 0.754
+    },
+    {
+      "date": "2021-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 7.067,
+      "forecast": 2.76,
+      "previous": 2.76
+    },
+    {
+      "date": "2021-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 11.341,
+      "forecast": 7.067,
+      "previous": 7.067
+    },
+    {
+      "date": "2021-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 17.466,
+      "forecast": 11.341,
+      "previous": 11.341
+    },
+    {
+      "date": "2021-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 19.247,
+      "forecast": 17.466,
+      "previous": 17.466
+    },
+    {
+      "date": "2021-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 19.718,
+      "forecast": 19.247,
+      "previous": 19.247
+    },
+    {
+      "date": "2021-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.13,
+      "forecast": 19.718,
+      "previous": 19.718
+    },
+    {
+      "date": "2021-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.131,
+      "forecast": 20.13,
+      "previous": 20.13
+    },
+    {
+      "date": "2021-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.551,
+      "forecast": 20.131,
+      "previous": 20.131
+    },
+    {
+      "date": "2021-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 22.374,
+      "forecast": 20.551,
+      "previous": 20.551
+    },
+    {
+      "date": "2021-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 22.686,
+      "forecast": 22.374,
+      "previous": 22.374
+    },
+    {
+      "date": "2022-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.368,
+      "forecast": 22.686,
+      "previous": 22.686
+    },
+    {
+      "date": "2022-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.338,
+      "forecast": 20.368,
+      "previous": 20.368
+    },
+    {
+      "date": "2022-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 19.972,
+      "forecast": 20.338,
+      "previous": 20.338
+    },
+    {
+      "date": "2022-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 20.937,
+      "forecast": 19.972,
+      "previous": 19.972
+    },
+    {
+      "date": "2022-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 21.758,
+      "forecast": 20.937,
+      "previous": 20.937
+    },
+    {
+      "date": "2022-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 21.499,
+      "forecast": 21.758,
+      "previous": 21.758
+    },
+    {
+      "date": "2022-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 22.434,
+      "forecast": 21.499,
+      "previous": 21.499
+    },
+    {
+      "date": "2022-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 17.435,
+      "forecast": 22.434,
+      "previous": 22.434
+    },
+    {
+      "date": "2022-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 15.479,
+      "forecast": 17.435,
+      "previous": 17.435
+    },
+    {
+      "date": "2022-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 13.671,
+      "forecast": 15.479,
+      "previous": 15.479
+    },
+    {
+      "date": "2022-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 10.229,
+      "forecast": 13.671,
+      "previous": 13.671
+    },
+    {
+      "date": "2022-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 8.167,
+      "forecast": 10.229,
+      "previous": 10.229
+    },
+    {
+      "date": "2023-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 6.861,
+      "forecast": 8.167,
+      "previous": 8.167
+    },
+    {
+      "date": "2023-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 5.589,
+      "forecast": 6.861,
+      "previous": 6.861
+    },
+    {
+      "date": "2023-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.378,
+      "forecast": 5.589,
+      "previous": 5.589
+    },
+    {
+      "date": "2023-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.135,
+      "forecast": 2.378,
+      "previous": 2.378
+    },
+    {
+      "date": "2023-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.167,
+      "forecast": -1.135,
+      "previous": -1.135
+    },
+    {
+      "date": "2023-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -7.166,
+      "forecast": -3.167,
+      "previous": -3.167
+    },
+    {
+      "date": "2023-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -9.417,
+      "forecast": -7.166,
+      "previous": -7.166
+    },
+    {
+      "date": "2023-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -6.772,
+      "forecast": -9.417,
+      "previous": -9.417
+    },
+    {
+      "date": "2023-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -4.402,
+      "forecast": -6.772,
+      "previous": -6.772
+    },
+    {
+      "date": "2023-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.346,
+      "forecast": -4.402,
+      "previous": -4.402
+    },
+    {
+      "date": "2023-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.723,
+      "forecast": -3.346,
+      "previous": -3.346
+    },
+    {
+      "date": "2023-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.914,
+      "forecast": -3.723,
+      "previous": -3.723
+    },
+    {
+      "date": "2024-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.114,
+      "forecast": -3.914,
+      "previous": -3.914
+    },
+    {
+      "date": "2024-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -3.428,
+      "forecast": -3.114,
+      "previous": -3.114
+    },
+    {
+      "date": "2024-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -1.447,
+      "forecast": -3.428,
+      "previous": -3.428
+    },
+    {
+      "date": "2024-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.765,
+      "forecast": -1.447,
+      "previous": -1.447
+    },
+    {
+      "date": "2024-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.027,
+      "forecast": -0.765,
+      "previous": -0.765
+    },
+    {
+      "date": "2024-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.648,
+      "forecast": 0.027,
+      "previous": 0.027
+    },
+    {
+      "date": "2024-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.809,
+      "forecast": 0.648,
+      "previous": 0.648
+    },
+    {
+      "date": "2024-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.373,
+      "forecast": 0.809,
+      "previous": 0.809
+    },
+    {
+      "date": "2024-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.86,
+      "forecast": 1.373,
+      "previous": 1.373
+    },
+    {
+      "date": "2024-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -2.415,
+      "forecast": -0.86,
+      "previous": -0.86
+    },
+    {
+      "date": "2024-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": -0.827,
+      "forecast": -2.415,
+      "previous": -2.415
+    },
+    {
+      "date": "2024-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.14,
+      "forecast": -0.827,
+      "previous": -0.827
+    },
+    {
+      "date": "2025-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.424,
+      "forecast": 0.14,
+      "previous": 0.14
+    },
+    {
+      "date": "2025-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.409,
+      "forecast": 1.424,
+      "previous": 1.424
+    },
+    {
+      "date": "2025-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.793,
+      "forecast": 2.409,
+      "previous": 2.409
+    },
+    {
+      "date": "2025-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.345,
+      "forecast": 1.793,
+      "previous": 1.793
+    },
+    {
+      "date": "2025-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 0.55,
+      "forecast": 1.345,
+      "previous": 1.345
+    },
+    {
+      "date": "2025-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.318,
+      "forecast": 0.55,
+      "previous": 0.55
+    },
+    {
+      "date": "2025-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.788,
+      "forecast": 1.318,
+      "previous": 1.318
+    },
+    {
+      "date": "2025-08-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 1.957,
+      "forecast": 1.788,
+      "previous": 1.788
+    },
+    {
+      "date": "2025-09-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.602,
+      "forecast": 1.957,
+      "previous": 1.957
+    },
+    {
+      "date": "2025-10-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 3.709,
+      "forecast": 2.602,
+      "previous": 2.602
+    },
+    {
+      "date": "2025-11-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.967,
+      "forecast": 3.709,
+      "previous": 3.709
+    },
+    {
+      "date": "2025-12-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 3.437,
+      "forecast": 2.967,
+      "previous": 2.967
+    },
+    {
+      "date": "2026-01-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 3.121,
+      "forecast": 3.437,
+      "previous": 3.437
+    },
+    {
+      "date": "2026-02-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 2.428,
+      "forecast": 3.121,
+      "previous": 3.121
+    },
+    {
+      "date": "2026-03-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 3.868,
+      "forecast": 2.428,
+      "previous": 2.428
+    },
+    {
+      "date": "2026-04-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 6.777,
+      "forecast": 3.868,
+      "previous": 3.868
+    },
+    {
+      "date": "2026-05-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 9.438,
+      "forecast": 6.777,
+      "previous": 6.777
+    },
+    {
+      "date": "2026-06-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 12.298,
+      "forecast": 9.438,
+      "previous": 9.438
+    },
+    {
+      "date": "2026-07-15",
+      "releaseTimeUTC": "12:30",
+      "indicator": "PPI",
+      "actual": 10.11,
+      "forecast": 12.298,
+      "previous": 12.298
+    }
+  ]
+}
