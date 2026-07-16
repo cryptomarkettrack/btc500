@@ -77,6 +77,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Bitcoin NUPL, Net Unrealized Profit Loss, RUPL, Bitcoin market psychology, Bitcoin on-chain indicators",
   },
+  {
+    id: "ondo-finance-tokenization",
+    slug: "ondo-finance-tokenization",
+    title: "Why Ondo Finance Is Building the Infrastructure Wall Street Will Actually Use",
+    description:
+      "From DTCC's first tokenized securities trades to 430+ tokenized stocks and $1B+ in volume — how Ondo Finance is becoming the compliant bridge between Wall Street and on-chain finance.",
+    keywords:
+      "Ondo Finance, ONDO token, tokenized stocks, DTCC tokenization, BlackRock BUIDL, tokenized securities, DeFi compliance, institutional crypto, wall street blockchain",
+    date: "July 16, 2026",
+    dateISO: "2026-07-16",
+    dateModified: "2026-07-16",
+    dateModifiedISO: "2026-07-16",
+    readTime: "10 min read",
+    wordCount: 3000,
+    ogImage: `${SITE_URL}/og/default.png`,
+    articleSection: "Tokenization & DeFi",
+    schemaKeywords:
+      "Ondo Finance, ONDO token, tokenized stocks, DTCC, BlackRock BUIDL, tokenized securities, regulated DeFi, institutional tokenization",
+  },
 ];
 
 /** Returns articles sorted newest-first */

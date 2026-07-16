@@ -20,6 +20,7 @@ import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
+import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 
 const TimelineRoute = TimelineRouteImport.update({
@@ -77,6 +78,12 @@ const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
   path: '/rupl',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesOndoFinanceTokenizationRoute =
+  ArticlesOndoFinanceTokenizationRouteImport.update({
+    id: '/ondo-finance-tokenization',
+    path: '/ondo-finance-tokenization',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   id: '/btc500-strategy',
   path: '/btc500-strategy',
@@ -94,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -108,6 +116,7 @@ export interface FileRoutesByTo {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -123,6 +132,7 @@ export interface FileRoutesById {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -139,6 +149,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
@@ -153,6 +164,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
   id:
@@ -167,6 +179,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/btc500-strategy'
+    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
@@ -262,6 +275,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesRuplRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/ondo-finance-tokenization': {
+      id: '/articles/ondo-finance-tokenization'
+      path: '/ondo-finance-tokenization'
+      fullPath: '/articles/ondo-finance-tokenization'
+      preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/btc500-strategy': {
       id: '/articles/btc500-strategy'
       path: '/btc500-strategy'
@@ -274,12 +294,14 @@ declare module '@tanstack/react-router' {
 
 interface ArticlesRouteChildren {
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
+  ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
+  ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }
