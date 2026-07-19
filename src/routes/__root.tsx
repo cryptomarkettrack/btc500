@@ -162,7 +162,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "google-site-verification", content: "googlee49c9b6e2a31e9b3" },
+      { name: "google-site-verification", content: "K-CrdpTGQx6AYxWkAV5gFH0i5KXWjVMBcJupYODKnI8" },
       { name: "msvalidate.01", content: "" },
       { name: "yandex-verification", content: "" },
       { title: "BTC500 — Buy Bitcoin 500 Days Before Halving | Bitcoin Halving Strategy" },
