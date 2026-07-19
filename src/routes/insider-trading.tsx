@@ -16,8 +16,32 @@ export const Route = createFileRoute("/insider-trading")({
       const data = await getInsiderTrading();
       return data;
     } catch (e) {
+      console.error("[insider-trading] Loader error:", e);
+      // Return null to show the error UI instead of throwing
       return null;
     }
+  },
+  errorComponent: ({ error }: { error: Error }) => {
+    console.error("[insider-trading] Route error:", error);
+    return (
+      <div className="min-h-screen bg-background p-6">
+        <div className="mx-auto max-w-6xl">
+          <h1 className="text-2xl font-bold mb-6">Insider Trading Dashboard</h1>
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-6 text-center">
+            <p className="text-red-400 mb-2">Failed to load insider trading data</p>
+            <p className="text-sm text-muted-foreground mb-4">
+              {error.message || "Please try again later"}
+            </p>
+            <button
+              onClick={() => window.location.reload()}
+              className="rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground"
+            >
+              Try again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
   },
   head: () => ({
     meta: [
