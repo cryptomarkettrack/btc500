@@ -103,7 +103,7 @@ export function CycleCard({
       </div>
 
       {/* Details row */}
-      <div className="mb-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-muted-foreground">
+      <div className="mb-8 flex flex-col gap-1 text-sm text-muted-foreground">
         <span>
           Day <span className="font-semibold text-foreground">{selectedDay.dayIndex}</span> since
           buy
