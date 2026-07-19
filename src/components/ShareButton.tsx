@@ -185,17 +185,9 @@ export function ShareButton({ captureRef }: Props) {
     <>
       <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
         <button
-          onClick={download}
-          disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 sm:w-auto"
-        >
-          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-          Generate today's X card
-        </button>
-        <button
           onClick={copyToClipboard}
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 sm:w-auto"
         >
           {busy ? (
             <Loader2 className="h-4 w-4 animate-spin" />
