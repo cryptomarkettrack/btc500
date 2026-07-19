@@ -182,6 +182,8 @@ export function generateArticleHead(article: ArticleMeta) {
       { property: "og:description", content: article.description },
       { property: "og:type", content: "article" },
       { property: "og:url", content: pageUrl },
+      { property: "og:site_name", content: "BTC500" },
+      { property: "og:locale", content: "en_US" },
       { property: "og:image", content: article.ogImage },
       { property: "og:image:width", content: "1200" },
       { property: "og:image:height", content: "630" },
@@ -200,6 +202,14 @@ export function generateArticleHead(article: ArticleMeta) {
       {
         property: "article:modified_time",
         content: `${article.dateModifiedISO}T00:00:00Z`,
+      },
+      {
+        property: "article:section",
+        content: article.articleSection,
+      },
+      {
+        name: "author",
+        content: "BTC500",
       },
     ],
     links: [

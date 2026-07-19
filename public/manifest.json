@@ -1,0 +1,23 @@
+{
+  "name": "BTC500 — Bitcoin Halving Countdown & Strategy",
+  "short_name": "BTC500",
+  "description": "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0f0f0f",
+  "theme_color": "#F7931A",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "64x64",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "48x48",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["finance", "cryptocurrency", "investment"],
+  "lang": "en-US"
+}

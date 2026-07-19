@@ -16,13 +16,44 @@ export const Route = createFileRoute("/news")({
   },
   head: () => ({
     meta: [
-      { title: "Crypto News — Cointelegraph RSS Feed | BTC500" },
+      { title: "Crypto News — Bitcoin & Cryptocurrency News Feed | BTC500" },
       {
         name: "description",
         content:
-          "Latest cryptocurrency and Bitcoin news from Cointelegraph. Stay updated with real-time crypto market news and analysis.",
+          "Latest cryptocurrency and Bitcoin news aggregated from Cointelegraph. Stay updated with real-time crypto market news, Bitcoin price analysis, and blockchain industry developments.",
       },
+      {
+        name: "keywords",
+        content:
+          "crypto news, Bitcoin news, cryptocurrency news, Bitcoin price, crypto market, blockchain news, Cointelegraph, crypto headlines, digital assets news",
+      },
+      {
+        property: "og:title",
+        content: "Crypto News — Bitcoin & Cryptocurrency News Feed | BTC500",
+      },
+      {
+        property: "og:description",
+        content:
+          "Latest Bitcoin and cryptocurrency news aggregated in real-time. Stay informed on crypto markets, blockchain technology, and digital asset developments.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://btc500.vercel.app/news" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Crypto News — Bitcoin & Cryptocurrency News Feed",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Crypto News — Bitcoin & Cryptocurrency News Feed" },
+      {
+        name: "twitter:description",
+        content: "Latest Bitcoin and cryptocurrency news aggregated in real-time.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
+    links: [{ rel: "canonical", href: "https://btc500.vercel.app/news" }],
   }),
 });
 

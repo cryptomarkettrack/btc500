@@ -45,13 +45,41 @@ export const Route = createFileRoute("/insider-trading")({
   },
   head: () => ({
     meta: [
-      { title: "Insider Trading Dashboard — Buy vs Sell Analysis | BTC500" },
+      { title: "Insider Trading Dashboard — SEC Form 4 Buy vs Sell Analysis | BTC500" },
       {
         name: "description",
         content:
-          "Real-time insider trading data from SEC Form 4 filings. Analyze insider buy vs sell ratios with interactive pie charts.",
+          "Real-time insider trading data from SEC Form 4 filings. Analyze insider buy vs sell ratios, track corporate insider transactions, and identify market sentiment trends with interactive charts.",
       },
+      {
+        name: "keywords",
+        content:
+          "insider trading, SEC Form 4, insider buying, insider selling, corporate insiders, stock market insider transactions, insider trading dashboard, buy sell ratio, insider sentiment, SEC filings",
+      },
+      { property: "og:title", content: "Insider Trading Dashboard — SEC Form 4 Analysis | BTC500" },
+      {
+        property: "og:description",
+        content:
+          "Real-time insider trading data from SEC Form 4 filings. Track insider buy vs sell ratios, transaction values, and identify market sentiment from corporate executives.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://btc500.vercel.app/insider-trading" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "Insider Trading Dashboard — SEC Form 4 Buy vs Sell Analysis",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Insider Trading Dashboard — SEC Form 4 Analysis" },
+      {
+        name: "twitter:description",
+        content: "Real-time SEC insider trading data. Analyze corporate insider buy/sell ratios.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
+    links: [{ rel: "canonical", href: "https://btc500.vercel.app/insider-trading" }],
   }),
 });
 

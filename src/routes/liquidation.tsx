@@ -34,15 +34,45 @@ export const Route = createFileRoute("/liquidation")({
   component: LiquidationPage,
   head: () => ({
     meta: [
-      {
-        title: "BTC Liquidation Dashboard — OI, Funding & Long/Short | BTC500",
-      },
+      { title: "BTC Liquidation Dashboard — Bitcoin Futures OI, Funding & Long/Short | BTC500" },
       {
         name: "description",
         content:
-          "Real-time Bitcoin futures liquidation data: open interest, funding rates, long/short ratios, and taker buy/sell volume from Binance.",
+          "Real-time Bitcoin futures liquidation data: live open interest, funding rates, long/short ratios, taker buy/sell volume and market analysis from Binance Futures. Track BTC liquidations and market sentiment.",
       },
+      {
+        name: "keywords",
+        content:
+          "Bitcoin liquidation, BTC futures, crypto liquidations, open interest Bitcoin, funding rate, long short ratio, BTC perpetual futures, Binance futures, liquidation heatmap, crypto derivatives, Bitcoin OI",
+      },
+      {
+        property: "og:title",
+        content: "BTC Liquidation Dashboard — Live Bitcoin Futures Data | BTC500",
+      },
+      {
+        property: "og:description",
+        content:
+          "Real-time Bitcoin futures liquidation dashboard with OI, funding rates, long/short ratios, taker volume and market situation analysis. Track BTC liquidations live.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://btc500.vercel.app/liquidation" },
+      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      {
+        property: "og:image:alt",
+        content: "BTC Liquidation Dashboard — Live Bitcoin Futures Analysis",
+      },
+      { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "BTC Liquidation Dashboard — Live Bitcoin Futures Data" },
+      {
+        name: "twitter:description",
+        content:
+          "Real-time Bitcoin futures liquidation dashboard with OI, funding rates, and L/S ratios.",
+      },
+      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
     ],
+    links: [{ rel: "canonical", href: "https://btc500.vercel.app/liquidation" }],
   }),
 });
 

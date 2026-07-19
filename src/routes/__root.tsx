@@ -162,6 +162,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "google-site-verification", content: "googlee49c9b6e2a31e9b3" },
+      { name: "msvalidate.01", content: "" },
+      { name: "yandex-verification", content: "" },
       { title: "BTC500 — Buy Bitcoin 500 Days Before Halving | Bitcoin Halving Strategy" },
       {
         name: "description",
@@ -206,6 +209,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "apple-touch-icon", href: "/favicon.svg", sizes: "64x64" },
       { rel: "canonical", href: "https://btc500.vercel.app/" },
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
+      { rel: "manifest", href: "/manifest.json" },
     ],
     scripts: [
       {
