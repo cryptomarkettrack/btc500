@@ -4,10 +4,10 @@ import {
   type InsiderSummary,
   type InsiderTransaction,
 } from "@/lib/insider-trading";
-import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { useState, useMemo } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Search, TrendingUp, TrendingDown, Hash, DollarSign } from "lucide-react";
+import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 
 export const Route = createFileRoute("/insider-trading")({
   component: InsiderTradingPage,

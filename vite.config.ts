@@ -12,4 +12,35 @@ export default defineConfig({
     // nitro/vite builds from this
     server: { entry: "server" },
   },
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          // Split large chunks to avoid mobile browser memory limits
+          manualChunks: (id) => {
+            if (id.includes("node_modules")) {
+              if (id.includes("react") || id.includes("react-dom")) {
+                return "vendor-react";
+              }
+              if (id.includes("@tanstack/react-router") || id.includes("@tanstack/react-query")) {
+                return "vendor-router";
+              }
+              if (id.includes("recharts")) {
+                return "vendor-charts";
+              }
+              if (id.includes("framer-motion")) {
+                return "vendor-animation";
+              }
+              if (id.includes("@radix-ui")) {
+                return "vendor-ui";
+              }
+            }
+            return undefined;
+          },
+        },
+      },
+      // Increase chunk size warning limit since we're intentionally splitting
+      chunkSizeWarningLimit: 1000,
+    },
+  },
 });
