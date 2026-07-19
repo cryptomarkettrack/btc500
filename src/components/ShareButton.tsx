@@ -102,7 +102,7 @@ export function ShareButton({ captureRef }: Props) {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 
       if (isIOS) {
-        // For iOS Safari, show in-page modal with preview and download button
+        // For iOS Safari, show in-page modal with preview and share/download options
         setPreviewUrl(dataUrl);
         setShowPreview(true);
       } else {
@@ -250,15 +250,103 @@ export function ShareButton({ captureRef }: Props) {
               src={previewUrl}
               alt="BTC500 Card Preview"
               className="max-w-full h-auto rounded-lg"
+              style={{ WebkitTapHighlightColor: "transparent" }}
             />
-            <a
-              href={previewUrl}
-              download={`btc500-${new Date().toISOString().slice(0, 10)}.png`}
-              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+            <div className="mt-4 rounded-lg bg-blue-50 p-4">
+              <p className="text-sm font-semibold text-blue-900 mb-2">💾 To save this image:</p>
+              <ol className="text-xs text-blue-700 space-y-1.5">
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold">1.</span>
+                  <span>
+                    <strong>Tap the image</strong> above to open it
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold">2.</span>
+                  <span>
+                    <strong>Long-press</strong> on the image
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold">3.</span>
+                  <span>
+                    Tap <strong>"Share"</strong> or <strong>"Add to Photos"</strong>
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <span className="font-semibold">4.</span>
+                  <span>Save to your device</span>
+                </li>
+              </ol>
+            </div>
+            <button
+              onClick={async (e) => {
+                e.preventDefault();
+
+                // Try Web Share API (works on iOS)
+                try {
+                  const response = await fetch(previewUrl);
+                  const blob = await response.blob();
+                  const file = new File(
+                    [blob],
+                    `btc500-${new Date().toISOString().slice(0, 10)}.png`,
+                    { type: "image/png" },
+                  );
+
+                  if (
+                    navigator.share &&
+                    navigator.canShare &&
+                    navigator.canShare({ files: [file] })
+                  ) {
+                    // This will open the iOS share sheet
+                    await navigator.share({
+                      files: [file],
+                      title: "BTC500 Card",
+                    });
+                  } else {
+                    throw new Error("Web Share not available");
+                  }
+                } catch (shareErr) {
+                  console.log("Share cancelled or not available:", shareErr);
+                  alert(
+                    "To save:\n1. Long-press the image above\n2. Tap 'Share' or 'Add to Photos'\n3. Save to your device",
+                  );
+                }
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700 active:scale-95 transition"
             >
               <Download className="h-4 w-4" />
-              Download Image
-            </a>
+              Share / Save Image
+            </button>
+            <button
+              onClick={async (e) => {
+                e.preventDefault();
+                try {
+                  const response = await fetch(previewUrl);
+                  const blob = await response.blob();
+
+                  // Try native clipboard API
+                  try {
+                    await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+                    alert(
+                      "✓ Image copied to clipboard!\n\nYou can paste it in Messages, Notes, or any app.",
+                    );
+                  } catch (clipboardErr) {
+                    console.error("Clipboard API failed:", clipboardErr);
+                    // Fallback: copy as data URL text
+                    await navigator.clipboard.writeText(previewUrl);
+                    alert("✓ Image URL copied!\n\nPaste it in Messages or Notes to share.");
+                  }
+                } catch (err) {
+                  console.error("Copy failed:", err);
+                  alert("Failed to copy. Please try again.");
+                }
+              }}
+              className="flex w-full items-center justify-center gap-2 rounded-full border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 active:scale-95 transition"
+            >
+              <Copy className="h-4 w-4" />
+              Copy to Clipboard
+            </button>
           </div>
         </div>
       )}
