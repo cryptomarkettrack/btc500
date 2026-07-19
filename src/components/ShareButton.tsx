@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { toCanvas } from "html-to-image";
-import { Download, Copy, Loader2, Check, Code2 } from "lucide-react";
+import { Download, Copy, Loader2, Check, Code2, X } from "lucide-react";
 
 interface Props {
   captureRef: React.RefObject<HTMLDivElement | null>;
@@ -78,6 +78,8 @@ export function ShareButton({ captureRef }: Props) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
   const [iframeCopied, setIframeCopied] = useState(false);
+  const [showPreview, setShowPreview] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
 
   const download = useCallback(async () => {
     const el = captureRef.current;
@@ -100,32 +102,9 @@ export function ShareButton({ captureRef }: Props) {
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
 
       if (isIOS) {
-        // For iOS Safari, open in new tab/window
-        const newWindow = window.open();
-        if (newWindow) {
-          newWindow.document.write(`
-            <html>
-              <head>
-                <title>Download ${fileName}</title>
-                <style>
-                  body { margin: 0; padding: 20px; font-family: -apple-system, sans-serif; text-align: center; }
-                  img { max-width: 100%; height: auto; }
-                  .download-btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #007AFF; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; }
-                </style>
-              </head>
-              <body>
-                <img src="${dataUrl}" alt="BTC500 Card" />
-                <br>
-                <a href="${dataUrl}" download="${fileName}" class="download-btn">Download Image</a>
-              </body>
-            </html>
-          `);
-        } else {
-          // Fallback: show alert if popup was blocked
-          alert(
-            "Please allow popups for this site to download the image, or use the 'Copy image to clipboard' button.",
-          );
-        }
+        // For iOS Safari, show in-page modal with preview and download button
+        setPreviewUrl(dataUrl);
+        setShowPreview(true);
       } else {
         // For other browsers, use the standard download approach
         const link = document.createElement("a");
@@ -203,51 +182,86 @@ export function ShareButton({ captureRef }: Props) {
   }, []);
 
   return (
-    <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-      <button
-        onClick={download}
-        disabled={busy}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 sm:w-auto"
-      >
-        {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
-        Generate today's X card
-      </button>
-      <button
-        onClick={copyToClipboard}
-        disabled={busy}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
-      >
-        {busy ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : copied ? (
-          <>
-            <Check className="h-4 w-4" />
-            Copied!
-          </>
-        ) : (
-          <>
-            <Copy className="h-4 w-4" />
-            Copy image to clipboard
-          </>
-        )}
-      </button>
-      <button
-        onClick={copyIframeCode}
-        disabled={busy}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
-      >
-        {iframeCopied ? (
-          <>
-            <Check className="h-4 w-4" />
-            Copied!
-          </>
-        ) : (
-          <>
-            <Code2 className="h-4 w-4" />
-            Copy embed code
-          </>
-        )}
-      </button>
-    </div>
+    <>
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+        <button
+          onClick={download}
+          disabled={busy}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 sm:w-auto"
+        >
+          {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />}
+          Generate today's X card
+        </button>
+        <button
+          onClick={copyToClipboard}
+          disabled={busy}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+        >
+          {busy ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : copied ? (
+            <>
+              <Check className="h-4 w-4" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Copy className="h-4 w-4" />
+              Copy image to clipboard
+            </>
+          )}
+        </button>
+        <button
+          onClick={copyIframeCode}
+          disabled={busy}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+        >
+          {iframeCopied ? (
+            <>
+              <Check className="h-4 w-4" />
+              Copied!
+            </>
+          ) : (
+            <>
+              <Code2 className="h-4 w-4" />
+              Copy embed code
+            </>
+          )}
+        </button>
+      </div>
+
+      {/* iOS Preview Modal */}
+      {showPreview && previewUrl && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          onClick={() => setShowPreview(false)}
+        >
+          <div
+            className="relative max-h-[90vh] max-w-[90vw] overflow-auto rounded-2xl bg-white p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={() => setShowPreview(false)}
+              className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-black hover:bg-black/20"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <img
+              src={previewUrl}
+              alt="BTC500 Card Preview"
+              className="max-w-full h-auto rounded-lg"
+            />
+            <a
+              href={previewUrl}
+              download={`btc500-${new Date().toISOString().slice(0, 10)}.png`}
+              className="mt-4 flex w-full items-center justify-center gap-2 rounded-full bg-blue-600 px-6 py-3 text-sm font-semibold text-white hover:bg-blue-700"
+            >
+              <Download className="h-4 w-4" />
+              Download Image
+            </a>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
