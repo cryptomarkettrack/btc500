@@ -154,3 +154,68 @@
     color: var(--color-foreground);
   }
 }
+
+/* BTC500 Hero SVG styles */
+.grid-line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.price-line {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.price-fill {
+  fill: url(#fadeGrad);
+}
+
+.halving-rule {
+  stroke: var(--muted-foreground);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 5;
+}
+
+.halving-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  fill: var(--muted-foreground);
+  text-transform: uppercase;
+}
+
+.zone-ring {
+  fill: none;
+  stroke: var(--primary);
+  stroke-width: 2.5;
+}
+
+.zone-fill {
+  fill: var(--primary-soft);
+  opacity: 0.3;
+}
+
+.zone-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 700;
+  font-size: 19px;
+  fill: var(--foreground);
+}
+
+.day-label {
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 600;
+  font-size: 11px;
+  fill: var(--primary);
+  letter-spacing: 0.05em;
+}
+
+.callout-line {
+  stroke: var(--primary);
+  stroke-width: 2;
+  opacity: 0.7;
+}

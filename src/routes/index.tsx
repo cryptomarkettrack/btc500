@@ -27,7 +27,7 @@ import { ShareButton } from "@/components/ShareButton";
 import { ShareCard } from "@/components/ShareCard";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AnimatedNumber } from "@/components/timeline/AnimatedNumber";
+import { Btc500Hero } from "@/components/Btc500Hero";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { getSimulatorData } from "@/lib/simulator.functions";
@@ -222,7 +222,7 @@ function Index() {
           className="flex flex-col gap-6 p-0 sm:p-5"
           style={{ background: "var(--background)" }}
         >
-          <Header price={priceRes.data?.price ?? null} />
+          <Btc500Hero price={priceRes.data?.price ?? null} daysLeft={buyDays} />
 
           {/* Section 1: Waiting to Buy (Main hero card) */}
           <motion.section
@@ -262,13 +262,12 @@ function Index() {
                     Days Left
                   </div>
                   <div className="mt-2 flex items-baseline gap-3">
-                    <AnimatedNumber
-                      value={buyDays}
-                      initialValue={500}
+                    <span
                       className="text-[8rem] font-bold leading-[0.9] tracking-tighter sm:text-[10rem]"
-                      decimals={0}
                       style={{ color: buyAccent }}
-                    />
+                    >
+                      {buyDays.toLocaleString()}
+                    </span>
                   </div>
 
                   <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-muted">
@@ -701,12 +700,13 @@ function Pending() {
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
         <div className="flex flex-col gap-6 p-0 sm:p-5">
           {/* Header skeleton */}
-          <header className="mb-8 text-center sm:mb-12">
-            <div className="flex items-center justify-center gap-4">
-              <Skeleton className="h-14 w-14 rounded-full" />
-              <Skeleton className="h-14 w-48 rounded-lg" />
+          <header className="mb-4 text-center sm:mb-6">
+            <div className="flex flex-col items-center gap-2">
+              <Skeleton className="h-5 w-40 rounded-full" />
+              <Skeleton className="h-10 w-56 rounded-lg" />
+              <Skeleton className="h-20 w-full max-w-[300px] rounded-lg" />
+              <Skeleton className="h-5 w-20 rounded-full" />
             </div>
-            <Skeleton className="mx-auto mt-4 h-6 w-80 rounded-md" />
           </header>
 
           {/* Main hero card skeleton */}
@@ -785,26 +785,6 @@ function Pending() {
         <Skeleton className="mx-auto mt-16 h-4 w-96 rounded-md" />
       </main>
     </div>
-  );
-}
-
-function Header({ price }: { price: number | null }) {
-  return (
-    <header className="mb-8 text-center sm:mb-12">
-      <div className="flex items-center justify-center gap-4">
-        <BtcLogo size={56} />
-        <h1 className="text-5xl font-bold tracking-tight sm:text-6xl">BTC 500</h1>
-      </div>
-      <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
-        Buy 500 days before halving. Sell 500 days after halving.
-      </p>
-      {price && (
-        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-muted/80 px-4 py-1.5">
-          <span className="text-xs text-muted-foreground">BTC</span>
-          <span className="text-sm font-bold">{formatUsd(price)}</span>
-        </div>
-      )}
-    </header>
   );
 }
 
