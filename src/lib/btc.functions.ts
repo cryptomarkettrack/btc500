@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 
 // Known past halvings
 const HALVING_BLOCKS = [210000, 420000, 630000, 840000, 1050000, 1260000, 1470000];
@@ -45,7 +46,11 @@ export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async ()
   };
 });
 
-export const getBtcPrice = createServerFn({ method: "GET" }).handler(async () => {
+/**
+ * Internal function that actually fetches BTC price from external providers.
+ * Tries Binance → CoinGecko → Coinbase → Kraken in order.
+ */
+async function fetchBtcPriceFromProviders(): Promise<{ price: number; ts: number }> {
   const sources: Array<() => Promise<number>> = [
     async () => {
       const r = await fetch("https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT", {
@@ -85,4 +90,11 @@ export const getBtcPrice = createServerFn({ method: "GET" }).handler(async () =>
     } catch {}
   }
   throw new Error("btc-price-unavailable");
+}
+
+export const getBtcPrice = createServerFn({ method: "GET" }).handler(async () => {
+  return fetchWithCache(CacheKeys.btcPrice(), () => fetchBtcPriceFromProviders(), {
+    ttl: TTL.LIVE_PRICE,
+    staleWhileRevalidate: true,
+  });
 });

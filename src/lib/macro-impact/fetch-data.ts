@@ -1,4 +1,5 @@
 import type { MacroRelease, MacroIndicator, BinanceKline } from "./types";
+import { fetchWithCache, CacheKeys, TTL } from "../price-cache";
 
 // ─── Caching ─────────────────────────────────────────────────────────────────
 const dataCache = new Map<string, { data: unknown; timestamp: number }>();
@@ -264,11 +265,11 @@ function createHourlyKlinesFromCsv(
  *   ["startTime", "open", "high", "low", "close", "volume", "turnover"]
  * ]
  */
-export async function fetchBTCMonthlyKlines(year: number, month: number): Promise<BinanceKline[]> {
-  const cacheKey = `btc_kline_${year}_${month}`;
-  const cached = klineCache.get(cacheKey);
-  if (cached) return cached;
-
+/**
+ * Internal function that actually fetches monthly klines from Bybit (with CSV fallback).
+ * This is wrapped by fetchWithCache in the exported function.
+ */
+async function fetchBTCMonthlyKlinesInternal(year: number, month: number): Promise<BinanceKline[]> {
   const start = Date.UTC(year, month - 1, 1);
   const end = Date.UTC(year, month, 1);
 
@@ -299,7 +300,7 @@ export async function fetchBTCMonthlyKlines(year: number, month: number): Promis
     // Bybit returns newest-first, reverse to get chronological order
     raw.reverse();
 
-    const klines: BinanceKline[] = raw.map((k) => ({
+    return raw.map((k) => ({
       openTime: parseInt(k[0], 10),
       open: parseFloat(k[1]),
       high: parseFloat(k[2]),
@@ -312,9 +313,6 @@ export async function fetchBTCMonthlyKlines(year: number, month: number): Promis
       takerBuyBaseAssetVolume: 0,
       takerBuyQuoteAssetVolume: 0,
     }));
-
-    klineCache.set(cacheKey, klines);
-    return klines;
   } catch (error) {
     // Fall back to CSV data when Bybit API is unavailable
     console.warn(`[BTC] Falling back to CSV for ${year}-${String(month).padStart(2, "0")}`);
@@ -331,9 +329,16 @@ export async function fetchBTCMonthlyKlines(year: number, month: number): Promis
     console.log(
       `[BTC] CSV fallback produced ${csvKlines.length} hourly klines for ${year}-${String(month).padStart(2, "0")}`,
     );
-    klineCache.set(cacheKey, csvKlines);
     return csvKlines;
   }
+}
+
+export async function fetchBTCMonthlyKlines(year: number, month: number): Promise<BinanceKline[]> {
+  return fetchWithCache(
+    CacheKeys.monthlyKlines(year, month),
+    () => fetchBTCMonthlyKlinesInternal(year, month),
+    { ttl: TTL.MONTHLY_KLINES, staleWhileRevalidate: true },
+  );
 }
 
 export async function fetchBTCRange(startDate: Date, endDate: Date): Promise<BinanceKline[]> {

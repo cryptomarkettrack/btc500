@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getBtcPriceFromCsv } from "./csv-price-loader";
+import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 
 // Known halving dates (approximate, based on block heights)
 const HALVINGS: Array<{ date: string; block: number; label: string }> = [
@@ -39,22 +40,15 @@ function dateToMs(dateStr: string): number {
   return new Date(dateStr + "T00:00:00Z").getTime();
 }
 
-async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
-  const logTag = `[fetchBtcPriceOnDate ${dateStr}]`;
-
-  // First, try to get price from CSV for dates before 2016-07-12
-  const csvPrice = await getBtcPriceFromCsv(dateStr);
-  if (csvPrice !== null) {
-    return csvPrice;
-  }
-
-  // If not in CSV or date is on/after 2016-07-12, use Bitstamp
-  // Target date as start-of-day Unix seconds (Bitstamp timestamps are in seconds)
+/**
+ * Internal function that actually fetches a single historical price from Bitstamp.
+ * CSV prices are handled separately (they're always cached locally).
+ */
+async function fetchBtcPriceFromBitstamp(dateStr: string): Promise<number | null> {
+  const logTag = `[fetchBtcPriceFromBitstamp ${dateStr}]`;
   const targetUnixSeconds = Math.floor(dateToMs(dateStr) / 1000);
 
   try {
-    // Bitstamp OHLC returns daily candles. Use `start` and `end` to narrow
-    // the window to ±1 day around the target, so we only get the relevant candle(s).
     const start = targetUnixSeconds - 86400;
     const end = targetUnixSeconds + 86400;
     const url = `https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=86400&limit=1000&start=${start}&end=${end}`;
@@ -85,7 +79,6 @@ async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
       return null;
     }
 
-    // Find the candle whose timestamp falls within 1 day of the target date
     const TOLERANCE_S = 86400;
     const candle = ohlc.find((c) => {
       const ts = parseInt(c.timestamp, 10);
@@ -115,30 +108,51 @@ async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
   }
 }
 
-export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {
-  const cycles: CycleResult[] = [];
-
-  for (const halving of HALVINGS) {
-    const buyDate = addDays(halving.date, -500);
-    const sellDate = addDays(halving.date, 500);
-
-    const [buyPrice, sellPrice] = await Promise.all([
-      fetchBtcPriceOnDate(buyDate),
-      fetchBtcPriceOnDate(sellDate),
-    ]);
-
-    cycles.push({
-      label: halving.label,
-      halvingDate: halving.date,
-      buyDate,
-      sellDate,
-      buyPrice,
-      sellPrice,
-      returnMultiplier: buyPrice && sellPrice ? sellPrice / buyPrice : null,
-      returnPercent: buyPrice && sellPrice ? ((sellPrice - buyPrice) / buyPrice) * 100 : null,
-      profit: null, // computed client-side based on user input
-    });
+async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
+  // First, try to get price from CSV for dates before 2016-07-12
+  const csvPrice = await getBtcPriceFromCsv(dateStr);
+  if (csvPrice !== null) {
+    return csvPrice;
   }
 
-  return { cycles };
+  // For Bitstamp fetches, use the centralized cache
+  return fetchWithCache(
+    CacheKeys.historicalPrice(dateStr),
+    () => fetchBtcPriceFromBitstamp(dateStr),
+    { ttl: TTL.HISTORICAL_PRICE, staleWhileRevalidate: false },
+  );
+}
+
+export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {
+  return fetchWithCache(
+    CacheKeys.simulator(),
+    async () => {
+      const cycles: CycleResult[] = [];
+
+      for (const halving of HALVINGS) {
+        const buyDate = addDays(halving.date, -500);
+        const sellDate = addDays(halving.date, 500);
+
+        const [buyPrice, sellPrice] = await Promise.all([
+          fetchBtcPriceOnDate(buyDate),
+          fetchBtcPriceOnDate(sellDate),
+        ]);
+
+        cycles.push({
+          label: halving.label,
+          halvingDate: halving.date,
+          buyDate,
+          sellDate,
+          buyPrice,
+          sellPrice,
+          returnMultiplier: buyPrice && sellPrice ? sellPrice / buyPrice : null,
+          returnPercent: buyPrice && sellPrice ? ((sellPrice - buyPrice) / buyPrice) * 100 : null,
+          profit: null, // computed client-side based on user input
+        });
+      }
+
+      return { cycles };
+    },
+    { ttl: TTL.SIMULATOR, staleWhileRevalidate: false },
+  );
 });

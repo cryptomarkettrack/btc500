@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 
 // --- Retry / timeout configuration ---
 const MAX_RETRIES = 3;
@@ -528,5 +529,8 @@ async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
 }
 
 export const getLiquidationData = createServerFn({ method: "GET" }).handler(async () => {
-  return fetchLiquidationDataInternal();
+  return fetchWithCache(CacheKeys.liquidation(), () => fetchLiquidationDataInternal(), {
+    ttl: TTL.LIQUIDATION,
+    staleWhileRevalidate: true,
+  });
 });

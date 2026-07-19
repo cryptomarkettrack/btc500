@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getBtcPricesFromCsvRange } from "./csv-price-loader";
 import { getHalvingInfo } from "./btc.functions";
+import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 
 // Known halving dates (approximate, based on block heights)
 const HALVINGS: Array<{ date: string; block: number; label: string }> = [
@@ -116,19 +117,14 @@ async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
   }
 }
 
-async function fetchBtcPricesForRange(
+/**
+ * Internal function that actually fetches a range of prices from Bitstamp.
+ */
+async function fetchBtcPricesForRangeFromBitstamp(
   startDate: string,
   endDate: string,
 ): Promise<Map<string, number>> {
   const priceMap = new Map<string, number>();
-
-  // First, get prices from CSV for dates before 2016-07-12
-  const csvPrices = await getBtcPricesFromCsvRange(startDate, endDate);
-  for (const [date, price] of csvPrices) {
-    priceMap.set(date, price);
-  }
-
-  // Then, fetch from Bitstamp for dates on or after 2016-07-12
   const csvCutoff = "2016-07-12";
   const bitstampStart = startDate >= csvCutoff ? startDate : csvCutoff;
 
@@ -136,7 +132,6 @@ async function fetchBtcPricesForRange(
     const start = new Date(bitstampStart + "T00:00:00Z");
     const end = new Date(endDate + "T00:00:00Z");
 
-    // Fetch entire range in a single request using Bitstamp OHLC API
     const startUnix = Math.floor(start.getTime() / 1000);
     const endUnix = Math.floor(end.getTime() / 1000);
     const url = `https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=86400&limit=1000&start=${startUnix}&end=${endUnix}`;
@@ -190,7 +185,40 @@ async function fetchBtcPricesForRange(
   return priceMap;
 }
 
-export const getTimelineData = createServerFn({ method: "GET" }).handler(async () => {
+async function fetchBtcPricesForRange(
+  startDate: string,
+  endDate: string,
+): Promise<Map<string, number>> {
+  const priceMap = new Map<string, number>();
+
+  // First, get prices from CSV for dates before 2016-07-12 (CSV is always locally cached)
+  const csvPrices = await getBtcPricesFromCsvRange(startDate, endDate);
+  for (const [date, price] of csvPrices) {
+    priceMap.set(date, price);
+  }
+
+  // For Bitstamp range fetches, use the centralized cache
+  const csvCutoff = "2016-07-12";
+  const bitstampStart = startDate >= csvCutoff ? startDate : csvCutoff;
+
+  if (bitstampStart <= endDate) {
+    const bitstampPrices = await fetchWithCache(
+      CacheKeys.historicalRange(bitstampStart, endDate),
+      () => fetchBtcPricesForRangeFromBitstamp(bitstampStart, endDate),
+      { ttl: TTL.HISTORICAL_RANGE, staleWhileRevalidate: false },
+    );
+    for (const [date, price] of bitstampPrices) {
+      priceMap.set(date, price);
+    }
+  }
+
+  return priceMap;
+}
+
+/**
+ * Internal function that builds the full timeline data.
+ */
+async function buildTimelineDataInternal(): Promise<TimelineData> {
   const halvingInfo = await getHalvingInfo();
   const nextHalvingDate = new Date(halvingInfo.nextHalvingDate).toISOString().split("T")[0];
   const today = new Date().toISOString().split("T")[0];
@@ -338,4 +366,11 @@ export const getTimelineData = createServerFn({ method: "GET" }).handler(async (
       sellPrice: prevSellPrice,
     },
   };
+}
+
+export const getTimelineData = createServerFn({ method: "GET" }).handler(async () => {
+  return fetchWithCache(CacheKeys.timeline(), () => buildTimelineDataInternal(), {
+    ttl: TTL.TIMELINE,
+    staleWhileRevalidate: true,
+  });
 });
