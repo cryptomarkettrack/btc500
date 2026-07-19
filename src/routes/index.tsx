@@ -24,7 +24,7 @@ import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { ProgressRing } from "@/components/ProgressRing";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
-import { ShareCard } from "@/components/ShareCard";
+import { ChartShareCard } from "@/components/ChartShareCard";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Btc500Hero } from "@/components/Btc500Hero";
@@ -162,7 +162,7 @@ function Index() {
   const simulatorRes = useQuery(simulatorPreviewQuery);
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
-  const shareCardRef = useRef<HTMLDivElement>(null);
+  const chartShareCardRef = useRef<HTMLDivElement>(null);
 
   const cycle = computeCycle(
     now,
@@ -684,11 +684,16 @@ function Index() {
 
       {/* Hidden share card for social media image generation */}
       <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
-        <ShareCard ref={shareCardRef} cycle={cycle} />
+        <ChartShareCard
+          ref={chartShareCardRef}
+          cycle={cycle}
+          price={priceRes.data?.price ?? null}
+          daysLeft={buyDays}
+        />
       </div>
 
       <div className="mt-16 flex justify-center px-6 pb-12">
-        <ShareButton captureRef={shareCardRef} />
+        <ShareButton captureRef={chartShareCardRef} />
       </div>
     </div>
   );
