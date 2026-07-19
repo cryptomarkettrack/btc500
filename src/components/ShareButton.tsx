@@ -92,10 +92,47 @@ export function ShareButton({ captureRef }: Props) {
         cacheBust: true,
         backgroundColor: "#fff",
       });
-      const link = document.createElement("a");
-      link.download = `btc500-${new Date().toISOString().slice(0, 10)}.png`;
-      link.href = canvas.toDataURL("image/png");
-      link.click();
+
+      const dataUrl = canvas.toDataURL("image/png");
+      const fileName = `btc500-${new Date().toISOString().slice(0, 10)}.png`;
+
+      // Check if we're on iOS Safari
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+
+      if (isIOS) {
+        // For iOS Safari, open in new tab/window
+        const newWindow = window.open();
+        if (newWindow) {
+          newWindow.document.write(`
+            <html>
+              <head>
+                <title>Download ${fileName}</title>
+                <style>
+                  body { margin: 0; padding: 20px; font-family: -apple-system, sans-serif; text-align: center; }
+                  img { max-width: 100%; height: auto; }
+                  .download-btn { display: inline-block; margin-top: 20px; padding: 12px 24px; background: #007AFF; color: white; text-decoration: none; border-radius: 8px; font-weight: 500; }
+                </style>
+              </head>
+              <body>
+                <img src="${dataUrl}" alt="BTC500 Card" />
+                <br>
+                <a href="${dataUrl}" download="${fileName}" class="download-btn">Download Image</a>
+              </body>
+            </html>
+          `);
+        } else {
+          // Fallback: show alert if popup was blocked
+          alert(
+            "Please allow popups for this site to download the image, or use the 'Copy image to clipboard' button.",
+          );
+        }
+      } else {
+        // For other browsers, use the standard download approach
+        const link = document.createElement("a");
+        link.download = fileName;
+        link.href = dataUrl;
+        link.click();
+      }
     } finally {
       restore();
       setBusy(false);

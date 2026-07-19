@@ -224,6 +224,11 @@ function Index() {
         >
           <Btc500Hero price={priceRes.data?.price ?? null} daysLeft={buyDays} />
 
+          {/* Share Card Export Buttons */}
+          <div className="flex justify-center px-6">
+            <ShareButton captureRef={chartShareCardRef} />
+          </div>
+
           {/* Section 1: Waiting to Buy (Main hero card) */}
           <motion.section
             initial={{ y: 12 }}
@@ -690,10 +695,6 @@ function Index() {
           price={priceRes.data?.price ?? null}
           daysLeft={buyDays}
         />
-      </div>
-
-      <div className="mt-16 flex justify-center px-6 pb-12">
-        <ShareButton captureRef={chartShareCardRef} />
       </div>
     </div>
   );
