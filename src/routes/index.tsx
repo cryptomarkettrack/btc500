@@ -1,7 +1,24 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import { Calendar, Clock, TrendingUp, Layers } from "lucide-react";
+import {
+  Calendar,
+  Clock,
+  TrendingUp,
+  Layers,
+  Calculator,
+  BookOpen,
+  BarChart3,
+  Flame,
+  Newspaper,
+  TrendingDown,
+  ArrowRight,
+  Target,
+  Shield,
+  Zap,
+  DollarSign,
+  LineChart,
+} from "lucide-react";
 import { getHalvingInfo, getBtcPrice } from "@/lib/btc.functions";
 import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { ProgressRing } from "@/components/ProgressRing";
@@ -12,6 +29,9 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AnimatedNumber } from "@/components/timeline/AnimatedNumber";
 import { useEffect, useRef, useState } from "react";
+import { Link } from "@tanstack/react-router";
+import { getSimulatorData } from "@/lib/simulator.functions";
+import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
 
 const halvingQuery = queryOptions({
   queryKey: ["halving"],
@@ -25,6 +45,13 @@ const priceQuery = queryOptions({
   queryFn: () => getBtcPrice(),
   staleTime: 60_000,
   refetchInterval: 60_000,
+});
+
+const simulatorPreviewQuery = queryOptions({
+  queryKey: ["simulator-preview"],
+  queryFn: () => getSimulatorData(),
+  staleTime: 60 * 60_000,
+  refetchInterval: 60 * 60_000,
 });
 
 const homePageSchema = {
@@ -102,7 +129,11 @@ export const Route = createFileRoute("/")({
       },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(halvingQuery),
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData(halvingQuery);
+    // Pre-fetch simulator data for the preview section
+    context.queryClient.prefetchQuery(simulatorPreviewQuery);
+  },
   component: Index,
   pendingComponent: Pending,
   errorComponent: ({ error }) => (
@@ -128,6 +159,7 @@ function useNow(intervalMs = 60_000) {
 function Index() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(priceQuery);
+  const simulatorRes = useQuery(simulatorPreviewQuery);
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
   const shareCardRef = useRef<HTMLDivElement>(null);
@@ -169,6 +201,19 @@ function Index() {
   const sellElapsed = sellTotalDays - sellDays;
   const sellProgress = cycle.sellProgress;
 
+  // Get latest articles
+  const latestArticles = getArticlesSorted().slice(0, 3);
+
+  // Calculate historical returns from simulator data for the preview
+  const completedCycles =
+    simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
+  const bestCycle =
+    completedCycles.length > 0
+      ? completedCycles.reduce((best, c) =>
+          c.returnMultiplier! > best.returnMultiplier! ? c : best,
+        )
+      : null;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
@@ -177,7 +222,7 @@ function Index() {
           className="flex flex-col gap-6 p-0 sm:p-5"
           style={{ background: "var(--background)" }}
         >
-          <Header />
+          <Header price={priceRes.data?.price ?? null} />
 
           {/* Section 1: Waiting to Buy (Main hero card) */}
           <motion.section
@@ -361,6 +406,277 @@ function Index() {
           </motion.section>
         </div>
 
+        {/* ===== HOW IT WORKS SECTION ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+        >
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How BTC500 Works</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+              A dead-simple, rules-based Bitcoin investment strategy built around the halving cycle.
+              No charts, no TA, no emotions.
+            </p>
+          </div>
+
+          <div className="grid gap-6 sm:grid-cols-3">
+            <HowItWorksCard
+              icon={Target}
+              step="1"
+              title="Buy 500 Days Before"
+              description="Set your buy order exactly 500 days before the next halving. The countdown above tells you exactly when."
+              accent="var(--primary)"
+              accentSoft="var(--primary-soft)"
+            />
+            <HowItWorksCard
+              icon={Zap}
+              step="2"
+              title="Hold Through Halving"
+              description="Hold your position as the halving event passes. This is where the magic happens — reduced supply meets sustained demand."
+              accent="var(--info)"
+              accentSoft="oklch(0.95 0.04 240)"
+            />
+            <HowItWorksCard
+              icon={Shield}
+              step="3"
+              title="Sell 500 Days After"
+              description="Exit exactly 500 days after halving. Lock in profits and wait for the next cycle. Rinse and repeat every ~4 years."
+              accent="var(--success)"
+              accentSoft="var(--success-soft)"
+            />
+          </div>
+        </motion.section>
+
+        {/* ===== HISTORICAL RETURNS PREVIEW ===== */}
+        {completedCycles.length > 0 && (
+          <motion.section
+            initial={{ y: 12, opacity: 0 }}
+            whileInView={{ y: 0, opacity: 1 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-20"
+          >
+            <div className="mb-8 text-center">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Historical Performance
+              </h2>
+              <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+                The BTC500 strategy has delivered exceptional returns across every halving cycle
+                since 2012.
+              </p>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {completedCycles.map((cycle, i) => (
+                <motion.div
+                  key={cycle.label}
+                  initial={{ y: 12, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: i * 0.08 }}
+                  className="rounded-[24px] border border-border/60 bg-card p-5"
+                >
+                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {cycle.label}
+                  </div>
+                  <div className="mt-3 space-y-2 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Buy Price</span>
+                      <span className="font-semibold">
+                        {cycle.buyPrice ? formatUsd(cycle.buyPrice) : "—"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Sell Price</span>
+                      <span className="font-semibold">
+                        {cycle.sellPrice ? formatUsd(cycle.sellPrice) : "—"}
+                      </span>
+                    </div>
+                    <div className="border-t border-border/40 pt-2">
+                      <div className="flex justify-between">
+                        <span className="text-muted-foreground">Return</span>
+                        <span
+                          className="font-bold"
+                          style={{
+                            color:
+                              cycle.returnPercent && cycle.returnPercent > 0
+                                ? "var(--success)"
+                                : "var(--destructive)",
+                          }}
+                        >
+                          {cycle.returnPercent !== null
+                            ? `${cycle.returnPercent > 0 ? "+" : ""}${cycle.returnPercent.toFixed(0)}%`
+                            : "—"}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="mt-6 text-center">
+              <Link
+                to="/simulator"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+              >
+                <Calculator className="h-4 w-4" />
+                Calculate Your Returns
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </motion.section>
+        )}
+
+        {/* ===== FEATURE CARDS — EXPLORE TOOLS ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+        >
+          <div className="mb-10 text-center">
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Explore All Tools</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+              Go beyond the countdown. Dive deeper into Bitcoin data, strategy, and market insights.
+            </p>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            <FeatureCard
+              to="/simulator"
+              icon={Calculator}
+              title="Investment Simulator"
+              description="See exactly how much you'd have earned using the BTC500 strategy across every halving cycle since 2012."
+              accent="var(--primary)"
+              accentSoft="var(--primary-soft)"
+            />
+            <FeatureCard
+              to="/timeline"
+              icon={LineChart}
+              title="Time Machine"
+              description="Replay any day in Bitcoin's halving history. Watch prices evolve in real-time through an interactive timeline."
+              accent="var(--info)"
+              accentSoft="oklch(0.95 0.04 240)"
+            />
+            <FeatureCard
+              to="/articles"
+              icon={BookOpen}
+              title="Strategy Articles"
+              description="Deep dives into the BTC500 strategy, NUPL/RUPL indicators, on-chain analysis, and more."
+              accent="var(--success)"
+              accentSoft="var(--success-soft)"
+            />
+            <FeatureCard
+              to="/macro-impact"
+              icon={BarChart3}
+              title="Macro Impact (CPI/PPI)"
+              description="Track how CPI, PPI, and Fed rate decisions correlate with Bitcoin price movements."
+              accent="oklch(0.65 0.15 240)"
+              accentSoft="oklch(0.95 0.04 240)"
+            />
+            <FeatureCard
+              to="/insider-trading"
+              icon={TrendingUp}
+              title="Insider Trading Tracker"
+              description="Monitor insider transactions at major crypto companies. See who's buying and selling."
+              accent="oklch(0.65 0.15 155)"
+              accentSoft="oklch(0.95 0.04 155)"
+            />
+            <FeatureCard
+              to="/liquidation"
+              icon={Flame}
+              title="Liquidation Dashboard"
+              description="Track real-time crypto liquidations across exchanges. See where leverage is getting wiped out."
+              accent="oklch(0.577 0.245 27.325)"
+              accentSoft="oklch(0.95 0.04 30)"
+            />
+          </div>
+        </motion.section>
+
+        {/* ===== LATEST ARTICLES ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+        >
+          <div className="mb-8 flex items-center justify-between">
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Latest Articles</h2>
+              <p className="mt-2 text-muted-foreground">In-depth analysis and strategy guides.</p>
+            </div>
+            <Link
+              to="/articles"
+              className="hidden items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/80 sm:inline-flex"
+            >
+              View all
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+
+          <div className="grid gap-4 sm:grid-cols-3">
+            {latestArticles.map((article, i) => (
+              <ArticleCard key={article.id} article={article} index={i} />
+            ))}
+          </div>
+
+          <div className="mt-6 text-center sm:hidden">
+            <Link
+              to="/articles"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+            >
+              View all articles
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </motion.section>
+
+        {/* ===== FINAL CTA ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+        >
+          <div className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-10 text-center shadow-sm sm:p-16">
+            <div className="pointer-events-none absolute -left-16 -top-16 opacity-[0.04]">
+              <BtcLogo size={300} />
+            </div>
+            <div className="relative z-10">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+                Ready to Master the Halving Cycle?
+              </h2>
+              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
+                The BTC500 strategy gives you a clear, data-backed plan. No guesswork, no FOMO, no
+                emotional trading. Just a proven system.
+              </p>
+              <div className="mt-8 flex flex-wrap justify-center gap-3">
+                <Link
+                  to="/simulator"
+                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+                >
+                  <Calculator className="h-4 w-4" />
+                  Try the Simulator
+                </Link>
+                <Link
+                  to="/articles"
+                  className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+                >
+                  <BookOpen className="h-4 w-4" />
+                  Read the Strategy
+                </Link>
+              </div>
+            </div>
+          </div>
+        </motion.section>
+
         <p className="mt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
           Binance, CoinGecko, Coinbase & Kraken.
@@ -369,7 +685,7 @@ function Index() {
 
       {/* Hidden share card for social media image generation */}
       <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
-        <ShareCard ref={shareCardRef} cycle={cycle} price={priceRes.data?.price ?? null} />
+        <ShareCard ref={shareCardRef} cycle={cycle} />
       </div>
 
       <div className="mt-16 flex justify-center px-6 pb-12">
@@ -472,7 +788,7 @@ function Pending() {
   );
 }
 
-function Header() {
+function Header({ price }: { price: number | null }) {
   return (
     <header className="mb-8 text-center sm:mb-12">
       <div className="flex items-center justify-center gap-4">
@@ -482,6 +798,12 @@ function Header() {
       <p className="mx-auto mt-4 max-w-xl text-base text-muted-foreground sm:text-lg">
         Buy 500 days before halving. Sell 500 days after halving.
       </p>
+      {price && (
+        <div className="mt-3 inline-flex items-center gap-2 rounded-full bg-muted/80 px-4 py-1.5">
+          <span className="text-xs text-muted-foreground">BTC</span>
+          <span className="text-sm font-bold">{formatUsd(price)}</span>
+        </div>
+      )}
     </header>
   );
 }
@@ -494,5 +816,110 @@ function MiniStat({ label, value }: { label: string; value: string }) {
       </div>
       <div className="mt-1 text-sm font-semibold">{value}</div>
     </div>
+  );
+}
+
+function HowItWorksCard({
+  icon: Icon,
+  step,
+  title,
+  description,
+  accent,
+  accentSoft,
+}: {
+  icon: React.ElementType;
+  step: string;
+  title: string;
+  description: string;
+  accent: string;
+  accentSoft: string;
+}) {
+  return (
+    <div className="rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
+      <div className="mb-4 flex items-center gap-3">
+        <span
+          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"
+          style={{ background: accentSoft, color: accent }}
+        >
+          {step}
+        </span>
+        <Icon className="h-5 w-5" style={{ color: accent }} />
+      </div>
+      <h3 className="text-lg font-semibold">{title}</h3>
+      <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+    </div>
+  );
+}
+
+function FeatureCard({
+  to,
+  icon: Icon,
+  title,
+  description,
+  accent,
+  accentSoft,
+}: {
+  to: string;
+  icon: React.ElementType;
+  title: string;
+  description: string;
+  accent: string;
+  accentSoft: string;
+}) {
+  return (
+    <Link to={to}>
+      <motion.div
+        whileHover={{ y: -2 }}
+        className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
+      >
+        <span
+          className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full"
+          style={{ background: accentSoft }}
+        >
+          <Icon className="h-5 w-5" style={{ color: accent }} />
+        </span>
+        <h3 className="text-base font-semibold group-hover:text-primary transition-colors">
+          {title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+        <div
+          className="mt-4 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider"
+          style={{ color: accent }}
+        >
+          Explore
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        </div>
+      </motion.div>
+    </Link>
+  );
+}
+
+function ArticleCard({ article, index }: { article: ArticleMeta; index: number }) {
+  return (
+    <Link to={`/articles/${article.slug}` as "/articles/btc500-strategy"}>
+      <motion.div
+        initial={{ y: 12, opacity: 0 }}
+        whileInView={{ y: 0, opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.08 }}
+        className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
+      >
+        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+          <span>{article.articleSection}</span>
+          <span>·</span>
+          <span>{article.readTime}</span>
+        </div>
+        <h3 className="mt-3 text-base font-semibold leading-snug group-hover:text-primary transition-colors">
+          {article.title}
+        </h3>
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+          {article.description}
+        </p>
+        <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary">
+          Read article
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        </div>
+      </motion.div>
+    </Link>
   );
 }

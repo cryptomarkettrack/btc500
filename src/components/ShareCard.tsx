@@ -5,19 +5,11 @@ import { BtcLogo } from "./BtcLogo";
 
 interface Props {
   cycle: CycleInfo;
-  price?: number | null;
-  investment?: number;
 }
 
-export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
-  { cycle, price, investment = 50000 },
-  ref,
-) {
+export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ cycle }, ref) {
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
-  const value = sell && price ? (investment / 60000) * price : 0;
-  const pnl = value - investment;
-  const pnlPct = investment ? (pnl / investment) * 100 : 0;
 
   const primaryColor = "#f97316";
   const sellColor = "#16a34a";
@@ -39,11 +31,12 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
         height: 1350,
         fontFamily: "'Inter', system-ui, sans-serif",
         background: "#fff",
-        borderRadius: 0,
+        borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
+        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
       }}
     >
       {/* Full-height accent stripe on the left */}
@@ -82,7 +75,19 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
         {/* Header row */}
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <BtcLogo size={52} color="#000" />
+            <div
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 52,
+                height: 52,
+                borderRadius: "50%",
+                background: accentSoft,
+              }}
+            >
+              <BtcLogo size={28} color={accent} />
+            </div>
             <div>
               <div
                 style={{
@@ -93,6 +98,16 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
                 }}
               >
                 BTC 500
+              </div>
+              <div
+                style={{
+                  fontSize: 13,
+                  fontWeight: 500,
+                  color: "#64748b",
+                  marginTop: 2,
+                }}
+              >
+                Halving Cycle Strategy
               </div>
             </div>
           </div>
@@ -229,73 +244,6 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard(
             <span style={{ fontWeight: 600, color: "#475569" }}>{totalDays} days total</span>
           </div>
         </div>
-
-        {/* Sell stats badge */}
-        {sell && price ? (
-          <div
-            style={{
-              marginTop: 28,
-              display: "flex",
-              gap: 32,
-              fontSize: 24,
-              color: "#334155",
-              background: accentBg,
-              borderRadius: 16,
-              padding: "16px 28px",
-              border: `1px solid ${accentSoft}`,
-            }}
-          >
-            <div>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "#64748b",
-                  marginBottom: 2,
-                }}
-              >
-                Value
-              </div>
-              <div style={{ fontWeight: 700 }}>{formatUsd(value)}</div>
-            </div>
-            <div style={{ width: 1, background: accentSoft }} />
-            <div>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "#64748b",
-                  marginBottom: 2,
-                }}
-              >
-                Profit
-              </div>
-              <div style={{ fontWeight: 700, color: sellColor }}>
-                +{formatUsd(pnl)} ({pnlPct.toFixed(0)}%)
-              </div>
-            </div>
-            <div style={{ width: 1, background: accentSoft }} />
-            <div>
-              <div
-                style={{
-                  fontSize: 11,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "#64748b",
-                  marginBottom: 2,
-                }}
-              >
-                BTC Price
-              </div>
-              <div style={{ fontWeight: 700 }}>{formatUsd(price)}</div>
-            </div>
-          </div>
-        ) : null}
       </div>
 
       {/* ========== BOTTOM BAR ========== */}
