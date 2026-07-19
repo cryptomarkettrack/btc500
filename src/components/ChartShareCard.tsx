@@ -215,16 +215,6 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 <stop offset="0%" stopColor={primaryColor} stopOpacity="0.14" />
                 <stop offset="100%" stopColor={primaryColor} stopOpacity="0" />
               </linearGradient>
-              {daysLeft <= 500 && daysLeft > 0 && (
-                <clipPath id="shareClipLeft">
-                  <rect x="0" y="0" width={currentX} height="460" />
-                </clipPath>
-              )}
-              {daysLeft <= 500 && daysLeft > 0 && (
-                <clipPath id="shareClipRight">
-                  <rect x={currentX} y="0" width={900 - currentX} height="460" />
-                </clipPath>
-              )}
             </defs>
 
             {/* Subtle horizontal grid */}
@@ -233,100 +223,34 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
             <line x1="0" y1="340" x2="900" y2="340" stroke="#e2e8f0" strokeWidth="1" />
 
             {/* Realistic-ish BTC path */}
-            {daysLeft <= 500 && daysLeft > 0 ? (
-              <>
-                {/* Faded right side (after "we are here") */}
-                <g clipPath="url(#shareClipRight)" opacity="0.25">
-                  <path
-                    d="
-                      M 10 380
-                      L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                      L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                      L 340 300 L 370 278 L 400 286 L 430 250
-                      L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                      L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                      L 760 150 L 790 175 L 820 210 L 850 235 L 890 260
-                      L 890 460 L 10 460 Z"
-                    fill="url(#chartFadeGrad)"
-                  />
-                  <path
-                    d="
-                      M 10 380
-                      L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                      L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                      L 340 300 L 370 278 L 400 286 L 430 250
-                      L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                      L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                      L 760 150 L 790 175 L 820 210 L 850 235 L 890 260"
-                    fill="none"
-                    stroke={primaryColor}
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </g>
-                {/* Full-opacity left side (before "we are here") */}
-                <g clipPath="url(#shareClipLeft)">
-                  <path
-                    d="
-                      M 10 380
-                      L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                      L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                      L 340 300 L 370 278 L 400 286 L 430 250
-                      L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                      L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                      L 760 150 L 790 175 L 820 210 L 850 235 L 890 260
-                      L 890 460 L 10 460 Z"
-                    fill="url(#chartFadeGrad)"
-                  />
-                  <path
-                    d="
-                      M 10 380
-                      L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                      L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                      L 340 300 L 370 278 L 400 286 L 430 250
-                      L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                      L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                      L 760 150 L 790 175 L 820 210 L 850 235 L 890 260"
-                    fill="none"
-                    stroke={primaryColor}
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </g>
-              </>
-            ) : (
-              <>
-                <path
-                  d="
-                    M 10 380
-                    L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                    L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                    L 340 300 L 370 278 L 400 286 L 430 250
-                    L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                    L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                    L 760 150 L 790 175 L 820 210 L 850 235 L 890 260
-                    L 890 460 L 10 460 Z"
-                  fill="url(#chartFadeGrad)"
-                />
-                <path
-                  d="
-                    M 10 380
-                    L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
-                    L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
-                    L 340 300 L 370 278 L 400 286 L 430 250
-                    L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
-                    L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
-                    L 760 150 L 790 175 L 820 210 L 850 235 L 890 260"
-                  fill="none"
-                  stroke={primaryColor}
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </>
-            )}
+            <path
+              d="
+                M 10 380
+                L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
+                L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
+                L 340 300 L 370 278 L 400 286 L 430 250
+                L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
+                L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
+                L 760 150 L 790 175 L 820 210 L 850 235 L 890 260
+                L 890 460 L 10 460 Z"
+              fill="url(#chartFadeGrad)"
+            />
+
+            <path
+              d="
+                M 10 380
+                L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
+                L 190 360 L 220 368 L 250 340 L 280 322 L 310 332
+                L 340 300 L 370 278 L 400 286 L 430 250
+                L 460 200 L 490 215 L 520 165 L 550 178 L 580 120
+                L 610 95 L 640 108 L 670 60 L 700 80 L 730 105
+                L 760 150 L 790 175 L 820 210 L 850 235 L 890 260"
+              fill="none"
+              stroke={primaryColor}
+              strokeWidth="3"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
 
             {/* Halving vertical rule */}
             <line
