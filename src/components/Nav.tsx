@@ -36,7 +36,9 @@ export function Nav() {
         {/* Logo / brand */}
         <Link to="/" className="flex items-center gap-2.5 transition-opacity hover:opacity-80">
           <BtcLogo size={28} />
-          <span className="text-sm font-bold tracking-tight">BTC500</span>
+          <span className="text-sm font-bold tracking-tight">
+            BTC<span className="text-primary">500</span>
+          </span>
         </Link>
 
         {/* Desktop Nav links */}

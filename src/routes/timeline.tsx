@@ -154,9 +154,12 @@ function Timeline() {
             className="flex flex-col items-center gap-8 text-center"
           >
             <Clock className="h-12 w-12 text-primary" />
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">BTC500 Time Machine</h1>
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              BTC<span className="text-primary">500</span> Time Machine
+            </h1>
             <p className="max-w-xl text-base text-muted-foreground">
-              The current BTC500 cycle hasn't started yet. The buy window opens{" "}
+              The current BTC<span className="text-primary">500</span> cycle hasn't started yet. The
+              buy window opens{" "}
               <span className="font-semibold text-foreground">{buyDateFormatted}</span> — 500 days
               before the projected April 2028 halving.
             </p>
@@ -334,11 +337,14 @@ function Timeline() {
           >
             <div className="flex items-center justify-center gap-3">
               <Clock className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">BTC500 Time Machine</h1>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                BTC<span className="text-primary">500</span> Time Machine
+              </h1>
             </div>
             <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-              Follow a $20,000 investment through the BTC500 strategy across halving cycles. Drag
-              the timeline or press play to watch history unfold.
+              Follow a $20,000 investment through the BTC
+              <span className="text-primary">500</span> strategy across halving cycles. Drag the
+              timeline or press play to watch history unfold.
             </p>
           </motion.header>
 

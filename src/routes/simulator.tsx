@@ -171,11 +171,14 @@ function Simulator() {
           <header className="mb-4 text-center sm:mb-8">
             <div className="flex items-center justify-center gap-3">
               <Calculator className="h-8 w-8 text-primary" />
-              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">BTC500 Simulator</h1>
+              <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+                BTC<span className="text-primary">500</span> Simulator
+              </h1>
             </div>
             <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-              See how much you would have earned by investing in each halving cycle using the BTC500
-              strategy — buy 500 days before, sell 500 days after.
+              See how much you would have earned by investing in each halving cycle using the BTC
+              <span className="text-primary">500</span> strategy — buy 500 days before, sell 500
+              days after.
             </p>
           </header>
 
@@ -338,7 +341,7 @@ function Simulator() {
 
           <p className="mt-8 text-center text-xs text-muted-foreground">
             Historical prices from CoinGecko. Past performance does not guarantee future results.
-            The BTC500 strategy is a hypothetical backtest.
+            The BTC<span className="text-primary">500</span> strategy is a hypothetical backtest.
           </p>
         </div>
       </main>

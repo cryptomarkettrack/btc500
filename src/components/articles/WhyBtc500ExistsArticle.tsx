@@ -148,8 +148,12 @@ export function WhyBtc500ExistsArticle({ title, date, readTime }: ArticleProps) 
 
           <p>Nobody knows the exact bottom while it's happening.</p>
 
-          <h2>BTC500 Is Built Around This Reality</h2>
-          <p>BTC500 isn't about predicting tomorrow's candle.</p>
+          <h2>
+            BTC<span className="text-primary">500</span> Is Built Around This Reality
+          </h2>
+          <p>
+            BTC<span className="text-primary">500</span> isn't about predicting tomorrow's candle.
+          </p>
 
           <p>It's about using one of Bitcoin's strongest historical patterns:</p>
 
@@ -168,8 +172,9 @@ export function WhyBtc500ExistsArticle({ title, date, readTime }: ArticleProps) 
           </p>
 
           <p>
-            Rather than relying on emotions, headlines, or influencers, BTC500 tracks where we are
-            in the current halving cycle and compares it with previous ones.
+            Rather than relying on emotions, headlines, or influencers, BTC
+            <span className="text-primary">500</span> tracks where we are in the current halving
+            cycle and compares it with previous ones.
           </p>
 
           <h2>Time in the Market Is Important—But Timing Still Matters</h2>
@@ -209,8 +214,8 @@ export function WhyBtc500ExistsArticle({ title, date, readTime }: ArticleProps) 
           </p>
 
           <p>
-            That's exactly why BTC500 exists. Not to predict the future—but to help you make better
-            decisions by learning from Bitcoin's past.
+            That's exactly why BTC<span className="text-primary">500</span> exists. Not to predict
+            the future—but to help you make better decisions by learning from Bitcoin's past.
           </p>
         </div>
       </motion.article>

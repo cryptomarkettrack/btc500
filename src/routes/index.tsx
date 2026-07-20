@@ -419,7 +419,9 @@ function Index() {
           className="mt-20"
         >
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">How BTC500 Works</h2>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
+              How BTC<span className="text-primary">500</span> Works
+            </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
               A dead-simple, rules-based Bitcoin investment strategy built around the halving cycle.
               No charts, no TA, no emotions.
@@ -468,8 +470,8 @@ function Index() {
                 Historical Performance
               </h2>
               <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-                The BTC500 strategy has delivered exceptional returns across every halving cycle
-                since 2012.
+                The BTC<span className="text-primary">500</span> strategy has delivered exceptional
+                returns across every halving cycle since 2012.
               </p>
             </div>
 
@@ -555,7 +557,13 @@ function Index() {
               to="/simulator"
               icon={Calculator}
               title="Investment Simulator"
-              description="See exactly how much you'd have earned using the BTC500 strategy across every halving cycle since 2012."
+              description={
+                <>
+                  See exactly how much you'd have earned using the BTC
+                  <span className="text-primary">500</span> strategy across every halving cycle
+                  since 2012.
+                </>
+              }
               accent="var(--primary)"
               accentSoft="var(--primary-soft)"
             />
@@ -571,7 +579,12 @@ function Index() {
               to="/articles"
               icon={BookOpen}
               title="Strategy Articles"
-              description="Deep dives into the BTC500 strategy, NUPL/RUPL indicators, on-chain analysis, and more."
+              description={
+                <>
+                  Deep dives into the BTC<span className="text-primary">500</span> strategy,
+                  NUPL/RUPL indicators, on-chain analysis, and more.
+                </>
+              }
               accent="var(--success)"
               accentSoft="var(--success-soft)"
             />
@@ -658,8 +671,8 @@ function Index() {
                 Ready to Master the Halving Cycle?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                The BTC500 strategy gives you a clear, data-backed plan. No guesswork, no FOMO, no
-                emotional trading. Just a proven system.
+                The BTC<span className="text-primary">500</span> strategy gives you a clear,
+                data-backed plan. No guesswork, no FOMO, no emotional trading. Just a proven system.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
@@ -848,7 +861,7 @@ function FeatureCard({
   to: string;
   icon: React.ElementType;
   title: string;
-  description: string;
+  description: React.ReactNode;
   accent: string;
   accentSoft: string;
 }) {

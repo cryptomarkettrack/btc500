@@ -20,7 +20,7 @@ export function Footer() {
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <Link to="/" className="text-lg font-bold tracking-tight text-foreground">
-              BTC500
+              BTC<span className="text-primary">500</span>
             </Link>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
               Bitcoin halving countdown and investment strategy platform. Buy 500 days before
@@ -152,8 +152,9 @@ export function Footer() {
 
         <div className="mt-8 border-t border-border/40 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} BTC500. All rights reserved. Not financial advice.
-            Past performance does not guarantee future results.
+            &copy; {new Date().getFullYear()} BTC<span className="text-primary">500</span>. All
+            rights reserved. Not financial advice. Past performance does not guarantee future
+            results.
           </p>
         </div>
       </div>

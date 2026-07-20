@@ -151,8 +151,13 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
             </p>
           </div>
 
-          <h2>Why NUPL Matters for the BTC500 Strategy</h2>
-          <p>The BTC500 strategy and NUPL are natural companions. Here's how they align:</p>
+          <h2>
+            Why NUPL Matters for the BTC<span className="text-primary">500</span> Strategy
+          </h2>
+          <p>
+            The BTC<span className="text-primary">500</span> strategy and NUPL are natural
+            companions. Here's how they align:
+          </p>
 
           <ul>
             <li>
@@ -180,9 +185,9 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
 
           <div className="data-point">
             <strong>Historical Correlation:</strong> In the 2020 halving cycle, NUPL entered the
-            Euphoria band in early 2021, around 10 months after the halving. The BTC500 sell date
-            (500 days post-halving, September 2021) fell squarely within this euphoric territory —
-            just before the eventual downturn.
+            Euphoria band in early 2021, around 10 months after the halving. The BTC
+            <span className="text-primary">500</span> sell date (500 days post-halving, September
+            2021) fell squarely within this euphoric territory — just before the eventual downturn.
           </div>
 
           <h2>How NUPL is Calculated</h2>
@@ -221,9 +226,10 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
 
           <h3>1. Cycle Timing</h3>
           <p>
-            Track NUPL alongside the BTC500 countdown. When NUPL dips into the Disbelief range after
-            a bear market, it's a confirmation signal that the next accumulation window is opening.
-            When NUPL enters Euphoria, it's time to prepare your sell orders.
+            Track NUPL alongside the BTC<span className="text-primary">500</span> countdown. When
+            NUPL dips into the Disbelief range after a bear market, it's a confirmation signal that
+            the next accumulation window is opening. When NUPL enters Euphoria, it's time to prepare
+            your sell orders.
           </p>
 
           <h3>2. Risk Management</h3>
@@ -258,15 +264,19 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
             </li>
             <li>
               <strong>Best used in combination:</strong> NUPL works best alongside other indicators
-              like the Puell Multiple, MVRV Z-Score, and the BTC500 timeline.
+              like the Puell Multiple, MVRV Z-Score, and the BTC
+              <span className="text-primary">500</span> timeline.
             </li>
           </ul>
 
           <div className="data-point">
-            <strong>For BTC500 users:</strong> NUPL is best used as a confirmation tool within the
-            BTC500 framework. The strategy's fixed buy/sell dates provide the structure; NUPL
-            provides the conviction. When both align — you're buying in Disbelief and selling in
-            Euphoria — you have the highest probability of success.
+            <strong>
+              For BTC<span className="text-primary">500</span> users:
+            </strong>{" "}
+            NUPL is best used as a confirmation tool within the BTC
+            <span className="text-primary">500</span> framework. The strategy's fixed buy/sell dates
+            provide the structure; NUPL provides the conviction. When both align — you're buying in
+            Disbelief and selling in Euphoria — you have the highest probability of success.
           </div>
 
           <h2>Bringing It All Together</h2>
@@ -277,16 +287,17 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
           </p>
 
           <p>
-            For BTC500 practitioners, NUPL serves as the perfect companion indicator. It validates
-            that the strategy's fixed windows align with the actual emotional and financial state of
-            the market. When the countdown says "buy" and NUPL says "disbelief," the stars are
-            aligned. When the countdown says "sell" and NUPL says "euphoria," it's time to act.
+            For BTC<span className="text-primary">500</span> practitioners, NUPL serves as the
+            perfect companion indicator. It validates that the strategy's fixed windows align with
+            the actual emotional and financial state of the market. When the countdown says "buy"
+            and NUPL says "disbelief," the stars are aligned. When the countdown says "sell" and
+            NUPL says "euphoria," it's time to act.
           </p>
 
           <p>
             Use the chart above to understand the current market phase, and cross-reference it with
-            your BTC500 timeline to make informed, confident decisions throughout each halving
-            cycle. For the latest interactive data, visit{" "}
+            your BTC<span className="text-primary">500</span> timeline to make informed, confident
+            decisions throughout each halving cycle. For the latest interactive data, visit{" "}
             <a
               href="https://www.bitcoinmagazinepro.com"
               target="_blank"

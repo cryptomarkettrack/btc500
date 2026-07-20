@@ -40,8 +40,11 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           <p className="lead">
             What if we told you there's a Bitcoin investment strategy so simple, it can be explained
             in one sentence—yet so powerful, it has consistently outperformed nearly every other
-            approach? Welcome to <strong>BTC500</strong>: buy 500 days before each halving, sell 500
-            days after.
+            approach? Welcome to{" "}
+            <strong>
+              BTC<span className="text-primary">500</span>
+            </strong>
+            : buy 500 days before each halving, sell 500 days after.
           </p>
 
           <div className="strategy-box">
@@ -117,8 +120,9 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           <h3>1. Removes Emotional Decision-Making</h3>
           <p>
             Most investors fail because they buy when prices are high (FOMO) and sell when prices
-            are low (panic). The BTC500 strategy eliminates this by following a predetermined,
-            rules-based approach that doesn't depend on market sentiment.
+            are low (panic). The BTC<span className="text-primary">500</span> strategy eliminates
+            this by following a predetermined, rules-based approach that doesn't depend on market
+            sentiment.
           </p>
 
           <h3>2. Captures the Full Cycle</h3>
@@ -130,9 +134,10 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
 
           <h3>3. Minimal Time Commitment</h3>
           <p>
-            Unlike day trading or even active investing, BTC500 requires checking your portfolio
-            only twice per halving cycle (roughly every 4 years). Set your buy order, set your sell
-            order, and let the strategy work.
+            Unlike day trading or even active investing, BTC
+            <span className="text-primary">500</span> requires checking your portfolio only twice
+            per halving cycle (roughly every 4 years). Set your buy order, set your sell order, and
+            let the strategy work.
           </p>
 
           <h3>4. Historically Proven</h3>
@@ -150,7 +155,10 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           </div>
 
           <h2>Understanding the Timeline</h2>
-          <p>Let's break down what happens during a typical BTC500 cycle:</p>
+          <p>
+            Let's break down what happens during a typical BTC
+            <span className="text-primary">500</span> cycle:
+          </p>
 
           <ol>
             <li>
@@ -177,7 +185,8 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
 
           <h2>Risk Management</h2>
           <p>
-            No investment strategy is without risk. Here are important considerations for BTC500:
+            No investment strategy is without risk. Here are important considerations for BTC
+            <span className="text-primary">500</span>:
           </p>
 
           <ul>
@@ -207,8 +216,13 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
             </p>
           </div>
 
-          <h2>Getting Started with BTC500</h2>
-          <p>Ready to implement the BTC500 strategy? Here's how to get started:</p>
+          <h2>
+            Getting Started with BTC<span className="text-primary">500</span>
+          </h2>
+          <p>
+            Ready to implement the BTC<span className="text-primary">500</span> strategy? Here's how
+            to get started:
+          </p>
 
           <ol>
             <li>
@@ -232,8 +246,8 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
               emotion from the decision.
             </li>
             <li>
-              <strong>Track your cycle:</strong> Use tools like the BTC500 countdown to monitor your
-              progress.
+              <strong>Track your cycle:</strong> Use tools like the BTC
+              <span className="text-primary">500</span> countdown to monitor your progress.
             </li>
           </ol>
 
@@ -245,26 +259,27 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           </p>
 
           <p>
-            The BTC500 strategy works because it aligns with Bitcoin's fundamental value
-            proposition: a predictable, algorithmic monetary policy that creates clear supply shocks
-            at regular intervals. By removing emotion, complexity, and the need for constant
-            monitoring, you're free to focus on what matters—your long-term financial goals.
+            The BTC<span className="text-primary">500</span> strategy works because it aligns with
+            Bitcoin's fundamental value proposition: a predictable, algorithmic monetary policy that
+            creates clear supply shocks at regular intervals. By removing emotion, complexity, and
+            the need for constant monitoring, you're free to focus on what matters—your long-term
+            financial goals.
           </p>
 
           <h2>Conclusion</h2>
           <p>
-            The BTC500 strategy represents one of the most elegant approaches to Bitcoin investing:
-            simple enough to explain in a single sentence, yet sophisticated enough to capture the
-            full power of Bitcoin's halving cycle. By buying 500 days before each halving and
-            selling 500 days after, you position yourself to benefit from the supply shock while
-            avoiding the inevitable bear market that follows.
+            The BTC<span className="text-primary">500</span> strategy represents one of the most
+            elegant approaches to Bitcoin investing: simple enough to explain in a single sentence,
+            yet sophisticated enough to capture the full power of Bitcoin's halving cycle. By buying
+            500 days before each halving and selling 500 days after, you position yourself to
+            benefit from the supply shock while avoiding the inevitable bear market that follows.
           </p>
 
           <p>
-            Remember, the best strategy is one you can stick to. BTC500's simplicity makes it easy
-            to follow through on, even during volatile market conditions. As you continue your
-            Bitcoin journey, keep this strategy in your toolkit—it might just be the most powerful
-            tool you have.
+            Remember, the best strategy is one you can stick to. BTC
+            <span className="text-primary">500</span>'s simplicity makes it easy to follow through
+            on, even during volatile market conditions. As you continue your Bitcoin journey, keep
+            this strategy in your toolkit—it might just be the most powerful tool you have.
           </p>
         </div>
       </motion.article>
