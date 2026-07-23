@@ -127,6 +127,17 @@
   </url>
   
   <url>
+    <loc>https://btc500.vercel.app/dca</loc>
+    <lastmod>2026-07-23</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:caption>DCA vs Lump Sum — BTC500 Bitcoin Halving Strategy Comparison</image:caption>
+    </image:image>
+  </url>
+  
+  <url>
     <loc>https://btc500.vercel.app/macro-impact</loc>
     <lastmod>2026-07-19</lastmod>
     <changefreq>weekly</changefreq>

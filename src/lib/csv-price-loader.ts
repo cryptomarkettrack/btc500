@@ -1,6 +1,5 @@
 // Cache for CSV data: Map<dateString (YYYY-MM-DD), closePrice>
 let csvPriceCache: Map<string, number> | null = null;
-const CUTOFF_DATE = "2016-07-12"; // Use CSV for dates before this
 
 /**
  * Load and parse the CSV file, building a map of date -> close price
@@ -51,16 +50,11 @@ async function loadCsvData(): Promise<Map<string, number>> {
 }
 
 /**
- * Get BTC price for a specific date.
- * Uses CSV data for dates before 2016-07-12, otherwise returns null (caller should use Bitstamp).
+ * Get BTC price for a specific date from the CSV file.
+ * Returns null if the date is not found in the CSV.
  */
 export async function getBtcPriceFromCsv(dateStr: string): Promise<number | null> {
   try {
-    // Only use CSV for dates before the cutoff
-    if (dateStr >= CUTOFF_DATE) {
-      return null;
-    }
-
     const priceMap = await loadCsvData();
     const price = priceMap.get(dateStr);
 
@@ -79,7 +73,7 @@ export async function getBtcPriceFromCsv(dateStr: string): Promise<number | null
 
 /**
  * Get multiple BTC prices from CSV for a date range.
- * Only returns prices for dates before 2016-07-12.
+ * Only returns dates that exist in the CSV data.
  */
 export async function getBtcPricesFromCsvRange(
   startDate: string,
@@ -94,15 +88,10 @@ export async function getBtcPricesFromCsvRange(
 
     while (current <= end) {
       const dateStr = current.toISOString().split("T")[0];
-
-      // Only fetch from CSV if before cutoff
-      if (dateStr < CUTOFF_DATE) {
-        const price = csvData.get(dateStr);
-        if (price !== undefined) {
-          priceMap.set(dateStr, price);
-        }
+      const price = csvData.get(dateStr);
+      if (price !== undefined) {
+        priceMap.set(dateStr, price);
       }
-
       current.setDate(current.getDate() + 1);
     }
   } catch (err) {

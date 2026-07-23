@@ -10,6 +10,7 @@ import {
   Flame,
   Newspaper,
   BarChart3,
+  ArrowLeftRight,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -22,6 +23,7 @@ export function Nav() {
   const links = [
     { to: "/", label: "Home", icon: Home },
     { to: "/simulator", label: "Simulator", icon: Calculator },
+    { to: "/dca", label: "DCA", icon: ArrowLeftRight },
     { to: "/timeline", label: "Timeline", icon: Clock },
     { to: "/liquidation", label: "Liquidation", icon: Flame },
     { to: "/insider-trading", label: "Insider", icon: TrendingUp },

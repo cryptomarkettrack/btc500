@@ -218,6 +218,9 @@ export const CacheKeys = {
   /** Monthly BTC klines (year-month) */
   monthlyKlines: (year: number, month: number) => `btc:klines:${year}-${month}`,
 
+  /** DCA comparison data */
+  dca: (buyDays: number, sellDays: number) => `btc:dca:${buyDays}:${sellDays}`,
+
   /** Simulator data */
   simulator: () => "btc:simulator",
 
