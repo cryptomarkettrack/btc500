@@ -8,7 +8,6 @@ import {
   Layers,
   Calculator,
   BookOpen,
-  BarChart3,
   Flame,
   Newspaper,
   TrendingDown,
@@ -587,14 +586,6 @@ function Index() {
               }
               accent="var(--success)"
               accentSoft="var(--success-soft)"
-            />
-            <FeatureCard
-              to="/macro-impact"
-              icon={BarChart3}
-              title="Macro Impact (CPI/PPI)"
-              description="Track how CPI, PPI, and Fed rate decisions correlate with Bitcoin price movements."
-              accent="oklch(0.65 0.15 240)"
-              accentSoft="oklch(0.95 0.04 240)"
             />
             <FeatureCard
               to="/insider-trading"

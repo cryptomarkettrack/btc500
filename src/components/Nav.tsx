@@ -9,7 +9,6 @@ import {
   TrendingUp,
   Flame,
   Newspaper,
-  BarChart3,
   ArrowLeftRight,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
@@ -28,7 +27,6 @@ export function Nav() {
     { to: "/liquidation", label: "Liquidation", icon: Flame },
     { to: "/insider-trading", label: "Insider", icon: TrendingUp },
     { to: "/news", label: "News", icon: Newspaper },
-    { to: "/macro-impact", label: "Macro", icon: BarChart3 },
     { to: "/articles", label: "Articles", icon: BookOpen },
   ];
 

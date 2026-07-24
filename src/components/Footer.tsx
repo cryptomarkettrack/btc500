@@ -8,7 +8,6 @@ import {
   Flame,
   TrendingUp,
   Newspaper,
-  BarChart3,
 } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 
@@ -81,14 +80,6 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Insider Trading
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/macro-impact"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Macro Impact (CPI/PPI)
                 </Link>
               </li>
               <li>

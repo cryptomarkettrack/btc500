@@ -137,15 +137,5 @@
     </image:image>
   </url>
   
-  <url>
-    <loc>https://btc500.vercel.app/macro-impact</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Macro Impact — CPI &amp; PPI Effect on Bitcoin</image:caption>
-    </image:image>
-  </url>
   
 </urlset>
