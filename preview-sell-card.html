@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BTC500 — Share Card Preview (Wait-Sell Phase)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        background: #f1f5f9;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 40px 20px;
+        font-family: "Inter", system-ui, sans-serif;
+        gap: 48px;
+      }
+      .page-title {
+        text-align: center;
+      }
+      .page-title h1 {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+      }
+      .page-title p {
+        margin-top: 8px;
+        font-size: 15px;
+        color: #64748b;
+      }
+      .page-title .phase-tag {
+        display: inline-block;
+        margin-top: 12px;
+        padding: 6px 18px;
+        border-radius: 100px;
+        background: #e6f7ed;
+        color: #16a34a;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+
+      /* ===== CARD ===== */
+      .card {
+        width: 1080px;
+        height: 1350px;
+        font-family: "Inter", system-ui, sans-serif;
+        background: #fff;
+        border-radius: 32px;
+        overflow: hidden;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        box-shadow:
+          0 1px 2px rgba(0, 0, 0, 0.04),
+          0 20px 60px -20px rgba(0, 0, 0, 0.08);
+        flex-shrink: 0;
+      }
+
+      /* Accent stripe */
+      .accent-stripe {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 16px;
+        background: #16a34a;
+      }
+
+      /* Watermark */
+      .watermark {
+        pointer-events: none;
+        position: absolute;
+        right: -60px;
+        bottom: -60px;
+        opacity: 0.05;
+      }
+      .watermark svg {
+        width: 440px;
+        height: 440px;
+      }
+
+      /* ===== TOP SECTION ===== */
+      .top-section {
+        padding: 44px 48px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .header-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .header-left {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .logo-circle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: #e6f7ed;
+      }
+      .logo-circle svg {
+        width: 28px;
+        height: 28px;
+      }
+      .brand-name {
+        font-size: 30px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #0f172a;
+      }
+      .brand-sub {
+        font-size: 13px;
+        font-weight: 500;
+        color: #64748b;
+        margin-top: 2px;
+      }
+      .phase-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 20px;
+        border-radius: 100px;
+        background: #e6f7ed;
+      }
+      .phase-badge svg {
+        width: 20px;
+        height: 20px;
+        stroke: #16a34a;
+        stroke-width: 2.5;
+        fill: none;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+      .phase-badge span {
+        font-size: 15px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #16a34a;
+      }
+
+      /* ===== CHART SECTION ===== */
+      .chart-section {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 32px 48px 0;
+        position: relative;
+        z-index: 1;
+      }
+      .chart-container {
+        width: 100%;
+        max-width: 900px;
+      }
+      .chart-container svg {
+        width: 100%;
+        height: auto;
+      }
+
+      /* ===== COUNTDOWN ===== */
+      .countdown-section {
+        margin-top: 32px;
+        text-align: center;
+      }
+      .countdown-label {
+        font-size: 16px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.25em;
+        color: #94a3b8;
+        margin-bottom: 6px;
+      }
+      .countdown-sub {
+        font-size: 17px;
+        color: #64748b;
+        margin-bottom: 24px;
+      }
+      .countdown-number-row {
+        display: flex;
+        align-items: baseline;
+        gap: 12px;
+        justify-content: center;
+      }
+      .countdown-number {
+        font-size: 280px;
+        font-weight: 800;
+        line-height: 0.8;
+        letter-spacing: -0.07em;
+        color: #16a34a;
+      }
+      .countdown-unit {
+        font-size: 40px;
+        font-weight: 500;
+        color: #94a3b8;
+        padding-bottom: 32px;
+      }
+
+      /* ===== PROGRESS BAR ===== */
+      .progress-wrapper {
+        width: 100%;
+        max-width: 700px;
+        margin-top: 36px;
+      }
+      .progress-track {
+        height: 14px;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 999px;
+        background: #f1f5f9;
+      }
+      .progress-fill {
+        height: 100%;
+        border-radius: 999px;
+        background: #16a34a;
+        width: 65%;
+      }
+      .progress-labels {
+        margin-top: 12px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 16px;
+        color: #94a3b8;
+      }
+      .progress-labels span {
+        font-weight: 600;
+        color: #475569;
+      }
+
+      /* ===== BOTTOM BAR ===== */
+      .bottom-bar {
+        padding: 32px 48px 36px;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        position: relative;
+        z-index: 1;
+      }
+      .bottom-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 24px;
+      }
+      .stat-label {
+        font-size: 12px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: #94a3b8;
+        margin-bottom: 6px;
+      }
+      .stat-value {
+        font-size: 24px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .stat-sub {
+        font-size: 13px;
+        color: #94a3b8;
+        margin-top: 2px;
+      }
+      .stat-value-sm {
+        font-size: 22px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+      .footer-url {
+        margin-top: 20px;
+        text-align: center;
+        font-size: 13px;
+        color: #94a3b8;
+        letter-spacing: 0.08em;
+        font-weight: 500;
+      }
+
+      /* ===== PNL SECTION (NEW for wait-sell) ===== */
+      .pnl-section {
+        margin-top: 20px;
+        padding: 20px 28px;
+        border-radius: 20px;
+        background: #f0fdf4;
+        border: 1px solid rgba(22, 163, 74, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .pnl-label {
+        font-size: 13px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+        color: #16a34a;
+      }
+      .pnl-amount {
+        font-size: 36px;
+        font-weight: 800;
+        letter-spacing: -0.03em;
+        color: #16a34a;
+      }
+      .pnl-percent {
+        font-size: 18px;
+        font-weight: 700;
+        color: #16a34a;
+      }
+      .pnl-detail {
+        text-align: right;
+      }
+      .pnl-detail .price-info {
+        font-size: 13px;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      /* ===== PHASE SELECTOR ===== */
+      .phase-selector {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .phase-btn {
+        padding: 10px 24px;
+        border-radius: 100px;
+        border: 2px solid #e2e8f0;
+        background: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .phase-btn:hover {
+        border-color: #94a3b8;
+      }
+      .phase-btn.active {
+        border-color: #16a34a;
+        background: #f0fdf4;
+        color: #16a34a;
+      }
+      .phase-btn.active-buy {
+        border-color: #f97316;
+        background: #fff7ed;
+        color: #f97316;
+      }
+      .phase-btn.active-done {
+        border-color: #2563eb;
+        background: #eff6ff;
+        color: #2563eb;
+      }
+
+      /* ===== ACTION BUTTONS ===== */
+      .action-buttons {
+        display: flex;
+        gap: 12px;
+        margin-top: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .action-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 10px 24px;
+        border-radius: 100px;
+        border: 2px solid #0f172a;
+        background: #0f172a;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: "Inter", system-ui, sans-serif;
+      }
+      .action-btn:hover {
+        opacity: 0.85;
+      }
+      .action-btn:active {
+        transform: scale(0.97);
+      }
+      .action-btn.secondary {
+        background: #fff;
+        color: #0f172a;
+        border-color: #e2e8f0;
+      }
+      .action-btn.secondary:hover {
+        background: #f8fafc;
+        border-color: #94a3b8;
+      }
+      .action-btn .check-icon {
+        display: none;
+      }
+      .action-btn.copied .check-icon {
+        display: inline;
+      }
+      .action-btn.copied .copy-icon {
+        display: none;
+      }
+
+      /* ===== RESPONSIVE ===== */
+      @media (max-width: 1120px) {
+        .card {
+          width: 100%;
+          height: auto;
+          min-height: 1350px;
+        }
+        .countdown-number {
+          font-size: 180px;
+        }
+        .bottom-grid {
+          gap: 16px;
+        }
+        .stat-value {
+          font-size: 20px;
+        }
+        .stat-value-sm {
+          font-size: 18px;
+        }
+      }
+      @media (max-width: 600px) {
+        .top-section {
+          padding: 28px 20px 0;
+        }
+        .chart-section {
+          padding: 20px 20px 0;
+        }
+        .bottom-bar {
+          padding: 24px 20px 28px;
+        }
+        .countdown-number {
+          font-size: 120px;
+        }
+        .countdown-unit {
+          font-size: 28px;
+          padding-bottom: 20px;
+        }
+        .header-row {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
+        .bottom-grid {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .pnl-section {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+        .pnl-detail {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="page-title">
+      <h1>BTC500 Share Card Preview</h1>
+      <p>See how the share card looks in each phase of the halving cycle</p>
+      <div class="phase-selector">
+        <button class="phase-btn" onclick="switchPhase('wait-buy')" id="btn-buy">
+          ⏳ Waiting to Buy
+        </button>
+        <button class="phase-btn active" onclick="switchPhase('wait-sell')" id="btn-sell">
+          📈 Waiting to Sell
+        </button>
+        <button class="phase-btn" onclick="switchPhase('done')" id="btn-done">
+          ✅ Cycle Complete
+        </button>
+      </div>
+      <div class="action-buttons">
+        <button class="action-btn" onclick="copyCardToClipboard()" id="copyBtn">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2" />
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+          </svg>
+          <span id="copyBtnText">Copy image to clipboard</span>
+        </button>
+        <button class="action-btn secondary" onclick="downloadCard()" id="downloadBtn">
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+          Download PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== THE CARD ===== -->
+    <div class="card" id="shareCard">
+      <div class="accent-stripe" id="accentStripe"></div>
+
+      <!-- Watermark -->
+      <div class="watermark">
+        <svg viewBox="0 0 100 100" fill="#000">
+          <circle cx="50" cy="50" r="45" stroke="none" />
+          <text x="50" y="55" text-anchor="middle" font-size="40" font-weight="bold" fill="#000">
+            ₿
+          </text>
+        </svg>
+      </div>
+
+      <!-- TOP SECTION -->
+      <div class="top-section">
+        <div class="header-row">
+          <div class="header-left">
+            <div class="logo-circle" id="logoCircle">
+              <svg viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="45" stroke="currentColor" stroke-width="4" />
+                <text
+                  x="50"
+                  y="55"
+                  text-anchor="middle"
+                  font-size="40"
+                  font-weight="bold"
+                  fill="currentColor"
+                >
+                  ₿
+                </text>
+              </svg>
+            </div>
+            <div>
+              <div class="brand-name">BTC 500</div>
+              <div class="brand-sub">Halving Cycle Strategy</div>
+            </div>
+          </div>
+          <div class="phase-badge" id="phaseBadge">
+            <svg viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" />
+              <polyline points="12 6 12 12 16 14" />
+            </svg>
+            <span id="phaseBadgeText">Waiting to Sell</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHART SECTION -->
+      <div class="chart-section">
+        <div class="chart-container">
+          <svg viewBox="0 0 900 460" preserveAspectRatio="xMidYMid meet">
+            <defs>
+              <linearGradient id="chartFadeGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#16a34a" stop-opacity="0.14" />
+                <stop offset="100%" stop-color="#16a34a" stop-opacity="0" />
+              </linearGradient>
+            </defs>
+
+            <!-- Subtle horizontal grid -->
+            <line x1="0" y1="100" x2="900" y2="100" stroke="#e2e8f0" stroke-width="1" />
+            <line x1="0" y1="220" x2="900" y2="220" stroke="#e2e8f0" stroke-width="1" />
+            <line x1="0" y1="340" x2="900" y2="340" stroke="#e2e8f0" stroke-width="1" />
+
+            <!-- Price area fill -->
+            <path
+              d="M 10 380 L 40 392 L 70 400 L 100 388 L 130 397 L 160 378 L 190 360 L 220 368 L 250 340 L 280 322 L 310 332 L 340 300 L 370 278 L 400 286 L 430 250 L 460 200 L 490 215 L 520 165 L 550 178 L 580 120 L 610 95 L 640 108 L 670 60 L 700 80 L 730 105 L 760 150 L 790 175 L 820 210 L 850 235 L 890 260 L 890 460 L 10 460 Z"
+              fill="url(#chartFadeGrad)"
+            />
+
+            <!-- Price line -->
+            <path
+              d="M 10 380 L 40 392 L 70 400 L 100 388 L 130 397 L 160 378 L 190 360 L 220 368 L 250 340 L 280 322 L 310 332 L 340 300 L 370 278 L 400 286 L 430 250 L 460 200 L 490 215 L 520 165 L 550 178 L 580 120 L 610 95 L 640 108 L 670 60 L 700 80 L 730 105 L 760 150 L 790 175 L 820 210 L 850 235 L 890 260"
+              fill="none"
+              stroke="#16a34a"
+              stroke-width="3"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+
+            <!-- Halving vertical rule -->
+            <line
+              x1="460"
+              y1="30"
+              x2="460"
+              y2="430"
+              stroke="#64748b"
+              stroke-width="1.5"
+              stroke-dasharray="2 5"
+            />
+            <text
+              x="460"
+              y="20"
+              text-anchor="middle"
+              style="
+                font-family: &quot;Space Grotesk&quot;, sans-serif;
+                font-weight: 600;
+                font-size: 12px;
+                letter-spacing: 0.18em;
+                fill: #64748b;
+              "
+            >
+              Halving
+            </text>
+
+            <!-- Current position indicator (wait-sell: ~day 200 after halving) -->
+            <!-- x = 460 (halving) + 200/500 * 430 = 460 + 172 = 632 -->
+            <line
+              x1="632"
+              y1="95"
+              x2="632"
+              y2="400"
+              stroke="#16a34a"
+              stroke-width="2"
+              stroke-dasharray="4 4"
+              opacity="0.6"
+            />
+            <circle cx="632" cy="95" r="6" fill="#16a34a" opacity="0.3">
+              <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="0.3;0.1;0.3"
+                dur="2s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="632" cy="95" r="4" fill="#16a34a" />
+            <text
+              x="632"
+              y="77"
+              text-anchor="middle"
+              style="
+                font-family: &quot;IBM Plex Mono&quot;, monospace;
+                font-weight: 600;
+                font-size: 12px;
+                fill: #16a34a;
+                letter-spacing: 0.05em;
+              "
+            >
+              300d
+            </text>
+            <text
+              x="632"
+              y="113"
+              text-anchor="middle"
+              style="
+                font-family: &quot;Space Grotesk&quot;, sans-serif;
+                font-size: 11px;
+                font-weight: 700;
+                fill: #000000;
+                letter-spacing: 0.06em;
+              "
+            >
+              we are here
+            </text>
+
+            <!-- BUY callout -->
+            <circle
+              cx="310"
+              cy="332"
+              r="8"
+              fill="#16a34a"
+              stroke="#fff"
+              stroke-width="3"
+              opacity="0.2"
+            >
+              <animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="0.2;0.05;0.2"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="310" cy="332" r="6" fill="#16a34a" stroke="#fff" stroke-width="2.5" />
+            <line
+              x1="310"
+              y1="332"
+              x2="310"
+              y2="378"
+              stroke="#16a34a"
+              stroke-width="2"
+              opacity="0.7"
+            />
+            <circle cx="310" cy="415" r="38" fill="#e6f7ed" opacity="0.3" />
+            <circle cx="310" cy="415" r="38" fill="none" stroke="#16a34a" stroke-width="2.5" />
+            <text
+              x="310"
+              y="408"
+              text-anchor="middle"
+              style="
+                font-family: &quot;Space Grotesk&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 19px;
+                fill: #0f172a;
+              "
+            >
+              Buy
+            </text>
+            <text
+              x="310"
+              y="426"
+              text-anchor="middle"
+              style="
+                font-family: &quot;IBM Plex Mono&quot;, monospace;
+                font-weight: 600;
+                font-size: 11px;
+                fill: #16a34a;
+                letter-spacing: 0.05em;
+              "
+            >
+              −500d
+            </text>
+
+            <!-- SELL callout -->
+            <circle
+              cx="670"
+              cy="60"
+              r="8"
+              fill="#16a34a"
+              stroke="#fff"
+              stroke-width="3"
+              opacity="0.2"
+            >
+              <animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite" />
+              <animate
+                attributeName="opacity"
+                values="0.2;0.05;0.2"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </circle>
+            <circle cx="670" cy="60" r="6" fill="#16a34a" stroke="#fff" stroke-width="2.5" />
+            <line
+              x1="670"
+              y1="60"
+              x2="670"
+              y2="24"
+              stroke="#16a34a"
+              stroke-width="2"
+              opacity="0.7"
+            />
+            <circle cx="740" cy="55" r="38" fill="#e6f7ed" opacity="0.3" />
+            <circle cx="740" cy="55" r="38" fill="none" stroke="#16a34a" stroke-width="2.5" />
+            <line
+              x1="670"
+              y1="60"
+              x2="712"
+              y2="56"
+              stroke="#16a34a"
+              stroke-width="2"
+              opacity="0.7"
+            />
+            <text
+              x="740"
+              y="48"
+              text-anchor="middle"
+              style="
+                font-family: &quot;Space Grotesk&quot;, sans-serif;
+                font-weight: 700;
+                font-size: 19px;
+                fill: #0f172a;
+              "
+            >
+              Sell
+            </text>
+            <text
+              x="740"
+              y="66"
+              text-anchor="middle"
+              style="
+                font-family: &quot;IBM Plex Mono&quot;, monospace;
+                font-weight: 600;
+                font-size: 11px;
+                fill: #16a34a;
+                letter-spacing: 0.05em;
+              "
+            >
+              +500d
+            </text>
+          </svg>
+        </div>
+
+        <!-- Countdown -->
+        <div class="countdown-section">
+          <div class="countdown-label" id="countdownLabel">Days Until Sell Window</div>
+          <div class="countdown-sub" id="countdownSub">500 days after halving</div>
+          <div class="countdown-number-row">
+            <span class="countdown-number" id="countdownNumber">200</span>
+            <span class="countdown-unit">days</span>
+          </div>
+
+          <!-- PnL Section (shown in wait-sell) -->
+          <div class="pnl-section" id="pnlSection">
+            <div>
+              <div class="pnl-label">Current P&L</div>
+              <div class="pnl-amount" id="pnlAmount">+$124,500</div>
+            </div>
+            <div class="pnl-detail">
+              <div class="pnl-percent" id="pnlPercent">+312%</div>
+              <div class="price-info">BTC @ $67,420</div>
+              <div class="price-info">Bought @ $16,350</div>
+            </div>
+          </div>
+
+          <!-- Progress bar -->
+          <div class="progress-wrapper">
+            <div class="progress-track">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-labels">
+              <span id="elapsedLabel">325 days elapsed</span>
+              <span>500 days total</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTOM BAR -->
+      <div class="bottom-bar">
+        <div class="bottom-grid">
+          <div>
+            <div class="stat-label">Next Halving</div>
+            <div class="stat-value" id="halvingDate">20 Apr 2024</div>
+            <div class="stat-sub" id="halvingUtc">12:00 UTC</div>
+          </div>
+          <div>
+            <div class="stat-label">Buy Date</div>
+            <div class="stat-value-sm" id="buyDate">06 Dec 2022</div>
+          </div>
+          <div>
+            <div class="stat-label">Sell Date</div>
+            <div class="stat-value-sm" id="sellDate">01 Oct 2025</div>
+          </div>
+        </div>
+        <div class="footer-url">btc500.vercel.app</div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.js"></script>
+    <script>
+      // Phase data
+      const phases = {
+        "wait-buy": {
+          accent: "#f97316",
+          accentSoft: "#fef3e7",
+          accentBg: "#fff7ed",
+          badgeText: "Waiting to Buy",
+          countdownLabel: "Days Until Buy Window",
+          countdownSub: "500 days before halving",
+          countdownNumber: "175",
+          progressWidth: "65%",
+          elapsedLabel: "325 days elapsed",
+          showPnl: false,
+          chartColor: "#f97316",
+          currentX: 310,
+          currentY: 332,
+          daysLabel: "175d",
+          halvingDate: "20 Apr 2024",
+          halvingUtc: "12:00 UTC",
+          buyDate: "06 Dec 2022",
+          sellDate: "01 Oct 2025",
+        },
+        "wait-sell": {
+          accent: "#16a34a",
+          accentSoft: "#e6f7ed",
+          accentBg: "#f0fdf4",
+          badgeText: "Waiting to Sell",
+          countdownLabel: "Days Until Sell Window",
+          countdownSub: "500 days after halving",
+          countdownNumber: "200",
+          progressWidth: "60%",
+          elapsedLabel: "200 days elapsed",
+          showPnl: true,
+          pnlAmount: "+$124,500",
+          pnlPercent: "+312%",
+          btcPrice: "$67,420",
+          buyPrice: "$16,350",
+          chartColor: "#16a34a",
+          currentX: 632,
+          currentY: 95,
+          daysLabel: "300d",
+          halvingDate: "20 Apr 2024",
+          halvingUtc: "12:00 UTC",
+          buyDate: "06 Dec 2022",
+          sellDate: "01 Oct 2025",
+        },
+        done: {
+          accent: "#2563eb",
+          accentSoft: "#f1f5f9",
+          accentBg: "#eff6ff",
+          badgeText: "Cycle Complete",
+          countdownLabel: "Cycle Complete",
+          countdownSub: "Next cycle loading",
+          countdownNumber: "0",
+          progressWidth: "100%",
+          elapsedLabel: "500 days elapsed",
+          showPnl: true,
+          pnlAmount: "+$198,200",
+          pnlPercent: "+495%",
+          btcPrice: "$97,420",
+          buyPrice: "$16,350",
+          chartColor: "#2563eb",
+          currentX: 890,
+          currentY: 260,
+          daysLabel: "0d",
+          halvingDate: "20 Apr 2024",
+          halvingUtc: "12:00 UTC",
+          buyDate: "06 Dec 2022",
+          sellDate: "01 Oct 2025",
+        },
+      };
+
+      function switchPhase(phase) {
+        const data = phases[phase];
+
+        // Update buttons
+        document.querySelectorAll(".phase-btn").forEach((btn) => (btn.className = "phase-btn"));
+        const btnMap = { "wait-buy": "btn-buy", "wait-sell": "btn-sell", done: "btn-done" };
+        const btn = document.getElementById(btnMap[phase]);
+        btn.className = `phase-btn active${phase === "wait-buy" ? " active-buy" : phase === "done" ? " active-done" : ""}`;
+
+        // Update accent stripe
+        document.getElementById("accentStripe").style.background = data.accent;
+
+        // Update logo circle
+        const logoCircle = document.getElementById("logoCircle");
+        logoCircle.style.background = data.accentSoft;
+        logoCircle.querySelector("svg").style.color = data.accent;
+
+        // Update phase badge
+        const phaseBadge = document.getElementById("phaseBadge");
+        phaseBadge.style.background = data.accentSoft;
+        phaseBadge.querySelector("svg").style.stroke = data.accent;
+        document.getElementById("phaseBadgeText").textContent = data.badgeText;
+        document.getElementById("phaseBadgeText").style.color = data.accent;
+
+        // Update countdown
+        document.getElementById("countdownLabel").textContent = data.countdownLabel;
+        document.getElementById("countdownLabel").style.color = data.accent;
+        document.getElementById("countdownSub").textContent = data.countdownSub;
+        document.getElementById("countdownNumber").textContent = data.countdownNumber;
+        document.getElementById("countdownNumber").style.color = data.accent;
+
+        // Update progress
+        document.getElementById("progressFill").style.background = data.accent;
+        document.getElementById("progressFill").style.width = data.progressWidth;
+        document.getElementById("elapsedLabel").textContent = data.elapsedLabel;
+
+        // Update PnL section
+        const pnlSection = document.getElementById("pnlSection");
+        if (data.showPnl) {
+          pnlSection.style.display = "flex";
+          document.getElementById("pnlAmount").textContent = data.pnlAmount;
+          document.getElementById("pnlAmount").style.color = data.accent;
+          document.getElementById("pnlPercent").textContent = data.pnlPercent;
+          document.getElementById("pnlPercent").style.color = data.accent;
+          pnlSection.style.background = data.accentSoft;
+          pnlSection.style.borderColor = data.accent + "40";
+          pnlSection.querySelector(".pnl-label").style.color = data.accent;
+        } else {
+          pnlSection.style.display = "none";
+        }
+
+        // Update bottom bar dates
+        document.getElementById("halvingDate").textContent = data.halvingDate;
+        document.getElementById("halvingUtc").textContent = data.halvingUtc;
+        document.getElementById("buyDate").textContent = data.buyDate;
+        document.getElementById("sellDate").textContent = data.sellDate;
+
+        // Update chart colors
+        const chartSvg = document.querySelector(".chart-container svg");
+        const paths = chartSvg.querySelectorAll("path");
+        const circles = chartSvg.querySelectorAll("circle");
+        const lines = chartSvg.querySelectorAll("line");
+        const texts = chartSvg.querySelectorAll("text");
+
+        // Update gradient
+        const grad = document.getElementById("chartFadeGrad");
+        grad.querySelector("stop").setAttribute("stop-color", data.chartColor);
+
+        // Update price line and area fill
+        paths.forEach((p) => {
+          if (p.getAttribute("fill") === "url(#chartFadeGrad)") return;
+          if (p.getAttribute("fill") === "none") {
+            p.setAttribute("stroke", data.chartColor);
+          }
+        });
+
+        // Update circles (current position, buy/sell markers)
+        circles.forEach((c) => {
+          const fill = c.getAttribute("fill");
+          if (fill && fill !== "#fff" && fill !== "none" && !fill.startsWith("url(")) {
+            c.setAttribute("fill", data.chartColor);
+          }
+          const stroke = c.getAttribute("stroke");
+          if (stroke && stroke !== "#fff" && stroke !== "none") {
+            c.setAttribute("stroke", data.chartColor);
+          }
+        });
+
+        // Update lines
+        lines.forEach((l) => {
+          const stroke = l.getAttribute("stroke");
+          if (stroke && stroke !== "#e2e8f0" && stroke !== "#64748b" && stroke !== "#fff") {
+            l.setAttribute("stroke", data.chartColor);
+          }
+        });
+
+        // Update text elements with chart color
+        texts.forEach((t) => {
+          const fill = t.getAttribute("fill");
+          if (fill === "#f97316" || fill === "#16a34a" || fill === "#2563eb") {
+            t.setAttribute("fill", data.chartColor);
+          }
+        });
+
+        // Update "we are here" position
+        const weAreHereText = Array.from(texts).find((t) => t.textContent === "we are here");
+        if (weAreHereText) {
+          weAreHereText.setAttribute("x", data.currentX);
+        }
+
+        // Update days label
+        const daysText = Array.from(texts).find(
+          (t) => t.textContent === "300d" || t.textContent === "175d" || t.textContent === "0d",
+        );
+        if (daysText) {
+          daysText.textContent = data.daysLabel;
+          daysText.setAttribute("x", data.currentX);
+          daysText.setAttribute("y", data.currentY - 18);
+          daysText.setAttribute("fill", data.chartColor);
+        }
+
+        // Update current position dot and line
+        const currentLine = Array.from(lines).find(
+          (l) => l.getAttribute("stroke-dasharray") === "4 4",
+        );
+        if (currentLine) {
+          currentLine.setAttribute("x1", data.currentX);
+          currentLine.setAttribute("y1", data.currentY);
+          currentLine.setAttribute("x2", data.currentX);
+          currentLine.setAttribute("y2", "400");
+          currentLine.setAttribute("stroke", data.chartColor);
+        }
+
+        const pulseCircles = Array.from(circles).filter((c) => c.querySelector("animate"));
+        if (pulseCircles.length >= 2) {
+          // First pulsing circle is the current position
+          pulseCircles[0].setAttribute("cx", data.currentX);
+          pulseCircles[0].setAttribute("cy", data.currentY);
+          pulseCircles[0].setAttribute("fill", data.chartColor);
+          // Second pulsing circle is the buy/sell marker
+        }
+
+        const solidCircle = Array.from(circles).find((c) => c.getAttribute("r") === "4");
+        if (solidCircle) {
+          solidCircle.setAttribute("cx", data.currentX);
+          solidCircle.setAttribute("cy", data.currentY);
+          solidCircle.setAttribute("fill", data.chartColor);
+        }
+      }
+
+      // inlineComputedStyles: walk element tree, resolve CSS custom properties to computed values
+      function inlineComputedStyles(root) {
+        const restoreFns = [];
+        const walker = document.createTreeWalker(root, NodeFilter.SHOW_ELEMENT);
+        let node;
+        while ((node = walker.nextNode())) {
+          const el = node;
+          const cs = getComputedStyle(el);
+          const prevInline = new Map();
+
+          const props = [
+            "backgroundColor",
+            "color",
+            "borderTopColor",
+            "borderRightColor",
+            "borderBottomColor",
+            "borderLeftColor",
+            "boxShadow",
+            "fill",
+            "stroke",
+          ];
+          const styleAny = el.style;
+          for (const p of props) {
+            prevInline.set(p, styleAny[p]);
+          }
+
+          const bg = cs.backgroundColor;
+          if (bg && bg !== "rgba(0, 0, 0, 0)") el.style.backgroundColor = bg;
+          el.style.color = cs.color;
+
+          const bt = cs.borderTopColor;
+          if (bt && bt !== "rgba(0, 0, 0, 0)") el.style.borderTopColor = bt;
+          const br = cs.borderRightColor;
+          if (br && br !== "rgba(0, 0, 0, 0)") el.style.borderRightColor = br;
+          const bb = cs.borderBottomColor;
+          if (bb && bb !== "rgba(0, 0, 0, 0)") el.style.borderBottomColor = bb;
+          const bl = cs.borderLeftColor;
+          if (bl && bl !== "rgba(0, 0, 0, 0)") el.style.borderLeftColor = bl;
+
+          const bs = cs.boxShadow;
+          if (bs && bs !== "none") el.style.boxShadow = bs;
+
+          if (el instanceof SVGElement) {
+            const fill = cs.fill;
+            if (fill && fill !== "" && !fill.startsWith("var(")) el.style.fill = fill;
+            const stroke = cs.stroke;
+            if (stroke && stroke !== "" && !stroke.startsWith("var(")) el.style.stroke = stroke;
+          }
+
+          restoreFns.push(() => {
+            const styleAny = el.style;
+            for (const p of props) {
+              const val = prevInline.get(p);
+              if (val !== undefined) styleAny[p] = val;
+            }
+          });
+        }
+        return () => {
+          for (const fn of restoreFns) fn();
+        };
+      }
+
+      async function copyCardToClipboard() {
+        const card = document.getElementById("shareCard");
+        const btn = document.getElementById("copyBtn");
+        const btnText = document.getElementById("copyBtnText");
+
+        // Remove animate elements before capture (they cause issues)
+        const anims = card.querySelectorAll("animate");
+        anims.forEach((a) => a.remove());
+
+        const restore = inlineComputedStyles(card);
+        try {
+          const canvas = await htmlToImage.toCanvas(card, {
+            pixelRatio: 2,
+            cacheBust: true,
+            backgroundColor: "#fff",
+          });
+          const blob = await new Promise((resolve) => canvas.toBlob(resolve, "image/png"));
+          if (!blob) throw new Error("Failed to create blob");
+          await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+
+          btnText.textContent = "Copied!";
+          btn.style.background = "#16a34a";
+          btn.style.borderColor = "#16a34a";
+          setTimeout(() => {
+            btnText.textContent = "Copy image to clipboard";
+            btn.style.background = "#0f172a";
+            btn.style.borderColor = "#0f172a";
+          }, 2000);
+        } catch (err) {
+          console.error("Copy failed:", err);
+          btnText.textContent = "Failed to copy";
+          setTimeout(() => {
+            btnText.textContent = "Copy image to clipboard";
+          }, 2000);
+        } finally {
+          restore();
+        }
+      }
+
+      async function downloadCard() {
+        const card = document.getElementById("shareCard");
+
+        // Remove animate elements before capture
+        const anims = card.querySelectorAll("animate");
+        anims.forEach((a) => a.remove());
+
+        const restore = inlineComputedStyles(card);
+        try {
+          const canvas = await htmlToImage.toCanvas(card, {
+            pixelRatio: 2,
+            cacheBust: true,
+            backgroundColor: "#fff",
+          });
+          const link = document.createElement("a");
+          link.download = `btc500-card-${new Date().toISOString().slice(0, 10)}.png`;
+          link.href = canvas.toDataURL("image/png");
+          link.click();
+        } catch (err) {
+          console.error("Download failed:", err);
+        } finally {
+          restore();
+        }
+      }
+    </script>
+  </body>
+</html>
