@@ -16,6 +16,7 @@ import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
+import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
@@ -58,6 +59,11 @@ const DcaRoute = DcaRouteImport.update({
   path: '/dca',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BearMarketRoute = BearMarketRouteImport.update({
+  id: '/bear-market',
+  path: '/bear-market',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArticlesRoute = ArticlesRouteImport.update({
   id: '/articles',
   path: '/articles',
@@ -93,6 +99,7 @@ const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRouteWithChildren
+  '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRouteWithChildren
+  '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/articles': typeof ArticlesRouteWithChildren
+  '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/insider-trading': typeof InsiderTradingRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/articles'
+    | '/bear-market'
     | '/dca'
     | '/embed'
     | '/insider-trading'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/articles'
+    | '/bear-market'
     | '/dca'
     | '/embed'
     | '/insider-trading'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/articles'
+    | '/bear-market'
     | '/dca'
     | '/embed'
     | '/insider-trading'
@@ -187,6 +199,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ArticlesRoute: typeof ArticlesRouteWithChildren
+  BearMarketRoute: typeof BearMarketRoute
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
@@ -245,6 +258,13 @@ declare module '@tanstack/react-router' {
       path: '/dca'
       fullPath: '/dca'
       preLoaderRoute: typeof DcaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bear-market': {
+      id: '/bear-market'
+      path: '/bear-market'
+      fullPath: '/bear-market'
+      preLoaderRoute: typeof BearMarketRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/articles': {
@@ -313,6 +333,7 @@ const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ArticlesRoute: ArticlesRouteWithChildren,
+  BearMarketRoute: BearMarketRoute,
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
   InsiderTradingRoute: InsiderTradingRoute,
