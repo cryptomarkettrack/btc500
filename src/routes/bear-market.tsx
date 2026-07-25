@@ -1,18 +1,20 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import {
   TrendingDown,
-  TrendingUp,
   ExternalLink,
   Target,
   BarChart3,
   AlertTriangle,
   CheckCircle2,
   Loader2,
+  Copy,
+  Check,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Link } from "@tanstack/react-router";
+import { toCanvas } from "html-to-image";
+import { BearMarketShareCard } from "@/components/BearMarketShareCard";
 
 export const Route = createFileRoute("/bear-market")({
   component: BearMarketPage,
@@ -473,6 +475,9 @@ function BearMarketPage() {
   >({});
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState({ done: 0, total: INDICATORS.length });
+  const [copying, setCopying] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const shareCardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -563,6 +568,40 @@ function BearMarketPage() {
     }
     return count;
   }, [indicators]);
+
+  // Build indicator data for the share card
+  const shareCardIndicators = useMemo(() => {
+    return INDICATORS.map((ind) => ({
+      name: ind.name,
+      current: indicators[ind.name]?.current ?? null,
+      status: getStatusText(ind.name, indicators[ind.name]?.current ?? null),
+      tier: ind.tier,
+    }));
+  }, [indicators]);
+
+  const handleCopyImage = useCallback(async () => {
+    const el = shareCardRef.current;
+    if (!el) return;
+    setCopying(true);
+    try {
+      const canvas = await toCanvas(el, {
+        pixelRatio: 2,
+        cacheBust: true,
+        backgroundColor: "#fff",
+      });
+      const blob = await new Promise<Blob | null>((resolve) => {
+        canvas.toBlob((b) => resolve(b), "image/png");
+      });
+      if (!blob) throw new Error("Failed to create image blob");
+      await navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch (err) {
+      console.error("Failed to copy image to clipboard", err);
+    } finally {
+      setCopying(false);
+    }
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -661,6 +700,55 @@ function BearMarketPage() {
               </div>
             </CardContent>
           </Card>
+
+          {/* Share Card Section */}
+          <Card className="bg-gradient-to-br from-slate-500/5 to-blue-500/5 border-slate-500/20">
+            <CardContent className="pt-6">
+              <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                  <div className="text-sm font-semibold mb-1">Share Bear Market Analysis</div>
+                  <p className="text-xs text-muted-foreground">
+                    Generate a shareable image card summarizing all 15 on-chain indicators. Copy it
+                    to your clipboard and paste on X.
+                  </p>
+                </div>
+                <button
+                  onClick={handleCopyImage}
+                  disabled={copying}
+                  className="inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-6 py-3 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
+                >
+                  {copying ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Generating…
+                    </>
+                  ) : copied ? (
+                    <>
+                      <Check className="h-4 w-4" />
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <Copy className="h-4 w-4" />
+                      Copy card to clipboard
+                    </>
+                  )}
+                </button>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Hidden share card for image capture */}
+          <div style={{ position: "absolute", left: "-9999px", top: 0, pointerEvents: "none" }}>
+            <BearMarketShareCard
+              ref={shareCardRef}
+              compositeScore={compositeScore}
+              scoreLabel={scoreLabel}
+              triggeredCount={triggeredCount}
+              totalIndicators={INDICATORS.length}
+              indicators={shareCardIndicators}
+            />
+          </div>
 
           {/* Tier 1: Primary Signals */}
           <section>
