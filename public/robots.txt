@@ -1,52 +1,89 @@
-# BTC500 SEO Robots.txt
-# Allow all crawlers to access main content
-# Last updated: 2026-07-19
+# BTC500 — https://btc500.vercel.app
+# Allow search engines and AI crawlers to index public content.
+# Last updated: 2026-07-27
 
 User-agent: *
 Allow: /
-Disallow: /embed
 Allow: /og/
 Allow: /articles/
 Allow: /icons/
-
-# Crawl-delay for aggressive bots
-Crawl-delay: 10
+Disallow: /embed
+Disallow: /embed?
+Disallow: /api/
 
 # Sitemap
 Sitemap: https://btc500.vercel.app/sitemap.xml
 
-# Specific bot instructions
+# Google
 User-agent: Googlebot
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
 
 User-agent: Googlebot-Image
 Allow: /og/
 Allow: /articles/
 Allow: /icons/
+Allow: /apple-touch-icon.png
+Allow: /favicon.svg
+Allow: /favicon.ico
 
+# Bing
 User-agent: Bingbot
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
 
-User-agent: Baiduspider
+# AI / answer-engine crawlers (citations drive discovery traffic)
+User-agent: GPTBot
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
 
-User-agent: YandexBot
+User-agent: ChatGPT-User
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
 
-User-agent: Slurp
+User-agent: ClaudeBot
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
 
+User-agent: anthropic-ai
+Allow: /
+Disallow: /embed
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /embed
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /embed
+
+User-agent: Applebot
+Allow: /
+Disallow: /embed
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /embed
+
+User-agent: Bytespider
+Allow: /
+Disallow: /embed
+
+User-agent: meta-externalagent
+Allow: /
+Disallow: /embed
+
+# DuckDuckGo
 User-agent: DuckDuckBot
 Allow: /
 Disallow: /embed
-Crawl-delay: 10
+
+# Yahoo
+User-agent: Slurp
+Allow: /
+Disallow: /embed
+
+# Yandex
+User-agent: YandexBot
+Allow: /
+Disallow: /embed

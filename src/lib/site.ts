@@ -4,8 +4,17 @@
  */
 
 export const SITE_URL = "https://btc500.vercel.app";
-
+export const SITE_NAME = "BTC500";
+export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
+export const TWITTER_HANDLE = "@btc500halving";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
+export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Strategy";
+
+/** Primary brand social profiles (also used in Organization schema). */
+export const SOCIAL_PROFILES = [
+  "https://x.com/btc500halving",
+  "https://www.instagram.com/btc500halving",
+] as const;
 
 export interface BreadcrumbItem {
   name: string;
@@ -21,11 +30,15 @@ export interface PageHeadOptions {
   ogDescription?: string;
   ogImage?: string;
   ogImageAlt?: string;
+  ogType?: "website" | "article";
   twitterTitle?: string;
   twitterDescription?: string;
   noIndex?: boolean;
   includeHreflang?: boolean;
-  schema?: unknown;
+  schema?: unknown | unknown[];
+  /** Article / page dates for Open Graph */
+  publishedTime?: string;
+  modifiedTime?: string;
 }
 
 export interface WebPageSchemaOptions {
@@ -51,7 +64,7 @@ export function generateWebPageSchema({
   description,
   breadcrumbs,
   datePublished = "2024-01-15",
-  dateModified = "2026-07-13",
+  dateModified = "2026-07-27",
 }: WebPageSchemaOptions) {
   const url = absoluteUrl(path);
   return {
@@ -62,6 +75,20 @@ export function generateWebPageSchema({
     description,
     dateModified,
     datePublished,
+    isPartOf: {
+      "@type": "WebSite",
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+      logo: {
+        "@type": "ImageObject",
+        url: `${SITE_URL}/favicon.svg`,
+      },
+    },
     mainEntityOfPage: {
       "@type": "WebPage",
       "@id": url,
@@ -90,12 +117,15 @@ export function generatePageHead({
   ogTitle,
   ogDescription,
   ogImage = DEFAULT_OG_IMAGE,
-  ogImageAlt,
+  ogImageAlt = DEFAULT_OG_IMAGE_ALT,
+  ogType = "website",
   twitterTitle,
   twitterDescription,
   noIndex = false,
   includeHreflang = true,
   schema,
+  publishedTime,
+  modifiedTime,
 }: PageHeadOptions) {
   const url = absoluteUrl(path);
   const resolvedOgTitle = ogTitle ?? title;
@@ -103,6 +133,7 @@ export function generatePageHead({
   const resolvedTwitterTitle = twitterTitle ?? resolvedOgTitle;
   const resolvedTwitterDescription = twitterDescription ?? resolvedOgDescription;
 
+  // Keep titles under ~60 chars for SERP display when possible; never truncate forced titles.
   const meta: Array<Record<string, string>> = [
     { title },
     { name: "description", content: description },
@@ -114,27 +145,44 @@ export function generatePageHead({
 
   if (noIndex) {
     meta.push({ name: "robots", content: "noindex, nofollow" });
+    meta.push({ name: "googlebot", content: "noindex, nofollow" });
+  } else {
+    meta.push({
+      name: "robots",
+      content: "index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1",
+    });
   }
 
   meta.push(
     { property: "og:title", content: resolvedOgTitle },
     { property: "og:description", content: resolvedOgDescription },
-    { property: "og:type", content: "website" },
+    { property: "og:type", content: ogType },
     { property: "og:url", content: url },
+    { property: "og:site_name", content: SITE_NAME },
+    { property: "og:locale", content: "en_US" },
     { property: "og:image", content: ogImage },
+    { property: "og:image:secure_url", content: ogImage },
     { property: "og:image:width", content: "1200" },
     { property: "og:image:height", content: "630" },
+    { property: "og:image:type", content: "image/png" },
+    { property: "og:image:alt", content: ogImageAlt },
   );
 
-  if (ogImageAlt) {
-    meta.push({ property: "og:image:alt", content: ogImageAlt });
+  if (publishedTime) {
+    meta.push({ property: "article:published_time", content: publishedTime });
+  }
+  if (modifiedTime) {
+    meta.push({ property: "article:modified_time", content: modifiedTime });
   }
 
   meta.push(
     { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:site", content: TWITTER_HANDLE },
+    { name: "twitter:creator", content: TWITTER_HANDLE },
     { name: "twitter:title", content: resolvedTwitterTitle },
     { name: "twitter:description", content: resolvedTwitterDescription },
     { name: "twitter:image", content: ogImage },
+    { name: "twitter:image:alt", content: ogImageAlt },
   );
 
   const links: Array<Record<string, string>> = [{ rel: "canonical", href: url }];
@@ -146,13 +194,12 @@ export function generatePageHead({
     );
   }
 
-  const scripts = schema
-    ? [
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(schema),
-        },
-      ]
+  const schemas = schema == null ? [] : Array.isArray(schema) ? schema : [schema];
+  const scripts = schemas.length
+    ? schemas.map((s) => ({
+        type: "application/ld+json",
+        content: JSON.stringify(s),
+      }))
     : undefined;
 
   return {

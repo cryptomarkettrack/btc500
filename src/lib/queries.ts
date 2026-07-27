@@ -8,9 +8,11 @@ import { getHalvingInfo, getBtcPrice } from "@/lib/btc.functions";
 import { getSimulatorData } from "@/lib/simulator.functions";
 import { getTimelineData } from "@/lib/timeline.functions";
 import { getDcaData } from "@/lib/dca.functions";
+import { getCycleScore } from "@/lib/cycle-score.functions";
 
 const HOUR = 60 * 60_000;
 const MINUTE = 60_000;
+const QUARTER_HOUR = 15 * 60_000;
 
 export const halvingQuery = queryOptions({
   queryKey: ["halving"],
@@ -55,3 +57,10 @@ export const dcaQuery = (dcaBuyDays: number, dcaSellDays: number) =>
     staleTime: HOUR,
     refetchInterval: HOUR,
   });
+
+export const cycleScoreQuery = queryOptions({
+  queryKey: ["cycle-score"],
+  queryFn: () => getCycleScore(),
+  staleTime: QUARTER_HOUR,
+  refetchInterval: QUARTER_HOUR,
+});

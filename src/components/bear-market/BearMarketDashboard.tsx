@@ -21,6 +21,7 @@ import {
   getStatusColor,
   getStatusText,
   formatValue,
+  computeBearComposite,
 } from "@/lib/bear-market/config";
 
 export function BearMarketDashboard() {
@@ -60,38 +61,18 @@ export function BearMarketDashboard() {
     };
   }, []);
 
-  // Calculate composite score
-  const compositeScore = useMemo(() => {
-    let score = 0;
+  // Same composite math as Cycle Score on-chain (shared computeBearComposite)
+  const bearComposite = useMemo(() => {
+    const values: Record<string, number | null> = {};
     for (const ind of INDICATORS) {
-      const data = indicators[ind.name];
-      if (!data || data.current === null) continue;
-      const n = ind.name.toLowerCase();
-      let triggered = false;
-      if (n === "mvrv" || n === "sth-mvrv") triggered = data.current < 1.0;
-      else if (n === "lth-mvrv") triggered = data.current < 1.2;
-      else if (n === "puell multiple") triggered = data.current < 0.5;
-      else if (n.includes("nupl")) triggered = data.current < 0;
-      else if (n === "sopr" || n.includes("sopr")) triggered = data.current < 1.0;
-      else if (n === "rhodl ratio") triggered = data.current < 2000;
-      else if (n === "reserve risk") triggered = data.current < 5e-6;
-      else if (n.includes("liveliness")) triggered = data.current < 0.55;
-      else if (n.includes("vaultedness")) triggered = data.current > 0.45;
-      else if (n === "ath drawdown") triggered = data.current < -7000;
-      else if (n.includes("supply in profit")) triggered = data.current < 5e6; // <5M BTC in profit
-      if (triggered) score += ind.points;
+      values[ind.name] = indicators[ind.name]?.current ?? null;
     }
-    return score;
+    return computeBearComposite(values);
   }, [indicators]);
 
-  const scoreLabel =
-    compositeScore >= 15
-      ? "STRONG BUY"
-      : compositeScore >= 10
-        ? "MODERATE BUY"
-        : compositeScore >= 5
-          ? "CAUTIOUS"
-          : "NOT A BOTTOM";
+  const compositeScore = bearComposite.score;
+  const scoreLabel = bearComposite.label;
+  const triggeredCount = bearComposite.triggeredCount;
   const scoreColor =
     compositeScore >= 15
       ? "text-green-400"
@@ -100,28 +81,6 @@ export function BearMarketDashboard() {
         : compositeScore >= 5
           ? "text-yellow-400"
           : "text-red-400";
-
-  // Count triggered indicators
-  const triggeredCount = useMemo(() => {
-    let count = 0;
-    for (const ind of INDICATORS) {
-      const data = indicators[ind.name];
-      if (!data || data.current === null) continue;
-      const n = ind.name.toLowerCase();
-      if (n === "mvrv" || n === "sth-mvrv") {
-        if (data.current < 1.0) count++;
-      } else if (n === "puell multiple") {
-        if (data.current < 0.5) count++;
-      } else if (n.includes("nupl")) {
-        if (data.current < 0) count++;
-      } else if (n === "sopr" || n.includes("sopr")) {
-        if (data.current < 1.0) count++;
-      } else if (n === "rhodl ratio") {
-        if (data.current < 2000) count++;
-      }
-    }
-    return count;
-  }, [indicators]);
 
   // Build indicator data for the share card
   const shareCardIndicators = useMemo(() => {

@@ -1,4 +1,4 @@
-import { SITE_URL } from "./site";
+import { SITE_URL, generatePageHead, TWITTER_HANDLE } from "./site";
 
 export { SITE_URL };
 
@@ -74,7 +74,7 @@ export const articles: ArticleMeta[] = [
     dateModifiedISO: "2026-07-13",
     readTime: "8 min read",
     wordCount: 2200,
-    ogImage: `${SITE_URL}/og/default.png`,
+    ogImage: `${SITE_URL}/og/rupl-chart.jpeg`,
     articleSection: "Bitcoin On-Chain Analysis",
     schemaKeywords:
       "Bitcoin NUPL, Net Unrealized Profit Loss, RUPL, Bitcoin market psychology, Bitcoin on-chain indicators",
@@ -114,11 +114,15 @@ export function getArticleBySlug(slug: string): ArticleMeta | undefined {
 
 /** Generate Article schema.org JSON-LD */
 export function generateArticleSchema(article: ArticleMeta) {
+  const pageUrl = `${SITE_URL}/articles/${article.slug}`;
+  const minutes = parseInt(article.readTime, 10) || 8;
+
   return {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: article.title,
     description: article.description,
+    inLanguage: "en-US",
     author: {
       "@type": "Organization",
       name: "BTC500",
@@ -127,6 +131,7 @@ export function generateArticleSchema(article: ArticleMeta) {
     publisher: {
       "@type": "Organization",
       name: "BTC500",
+      url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
         url: `${SITE_URL}/favicon.svg`,
@@ -134,11 +139,11 @@ export function generateArticleSchema(article: ArticleMeta) {
     },
     datePublished: article.dateISO,
     dateModified: article.dateModifiedISO,
-    image: article.ogImage,
-    url: `${SITE_URL}/articles/${article.slug}`,
+    image: [article.ogImage],
+    url: pageUrl,
     mainEntityOfPage: {
       "@type": "WebPage",
-      "@id": `${SITE_URL}/articles/${article.slug}`,
+      "@id": pageUrl,
     },
     breadcrumb: {
       "@type": "BreadcrumbList",
@@ -159,71 +164,49 @@ export function generateArticleSchema(article: ArticleMeta) {
           "@type": "ListItem",
           position: 3,
           name: article.title,
-          item: `${SITE_URL}/articles/${article.slug}`,
+          item: pageUrl,
         },
       ],
     },
     articleSection: article.articleSection,
     wordCount: article.wordCount,
-    timeRequired: `PT${article.readTime.charAt(0)}M`,
+    timeRequired: `PT${minutes}M`,
     keywords: article.schemaKeywords,
+    isAccessibleForFree: true,
   };
 }
 
 /** Generate standard article page <head> meta + links + scripts */
 export function generateArticleHead(article: ArticleMeta) {
-  const pageUrl = `${SITE_URL}/articles/${article.slug}`;
-  const title = `${article.title} — Articles | BTC500`;
+  const pageUrl = `/articles/${article.slug}`;
+  const title = `${article.title} | BTC500`;
 
-  return {
-    meta: [
-      { title },
-      { name: "description", content: article.description },
-      { name: "keywords", content: article.keywords },
-      { property: "og:title", content: title },
-      { property: "og:description", content: article.description },
-      { property: "og:type", content: "article" },
-      { property: "og:url", content: pageUrl },
-      { property: "og:site_name", content: "BTC500" },
-      { property: "og:locale", content: "en_US" },
-      { property: "og:image", content: article.ogImage },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: `${article.title} — BTC500`,
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: title },
-      { name: "twitter:description", content: article.description },
-      { name: "twitter:image", content: article.ogImage },
-      {
-        property: "article:published_time",
-        content: `${article.dateISO}T00:00:00Z`,
-      },
-      {
-        property: "article:modified_time",
-        content: `${article.dateModifiedISO}T00:00:00Z`,
-      },
-      {
-        property: "article:section",
-        content: article.articleSection,
-      },
-      {
-        name: "author",
-        content: "BTC500",
-      },
-    ],
-    links: [
-      { rel: "canonical", href: pageUrl },
-      { rel: "alternate", hrefLang: "en", href: pageUrl },
-      { rel: "alternate", hrefLang: "x-default", href: pageUrl },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(generateArticleSchema(article)),
-      },
-    ],
-  };
+  const head = generatePageHead({
+    path: pageUrl,
+    title,
+    description: article.description,
+    keywords: article.keywords,
+    ogTitle: article.title,
+    ogDescription: article.description,
+    ogImage: article.ogImage,
+    ogImageAlt: `${article.title} — BTC500`,
+    ogType: "article",
+    twitterTitle: article.title,
+    twitterDescription: article.description,
+    publishedTime: `${article.dateISO}T00:00:00Z`,
+    modifiedTime: `${article.dateModifiedISO}T00:00:00Z`,
+    schema: generateArticleSchema(article),
+  });
+
+  head.meta.push(
+    { property: "article:section", content: article.articleSection },
+    { property: "article:author", content: "BTC500" },
+    { name: "author", content: "BTC500" },
+  );
+
+  if (!head.meta.some((m) => m.name === "twitter:site")) {
+    head.meta.push({ name: "twitter:site", content: TWITTER_HANDLE });
+  }
+
+  return head;
 }

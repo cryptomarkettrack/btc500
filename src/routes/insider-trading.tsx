@@ -3,8 +3,19 @@ import {
   getInsiderTrading,
   type InsiderSummary,
 } from "@/lib/insider-trading";
-import { generatePageHead } from "@/lib/site";
+import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { InsiderTradingDashboard } from "@/components/insider/InsiderTradingDashboard";
+
+const insiderSchema = generateWebPageSchema({
+  path: "/insider-trading",
+  name: "Insider Trading Dashboard — SEC Form 4 Buy vs Sell Analysis",
+  description:
+    "Real-time insider trading data from SEC Form 4 filings. Analyze insider buy vs sell ratios and track corporate insider transactions.",
+  breadcrumbs: [
+    { name: "Home", path: "/" },
+    { name: "Insider Trading", path: "/insider-trading" },
+  ],
+});
 
 export const Route = createFileRoute("/insider-trading")({
   component: InsiderTradingRoute,
@@ -53,7 +64,7 @@ export const Route = createFileRoute("/insider-trading")({
       twitterTitle: "Insider Trading Dashboard — SEC Form 4 Analysis",
       twitterDescription:
         "Real-time SEC insider trading data. Analyze corporate insider buy/sell ratios.",
-      includeHreflang: false,
+      schema: insiderSchema,
     }),
 });
 

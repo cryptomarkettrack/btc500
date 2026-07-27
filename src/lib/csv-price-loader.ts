@@ -8,16 +8,35 @@ async function loadCsvData(): Promise<Map<string, number>> {
   if (csvPriceCache) return csvPriceCache;
 
   try {
-    // Fetch CSV from public folder via HTTP (works in both dev and production)
-    const baseUrl = typeof window !== "undefined" ? "" : process.cwd();
-    const csvUrl = `${baseUrl}/btc-usd-max.csv`;
+    let text: string;
 
-    const response = await fetch(csvUrl);
-    if (!response.ok) {
-      throw new Error(`Failed to fetch CSV: ${response.statusText}`);
+    // Server: read from disk (root or public/). Browser: fetch public asset.
+    if (typeof window === "undefined") {
+      const { readFile } = await import("node:fs/promises");
+      const { join } = await import("node:path");
+      const candidates = [
+        join(process.cwd(), "btc-usd-max.csv"),
+        join(process.cwd(), "public", "btc-usd-max.csv"),
+      ];
+      let loaded: string | null = null;
+      for (const path of candidates) {
+        try {
+          loaded = await readFile(path, "utf8");
+          break;
+        } catch {
+          // try next
+        }
+      }
+      if (!loaded) throw new Error("CSV not found on disk");
+      text = loaded;
+    } else {
+      const response = await fetch("/btc-usd-max.csv");
+      if (!response.ok) {
+        throw new Error(`Failed to fetch CSV: ${response.statusText}`);
+      }
+      text = await response.text();
     }
 
-    const text = await response.text();
     const lines = text.split("\n");
     const priceMap = new Map<string, number>();
 

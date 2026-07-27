@@ -1,43 +1,44 @@
 import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
-  Calendar,
-  Clock,
-  TrendingUp,
-  Layers,
   Calculator,
   BookOpen,
   Flame,
-  Newspaper,
-  TrendingDown,
+  TrendingUp,
   ArrowRight,
   Target,
   Shield,
   Zap,
-  DollarSign,
   LineChart,
+  LayoutTemplate,
+  ChevronDown,
 } from "lucide-react";
-import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
-import { ProgressRing } from "@/components/ProgressRing";
+import { computeCycle, formatUsd } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
-import { ChartShareCard } from "@/components/ChartShareCard";
-import { Progress } from "@/components/ui/progress";
-import { Skeleton } from "@/components/ui/skeleton";
+import { CycleShareCard } from "@/components/CycleShareCard";
 import { Btc500Hero } from "@/components/Btc500Hero";
+import { CommandCenter } from "@/components/home/CommandCenter";
 import { useRef } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
-import { halvingQuery, btcPriceQuery, simulatorPreviewQuery } from "@/lib/queries";
+import {
+  halvingQuery,
+  btcPriceQuery,
+  simulatorPreviewQuery,
+  cycleScoreQuery,
+} from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
+import { FAQ_ITEMS } from "@/lib/faq";
 
 export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(btcPriceQuery);
   const simulatorRes = useQuery(simulatorPreviewQuery);
+  const cycleScoreRes = useQuery(cycleScoreQuery);
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
-  const chartShareCardRef = useRef<HTMLDivElement>(null);
+  const cycleShareCardRef = useRef<HTMLDivElement>(null);
 
   const cycle = computeCycle(
     now,
@@ -50,18 +51,8 @@ export function HomePage() {
   // Section 2: "Waiting to Sell" — active after halving until sellDate
   const isSellActive = now >= cycle.nextHalving && now < cycle.sellDate;
 
-  // Buy section accent
-  const buyAccent = "var(--primary)";
-  const buyAccentSoft = "var(--primary-soft)";
-
-  // Sell section accent
-  const sellAccent = isSellActive ? "var(--success)" : "var(--muted-foreground)";
-  const sellAccentSoft = isSellActive ? "var(--success-soft)" : "var(--muted)";
-
   // Buy countdown: days until buyDate (or 0 if passed)
   const buyDays = Math.max(0, cycle.daysUntilBuy);
-  const buyTotalDays = 500;
-  const buyElapsed = buyTotalDays - buyDays;
   const buyProgress = cycle.buyProgress;
 
   // Block progress: current block height vs target halving block
@@ -72,9 +63,6 @@ export function HomePage() {
 
   // Sell countdown: days until sellDate
   const sellDays = cycle.daysUntilSell;
-  const sellTotalDays = 500;
-  const sellElapsed = sellTotalDays - sellDays;
-  const sellProgress = cycle.sellProgress;
 
   // Get latest articles
   const latestArticles = getArticlesSorted().slice(0, 3);
@@ -82,12 +70,6 @@ export function HomePage() {
   // Calculate historical returns from simulator data for the preview
   const completedCycles =
     simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
-  const bestCycle =
-    completedCycles.length > 0
-      ? completedCycles.reduce((best, c) =>
-          c.returnMultiplier! > best.returnMultiplier! ? c : best,
-        )
-      : null;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -99,190 +81,35 @@ export function HomePage() {
         >
           <Btc500Hero price={priceRes.data?.price ?? null} daysLeft={buyDays} />
 
-          {/* Share Card Export Buttons */}
-          <div className="flex justify-center px-6">
-            <ShareButton captureRef={chartShareCardRef} />
+          <CommandCenter
+            cycle={cycle}
+            score={cycleScoreRes.data ?? null}
+            scoreLoading={cycleScoreRes.isLoading || cycleScoreRes.isFetching}
+            price={priceRes.data?.price ?? null}
+            height={halving.height}
+            nextHalvingBlock={halving.nextHalvingBlock}
+            lastHalvingBlock={halving.lastHalvingBlock}
+            buyDays={buyDays}
+            sellDays={sellDays}
+            isBuyActive={isBuyActive}
+            isSellActive={isSellActive}
+            buyProgress={buyProgress}
+            blockProgress={blockProgress}
+            blocksRemaining={blocksRemaining}
+          />
+
+          {/* Share + Embed */}
+          <div className="flex flex-col items-center gap-3 px-2">
+            <ShareButton captureRef={cycleShareCardRef} />
+            <Link
+              to="/embed-kit"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition hover:text-primary"
+            >
+              <LayoutTemplate className="h-3.5 w-3.5" />
+              Open Embed Kit — badges, score widgets & themes
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
-
-          {/* Section 1: Waiting to Buy (Main hero card) */}
-          <motion.section
-            initial={{ y: 12 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-8 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_60px_-20px_rgba(0,0,0,0.08)] sm:p-12"
-          >
-            {/* watermark */}
-            <div className="pointer-events-none absolute -right-16 -bottom-16 opacity-[0.06]">
-              <BtcLogo size={420} />
-            </div>
-
-            <div className="grid gap-10 md:grid-cols-[1.2fr_1fr] md:gap-14">
-              {/* Countdown block */}
-              <div>
-                <div className="mb-6 flex items-center gap-3">
-                  <span
-                    className="inline-flex h-11 w-11 items-center justify-center rounded-full"
-                    style={{ background: buyAccentSoft }}
-                  >
-                    <Clock className="h-5 w-5" style={{ color: buyAccent }} />
-                  </span>
-                  <div>
-                    <div
-                      className="text-xs font-semibold uppercase tracking-[0.18em]"
-                      style={{ color: buyAccent }}
-                    >
-                      Waiting to Buy
-                    </div>
-                    <div className="text-lg font-semibold">500 days before halving</div>
-                  </div>
-                </div>
-
-                <div className="mt-4">
-                  <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                    Days Left
-                  </div>
-                  <div className="mt-2 flex items-baseline gap-3">
-                    <span
-                      className="text-[8rem] font-bold leading-[0.9] tracking-tighter sm:text-[10rem]"
-                      style={{ color: buyAccent }}
-                    >
-                      {buyDays.toLocaleString()}
-                    </span>
-                  </div>
-
-                  <div className="mt-6 h-2 w-full overflow-hidden rounded-full bg-muted">
-                    <motion.div
-                      className="h-full rounded-full"
-                      style={{ background: buyAccent }}
-                      initial={{ width: 0 }}
-                      animate={{ width: `${buyProgress * 100}%` }}
-                      transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    />
-                  </div>
-                  <div className="mt-2 flex justify-between text-sm text-muted-foreground">
-                    <span>{Math.max(0, buyElapsed)} days elapsed</span>
-                    <span>{buyTotalDays} days total</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Next halving */}
-              <div className="flex flex-col justify-center md:border-l md:border-border/60 md:pl-14">
-                <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                  Next Halving
-                </div>
-                <div className="mt-3 flex items-center gap-3">
-                  <Calendar className="h-8 w-8 text-foreground/80" />
-                  <span className="text-4xl font-bold tracking-tight sm:text-5xl">
-                    {formatDate(new Date(halving.nextHalvingDate))}
-                  </span>
-                </div>
-                <div className="mt-2 text-sm text-muted-foreground">
-                  {formatUtc(new Date(halving.nextHalvingDate))}
-                </div>
-
-                <div className="mt-8 grid grid-cols-2 gap-4">
-                  <MiniStat label="Buy Date" value={formatDate(cycle.buyDate)} />
-                  <MiniStat label="Sell Date" value={formatDate(cycle.sellDate)} />
-                </div>
-
-                {/* Block progress */}
-                <div className="mt-8 rounded-2xl bg-muted/60 px-4 py-4">
-                  <div className="flex items-center gap-2">
-                    <Layers className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      Block Progress
-                    </span>
-                  </div>
-                  <div className="mt-3">
-                    <Progress value={blockProgress * 100} className="h-2" />
-                  </div>
-                  <div className="mt-2 flex items-center justify-between text-xs text-muted-foreground">
-                    <span className="font-mono font-medium text-foreground/80">
-                      {halving.height.toLocaleString()}
-                    </span>
-                    <span className="font-mono font-medium text-foreground/80">
-                      {halving.nextHalvingBlock.toLocaleString()}
-                    </span>
-                  </div>
-                  <div className="mt-1 flex justify-between text-[11px] text-muted-foreground/70">
-                    <span>Current block</span>
-                    <span>Target block</span>
-                  </div>
-                  <div className="mt-2 text-center text-xs text-muted-foreground">
-                    <span className="font-medium text-foreground/80">
-                      {blocksRemaining.toLocaleString()}
-                    </span>{" "}
-                    blocks remaining
-                  </div>
-                </div>
-              </div>
-            </div>
-          </motion.section>
-
-          {/* Section 2: Waiting to Sell (Secondary card) */}
-          <motion.section
-            initial={{ y: 8 }}
-            animate={{ y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
-            className="flex flex-col gap-4 rounded-[24px] border border-border/60 bg-card p-6 sm:flex-row sm:items-center sm:justify-between sm:px-8"
-          >
-            <div className="flex items-center gap-4">
-              <span
-                className="inline-flex h-11 w-11 items-center justify-center rounded-full"
-                style={{ background: sellAccentSoft }}
-              >
-                <TrendingUp className="h-5 w-5" style={{ color: sellAccent }} />
-              </span>
-              <div>
-                <div className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Waiting to Sell
-                </div>
-                <div className="text-base font-semibold text-foreground/80">
-                  500 days after halving
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center gap-4">
-              {/* Sell countdown */}
-              <div className="text-right">
-                <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                  Days to Sell
-                </div>
-                <div
-                  className="text-2xl font-bold"
-                  style={{ color: isSellActive ? "var(--success)" : "var(--muted-foreground)" }}
-                >
-                  {sellDays}
-                </div>
-              </div>
-              {/* Sell date */}
-              <div className="text-right">
-                <div className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
-                  Sell Date
-                </div>
-                <div className="text-sm font-semibold">{formatDate(cycle.sellDate)}</div>
-              </div>
-              {isSellActive ? (
-                priceRes.data ? (
-                  <div className="text-sm text-muted-foreground">
-                    BTC{" "}
-                    <span className="font-semibold text-foreground">
-                      {formatUsd(priceRes.data.price)}
-                    </span>
-                  </div>
-                ) : (
-                  <div className="flex items-center gap-2">
-                    <Skeleton className="h-4 w-10 rounded-md" />
-                    <Skeleton className="h-5 w-24 rounded-md" />
-                  </div>
-                )
-              ) : null}
-              <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                {isSellActive ? "Active" : "Not Active"}
-              </span>
-            </div>
-          </motion.section>
         </div>
 
         {/* ===== HOW IT WORKS SECTION ===== */}
@@ -479,6 +306,30 @@ export function HomePage() {
               accent="oklch(0.577 0.245 27.325)"
               accentSoft="oklch(0.95 0.04 30)"
             />
+            <FeatureCard
+              to="/bear-market"
+              icon={TrendingUp}
+              title="Bear Market Meter"
+              description="On-chain bottom composite — MVRV, Puell, NUPL and more — feeding the Cycle Score."
+              accent="oklch(0.6 0.14 25)"
+              accentSoft="oklch(0.95 0.03 25)"
+            />
+            <FeatureCard
+              to="/dca"
+              icon={LineChart}
+              title="DCA vs Lump Sum"
+              description="Compare spreading buys and sells over days versus going all-in at BTC500 dates."
+              accent="oklch(0.65 0.12 280)"
+              accentSoft="oklch(0.95 0.03 280)"
+            />
+            <FeatureCard
+              to="/embed-kit"
+              icon={LayoutTemplate}
+              title="Embed Kit"
+              description="Drop live countdown badges and cycle score widgets on blogs, newsletters, and dashboards."
+              accent="var(--info)"
+              accentSoft="oklch(0.95 0.04 240)"
+            />
           </div>
         </motion.section>
 
@@ -518,6 +369,32 @@ export function HomePage() {
               View all articles
               <ArrowRight className="h-4 w-4" />
             </Link>
+          </div>
+        </motion.section>
+
+        {/* ===== FAQ (visible content mirrors FAQPage JSON-LD for rich results) ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+          aria-labelledby="faq-heading"
+        >
+          <div className="mb-8 text-center">
+            <h2 id="faq-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+              Frequently Asked Questions
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+              Quick answers about the BTC<span className="text-primary">500</span> strategy, Bitcoin
+              halvings, and the free tools on this site.
+            </p>
+          </div>
+
+          <div className="mx-auto max-w-3xl space-y-3">
+            {FAQ_ITEMS.map((item) => (
+              <FaqItem key={item.question} question={item.question} answer={item.answer} />
+            ))}
           </div>
         </motion.section>
 
@@ -569,26 +446,31 @@ export function HomePage() {
 
       {/* Hidden share card for social media image generation */}
       <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
-        <ChartShareCard
-          ref={chartShareCardRef}
+        <CycleShareCard
+          ref={cycleShareCardRef}
           cycle={cycle}
           price={priceRes.data?.price ?? null}
-          daysLeft={buyDays}
+          score={cycleScoreRes.data ?? null}
         />
       </div>
     </div>
   );
 }
 
-
-function MiniStat({ label, value }: { label: string; value: string }) {
+function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <div className="rounded-2xl bg-muted/60 px-4 py-3">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-        {label}
+    <details className="group rounded-2xl border border-border/60 bg-card open:shadow-sm">
+      <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-left marker:content-none [&::-webkit-details-marker]:hidden">
+        <h3 className="flex-1 text-sm font-semibold text-foreground sm:text-base">{question}</h3>
+        <ChevronDown
+          className="h-4 w-4 shrink-0 text-muted-foreground transition-transform group-open:rotate-180"
+          aria-hidden="true"
+        />
+      </summary>
+      <div className="px-5 pb-4">
+        <p className="text-sm leading-relaxed text-muted-foreground">{answer}</p>
       </div>
-      <div className="mt-1 text-sm font-semibold">{value}</div>
-    </div>
+    </details>
   );
 }
 

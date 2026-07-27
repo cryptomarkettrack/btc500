@@ -1,6 +1,8 @@
 import { useState, useCallback } from "react";
 import { toCanvas } from "html-to-image";
-import { Download, Copy, Loader2, Check, Code2, X } from "lucide-react";
+import { Download, Copy, Loader2, Check, Code2, X, LayoutTemplate } from "lucide-react";
+import { Link } from "@tanstack/react-router";
+import { iframeSnippet } from "@/lib/embed";
 
 interface Props {
   captureRef: React.RefObject<HTMLDivElement | null>;
@@ -170,7 +172,11 @@ export function ShareButton({ captureRef }: Props) {
 
   const copyIframeCode = useCallback(async () => {
     const origin = window.location.origin;
-    const iframeCode = `<iframe src="${origin}/embed" width="600" height="800" frameborder="0" style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>`;
+    const iframeCode = iframeSnippet({
+      widget: "full",
+      theme: "light",
+      base: origin,
+    });
 
     try {
       await navigator.clipboard.writeText(iframeCode);
@@ -183,7 +189,7 @@ export function ShareButton({ captureRef }: Props) {
 
   return (
     <>
-      <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
+      <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:flex-wrap">
         <button
           onClick={copyToClipboard}
           disabled={busy}
@@ -199,7 +205,21 @@ export function ShareButton({ captureRef }: Props) {
           ) : (
             <>
               <Copy className="h-4 w-4" />
-              Copy image to clipboard
+              Copy cycle card
+            </>
+          )}
+        </button>
+        <button
+          onClick={download}
+          disabled={busy}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+        >
+          {busy ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <>
+              <Download className="h-4 w-4" />
+              Download PNG
             </>
           )}
         </button>
@@ -211,7 +231,7 @@ export function ShareButton({ captureRef }: Props) {
           {iframeCopied ? (
             <>
               <Check className="h-4 w-4" />
-              Copied!
+              Embed copied!
             </>
           ) : (
             <>
@@ -220,6 +240,13 @@ export function ShareButton({ captureRef }: Props) {
             </>
           )}
         </button>
+        <Link
+          to="/embed-kit"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-3 text-sm font-medium text-primary transition hover:bg-primary/10 sm:w-auto"
+        >
+          <LayoutTemplate className="h-4 w-4" />
+          Embed kit
+        </Link>
       </div>
 
       {/* iOS Preview Modal */}

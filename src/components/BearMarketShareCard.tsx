@@ -171,7 +171,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                 color: accent,
               }}
             >
-              Live On-Chain Analysis
+              Live in Analysis
             </span>
           </div>
         </div>

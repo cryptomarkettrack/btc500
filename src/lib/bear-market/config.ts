@@ -302,34 +302,98 @@ export function formatValueBps(v: number | null): string {
   return (v / 100).toFixed(2) + "%";
 }
 
+/**
+ * Single source of truth: is this indicator in "bottom zone" for the composite score?
+ * Used by Bear Market dashboard AND Cycle Score on-chain component.
+ */
+export function isIndicatorTriggered(name: string, value: number | null | undefined): boolean {
+  if (value === null || value === undefined || Number.isNaN(value)) return false;
+  const n = name.toLowerCase();
+  if (n === "mvrv" || n === "sth-mvrv") return value < 1.0;
+  if (n === "lth-mvrv") return value < 1.2;
+  if (n === "puell multiple") return value < 0.5;
+  if (n.includes("nupl")) return value < 0;
+  if (n === "sopr" || n.includes("sopr")) return value < 1.0;
+  if (n === "rhodl ratio") return value < 2000;
+  if (n === "reserve risk") return value < 5e-6;
+  if (n.includes("liveliness")) return value < 0.55;
+  if (n.includes("vaultedness")) return value > 0.45;
+  if (n === "ath drawdown") return value < -7000;
+  if (n.includes("supply in profit")) return value < 5e6;
+  return false;
+}
+
+export const BEAR_MARKET_MAX_POINTS = INDICATORS.reduce((sum, i) => sum + i.points, 0); // 30
+
+export type BearCompositeLabel = "STRONG BUY" | "MODERATE BUY" | "CAUTIOUS" | "NOT A BOTTOM";
+
+export interface BearCompositeResult {
+  /** Weighted points from triggered indicators (0–30) */
+  score: number;
+  maxScore: number;
+  triggeredCount: number;
+  loadedCount: number;
+  totalIndicators: number;
+  label: BearCompositeLabel;
+}
+
+/**
+ * Composite bear-bottom score from current indicator values (by display name).
+ * Same math as the Bear Market dashboard hero score.
+ */
+export function computeBearComposite(
+  valuesByName: Record<string, number | null | undefined>,
+): BearCompositeResult {
+  let score = 0;
+  let triggeredCount = 0;
+  let loadedCount = 0;
+
+  for (const ind of INDICATORS) {
+    const v = valuesByName[ind.name];
+    if (v === null || v === undefined || Number.isNaN(v)) continue;
+    loadedCount++;
+    if (isIndicatorTriggered(ind.name, v)) {
+      score += ind.points;
+      triggeredCount++;
+    }
+  }
+
+  const label: BearCompositeLabel =
+    score >= 15 ? "STRONG BUY" : score >= 10 ? "MODERATE BUY" : score >= 5 ? "CAUTIOUS" : "NOT A BOTTOM";
+
+  return {
+    score,
+    maxScore: BEAR_MARKET_MAX_POINTS,
+    triggeredCount,
+    loadedCount,
+    totalIndicators: INDICATORS.length,
+    label,
+  };
+}
+
 export function getStatusColor(
   name: string,
   value: number | null,
 ): "destructive" | "default" | "secondary" | "outline" {
   if (value === null || isNaN(value)) return "secondary";
+  if (isIndicatorTriggered(name, value)) return "destructive";
   const n = name.toLowerCase();
   if (n === "mvrv" || n === "sth-mvrv" || n === "lth-mvrv") {
-    return value < 1.0 ? "destructive" : value < 1.2 ? "outline" : "default";
+    return value < 1.2 ? "outline" : "default";
   }
   if (n === "puell multiple") {
-    return value < 0.5 ? "destructive" : value < 1.0 ? "outline" : "default";
+    return value < 1.0 ? "outline" : "default";
   }
   if (n.includes("nupl")) {
-    return value < 0 ? "destructive" : value < 500 ? "outline" : "default";
-  }
-  if (n === "sopr" || n.includes("sopr")) {
-    return value < 1.0 ? "destructive" : "default";
-  }
-  if (n === "rhodl ratio") {
-    return value < 2000 ? "destructive" : "default";
+    return value < 500 ? "outline" : "default";
   }
   if (n.includes("ath drawdown") || n.includes("price_drawdown")) {
-    return value < -7000 ? "destructive" : value < -5000 ? "outline" : "default";
+    return value < -5000 ? "outline" : "default";
   }
   if (n === "supply in profit") {
-    return value < 5e6 ? "destructive" : value < 10e6 ? "outline" : "default";
+    return value < 10e6 ? "outline" : "default";
   }
-  return "secondary";
+  return "default";
 }
 
 export function getStatusText(name: string, value: number | null): string {

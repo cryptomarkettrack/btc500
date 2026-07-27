@@ -226,6 +226,9 @@ export const CacheKeys = {
 
   /** Timeline data */
   timeline: () => "btc:timeline",
+
+  /** Cycle score / script integrity */
+  cycleScore: () => "btc:cycle-score",
 };
 
 // ─── Default TTLs ────────────────────────────────────────────────────────────
@@ -251,6 +254,9 @@ export const TTL = {
 
   /** Timeline data: 1 hour — current cycle prices update, but historical is static */
   TIMELINE: 60 * 60_000,
+
+  /** Cycle score: 15 minutes — path + on-chain refresh without thrashing APIs */
+  CYCLE_SCORE: 15 * 60_000,
 };
 
 // ─── Debug helper ────────────────────────────────────────────────────────────

@@ -1,7 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { getNewsFeed, type NewsFeed } from "@/lib/news";
-import { generatePageHead } from "@/lib/site";
+import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { NewsFeedPage } from "@/components/news/NewsFeedPage";
+
+const newsSchema = generateWebPageSchema({
+  path: "/news",
+  name: "Crypto News — Bitcoin & Cryptocurrency News Feed",
+  description:
+    "Latest cryptocurrency and Bitcoin news aggregated from Cointelegraph. Stay updated with real-time crypto market news and blockchain industry developments.",
+  breadcrumbs: [
+    { name: "Home", path: "/" },
+    { name: "News", path: "/news" },
+  ],
+});
 
 export const Route = createFileRoute("/news")({
   component: NewsRoute,
@@ -25,7 +36,7 @@ export const Route = createFileRoute("/news")({
         "Latest Bitcoin and cryptocurrency news aggregated in real-time. Stay informed on crypto markets, blockchain technology, and digital asset developments.",
       ogImageAlt: "Crypto News — Bitcoin & Cryptocurrency News Feed",
       twitterDescription: "Latest Bitcoin and cryptocurrency news aggregated in real-time.",
-      includeHreflang: false,
+      schema: newsSchema,
     }),
 });
 

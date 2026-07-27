@@ -1,6 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generatePageHead } from "@/lib/site";
+import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { LiquidationDashboard } from "@/components/liquidation/LiquidationDashboard";
+
+const liquidationSchema = generateWebPageSchema({
+  path: "/liquidation",
+  name: "BTC Liquidation Dashboard — Bitcoin Futures OI, Funding & Long/Short",
+  description:
+    "Real-time Bitcoin futures liquidation data: live open interest, funding rates, long/short ratios, taker buy/sell volume and market analysis.",
+  breadcrumbs: [
+    { name: "Home", path: "/" },
+    { name: "Liquidation", path: "/liquidation" },
+  ],
+});
 
 export const Route = createFileRoute("/liquidation")({
   component: LiquidationDashboard,
@@ -19,6 +30,6 @@ export const Route = createFileRoute("/liquidation")({
       twitterTitle: "BTC Liquidation Dashboard — Live Bitcoin Futures Data",
       twitterDescription:
         "Real-time Bitcoin futures liquidation dashboard with OI, funding rates, and L/S ratios.",
-      includeHreflang: false,
+      schema: liquidationSchema,
     }),
 });

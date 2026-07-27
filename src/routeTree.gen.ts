@@ -14,6 +14,7 @@ import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
+import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
 import { Route as BearMarketRouteImport } from './routes/bear-market'
@@ -47,6 +48,11 @@ const LiquidationRoute = LiquidationRouteImport.update({
 const InsiderTradingRoute = InsiderTradingRouteImport.update({
   id: '/insider-trading',
   path: '/insider-trading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedKitRoute = EmbedKitRouteImport.update({
+  id: '/embed-kit',
+  path: '/embed-kit',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmbedRoute = EmbedRouteImport.update({
@@ -102,6 +108,7 @@ export interface FileRoutesByFullPath {
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
+  '/embed-kit': typeof EmbedKitRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -118,6 +125,7 @@ export interface FileRoutesByTo {
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
+  '/embed-kit': typeof EmbedKitRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -135,6 +143,7 @@ export interface FileRoutesById {
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
+  '/embed-kit': typeof EmbedKitRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -153,6 +162,7 @@ export interface FileRouteTypes {
     | '/bear-market'
     | '/dca'
     | '/embed'
+    | '/embed-kit'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -169,6 +179,7 @@ export interface FileRouteTypes {
     | '/bear-market'
     | '/dca'
     | '/embed'
+    | '/embed-kit'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/bear-market'
     | '/dca'
     | '/embed'
+    | '/embed-kit'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -202,6 +214,7 @@ export interface RootRouteChildren {
   BearMarketRoute: typeof BearMarketRoute
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
+  EmbedKitRoute: typeof EmbedKitRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
   NewsRoute: typeof NewsRoute
@@ -244,6 +257,13 @@ declare module '@tanstack/react-router' {
       path: '/insider-trading'
       fullPath: '/insider-trading'
       preLoaderRoute: typeof InsiderTradingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/embed-kit': {
+      id: '/embed-kit'
+      path: '/embed-kit'
+      fullPath: '/embed-kit'
+      preLoaderRoute: typeof EmbedKitRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/embed': {
@@ -336,6 +356,7 @@ const rootRouteChildren: RootRouteChildren = {
   BearMarketRoute: BearMarketRoute,
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
+  EmbedKitRoute: EmbedKitRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
   NewsRoute: NewsRoute,

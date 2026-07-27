@@ -249,9 +249,13 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
         </svg>
       </div>
 
-      {/* Title */}
+      {/* Title — keep brand front-and-center; expand keywords for crawlers */}
       <h1 className="mt-6 text-center text-5xl font-bold tracking-tight sm:text-6xl">
         BTC<span className="text-primary">500</span>
+        <span className="sr-only">
+          {" "}
+          — Bitcoin Halving Countdown and Investment Strategy
+        </span>
       </h1>
 
       {/* Subtitle */}

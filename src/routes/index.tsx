@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
-import { halvingQuery, simulatorPreviewQuery } from "@/lib/queries";
+import { cycleScoreQuery, halvingQuery, simulatorPreviewQuery } from "@/lib/queries";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
@@ -9,7 +9,7 @@ const homePageSchema = generateWebPageSchema({
   path: "/",
   name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
   description:
-    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
+    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, script integrity score, block progress, historical returns & investment simulator.",
   breadcrumbs: [{ name: "Home", path: "/" }],
 });
 
@@ -19,19 +19,24 @@ export const Route = createFileRoute("/")({
       path: "/",
       title: "BTC500 — Bitcoin Halving Countdown & Investment Strategy | Buy 500 Days Before",
       description:
-        "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, investment simulator, historical performance data and daily shareable cards. The simplest Bitcoin investment strategy.",
+        "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, cycle score, investment simulator, and shareable cards.",
       keywords:
-        "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, buy Bitcoin, crypto halving, Bitcoin investment, halving countdown, Bitcoin trading, Bitcoin price, block height",
+        "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, cycle score, buy Bitcoin, crypto halving, Bitcoin investment, halving countdown, Bitcoin trading, Bitcoin price, block height",
       ogTitle: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
       ogDescription:
-        "Buy 500 days before halving. Sell 500 days after. Track live countdowns, block progress, and historical returns. The dead-simple Bitcoin strategy.",
+        "Buy 500 days before halving. Sell 500 days after. Live cycle score, command center, and historical returns.",
       ogImageAlt: "BTC500 — Bitcoin Halving Countdown & Strategy Dashboard",
       twitterTitle: "BTC500 — Bitcoin Halving Countdown & Strategy",
-      twitterDescription: "Buy 500 days before halving. Sell 500 days after. Track live countdowns.",
+      twitterDescription: "Buy 500 days before halving. Sell 500 days after. Track live cycle score.",
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(halvingQuery);
+    // Warm cycle score for Command Center; don't block home forever if APIs lag
+    await Promise.race([
+      context.queryClient.ensureQueryData(cycleScoreQuery),
+      new Promise((resolve) => setTimeout(resolve, 8_000)),
+    ]);
     context.queryClient.prefetchQuery(simulatorPreviewQuery);
   },
   component: HomePage,

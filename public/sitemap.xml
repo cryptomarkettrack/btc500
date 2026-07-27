@@ -1,141 +1,191 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1"
-        xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
-  
-  <!-- Main pages -->
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Core product pages -->
   <url>
     <loc>https://btc500.vercel.app/</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>BTC500 — Bitcoin Halving Countdown &amp; Strategy</image:caption>
+      <image:title>BTC500 — Bitcoin Halving Countdown &amp; Strategy</image:title>
+      <image:caption>Buy Bitcoin 500 days before halving, sell 500 days after</image:caption>
     </image:image>
   </url>
-  
+
   <url>
     <loc>https://btc500.vercel.app/simulator</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
+    <priority>0.95</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/simulator" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/simulator" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>BTC500 Simulator — Bitcoin Halving Returns Calculator</image:caption>
+      <image:title>BTC500 Simulator — Bitcoin Halving Returns Calculator</image:title>
     </image:image>
   </url>
-  
+
+  <url>
+    <loc>https://btc500.vercel.app/dca</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/dca" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/dca" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>DCA vs Lump Sum — BTC500 Strategy Comparison</image:title>
+    </image:image>
+  </url>
+
   <url>
     <loc>https://btc500.vercel.app/timeline</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/timeline" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/timeline" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>BTC500 Time Machine — Interactive Bitcoin Timeline</image:caption>
+      <image:title>BTC500 Time Machine — Interactive Bitcoin Timeline</image:title>
     </image:image>
   </url>
-  
+
+  <url>
+    <loc>https://btc500.vercel.app/bear-market</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/bear-market" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/bear-market" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>Bitcoin Bear Market Bottom Indicators | BTC500</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.vercel.app/liquidation</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/liquidation" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/liquidation" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>BTC Liquidation Dashboard — OI, Funding &amp; Long/Short</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.vercel.app/insider-trading</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/insider-trading" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/insider-trading" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>Insider Trading Dashboard — SEC Form 4 Analysis</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.vercel.app/news</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>hourly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/news" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/news" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>Crypto News — Bitcoin &amp; Cryptocurrency Headlines</image:title>
+    </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.vercel.app/embed-kit</loc>
+    <lastmod>2026-07-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/embed-kit" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/embed-kit" />
+    <image:image>
+      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
+      <image:title>BTC500 Embed Kit — Free Countdown Widgets</image:title>
+    </image:image>
+  </url>
+
+  <!-- Research / content hub -->
   <url>
     <loc>https://btc500.vercel.app/articles</loc>
-    <lastmod>2026-07-19</lastmod>
+    <lastmod>2026-07-27</lastmod>
     <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/articles" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/articles" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Articles — BTC500 Strategy &amp; Insights</image:caption>
+      <image:title>Articles — BTC500 Strategy &amp; Insights</image:title>
     </image:image>
   </url>
-  
+
   <url>
     <loc>https://btc500.vercel.app/articles/btc500-strategy</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/articles/btc500-strategy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/articles/btc500-strategy" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>The BTC500 Strategy — Bitcoin Halving Investment Strategy</image:caption>
+      <image:title>The BTC500 Strategy — Bitcoin Halving Investment Strategy</image:title>
     </image:image>
   </url>
-  
+
   <url>
     <loc>https://btc500.vercel.app/articles/why-btc500-exists</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/articles/why-btc500-exists" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/articles/why-btc500-exists" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Why BTC500 Exists — Bitcoin Investment Strategy</image:caption>
+      <image:title>Why BTC500 Exists — Bitcoin Investment Strategy</image:title>
     </image:image>
   </url>
-  
+
   <url>
     <loc>https://btc500.vercel.app/articles/rupl</loc>
     <lastmod>2026-07-13</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/articles/rupl" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/articles/rupl" />
     <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>NUPL Guide — Bitcoin Market Psychology</image:caption>
+      <image:loc>https://btc500.vercel.app/og/rupl-chart.jpeg</image:loc>
+      <image:title>NUPL Guide — Bitcoin Market Psychology</image:title>
     </image:image>
   </url>
-  
+
   <url>
     <loc>https://btc500.vercel.app/articles/ondo-finance-tokenization</loc>
     <lastmod>2026-07-16</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.vercel.app/articles/ondo-finance-tokenization" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.vercel.app/articles/ondo-finance-tokenization" />
     <image:image>
       <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Ondo Finance — Tokenization Infrastructure for Wall Street</image:caption>
+      <image:title>Ondo Finance — Tokenization Infrastructure for Wall Street</image:title>
     </image:image>
   </url>
-  
-  <url>
-    <loc>https://btc500.vercel.app/liquidation</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>BTC Liquidation Dashboard — OI, Funding &amp; Long/Short</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://btc500.vercel.app/insider-trading</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Insider Trading Dashboard — SEC Form 4 Analysis</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://btc500.vercel.app/news</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.7</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>Crypto News — Cointelegraph RSS Feed</image:caption>
-    </image:image>
-  </url>
-  
-  <url>
-    <loc>https://btc500.vercel.app/dca</loc>
-    <lastmod>2026-07-23</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-    <image:image>
-      <image:loc>https://btc500.vercel.app/og/default.png</image:loc>
-      <image:caption>DCA vs Lump Sum — BTC500 Bitcoin Halving Strategy Comparison</image:caption>
-    </image:image>
-  </url>
-  
-  
+
 </urlset>

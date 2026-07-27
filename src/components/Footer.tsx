@@ -1,15 +1,6 @@
-import {
-  Instagram,
-  Mail,
-  Home,
-  Calculator,
-  Clock,
-  BookOpen,
-  Flame,
-  TrendingUp,
-  Newspaper,
-} from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 import { Link } from "@tanstack/react-router";
+import { SITE_URL } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -25,13 +16,22 @@ export function Footer() {
               Bitcoin halving countdown and investment strategy platform. Buy 500 days before
               halving, sell 500 days after.
             </p>
+            <p className="mt-3 text-[11px] text-muted-foreground/80">
+              <a
+                href={SITE_URL}
+                className="hover:text-foreground transition-colors"
+                rel="home"
+              >
+                btc500.vercel.app
+              </a>
+            </p>
           </div>
 
           {/* Tools */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+          <nav aria-label="Tools">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Tools
-            </h3>
+            </h2>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -51,10 +51,26 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/dca"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  DCA vs Lump Sum
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/timeline"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Time Machine
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/bear-market"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Bear Market Meter
                 </Link>
               </li>
               <li>
@@ -65,14 +81,22 @@ export function Footer() {
                   Liquidation Dashboard
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/embed-kit"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Embed Kit
+                </Link>
+              </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Data */}
-          <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+          <nav aria-label="Data and insights">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Data & Insights
-            </h3>
+            </h2>
             <ul className="space-y-2">
               <li>
                 <Link
@@ -98,21 +122,37 @@ export function Footer() {
                   Articles & Strategy
                 </Link>
               </li>
+              <li>
+                <Link
+                  to="/articles/btc500-strategy"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  What is BTC500?
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/articles/rupl"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  NUPL Guide
+                </Link>
+              </li>
             </ul>
-          </div>
+          </nav>
 
           {/* Social */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
               Connect
-            </h3>
+            </h2>
             <div className="flex flex-col gap-2">
               <a
                 href="https://www.instagram.com/btc500halving"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer me"
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Follow on Instagram"
+                aria-label="Follow BTC500 on Instagram"
               >
                 <Instagram className="h-4 w-4" />
                 Instagram
@@ -120,9 +160,9 @@ export function Footer() {
               <a
                 href="https://x.com/btc500halving"
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noopener noreferrer me"
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Follow on X (Twitter)"
+                aria-label="Follow BTC500 on X (Twitter)"
               >
                 <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
                   <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -132,7 +172,7 @@ export function Footer() {
               <a
                 href="mailto:btc500halving@gmail.com"
                 className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Send email"
+                aria-label="Email BTC500"
               >
                 <Mail className="h-4 w-4" />
                 Email

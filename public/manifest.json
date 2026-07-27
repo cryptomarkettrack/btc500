@@ -1,23 +1,43 @@
 {
   "name": "BTC500 — Bitcoin Halving Countdown & Strategy",
   "short_name": "BTC500",
-  "description": "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
+  "description": "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, cycle score, historical returns & investment simulator.",
   "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#0f0f0f",
+  "orientation": "portrait-primary",
+  "background_color": "#0B0B0F",
   "theme_color": "#F7931A",
+  "lang": "en-US",
+  "dir": "ltr",
+  "categories": ["finance", "business", "utilities"],
   "icons": [
     {
       "src": "/favicon.svg",
-      "sizes": "64x64",
-      "type": "image/svg+xml"
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
     },
     {
-      "src": "/favicon.ico",
-      "sizes": "48x48",
-      "type": "image/x-icon"
+      "src": "/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
     }
   ],
-  "categories": ["finance", "cryptocurrency", "investment"],
-  "lang": "en-US"
+  "screenshots": [],
+  "related_applications": [],
+  "prefer_related_applications": false
 }
