@@ -58,18 +58,5 @@ export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): C
   };
 }
 
-export function formatUsd(n: number): string {
-  return n.toLocaleString("en-US", {
-    style: "currency",
-    currency: "USD",
-    maximumFractionDigits: 0,
-  });
-}
-
-export function formatDate(d: Date): string {
-  return d.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" });
-}
-
-export function formatUtc(d: Date): string {
-  return `${d.getUTCHours().toString().padStart(2, "0")}:${d.getUTCMinutes().toString().padStart(2, "0")} UTC`;
-}
+// Formatters live in format.ts; re-exported here for backward compatibility.
+export { formatUsd, formatDate, formatUtc } from "./format";

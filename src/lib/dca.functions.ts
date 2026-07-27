@@ -2,14 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getBtcPriceFromCsv, getBtcPricesFromCsvRange } from "./csv-price-loader";
 import { fetchBtcPriceFromBitstamp } from "./bitstamp-fetcher";
 import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
-
-// Known halving dates (approximate, based on block heights)
-const HALVINGS: Array<{ date: string; label: string }> = [
-  { date: "2012-11-28", label: "2012 Halving" },
-  { date: "2016-07-09", label: "2016 Halving" },
-  { date: "2020-05-11", label: "2020 Halving" },
-  { date: "2024-04-20", label: "2024 Halving" },
-];
+import { HALVINGS, addDays } from "./halvings";
 
 export interface DcaCycleResult {
   label: string;
@@ -28,12 +21,6 @@ export interface DcaCycleResult {
 
 export interface DcaServerResult {
   cycles: DcaCycleResult[];
-}
-
-function addDays(dateStr: string, days: number): string {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().split("T")[0];
 }
 
 /**

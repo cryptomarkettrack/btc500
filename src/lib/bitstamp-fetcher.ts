@@ -1,7 +1,4 @@
-/** Convert a YYYY-MM-DD date string to Unix milliseconds (start of day UTC) */
-function dateToMs(dateStr: string): number {
-  return new Date(dateStr + "T00:00:00Z").getTime();
-}
+import { dateToMs } from "./halvings";
 
 /**
  * Fetch a single historical BTC price from Bitstamp for a given date.

@@ -1,22 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { getHalvingInfo, getBtcPrice } from "@/lib/btc.functions";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
-
-const halvingQuery = queryOptions({
-  queryKey: ["halving"],
-  queryFn: () => getHalvingInfo(),
-  staleTime: 60 * 60_000,
-  refetchInterval: 60 * 60_000,
-});
-
-const priceQuery = queryOptions({
-  queryKey: ["btc-price"],
-  queryFn: () => getBtcPrice(),
-  staleTime: 60_000,
-  refetchInterval: 60_000,
-});
+import { halvingQuery, btcPriceQuery } from "@/lib/queries";
 
 export const Route = createFileRoute("/embed")({
   head: () => ({
@@ -24,14 +10,14 @@ export const Route = createFileRoute("/embed")({
   }),
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(halvingQuery);
-    context.queryClient.ensureQueryData(priceQuery);
+    context.queryClient.ensureQueryData(btcPriceQuery);
   },
   component: Embed,
 });
 
 function Embed() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
-  const priceRes = useSuspenseQuery(priceQuery);
+  const priceRes = useSuspenseQuery(btcPriceQuery);
   const now = new Date();
 
   const cycle = computeCycle(

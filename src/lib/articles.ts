@@ -1,3 +1,7 @@
+import { SITE_URL } from "./site";
+
+export { SITE_URL };
+
 export interface ArticleMeta {
   id: string;
   slug: string;
@@ -16,8 +20,6 @@ export interface ArticleMeta {
   /** Schema.org keywords */
   schemaKeywords: string;
 }
-
-export const SITE_URL = "https://btc500.vercel.app";
 
 export const articles: ArticleMeta[] = [
   {

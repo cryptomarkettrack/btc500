@@ -2,14 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { getBtcPricesFromCsvRange } from "./csv-price-loader";
 import { getHalvingInfo } from "./btc.functions";
 import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
-
-// Known halving dates (approximate, based on block heights)
-const HALVINGS: Array<{ date: string; block: number; label: string }> = [
-  { date: "2012-11-28", block: 210000, label: "2012 Halving" },
-  { date: "2016-07-09", block: 420000, label: "2016 Halving" },
-  { date: "2020-05-11", block: 630000, label: "2020 Halving" },
-  { date: "2024-04-20", block: 840000, label: "2024 Halving" },
-];
+import { HALVINGS, addDays, dateToMs } from "./halvings";
 
 const AVG_BLOCK_MINUTES = 10;
 
@@ -39,16 +32,6 @@ export interface TimelineCycle {
 export interface TimelineData {
   currentCycle: TimelineCycle;
   previousCycle: TimelineCycle;
-}
-
-function addDays(dateStr: string, days: number): string {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().split("T")[0];
-}
-
-function dateToMs(dateStr: string): number {
-  return new Date(dateStr + "T00:00:00Z").getTime();
 }
 
 function daysBetween(date1: string, date2: string): number {

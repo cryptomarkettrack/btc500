@@ -1,135 +1,66 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Clock, Play, Pause, ArrowLeftRight } from "lucide-react";
-import { getTimelineData } from "@/lib/timeline.functions";
 import type { TimelineDay } from "@/lib/timeline.functions";
+import { timelineQuery } from "@/lib/queries";
+import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { CycleCard } from "@/components/timeline/CycleCard";
 import { InfoPanel } from "@/components/timeline/InfoPanel";
+import { RoutePending } from "@/components/route/RoutePending";
+import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState, useCallback, useRef, useEffect } from "react";
 
-const timelineQuery = queryOptions({
-  queryKey: ["timeline"],
-  queryFn: () => getTimelineData(),
-  staleTime: 60 * 60_000,
-  refetchInterval: 60 * 60_000,
-});
-
-const timelinePageSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebPage",
+const timelinePageSchema = generateWebPageSchema({
+  path: "/timeline",
   name: "BTC500 Time Machine — Replay Bitcoin Halving Cycles",
-  url: "https://btc500.vercel.app/timeline",
   description:
     "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
-  dateModified: "2026-07-13",
-  datePublished: "2024-01-15",
-  mainEntityOfPage: {
-    "@type": "WebPage",
-    "@id": "https://btc500.vercel.app/timeline",
-  },
-  breadcrumb: {
-    "@type": "BreadcrumbList",
-    itemListElement: [
-      {
-        "@type": "ListItem",
-        position: 1,
-        name: "Home",
-        item: "https://btc500.vercel.app/",
-      },
-      {
-        "@type": "ListItem",
-        position: 2,
-        name: "Time Machine",
-        item: "https://btc500.vercel.app/timeline",
-      },
-    ],
-  },
-};
-
-export const Route = createFileRoute("/timeline")({
-  head: () => ({
-    meta: [
-      {
-        title: "BTC500 Time Machine — Replay Bitcoin Halving Cycles | Interactive Timeline",
-      },
-      {
-        name: "description",
-        content:
-          "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
-      },
-      {
-        name: "keywords",
-        content:
-          "Bitcoin timeline, BTC500 time machine, Bitcoin halving history, Bitcoin price history, Bitcoin investment timeline, halving cycle comparison, Bitcoin backtest",
-      },
-      { property: "og:title", content: "BTC500 Time Machine — Interactive Bitcoin Timeline" },
-      {
-        property: "og:description",
-        content:
-          "Replay Bitcoin history with the BTC500 strategy. Compare investments across halving cycles with real price data.",
-      },
-      { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://btc500.vercel.app/timeline" },
-      { property: "og:image", content: "https://btc500.vercel.app/og/default.png" },
-      { property: "og:image:width", content: "1200" },
-      { property: "og:image:height", content: "630" },
-      {
-        property: "og:image:alt",
-        content: "BTC500 Time Machine — Interactive Bitcoin Halving Timeline",
-      },
-      { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "BTC500 Time Machine — Interactive Bitcoin Timeline" },
-      {
-        name: "twitter:description",
-        content: "Replay Bitcoin history with the BTC500 strategy.",
-      },
-      { name: "twitter:image", content: "https://btc500.vercel.app/og/default.png" },
-    ],
-    links: [
-      { rel: "canonical", href: "https://btc500.vercel.app/timeline" },
-      { rel: "alternate", hrefLang: "en", href: "https://btc500.vercel.app/timeline" },
-      { rel: "alternate", hrefLang: "x-default", href: "https://btc500.vercel.app/timeline" },
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(timelinePageSchema),
-      },
-    ],
-  }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(timelineQuery),
-  component: Timeline,
-  pendingComponent: Pending,
-  errorComponent: ({ error }) => (
-    <div className="flex min-h-screen items-center justify-center p-8 text-center">
-      <div>
-        <p className="text-sm text-muted-foreground">Data updating...</p>
-        <p className="mt-2 text-xs text-muted-foreground/70">{error.message}</p>
-      </div>
-    </div>
-  ),
-  notFoundComponent: () => <div className="p-8">Not found</div>,
+  breadcrumbs: [
+    { name: "Home", path: "/" },
+    { name: "Time Machine", path: "/timeline" },
+  ],
 });
 
-function Pending() {
+function TimelinePending() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
-        <div className="flex flex-col gap-6 p-5">
-          <header className="mb-8 text-center sm:mb-12">
-            <Skeleton className="mx-auto h-10 w-80 rounded-lg" />
-            <Skeleton className="mx-auto mt-4 h-6 w-96 rounded-md" />
-          </header>
-          <Skeleton className="h-24 rounded-[24px]" />
-          <Skeleton className="h-96 rounded-[32px]" />
-          <Skeleton className="h-96 rounded-[32px]" />
-        </div>
-      </main>
-    </div>
+    <RoutePending>
+      <div className="flex flex-col gap-6 p-5">
+        <header className="mb-8 text-center sm:mb-12">
+          <Skeleton className="mx-auto h-10 w-80 rounded-lg" />
+          <Skeleton className="mx-auto mt-4 h-6 w-96 rounded-md" />
+        </header>
+        <Skeleton className="h-24 rounded-[24px]" />
+        <Skeleton className="h-96 rounded-[32px]" />
+        <Skeleton className="h-96 rounded-[32px]" />
+      </div>
+    </RoutePending>
   );
 }
+
+export const Route = createFileRoute("/timeline")({
+  head: () =>
+    generatePageHead({
+      path: "/timeline",
+      title: "BTC500 Time Machine — Replay Bitcoin Halving Cycles | Interactive Timeline",
+      description:
+        "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
+      keywords:
+        "Bitcoin timeline, BTC500 time machine, Bitcoin halving history, Bitcoin price history, Bitcoin investment timeline, halving cycle comparison, Bitcoin backtest",
+      ogTitle: "BTC500 Time Machine — Interactive Bitcoin Timeline",
+      ogDescription:
+        "Replay Bitcoin history with the BTC500 strategy. Compare investments across halving cycles with real price data.",
+      ogImageAlt: "BTC500 Time Machine — Interactive Bitcoin Halving Timeline",
+      twitterDescription: "Replay Bitcoin history with the BTC500 strategy.",
+      schema: timelinePageSchema,
+    }),
+  loader: ({ context }) => context.queryClient.ensureQueryData(timelineQuery),
+  component: Timeline,
+  pendingComponent: TimelinePending,
+  errorComponent: ({ error }) => <RouteDataError error={error} message="Data updating..." />,
+  notFoundComponent: RouteNotFound,
+});
 
 function Timeline() {
   const { data } = useSuspenseQuery(timelineQuery);

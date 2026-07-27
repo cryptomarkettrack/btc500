@@ -1,28 +1,18 @@
 import { createServerFn } from "@tanstack/react-start";
 import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
+import {
+  fetchWithTimeout,
+  sleep,
+  DEFAULT_MAX_RETRIES,
+  DEFAULT_BASE_DELAY_MS,
+  DEFAULT_FETCH_TIMEOUT_MS,
+  DEFAULT_USER_AGENT,
+} from "./http";
 
 // --- Retry / timeout configuration ---
-const MAX_RETRIES = 3;
-const BASE_DELAY_MS = 1000;
-const FETCH_TIMEOUT_MS = 15_000;
-
-async function fetchWithTimeout(
-  url: string,
-  init: RequestInit,
-  timeoutMs: number,
-): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, { ...init, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const MAX_RETRIES = DEFAULT_MAX_RETRIES;
+const BASE_DELAY_MS = DEFAULT_BASE_DELAY_MS;
+const FETCH_TIMEOUT_MS = DEFAULT_FETCH_TIMEOUT_MS;
 
 // --- Binance Futures API types ---
 
@@ -132,8 +122,7 @@ const BINANCE_MIRRORS = [
 const OKX_BASE = "https://www.okx.com";
 
 const HEADERS = {
-  "User-Agent":
-    "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+  "User-Agent": DEFAULT_USER_AGENT,
 };
 
 // --- Core fetch helpers ---

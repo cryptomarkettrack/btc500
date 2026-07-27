@@ -1,4 +1,12 @@
 import { createServerFn } from "@tanstack/react-start";
+import {
+  fetchWithTimeout,
+  sleep,
+  DEFAULT_MAX_RETRIES,
+  DEFAULT_BASE_DELAY_MS,
+  DEFAULT_FETCH_TIMEOUT_MS,
+  DEFAULT_USER_AGENT,
+} from "./http";
 
 export interface InsiderTransaction {
   ticker: string;
@@ -29,34 +37,15 @@ export interface InsiderSummary {
 }
 
 // --- Retry / timeout configuration ---
-const MAX_RETRIES = 3;
-const BASE_DELAY_MS = 1000;
-const FETCH_TIMEOUT_MS = 15_000;
-
-async function fetchWithTimeout(
-  url: string,
-  init: RequestInit,
-  timeoutMs: number,
-): Promise<Response> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), timeoutMs);
-  try {
-    return await fetch(url, { ...init, signal: controller.signal });
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function sleep(ms: number): Promise<void> {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const MAX_RETRIES = DEFAULT_MAX_RETRIES;
+const BASE_DELAY_MS = DEFAULT_BASE_DELAY_MS;
+const FETCH_TIMEOUT_MS = DEFAULT_FETCH_TIMEOUT_MS;
 
 async function fetchInsiderTradingInternal(type: string = "7"): Promise<InsiderSummary> {
   const url = `https://finviz.com/insidertrading.ashx?tc=${type}`;
 
   const HEADERS = {
-    "User-Agent":
-      "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "User-Agent": DEFAULT_USER_AGENT,
     Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.5",
   };

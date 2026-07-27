@@ -19,3 +19,20 @@ is `src/routes/__root.tsx`.
 | `__root.tsx` | app shell — wraps every page; preserve `<Outlet />` |
 
 `routeTree.gen.ts` is auto-generated. Don't edit it by hand.
+
+
+## Architecture (feature modules)
+
+Routes stay thin: **head / loader / compose**. UI and domain logic live under:
+
+| Concern | Location |
+| --- | --- |
+| Shared SEO / site URL | `src/lib/site.ts` |
+| Shared formatters | `src/lib/format.ts` |
+| Shared query options | `src/lib/queries.ts` |
+| Halving schedule | `src/lib/halvings.ts` |
+| Feature UI | `src/components/<feature>/` |
+| Feature analysis | `src/lib/*-analysis.ts`, `src/lib/dca-compare.ts`, etc. |
+| Shared route pending/error | `src/components/route/` |
+
+Do not grow route files back into god-components — extract sections instead.
