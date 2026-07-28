@@ -106,13 +106,15 @@ export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500Her
 
   return (
     <div className="flex flex-col items-center">
-      {/* Badge */}
-      <div className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-1.5">
-        <span className="block h-1.5 w-1.5 rounded-[1px] bg-primary" />
-        <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-          One rule · every halving cycle
-        </span>
-      </div>
+      {/* Badge — hide in compact share-card embeds so the chart stays the focus */}
+      {!compact && (
+        <div className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-1.5">
+          <span className="block h-1.5 w-1.5 rounded-[1px] bg-primary" />
+          <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
+            One rule · every halving cycle
+          </span>
+        </div>
+      )}
 
       {/* Chart */}
       <div className={`relative w-full max-w-[900px] ${compact ? "px-0" : "px-4 sm:px-0"}`}>
@@ -297,15 +299,17 @@ export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500Her
         </h1>
       )}
 
-      {/* Subtitle — IBM Plex Mono like main-page hero mono labels */}
-      <p
-        className={`max-w-md text-center text-sm leading-relaxed text-muted-foreground ${compact ? "mt-2" : "mt-4"}`}
-        style={{ fontFamily: FONT_MONO }}
-      >
-        <span className="font-semibold text-foreground">Buy 500 days before the halving.</span>
-        <br />
-        <span className="font-semibold text-foreground">Sell 500 days after.</span>
-      </p>
+      {/* Subtitle — hide in compact so share cards lead with chart + numbers */}
+      {!compact && (
+        <p
+          className="mt-4 max-w-md text-center text-sm leading-relaxed text-muted-foreground"
+          style={{ fontFamily: FONT_MONO }}
+        >
+          <span className="font-semibold text-foreground">Buy 500 days before the halving.</span>
+          <br />
+          <span className="font-semibold text-foreground">Sell 500 days after.</span>
+        </p>
+      )}
 
       {/* Price */}
       {!compact && price && (

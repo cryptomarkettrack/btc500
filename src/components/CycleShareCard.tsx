@@ -1,24 +1,21 @@
 import { forwardRef } from "react";
 import type { CycleInfo } from "@/lib/phase";
 import { formatDate, formatUsd } from "@/lib/format";
-import type { CycleScoreResult, ScriptStatus } from "@/lib/cycle-score";
 import { BtcLogo } from "./BtcLogo";
 import { Btc500Hero } from "./Btc500Hero";
 
 interface Props {
   cycle: CycleInfo;
   price: number | null;
-  score: CycleScoreResult | null;
 }
 
 /**
  * Fixed-size social card for the Cycle Command Center.
- * Matches ChartShareCard / UI guidelines: light surface, soft accents,
- * pill badges, 32px radius, left accent stripe, watermark.
- * Inline colors only — required for reliable html-to-image capture.
+ * Attention-first layout: brand header, strategy chart, giant countdown,
+ * progress bar, and key dates. Inline colors only for html-to-image capture.
  */
 export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleShareCard(
-  { cycle, price, score },
+  { cycle, price },
   ref,
 ) {
   const buy = cycle.phase === "wait-buy";
@@ -28,7 +25,6 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const primaryColor = "#f97316";
   const successColor = "#16a34a";
   const infoColor = "#2563eb";
-  const destructiveColor = "#dc2626";
   const foreground = "#0f172a";
   const muted = "#64748b";
   const border = "#e2e8f0";
@@ -38,28 +34,26 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const primarySoft = "#fef3e7";
   const successSoft = "#e6f7ed";
   const infoSoft = "#eff6ff";
-  const destructiveSoft = "#fef2f2";
-  const mutedSoft = "#f8fafc";
-
-  const status: ScriptStatus = score?.status ?? "awaiting_data";
-  const statusStyles = statusVisual(status, {
-    primaryColor,
-    successColor,
-    infoColor,
-    destructiveColor,
-    muted,
-    primarySoft,
-    successSoft,
-    infoSoft,
-    destructiveSoft,
-    mutedSoft,
-  });
 
   const phaseAccent = buy ? primaryColor : sell ? successColor : infoColor;
   const phaseSoft = buy ? primarySoft : sell ? successSoft : infoSoft;
+  const phaseDeep = buy ? "#9a3412" : sell ? "#14532d" : "#1e3a8a";
+
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
-  const daysLabel = buy ? "Days to buy" : sell ? "Days to sell" : "Cycle done";
-  const phaseLabel = buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete";
+  const totalDays = 500;
+  const progress = buy ? cycle.buyProgress : sell ? cycle.sellProgress : 1;
+  const elapsed = Math.max(0, Math.round(progress * totalDays));
+  const progressPct = Math.max(0, Math.min(100, Math.round(progress * 100)));
+
+  const daysLabel = buy ? "Days until buy window" : sell ? "Days until sell window" : "Cycle complete";
+  const statusLabel = buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete";
+  const targetDate = buy ? cycle.buyDate : sell ? cycle.sellDate : cycle.nextHalving;
+  const targetLabel = buy ? "Buy date" : sell ? "Sell date" : "Next cycle";
+  const ruleLine = buy
+    ? "500 days before the next halving"
+    : sell
+      ? "500 days after the last halving"
+      : "One rule · every cycle";
 
   return (
     <div
@@ -103,7 +97,24 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
         <BtcLogo size={440} color="#000" />
       </div>
 
-      {/* Header */}
+      {/* Soft phase glow behind hero */}
+      <div
+        style={{
+          pointerEvents: "none",
+          position: "absolute",
+          left: "50%",
+          bottom: 180,
+          transform: "translateX(-50%)",
+          width: 720,
+          height: 320,
+          borderRadius: "50%",
+          background: phaseAccent,
+          opacity: 0.08,
+          filter: "blur(40px)",
+        }}
+      />
+
+      {/* Header — brand + status pill */}
       <div style={{ padding: "36px 48px 0 56px", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
@@ -134,74 +145,64 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               <div
                 style={{
                   fontSize: 13,
-                  fontWeight: 500,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
                   color: muted,
                   marginTop: 2,
                 }}
               >
-                Cycle Command Center
+                Halving cycle strategy
               </div>
             </div>
           </div>
 
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 10,
+              padding: "12px 20px",
+              borderRadius: 100,
+              background: phaseSoft,
+              border: `2px solid ${phaseAccent}`,
+            }}
+          >
+            <span
               style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "10px 18px",
-                borderRadius: 100,
-                background: statusStyles.soft,
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: phaseAccent,
+                boxShadow: `0 0 0 4px ${phaseSoft}, 0 0 12px ${phaseAccent}`,
+              }}
+            />
+            <span
+              style={{
+                fontSize: 15,
+                fontWeight: 800,
+                textTransform: "uppercase",
+                letterSpacing: "0.12em",
+                color: phaseAccent,
               }}
             >
-              <span
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: statusStyles.color,
-                }}
-              >
-                {score?.headline ?? "Loading"}
-              </span>
-            </div>
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-                padding: "10px 18px",
-                borderRadius: 100,
-                background: phaseSoft,
-              }}
-            >
-              <span
-                style={{
-                  fontSize: 14,
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: phaseAccent,
-                }}
-              >
-                {phaseLabel}
-              </span>
-            </div>
+              {statusLabel}
+            </span>
           </div>
         </div>
       </div>
 
-      {/* Strategy hero chart — top of share card (force light tokens for capture) */}
+      {/* Strategy chart — primary visual */}
       <div
         style={{
-          padding: "16px 48px 0 56px",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "4px 40px 0 48px",
           position: "relative",
           zIndex: 1,
-          // Match main-page hero type (do not inherit share-card Inter)
           fontFamily: '"Space Grotesk", system-ui, sans-serif',
-          // Light-theme tokens so html-to-image stays readable on white card
           ["--background" as string]: "#ffffff",
           ["--foreground" as string]: "#0f172a",
           ["--primary" as string]: primaryColor,
@@ -211,109 +212,52 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           ["--border" as string]: border,
         }}
       >
-        <Btc500Hero
-          price={price}
-          daysLeft={Math.max(0, cycle.daysUntilBuy)}
-          compact
-        />
+        <Btc500Hero price={price} daysLeft={Math.max(0, cycle.daysUntilBuy)} compact />
       </div>
 
-      {/* Main body */}
+      {/* Giant countdown hero — scroll-stopper */}
       <div
         style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          padding: "20px 48px 0 56px",
+          margin: "0 40px 0 48px",
+          borderRadius: 28,
+          background: `linear-gradient(145deg, ${phaseSoft} 0%, #ffffff 55%, ${phaseSoft} 100%)`,
+          border: `2px solid ${phaseAccent}`,
+          boxShadow: `0 12px 40px -16px ${phaseAccent}88, 0 1px 2px rgba(0,0,0,0.04)`,
+          padding: "28px 36px 32px",
           position: "relative",
           zIndex: 1,
-          gap: 18,
+          overflow: "hidden",
         }}
       >
-        {/* Score + countdown split */}
+        {/* Corner accent mark */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "1.1fr 0.9fr",
-            gap: 18,
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: 0,
+            height: 0,
+            borderStyle: "solid",
+            borderWidth: "0 72px 72px 0",
+            borderColor: `transparent ${phaseAccent} transparent transparent`,
+            opacity: 0.9,
+          }}
+        />
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "space-between",
+            gap: 24,
           }}
         >
-          {/* Cycle score card */}
-          <div
-            style={{
-              borderRadius: 24,
-              border: `1px solid ${border}`,
-              background: cardBg,
-              padding: "22px 26px",
-              boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
-            }}
-          >
+          <div style={{ flex: 1, minWidth: 0 }}>
             <div
               style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
-                textTransform: "uppercase",
-                color: muted,
-              }}
-            >
-              Cycle score
-            </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 4 }}>
-              <span
-                style={{
-                  fontSize: 80,
-                  fontWeight: 800,
-                  lineHeight: 0.9,
-                  letterSpacing: "-0.06em",
-                  color: statusStyles.color,
-                }}
-              >
-                {score?.score ?? "—"}
-              </span>
-              <span style={{ fontSize: 22, fontWeight: 600, color: muted }}>/ 100</span>
-            </div>
-            <div
-              style={{
-                marginTop: 12,
-                fontSize: 20,
-                fontWeight: 700,
-                letterSpacing: "-0.02em",
-                color: foreground,
-                lineHeight: 1.2,
-              }}
-            >
-              {score?.punchline ?? "Building the script…"}
-            </div>
-            <div
-              style={{
-                marginTop: 6,
                 fontSize: 14,
-                lineHeight: 1.4,
-                color: muted,
-                maxWidth: 420,
-              }}
-            >
-              {score?.subline ?? "Live cycle integrity vs historical halvings."}
-            </div>
-          </div>
-
-          {/* Days panel */}
-          <div
-            style={{
-              borderRadius: 24,
-              border: `1px solid ${border}`,
-              background: phaseSoft,
-              padding: "22px 26px",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.18em",
+                fontWeight: 800,
+                letterSpacing: "0.2em",
                 textTransform: "uppercase",
                 color: phaseAccent,
               }}
@@ -322,161 +266,179 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             </div>
             <div
               style={{
-                fontSize: 72,
-                fontWeight: 800,
-                lineHeight: 0.9,
-                letterSpacing: "-0.06em",
-                color: phaseAccent,
-                marginTop: 4,
+                fontSize: 15,
+                fontWeight: 600,
+                color: muted,
+                marginTop: 6,
               }}
             >
-              {days}
+              {ruleLine}
             </div>
-            <div style={{ marginTop: "auto", display: "grid", gap: 8, paddingTop: 12 }}>
-              <StatRow label="Buy" value={formatDate(cycle.buyDate)} muted={muted} fg={foreground} />
-              <StatRow
-                label="Halving"
-                value={formatDate(cycle.nextHalving)}
-                muted={muted}
-                fg={foreground}
-              />
-              <StatRow
-                label="Sell"
-                value={formatDate(cycle.sellDate)}
-                muted={muted}
-                fg={foreground}
-              />
-              {price != null && (
-                <StatRow label="BTC" value={formatUsd(price)} muted={muted} fg={foreground} />
-              )}
+
+            <div style={{ display: "flex", alignItems: "baseline", gap: 14, marginTop: 6 }}>
+              <span
+                style={{
+                  fontSize: 148,
+                  fontWeight: 900,
+                  lineHeight: 0.85,
+                  letterSpacing: "-0.07em",
+                  color: phaseAccent,
+                  textShadow: `0 8px 32px ${phaseAccent}44`,
+                }}
+              >
+                {days}
+              </span>
+              <span
+                style={{
+                  fontSize: 36,
+                  fontWeight: 700,
+                  color: phaseDeep,
+                  paddingBottom: 14,
+                  letterSpacing: "-0.02em",
+                }}
+              >
+                days
+              </span>
             </div>
           </div>
-        </div>
 
-        {/* Next action */}
-        {score && (
           <div
             style={{
-              borderRadius: 20,
-              background: mutedBg,
-              border: `1px solid ${border}`,
-              padding: "16px 22px",
+              flexShrink: 0,
+              textAlign: "right",
+              paddingBottom: 18,
+              paddingRight: 8,
             }}
           >
             <div
               style={{
-                fontSize: 11,
-                fontWeight: 700,
+                fontSize: 12,
+                fontWeight: 800,
                 letterSpacing: "0.16em",
                 textTransform: "uppercase",
                 color: muted,
               }}
             >
-              Next action
+              {targetLabel}
             </div>
             <div
               style={{
-                marginTop: 6,
-                fontSize: 17,
-                fontWeight: 600,
-                lineHeight: 1.35,
+                fontSize: 28,
+                fontWeight: 800,
                 color: foreground,
+                marginTop: 6,
+                letterSpacing: "-0.03em",
               }}
             >
-              {score.action}
+              {formatDate(targetDate)}
+            </div>
+            <div
+              style={{
+                marginTop: 10,
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 6,
+                padding: "6px 12px",
+                borderRadius: 100,
+                background: cardBg,
+                border: `1px solid ${border}`,
+                fontSize: 13,
+                fontWeight: 700,
+                color: phaseAccent,
+              }}
+            >
+              {progressPct}% of window
             </div>
           </div>
-        )}
+        </div>
 
-        {/* Component meters */}
-        {score && (
+        {/* Progress track */}
+        <div style={{ marginTop: 22 }}>
           <div
             style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 12,
+              height: 16,
+              width: "100%",
+              overflow: "hidden",
+              borderRadius: 999,
+              background: mutedBg,
+              border: `1px solid ${border}`,
             }}
           >
-            {score.components.map((c) => {
-              const bar =
-                c.score >= 75 ? successColor : c.score >= 50 ? primaryColor : destructiveColor;
-              return (
-                <div
-                  key={c.id}
-                  style={{
-                    borderRadius: 16,
-                    border: `1px solid ${border}`,
-                    background: mutedSoft,
-                    padding: "14px 14px 12px",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      letterSpacing: "0.14em",
-                      textTransform: "uppercase",
-                      color: muted,
-                    }}
-                  >
-                    {c.label}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: 26,
-                      fontWeight: 800,
-                      marginTop: 4,
-                      letterSpacing: "-0.03em",
-                      color: foreground,
-                    }}
-                  >
-                    {Math.round(c.score)}
-                  </div>
-                  <div
-                    style={{
-                      marginTop: 8,
-                      height: 5,
-                      borderRadius: 999,
-                      background: border,
-                      overflow: "hidden",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: `${Math.max(0, Math.min(100, c.score))}%`,
-                        height: "100%",
-                        background: bar,
-                        borderRadius: 999,
-                      }}
-                    />
-                  </div>
-                  {c.metric && (
-                    <div
-                      style={{
-                        marginTop: 6,
-                        fontSize: 11,
-                        fontWeight: 500,
-                        color: muted,
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
-                      {c.metric}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            <div
+              style={{
+                height: "100%",
+                borderRadius: 999,
+                width: `${progressPct}%`,
+                background: `linear-gradient(90deg, ${phaseAccent}cc, ${phaseAccent})`,
+                boxShadow: `0 0 16px ${phaseAccent}66`,
+              }}
+            />
           </div>
-        )}
+          <div
+            style={{
+              marginTop: 10,
+              display: "flex",
+              justifyContent: "space-between",
+              fontSize: 14,
+              fontWeight: 600,
+              color: muted,
+            }}
+          >
+            <span>
+              <span style={{ color: foreground, fontWeight: 800 }}>{elapsed}</span> days elapsed
+            </span>
+            <span>
+              <span style={{ color: foreground, fontWeight: 800 }}>{totalDays}</span> day window
+            </span>
+          </div>
+        </div>
       </div>
 
-      {/* Footer */}
+      {/* Key facts strip */}
       <div
         style={{
-          marginTop: "auto",
-          padding: "28px 48px 36px 56px",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          gap: 16,
+          padding: "20px 40px 0 48px",
+          position: "relative",
+          zIndex: 1,
+        }}
+      >
+        <FactTile
+          label="BTC price"
+          value={price != null ? formatUsd(price) : "—"}
+          accent={primaryColor}
+          soft={primarySoft}
+          border={border}
+          muted={muted}
+          foreground={foreground}
+        />
+        <FactTile
+          label="Next halving"
+          value={formatDate(cycle.nextHalving)}
+          accent={infoColor}
+          soft={infoSoft}
+          border={border}
+          muted={muted}
+          foreground={foreground}
+        />
+        <FactTile
+          label={buy ? "Sell date" : "Buy date"}
+          value={formatDate(buy ? cycle.sellDate : cycle.buyDate)}
+          accent={sell || buy ? successColor : infoColor}
+          soft={sell || buy ? successSoft : infoSoft}
+          border={border}
+          muted={muted}
+          foreground={foreground}
+        />
+      </div>
+
+      {/* Footer — rule + site */}
+      <div
+        style={{
+          marginTop: 22,
+          padding: "22px 48px 30px 56px",
           borderTop: `1px solid ${border}`,
           display: "flex",
           justifyContent: "space-between",
@@ -485,71 +447,74 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           zIndex: 1,
         }}
       >
-        <div style={{ fontSize: 16, color: muted, fontWeight: 500 }}>
-          Buy 500 days before · Sell 500 days after
+        <div style={{ fontSize: 17, color: muted, fontWeight: 600 }}>
+          Buy <span style={{ color: primaryColor, fontWeight: 800 }}>500</span> before · Sell{" "}
+          <span style={{ color: successColor, fontWeight: 800 }}>500</span> after
         </div>
-        <div style={{ fontSize: 18, fontWeight: 700, color: primaryColor }}>btc500.vercel.app</div>
+        <div style={{ fontSize: 18, fontWeight: 800, color: primaryColor }}>btc500.vercel.app</div>
       </div>
     </div>
   );
 });
 
-function StatRow({
+function FactTile({
   label,
   value,
+  accent,
+  soft,
+  border,
   muted,
-  fg,
+  foreground,
 }: {
   label: string;
   value: string;
+  accent: string;
+  soft: string;
+  border: string;
   muted: string;
-  fg: string;
+  foreground: string;
 }) {
   return (
-    <div style={{ display: "flex", justifyContent: "space-between", gap: 12, alignItems: "baseline" }}>
-      <span
+    <div
+      style={{
+        borderRadius: 20,
+        border: `1px solid ${border}`,
+        background: soft,
+        padding: "18px 20px",
+      }}
+    >
+      <div
         style={{
           fontSize: 12,
-          fontWeight: 700,
-          letterSpacing: "0.14em",
+          fontWeight: 800,
+          letterSpacing: "0.16em",
           textTransform: "uppercase",
           color: muted,
         }}
       >
         {label}
-      </span>
-      <span style={{ fontSize: 16, fontWeight: 700, color: fg }}>{value}</span>
+      </div>
+      <div
+        style={{
+          fontSize: 24,
+          fontWeight: 800,
+          color: foreground,
+          marginTop: 8,
+          letterSpacing: "-0.03em",
+          lineHeight: 1.1,
+        }}
+      >
+        {value}
+      </div>
+      <div
+        style={{
+          marginTop: 10,
+          height: 3,
+          width: 36,
+          borderRadius: 999,
+          background: accent,
+        }}
+      />
     </div>
   );
-}
-
-function statusVisual(
-  status: ScriptStatus,
-  t: {
-    primaryColor: string;
-    successColor: string;
-    infoColor: string;
-    destructiveColor: string;
-    muted: string;
-    primarySoft: string;
-    successSoft: string;
-    infoSoft: string;
-    destructiveSoft: string;
-    mutedSoft: string;
-  },
-): { color: string; soft: string } {
-  switch (status) {
-    case "script_intact":
-      return { color: t.successColor, soft: t.successSoft };
-    case "late_cycle_heat":
-      return { color: t.primaryColor, soft: t.primarySoft };
-    case "capitulation_zone":
-      return { color: t.destructiveColor, soft: t.destructiveSoft };
-    case "early_cycle":
-      return { color: t.infoColor, soft: t.infoSoft };
-    case "mid_cycle":
-      return { color: t.muted, soft: t.mutedSoft };
-    default:
-      return { color: t.muted, soft: t.mutedSoft };
-  }
 }

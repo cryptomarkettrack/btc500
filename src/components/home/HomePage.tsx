@@ -450,7 +450,6 @@ export function HomePage() {
           ref={cycleShareCardRef}
           cycle={cycle}
           price={priceRes.data?.price ?? null}
-          score={cycleScoreRes.data ?? null}
         />
       </div>
     </div>
