@@ -3,6 +3,7 @@ import type { CycleInfo } from "@/lib/phase";
 import { formatDate, formatUsd } from "@/lib/format";
 import type { CycleScoreResult, ScriptStatus } from "@/lib/cycle-score";
 import { BtcLogo } from "./BtcLogo";
+import { Btc500Hero } from "./Btc500Hero";
 
 interface Props {
   cycle: CycleInfo;
@@ -103,7 +104,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
       </div>
 
       {/* Header */}
-      <div style={{ padding: "44px 48px 0 56px", position: "relative", zIndex: 1 }}>
+      <div style={{ padding: "36px 48px 0 56px", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <div
@@ -192,16 +193,41 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
         </div>
       </div>
 
+      {/* Strategy hero chart — top of share card (force light tokens for capture) */}
+      <div
+        style={{
+          padding: "16px 48px 0 56px",
+          position: "relative",
+          zIndex: 1,
+          // Match main-page hero type (do not inherit share-card Inter)
+          fontFamily: '"Space Grotesk", system-ui, sans-serif',
+          // Light-theme tokens so html-to-image stays readable on white card
+          ["--background" as string]: "#ffffff",
+          ["--foreground" as string]: "#0f172a",
+          ["--primary" as string]: primaryColor,
+          ["--primary-soft" as string]: primarySoft,
+          ["--muted" as string]: mutedBg,
+          ["--muted-foreground" as string]: muted,
+          ["--border" as string]: border,
+        }}
+      >
+        <Btc500Hero
+          price={price}
+          daysLeft={Math.max(0, cycle.daysUntilBuy)}
+          compact
+        />
+      </div>
+
       {/* Main body */}
       <div
         style={{
           flex: 1,
           display: "flex",
           flexDirection: "column",
-          padding: "36px 48px 0 56px",
+          padding: "20px 48px 0 56px",
           position: "relative",
           zIndex: 1,
-          gap: 28,
+          gap: 18,
         }}
       >
         {/* Score + countdown split */}
@@ -209,22 +235,22 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           style={{
             display: "grid",
             gridTemplateColumns: "1.1fr 0.9fr",
-            gap: 24,
+            gap: 18,
           }}
         >
           {/* Cycle score card */}
           <div
             style={{
-              borderRadius: 28,
+              borderRadius: 24,
               border: `1px solid ${border}`,
               background: cardBg,
-              padding: "32px 36px",
+              padding: "22px 26px",
               boxShadow: "0 1px 2px rgba(0,0,0,0.03)",
             }}
           >
             <div
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
@@ -233,10 +259,10 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             >
               Cycle score
             </div>
-            <div style={{ display: "flex", alignItems: "baseline", gap: 10, marginTop: 8 }}>
+            <div style={{ display: "flex", alignItems: "baseline", gap: 8, marginTop: 4 }}>
               <span
                 style={{
-                  fontSize: 120,
+                  fontSize: 80,
                   fontWeight: 800,
                   lineHeight: 0.9,
                   letterSpacing: "-0.06em",
@@ -245,12 +271,12 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               >
                 {score?.score ?? "—"}
               </span>
-              <span style={{ fontSize: 28, fontWeight: 600, color: muted }}>/ 100</span>
+              <span style={{ fontSize: 22, fontWeight: 600, color: muted }}>/ 100</span>
             </div>
             <div
               style={{
-                marginTop: 18,
-                fontSize: 26,
+                marginTop: 12,
+                fontSize: 20,
                 fontWeight: 700,
                 letterSpacing: "-0.02em",
                 color: foreground,
@@ -261,9 +287,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             </div>
             <div
               style={{
-                marginTop: 10,
-                fontSize: 16,
-                lineHeight: 1.45,
+                marginTop: 6,
+                fontSize: 14,
+                lineHeight: 1.4,
                 color: muted,
                 maxWidth: 420,
               }}
@@ -275,17 +301,17 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           {/* Days panel */}
           <div
             style={{
-              borderRadius: 28,
+              borderRadius: 24,
               border: `1px solid ${border}`,
               background: phaseSoft,
-              padding: "32px 36px",
+              padding: "22px 26px",
               display: "flex",
               flexDirection: "column",
             }}
           >
             <div
               style={{
-                fontSize: 12,
+                fontSize: 11,
                 fontWeight: 700,
                 letterSpacing: "0.18em",
                 textTransform: "uppercase",
@@ -296,17 +322,17 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             </div>
             <div
               style={{
-                fontSize: 110,
+                fontSize: 72,
                 fontWeight: 800,
                 lineHeight: 0.9,
                 letterSpacing: "-0.06em",
                 color: phaseAccent,
-                marginTop: 8,
+                marginTop: 4,
               }}
             >
               {days}
             </div>
-            <div style={{ marginTop: "auto", display: "grid", gap: 10, paddingTop: 20 }}>
+            <div style={{ marginTop: "auto", display: "grid", gap: 8, paddingTop: 12 }}>
               <StatRow label="Buy" value={formatDate(cycle.buyDate)} muted={muted} fg={foreground} />
               <StatRow
                 label="Halving"
@@ -331,10 +357,10 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
         {score && (
           <div
             style={{
-              borderRadius: 24,
+              borderRadius: 20,
               background: mutedBg,
               border: `1px solid ${border}`,
-              padding: "22px 28px",
+              padding: "16px 22px",
             }}
           >
             <div
@@ -350,8 +376,8 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             </div>
             <div
               style={{
-                marginTop: 8,
-                fontSize: 20,
+                marginTop: 6,
+                fontSize: 17,
                 fontWeight: 600,
                 lineHeight: 1.35,
                 color: foreground,
@@ -368,7 +394,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(4, 1fr)",
-              gap: 14,
+              gap: 12,
             }}
           >
             {score.components.map((c) => {
@@ -378,15 +404,15 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                 <div
                   key={c.id}
                   style={{
-                    borderRadius: 20,
+                    borderRadius: 16,
                     border: `1px solid ${border}`,
                     background: mutedSoft,
-                    padding: "18px 18px 16px",
+                    padding: "14px 14px 12px",
                   }}
                 >
                   <div
                     style={{
-                      fontSize: 11,
+                      fontSize: 10,
                       fontWeight: 700,
                       letterSpacing: "0.14em",
                       textTransform: "uppercase",
@@ -397,9 +423,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                   </div>
                   <div
                     style={{
-                      fontSize: 32,
+                      fontSize: 26,
                       fontWeight: 800,
-                      marginTop: 6,
+                      marginTop: 4,
                       letterSpacing: "-0.03em",
                       color: foreground,
                     }}
@@ -408,8 +434,8 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                   </div>
                   <div
                     style={{
-                      marginTop: 12,
-                      height: 6,
+                      marginTop: 8,
+                      height: 5,
                       borderRadius: 999,
                       background: border,
                       overflow: "hidden",
@@ -427,8 +453,8 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                   {c.metric && (
                     <div
                       style={{
-                        marginTop: 8,
-                        fontSize: 12,
+                        marginTop: 6,
+                        fontSize: 11,
                         fontWeight: 500,
                         color: muted,
                         whiteSpace: "nowrap",

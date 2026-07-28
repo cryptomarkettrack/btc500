@@ -32,6 +32,11 @@ function inlineComputedStyles(root: HTMLElement): () => void {
       "boxShadow",
       "fill",
       "stroke",
+      "fontFamily",
+      "fontWeight",
+      "fontSize",
+      "letterSpacing",
+      "textTransform",
     ];
     const styleAny = el.style as unknown as Record<string, string>;
     for (const p of props) {
@@ -54,6 +59,17 @@ function inlineComputedStyles(root: HTMLElement): () => void {
 
     const bs = cs.boxShadow;
     if (bs && bs !== "none") el.style.boxShadow = bs;
+
+    // Preserve Space Grotesk / IBM Plex Mono (share cards default to Inter)
+    if (cs.fontFamily) el.style.fontFamily = cs.fontFamily;
+    if (cs.fontWeight) el.style.fontWeight = cs.fontWeight;
+    if (cs.fontSize) el.style.fontSize = cs.fontSize;
+    if (cs.letterSpacing && cs.letterSpacing !== "normal") {
+      el.style.letterSpacing = cs.letterSpacing;
+    }
+    if (cs.textTransform && cs.textTransform !== "none") {
+      el.style.textTransform = cs.textTransform;
+    }
 
     if (el instanceof SVGElement) {
       const fill = cs.fill;

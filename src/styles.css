@@ -169,8 +169,9 @@
   stroke-linejoin: round;
 }
 
+/* fill is set inline (unique gradient id per hero instance) */
 .price-fill {
-  fill: url(#fadeGrad);
+  fill: none;
 }
 
 .halving-rule {

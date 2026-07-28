@@ -1,11 +1,53 @@
+import { useId, type CSSProperties } from "react";
 import { formatUsd } from "@/lib/phase";
 
 interface Btc500HeroProps {
   price: number | null;
   daysLeft?: number;
+  /** Hide brand title / price when embedded in a share card that already has them. */
+  compact?: boolean;
 }
 
-export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
+/** Match styles.css hero labels — inline so share-card Inter root cannot override. */
+const FONT_GROTESK = '"Space Grotesk", system-ui, sans-serif';
+const FONT_MONO = '"IBM Plex Mono", ui-monospace, monospace';
+
+const styleHalvingLabel: CSSProperties = {
+  fontFamily: FONT_GROTESK,
+  fontWeight: 600,
+  fontSize: "12px",
+  letterSpacing: "0.18em",
+  fill: "var(--muted-foreground)",
+  textTransform: "uppercase",
+};
+
+const styleZoneLabel: CSSProperties = {
+  fontFamily: FONT_GROTESK,
+  fontWeight: 700,
+  fontSize: "19px",
+  fill: "var(--foreground)",
+};
+
+const styleDayLabel: CSSProperties = {
+  fontFamily: FONT_MONO,
+  fontWeight: 600,
+  fontSize: "11px",
+  fill: "var(--primary)",
+  letterSpacing: "0.05em",
+};
+
+const styleWeAreHere: CSSProperties = {
+  fontFamily: FONT_GROTESK,
+  fontSize: "11px",
+  fontWeight: 700,
+  fill: "#000000",
+  letterSpacing: "0.06em",
+};
+
+export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500HeroProps) {
+  const reactId = useId();
+  const fadeGradId = `fadeGrad-${reactId.replace(/:/g, "")}`;
+
   // Calculate current position on chart (0-500 days maps to x position)
   // Buy point is at x=310, chart starts at x=10
   const progress = (500 - daysLeft) / 500; // 0 to 1
@@ -73,10 +115,10 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
       </div>
 
       {/* Chart */}
-      <div className="relative w-full max-w-[900px] px-4 sm:px-0">
+      <div className={`relative w-full max-w-[900px] ${compact ? "px-0" : "px-4 sm:px-0"}`}>
         <svg viewBox="0 0 900 460" className="w-full" preserveAspectRatio="xMidYMid meet">
           <defs>
-            <linearGradient id="fadeGrad" x1="0" y1="0" x2="0" y2="1">
+            <linearGradient id={fadeGradId} x1="0" y1="0" x2="0" y2="1">
               <stop offset="0%" stopColor="var(--primary)" stopOpacity="0.14" />
               <stop offset="100%" stopColor="var(--primary)" stopOpacity="0" />
             </linearGradient>
@@ -90,6 +132,7 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
           {/* Realistic-ish BTC path */}
           <path
             className="price-fill"
+            style={{ fill: `url(#${fadeGradId})` }}
             d="
               M 10 380
               L 40 392 L 70 400 L 100 388 L 130 397 L 160 378
@@ -115,7 +158,7 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
 
           {/* Halving vertical rule */}
           <line className="halving-rule" x1="460" y1="30" x2="460" y2="430" />
-          <text className="halving-label" x="460" y="20" textAnchor="middle">
+          <text className="halving-label" x="460" y="20" textAnchor="middle" style={styleHalvingLabel}>
             Halving
           </text>
 
@@ -150,7 +193,7 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
                 y={currentY - 18}
                 textAnchor="middle"
                 className="day-label"
-                style={{ fontSize: "12px", fill: "var(--primary)" }}
+                style={{ ...styleDayLabel, fontSize: "12px" }}
               >
                 {daysLeft}d
               </text>
@@ -159,13 +202,7 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
                 x={currentX}
                 y={currentY + 16}
                 textAnchor="middle"
-                style={{
-                  fontSize: "11px",
-                  fontWeight: "700",
-                  fill: "#000000",
-                  fontFamily: "Space Grotesk, sans-serif",
-                  letterSpacing: "0.06em",
-                }}
+                style={styleWeAreHere}
               >
                 we are here
               </text>
@@ -201,10 +238,10 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
           <line className="callout-line" x1="310" y1="332" x2="310" y2="378" />
           <circle className="zone-fill" cx="310" cy="415" r="38" />
           <circle className="zone-ring" cx="310" cy="415" r="38" />
-          <text className="zone-label" x="310" y="408" textAnchor="middle">
+          <text className="zone-label" x="310" y="408" textAnchor="middle" style={styleZoneLabel}>
             Buy
           </text>
-          <text className="day-label" x="310" y="426" textAnchor="middle">
+          <text className="day-label" x="310" y="426" textAnchor="middle" style={styleDayLabel}>
             −500d
           </text>
 
@@ -240,33 +277,38 @@ export function Btc500Hero({ price, daysLeft = 500 }: Btc500HeroProps) {
           <circle className="zone-fill" cx="740" cy="55" r="38" />
           <circle className="zone-ring" cx="740" cy="55" r="38" />
           <line className="callout-line" x1="670" y1="60" x2="712" y2="56" />
-          <text className="zone-label" x="740" y="48" textAnchor="middle">
+          <text className="zone-label" x="740" y="48" textAnchor="middle" style={styleZoneLabel}>
             Sell
           </text>
-          <text className="day-label" x="740" y="66" textAnchor="middle">
+          <text className="day-label" x="740" y="66" textAnchor="middle" style={styleDayLabel}>
             +500d
           </text>
         </svg>
       </div>
 
       {/* Title — keep brand front-and-center; expand keywords for crawlers */}
-      <h1 className="mt-6 text-center text-5xl font-bold tracking-tight sm:text-6xl">
-        BTC<span className="text-primary">500</span>
-        <span className="sr-only">
-          {" "}
-          — Bitcoin Halving Countdown and Investment Strategy
-        </span>
-      </h1>
+      {!compact && (
+        <h1 className="mt-6 text-center text-5xl font-bold tracking-tight sm:text-6xl">
+          BTC<span className="text-primary">500</span>
+          <span className="sr-only">
+            {" "}
+            — Bitcoin Halving Countdown and Investment Strategy
+          </span>
+        </h1>
+      )}
 
-      {/* Subtitle */}
-      <p className="mt-4 max-w-md text-center font-mono text-sm leading-relaxed text-muted-foreground">
+      {/* Subtitle — IBM Plex Mono like main-page hero mono labels */}
+      <p
+        className={`max-w-md text-center text-sm leading-relaxed text-muted-foreground ${compact ? "mt-2" : "mt-4"}`}
+        style={{ fontFamily: FONT_MONO }}
+      >
         <span className="font-semibold text-foreground">Buy 500 days before the halving.</span>
         <br />
         <span className="font-semibold text-foreground">Sell 500 days after.</span>
       </p>
 
       {/* Price */}
-      {price && (
+      {!compact && price && (
         <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-muted/80 px-4 py-1.5">
           <span className="text-xs text-muted-foreground">BTC</span>
           <span className="text-sm font-bold">{formatUsd(price)}</span>
