@@ -369,7 +369,11 @@ function MobileGroup({
           className={cn("h-4 w-4 text-muted-foreground transition-transform", open && "rotate-180")}
         />
       </button>
-      {open && <div className="flex flex-col gap-1 border-t border-border/40 px-2 pb-2 pt-1">{children}</div>}
+      {open && (
+        <div className="flex flex-col gap-1 border-t border-border/40 px-2 pb-2 pt-1">
+          {children}
+        </div>
+      )}
     </div>
   );
 }
