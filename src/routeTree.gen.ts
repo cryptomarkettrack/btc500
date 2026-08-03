@@ -24,6 +24,7 @@ import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.w
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
+import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
 const TimelineRoute = TimelineRouteImport.update({
   id: '/timeline',
@@ -101,6 +102,12 @@ const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   path: '/btc500-strategy',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesBearMarketAccumulationRoute =
+  ArticlesBearMarketAccumulationRouteImport.update({
+    id: '/bear-market-accumulation',
+    path: '/bear-market-accumulation',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -114,6 +121,7 @@ export interface FileRoutesByFullPath {
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
@@ -131,6 +139,7 @@ export interface FileRoutesByTo {
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
@@ -149,6 +158,7 @@ export interface FileRoutesById {
   '/news': typeof NewsRoute
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
+  '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
@@ -168,6 +178,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/simulator'
     | '/timeline'
+    | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
@@ -185,6 +196,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/simulator'
     | '/timeline'
+    | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
@@ -202,6 +214,7 @@ export interface FileRouteTypes {
     | '/news'
     | '/simulator'
     | '/timeline'
+    | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
@@ -329,10 +342,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/bear-market-accumulation': {
+      id: '/articles/bear-market-accumulation'
+      path: '/bear-market-accumulation'
+      fullPath: '/articles/bear-market-accumulation'
+      preLoaderRoute: typeof ArticlesBearMarketAccumulationRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
   }
 }
 
 interface ArticlesRouteChildren {
+  ArticlesBearMarketAccumulationRoute: typeof ArticlesBearMarketAccumulationRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
@@ -340,6 +361,7 @@ interface ArticlesRouteChildren {
 }
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
+  ArticlesBearMarketAccumulationRoute: ArticlesBearMarketAccumulationRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,

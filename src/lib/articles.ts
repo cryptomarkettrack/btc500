@@ -98,6 +98,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Ondo Finance, ONDO token, tokenized stocks, DTCC, BlackRock BUIDL, tokenized securities, regulated DeFi, institutional tokenization",
   },
+  {
+    id: "bear-market-accumulation",
+    slug: "bear-market-accumulation",
+    title: "The Consensus Bottom Is a Trap: Why the Crowd's Bear Market Target Never Arrives",
+    description:
+      "When the entire market agrees on the same bottom target, that target loses its power. Learn why disciplined investors accumulate during bear markets instead of waiting for the crowd's 'confirmed bottom.'",
+    keywords:
+      "Bitcoin bear market, consensus bottom, Bitcoin accumulation, MA200 weekly, Bitcoin bottom target, BTC500 strategy, Bitcoin halving cycle, forced selling, Bitcoin whale",
+    date: "August 3, 2026",
+    dateISO: "2026-08-03",
+    dateModified: "2026-08-03",
+    dateModifiedISO: "2026-08-03",
+    readTime: "7 min read",
+    wordCount: 1900,
+    ogImage: `${SITE_URL}/og/real-bottom.png`,
+    articleSection: "Bitcoin Market Psychology",
+    schemaKeywords:
+      "Bitcoin bear market, consensus bottom, Bitcoin accumulation, MA200 weekly, Bitcoin bottom target, BTC500 strategy, Bitcoin halving cycle, forced selling",
+  },
 ];
 
 /** Returns articles sorted newest-first */
