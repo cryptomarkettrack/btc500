@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
+import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
@@ -97,6 +98,11 @@ const ArticlesOndoFinanceTokenizationRoute =
     path: '/ondo-finance-tokenization',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesClarityActRoute = ArticlesClarityActRouteImport.update({
+  id: '/clarity-act',
+  path: '/clarity-act',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   id: '/btc500-strategy',
   path: '/btc500-strategy',
@@ -123,6 +129,7 @@ export interface FileRoutesByFullPath {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
@@ -160,6 +168,7 @@ export interface FileRoutesById {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
+  '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
@@ -180,6 +189,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
+    | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
@@ -198,6 +208,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
+    | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/btc500-strategy'
+    | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/why-btc500-exists'
@@ -335,6 +347,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/clarity-act': {
+      id: '/articles/clarity-act'
+      path: '/clarity-act'
+      fullPath: '/articles/clarity-act'
+      preLoaderRoute: typeof ArticlesClarityActRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/btc500-strategy': {
       id: '/articles/btc500-strategy'
       path: '/btc500-strategy'
@@ -355,6 +374,7 @@ declare module '@tanstack/react-router' {
 interface ArticlesRouteChildren {
   ArticlesBearMarketAccumulationRoute: typeof ArticlesBearMarketAccumulationRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
+  ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
@@ -363,6 +383,7 @@ interface ArticlesRouteChildren {
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBearMarketAccumulationRoute: ArticlesBearMarketAccumulationRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
+  ArticlesClarityActRoute: ArticlesClarityActRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,

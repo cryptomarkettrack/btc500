@@ -117,6 +117,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Bitcoin bear market, consensus bottom, Bitcoin accumulation, MA200 weekly, Bitcoin bottom target, BTC500 strategy, Bitcoin halving cycle, forced selling",
   },
+  {
+    id: "clarity-act",
+    slug: "clarity-act",
+    title: "What Is the CLARITY Act? The Complete Guide to US Crypto Regulation",
+    description:
+      "The CLARITY Act explained in plain English. Learn how this landmark crypto bill would split regulation between the SEC and CFTC, what it means for Bitcoin, Ethereum, and the whole digital asset market.",
+    keywords:
+      "CLARITY Act, What is the CLARITY Act, CLARITY Act explained, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, crypto legislation, Bitcoin regulation, Ethereum regulation, digital asset regulation, blockchain regulation",
+    date: "August 4, 2026",
+    dateISO: "2026-08-04",
+    dateModified: "2026-08-04",
+    dateModifiedISO: "2026-08-04",
+    readTime: "22 min read",
+    wordCount: 4200,
+    ogImage: `${SITE_URL}/og/default.png`,
+    articleSection: "Crypto Regulation & Policy",
+    schemaKeywords:
+      "CLARITY Act, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, Bitcoin regulation, Ethereum regulation, digital asset regulation, crypto legislation",
+  },
 ];
 
 /** Returns articles sorted newest-first */
