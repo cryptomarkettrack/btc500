@@ -22,7 +22,7 @@ export function Footer() {
                 className="hover:text-foreground transition-colors"
                 rel="home"
               >
-                btc500.vercel.app
+                btc500.net
               </a>
             </p>
           </div>

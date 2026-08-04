@@ -289,7 +289,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
             fontWeight: 500,
           }}
         >
-          btc500.vercel.app
+          btc500.net
         </div>
       </div>
     </div>

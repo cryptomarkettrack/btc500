@@ -45,7 +45,11 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const elapsed = Math.max(0, Math.round(progress * totalDays));
   const progressPct = Math.max(0, Math.min(100, Math.round(progress * 100)));
 
-  const daysLabel = buy ? "Days until buy window" : sell ? "Days until sell window" : "Cycle complete";
+  const daysLabel = buy
+    ? "Days until buy window"
+    : sell
+      ? "Days until sell window"
+      : "Cycle complete";
   const statusLabel = buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete";
   const targetDate = buy ? cycle.buyDate : sell ? cycle.sellDate : cycle.nextHalving;
   const targetLabel = buy ? "Buy date" : sell ? "Sell date" : "Next cycle";
@@ -433,7 +437,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           Buy <span style={{ color: primaryColor, fontWeight: 800 }}>500</span> before · Sell{" "}
           <span style={{ color: successColor, fontWeight: 800 }}>500</span> after
         </div>
-        <div style={{ fontSize: 17, fontWeight: 800, color: primaryColor }}>btc500.vercel.app</div>
+        <div style={{ fontSize: 17, fontWeight: 800, color: primaryColor }}>btc500.net</div>
       </div>
     </div>
   );

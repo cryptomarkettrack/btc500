@@ -3,7 +3,7 @@
  * Single source of truth for base URL and page meta generation.
  */
 
-export const SITE_URL = "https://btc500.vercel.app";
+export const SITE_URL = "https://btc500.net";
 export const SITE_NAME = "BTC500";
 export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";

@@ -1,4 +1,4 @@
-# BTC500 — https://btc500.vercel.app
+# BTC500 — https://btc500.net
 # Allow search engines and AI crawlers to index public content.
 # Last updated: 2026-07-27
 
@@ -12,7 +12,7 @@ Disallow: /embed?
 Disallow: /api/
 
 # Sitemap
-Sitemap: https://btc500.vercel.app/sitemap.xml
+Sitemap: https://btc500.net/sitemap.xml
 
 # Google
 User-agent: Googlebot

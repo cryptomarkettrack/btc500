@@ -428,7 +428,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
             letterSpacing: "0.08em",
           }}
         >
-          btc500.vercel.app
+          btc500.net
         </div>
       </div>
     </div>

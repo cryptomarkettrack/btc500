@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
+import { SITE_URL } from "@/lib/site";
 import { halvingQuery, btcPriceQuery, cycleScoreQuery } from "@/lib/queries";
 import {
   parseEmbedTheme,
@@ -60,13 +61,11 @@ function Embed() {
       }}
     >
       {widget === "badge" && <BadgeWidget cycle={cycle} theme={theme} score={score} />}
-      {widget === "countdown" && (
-        <CountdownWidget cycle={cycle} theme={theme} price={price} />
+      {widget === "countdown" && <CountdownWidget cycle={cycle} theme={theme} price={price} />}
+      {widget === "score" && (
+        <ScoreWidget cycle={cycle} theme={theme} score={score} price={price} />
       )}
-      {widget === "score" && <ScoreWidget cycle={cycle} theme={theme} score={score} price={price} />}
-      {widget === "full" && (
-        <FullWidget cycle={cycle} theme={theme} price={price} score={score} />
-      )}
+      {widget === "full" && <FullWidget cycle={cycle} theme={theme} price={price} score={score} />}
     </div>
   );
 }
@@ -89,7 +88,7 @@ function BadgeWidget({
 
   return (
     <a
-      href="https://btc500.vercel.app/"
+      href={SITE_URL}
       target="_blank"
       rel="noopener noreferrer"
       style={{
@@ -123,9 +122,7 @@ function BadgeWidget({
       {score && (
         <>
           <span style={{ width: 1, height: 16, background: t.border }} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: t.muted }}>
-            score {score.score}
-          </span>
+          <span style={{ fontSize: 12, fontWeight: 600, color: t.muted }}>score {score.score}</span>
         </>
       )}
     </a>
@@ -240,10 +237,14 @@ function CountdownWidget({
         }}
       >
         <span>Buy {formatDate(cycle.buyDate)}</span>
-        {price != null ? <span>{formatUsd(price)}</span> : <span>Sell {formatDate(cycle.sellDate)}</span>}
+        {price != null ? (
+          <span>{formatUsd(price)}</span>
+        ) : (
+          <span>Sell {formatDate(cycle.sellDate)}</span>
+        )}
       </div>
       <div style={{ marginTop: 10, textAlign: "center", fontSize: 11, color: t.muted }}>
-        btc500.vercel.app
+        {SITE_URL.replace("https://", "")}
       </div>
     </div>
   );
@@ -356,17 +357,26 @@ function ScoreWidget({
                 padding: "8px 10px",
               }}
             >
-              <div style={{ fontSize: 10, fontWeight: 700, color: t.muted, textTransform: "uppercase" }}>
+              <div
+                style={{
+                  fontSize: 10,
+                  fontWeight: 700,
+                  color: t.muted,
+                  textTransform: "uppercase",
+                }}
+              >
                 {c.label}
               </div>
-              <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>{Math.round(c.score)}</div>
+              <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>
+                {Math.round(c.score)}
+              </div>
             </div>
           ))}
         </div>
       )}
 
       <div style={{ marginTop: 14, textAlign: "center", fontSize: 11, color: t.muted }}>
-        btc500.vercel.app
+        {SITE_URL.replace("https://", "")}
       </div>
     </div>
   );
@@ -635,7 +645,7 @@ function FullWidget({
           fontWeight: 500,
         }}
       >
-        btc500.vercel.app
+        {SITE_URL.replace("https://", "")}
       </div>
     </div>
   );

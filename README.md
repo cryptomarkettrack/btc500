@@ -6,14 +6,14 @@
 
 ### _Buy 500 days before halving. Sell 500 days after. Dead simple._
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://btc500.vercel.app)
+[![Deployed on Vercel](https://img.shields.io/badge/Deployed_on-Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://btc500.net)
 [![GitHub Stars](https://img.shields.io/github/stars/cryptomarkettrack/btc500?style=for-the-badge&color=f97316)](https://github.com/cryptomarkettrack/btc500)
 [![License](https://img.shields.io/badge/License-MIT-000000?style=for-the-badge)](#license)
 [![PRs Welcome](https://img.shields.io/badge/PRs-Welcome-brightgreen?style=for-the-badge)](#contributing)
 
   <br />
 
-[**🚀 Live Demo →**](https://btc500.vercel.app)
+[**🚀 Live Demo →**](https://btc500.net)
 
 </div>
 
@@ -291,6 +291,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 Made with ❤️ for the Bitcoin community
 
-[**Launch BTC500 →**](https://btc500.vercel.app)
+[**Launch BTC500 →**](https://btc500.net)
 
 </div>

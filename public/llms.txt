@@ -2,29 +2,29 @@
 
 > Free Bitcoin halving countdown, cycle score, and investment tools built around the BTC500 strategy: buy exactly 500 days before each Bitcoin halving and sell exactly 500 days after.
 
-Site: https://btc500.vercel.app
+Site: https://btc500.net
 Contact: btc500halving@gmail.com
 X/Twitter: https://x.com/btc500halving
 Instagram: https://www.instagram.com/btc500halving
 
 ## Primary pages
 
-- [Home / Halving Countdown](https://btc500.vercel.app/): Live Bitcoin halving countdown, cycle command center, cycle score, buy/sell windows, and historical performance overview.
-- [Investment Simulator](https://btc500.vercel.app/simulator): Backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles with any investment amount.
-- [DCA vs Lump Sum](https://btc500.vercel.app/dca): Compare dollar-cost averaging vs lump-sum entry and exit around BTC500 buy/sell dates.
-- [Time Machine](https://btc500.vercel.app/timeline): Interactive timeline replaying Bitcoin prices across past and current halving cycles.
-- [Bear Market Bottom Indicators](https://btc500.vercel.app/bear-market): On-chain bottom composite using MVRV, NUPL, Puell Multiple, SOPR and more.
-- [Liquidation Dashboard](https://btc500.vercel.app/liquidation): Live Bitcoin futures open interest, funding rates, long/short ratios, and market heat.
-- [Insider Trading Dashboard](https://btc500.vercel.app/insider-trading): SEC Form 4 insider buy vs sell analysis.
-- [Crypto News](https://btc500.vercel.app/news): Aggregated Bitcoin and cryptocurrency headlines.
-- [Embed Kit](https://btc500.vercel.app/embed-kit): Free iframe widgets for countdown badges and cycle score cards.
+- [Home / Halving Countdown](https://btc500.net/): Live Bitcoin halving countdown, cycle command center, cycle score, buy/sell windows, and historical performance overview.
+- [Investment Simulator](https://btc500.net/simulator): Backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles with any investment amount.
+- [DCA vs Lump Sum](https://btc500.net/dca): Compare dollar-cost averaging vs lump-sum entry and exit around BTC500 buy/sell dates.
+- [Time Machine](https://btc500.net/timeline): Interactive timeline replaying Bitcoin prices across past and current halving cycles.
+- [Bear Market Bottom Indicators](https://btc500.net/bear-market): On-chain bottom composite using MVRV, NUPL, Puell Multiple, SOPR and more.
+- [Liquidation Dashboard](https://btc500.net/liquidation): Live Bitcoin futures open interest, funding rates, long/short ratios, and market heat.
+- [Insider Trading Dashboard](https://btc500.net/insider-trading): SEC Form 4 insider buy vs sell analysis.
+- [Crypto News](https://btc500.net/news): Aggregated Bitcoin and cryptocurrency headlines.
+- [Embed Kit](https://btc500.net/embed-kit): Free iframe widgets for countdown badges and cycle score cards.
 
 ## Strategy articles
 
-- [The BTC500 Strategy](https://btc500.vercel.app/articles/btc500-strategy): Deep dive into buy 500 days before / sell 500 days after.
-- [Why BTC500 Exists](https://btc500.vercel.app/articles/why-btc500-exists): Why investors keep buying too early in bear markets.
-- [NUPL / RUPL Guide](https://btc500.vercel.app/articles/rupl): Complete guide to Net Unrealized Profit/Loss and Bitcoin market psychology.
-- [Ondo Finance Tokenization](https://btc500.vercel.app/articles/ondo-finance-tokenization): How Ondo is building Wall Street-ready tokenization rails.
+- [The BTC500 Strategy](https://btc500.net/articles/btc500-strategy): Deep dive into buy 500 days before / sell 500 days after.
+- [Why BTC500 Exists](https://btc500.net/articles/why-btc500-exists): Why investors keep buying too early in bear markets.
+- [NUPL / RUPL Guide](https://btc500.net/articles/rupl): Complete guide to Net Unrealized Profit/Loss and Bitcoin market psychology.
+- [Ondo Finance Tokenization](https://btc500.net/articles/ondo-finance-tokenization): How Ondo is building Wall Street-ready tokenization rails.
 
 ## What is BTC500?
 
@@ -39,5 +39,5 @@ The site is free educational software. Nothing here is financial advice. Past pe
 
 ## Optional
 
-- [Sitemap](https://btc500.vercel.app/sitemap.xml)
-- [Robots](https://btc500.vercel.app/robots.txt)
+- [Sitemap](https://btc500.net/sitemap.xml)
+- [Robots](https://btc500.net/robots.txt)

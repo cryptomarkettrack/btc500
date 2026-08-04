@@ -181,7 +181,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { name: "google-site-verification", content: "K-CrdpTGQx6AYxWkAV5gFH0i5KXWjVMBcJupYODKnI8" },
+      { name: "google-site-verification", content: "qHP6Tv0ATrOnUECajp9xornwY_JuflRnTQeEF7QOo4s" },
       { name: "msvalidate.01", content: "32EF2D70FCF8C7EF70C2E55E1F326804" },
       {
         title: "BTC500 — Bitcoin Halving Countdown & Investment Strategy | Buy 500 Days Before",
