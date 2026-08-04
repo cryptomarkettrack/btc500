@@ -273,9 +273,10 @@ function Timeline() {
               </h1>
             </div>
             <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-              Follow a $20,000 investment through the BTC
-              <span className="text-primary">500</span> strategy across halving cycles. Drag the
-              timeline or press play to watch history unfold.
+              Explore Bitcoin halving history with the BTC
+              <span className="text-primary">500</span> strategy. Follow a $20,000 investment
+              through every halving cycle since 2012 — drag the timeline or press play to watch
+              history unfold.
             </p>
           </motion.header>
 

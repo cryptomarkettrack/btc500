@@ -14,6 +14,7 @@ import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
+import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
 import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
@@ -50,6 +51,11 @@ const LiquidationRoute = LiquidationRouteImport.update({
 const InsiderTradingRoute = InsiderTradingRouteImport.update({
   id: '/insider-trading',
   path: '/insider-trading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HalvingDatesRoute = HalvingDatesRouteImport.update({
+  id: '/halving-dates',
+  path: '/halving-dates',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmbedKitRoute = EmbedKitRouteImport.update({
@@ -122,6 +128,7 @@ export interface FileRoutesByFullPath {
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
+  '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -141,6 +148,7 @@ export interface FileRoutesByTo {
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
+  '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -161,6 +169,7 @@ export interface FileRoutesById {
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
+  '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
@@ -182,6 +191,7 @@ export interface FileRouteTypes {
     | '/dca'
     | '/embed'
     | '/embed-kit'
+    | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/dca'
     | '/embed'
     | '/embed-kit'
+    | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -220,6 +231,7 @@ export interface FileRouteTypes {
     | '/dca'
     | '/embed'
     | '/embed-kit'
+    | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
     | '/news'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
+  HalvingDatesRoute: typeof HalvingDatesRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
   NewsRoute: typeof NewsRoute
@@ -282,6 +295,13 @@ declare module '@tanstack/react-router' {
       path: '/insider-trading'
       fullPath: '/insider-trading'
       preLoaderRoute: typeof InsiderTradingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/halving-dates': {
+      id: '/halving-dates'
+      path: '/halving-dates'
+      fullPath: '/halving-dates'
+      preLoaderRoute: typeof HalvingDatesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/embed-kit': {
@@ -400,6 +420,7 @@ const rootRouteChildren: RootRouteChildren = {
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,
+  HalvingDatesRoute: HalvingDatesRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
   NewsRoute: NewsRoute,

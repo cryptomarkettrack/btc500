@@ -15,6 +15,7 @@ import {
   ChevronDown,
   Wrench,
   Library,
+  CalendarDays,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -36,6 +37,12 @@ type NavItem = {
 };
 
 const tools: NavItem[] = [
+  {
+    to: "/halving-dates",
+    label: "Halving Dates",
+    description: "Full schedule 2012–2028",
+    icon: CalendarDays,
+  },
   {
     to: "/simulator",
     label: "Simulator",
