@@ -12,6 +12,8 @@ import {
   LineChart,
   LayoutTemplate,
   ChevronDown,
+  Eye,
+  Sparkles,
 } from "lucide-react";
 import { computeCycle, formatUsd } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
@@ -19,15 +21,11 @@ import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
 import { Btc500Hero } from "@/components/Btc500Hero";
 import { CommandCenter } from "@/components/home/CommandCenter";
-import { useRef } from "react";
+import { PhasePreviewModal } from "@/components/home/PhasePreviewModal";
+import { useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
-import {
-  halvingQuery,
-  btcPriceQuery,
-  simulatorPreviewQuery,
-  cycleScoreQuery,
-} from "@/lib/queries";
+import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
 
@@ -39,6 +37,7 @@ export function HomePage() {
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   const cycle = computeCycle(
     now,
@@ -71,6 +70,12 @@ export function HomePage() {
   const completedCycles =
     simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
 
+  // Last completed cycle's buy price/date/sell date — used by the P&L preview modal.
+  const lastCompletedCycle = simulatorRes.data?.cycles[simulatorRes.data.cycles.length - 1] ?? null;
+  const previewBuyPrice = lastCompletedCycle?.buyPrice ?? null;
+  const previewBuyDate = lastCompletedCycle?.buyDate ?? null;
+  const previewSellDate = lastCompletedCycle?.sellDate ?? null;
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
@@ -98,8 +103,21 @@ export function HomePage() {
             blocksRemaining={blocksRemaining}
           />
 
-          {/* Share + Embed */}
+          {/* Preview after halving + Share + Embed */}
           <div className="flex flex-col items-center gap-3 px-2">
+            <button
+              type="button"
+              onClick={() => setPreviewOpen(true)}
+              className="group inline-flex items-center gap-2.5 rounded-full border-2 border-primary/30 bg-primary-soft px-6 py-3 text-sm font-bold text-primary shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-95"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+              </span>
+              <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
+              Preview the homepage after the buy window
+              <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
+            </button>
             <ShareButton captureRef={cycleShareCardRef} />
             <Link
               to="/embed-kit"
@@ -452,6 +470,17 @@ export function HomePage() {
           price={priceRes.data?.price ?? null}
         />
       </div>
+
+      {/* Preview modal — shows how the homepage looks after the 500-days-before-halving day */}
+      <PhasePreviewModal
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        cycle={cycle}
+        currentPrice={priceRes.data?.price ?? null}
+        buyPrice={previewBuyPrice}
+        buyDate={previewBuyDate}
+        sellDate={previewSellDate}
+      />
     </div>
   );
 }
