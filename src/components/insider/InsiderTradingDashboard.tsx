@@ -116,6 +116,9 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
       };
     }
 
+    // Sort by value descending
+    filtered = [...filtered].sort((a, b) => b.value - a.value);
+
     return {
       filteredTransactions: showAll ? filtered : filtered.slice(0, 100),
       groupedTransactions: [],
