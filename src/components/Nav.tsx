@@ -16,6 +16,7 @@ import {
   Wrench,
   Library,
   CalendarDays,
+  Heart,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -116,6 +117,7 @@ export function Nav() {
   const researchActive = isGroupActive(pathname, research);
   const homeActive = isPathActive(pathname, "/");
   const embedActive = isPathActive(pathname, "/embed-kit");
+  const donateActive = isPathActive(pathname, "/donate");
 
   const closeMobile = () => setIsMobileMenuOpen(false);
 
@@ -158,6 +160,10 @@ export function Nav() {
 
           <NavPill to="/embed-kit" active={embedActive} icon={LayoutTemplate}>
             Embed
+          </NavPill>
+
+          <NavPill to="/donate" active={donateActive} icon={Heart}>
+            Donate
           </NavPill>
         </div>
 
@@ -233,6 +239,15 @@ export function Nav() {
               description="Widgets for blogs & dashboards"
               icon={LayoutTemplate}
               active={embedActive}
+              onNavigate={closeMobile}
+            />
+
+            <MobileLink
+              to="/donate"
+              label="Donate"
+              description="Support BTC500 with crypto"
+              icon={Heart}
+              active={donateActive}
               onNavigate={closeMobile}
             />
           </div>

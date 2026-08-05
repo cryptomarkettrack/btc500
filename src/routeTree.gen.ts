@@ -17,6 +17,7 @@ import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
 import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as EmbedRouteImport } from './routes/embed'
+import { Route as DonateRouteImport } from './routes/donate'
 import { Route as DcaRouteImport } from './routes/dca'
 import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
@@ -66,6 +67,11 @@ const EmbedKitRoute = EmbedKitRouteImport.update({
 const EmbedRoute = EmbedRouteImport.update({
   id: '/embed',
   path: '/embed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DonateRoute = DonateRouteImport.update({
+  id: '/donate',
+  path: '/donate',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DcaRoute = DcaRouteImport.update({
@@ -126,6 +132,7 @@ export interface FileRoutesByFullPath {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
+  '/donate': typeof DonateRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
@@ -146,6 +153,7 @@ export interface FileRoutesByTo {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
+  '/donate': typeof DonateRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
@@ -167,6 +175,7 @@ export interface FileRoutesById {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
+  '/donate': typeof DonateRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
@@ -189,6 +198,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/dca'
+    | '/donate'
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
@@ -209,6 +219,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/dca'
+    | '/donate'
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
@@ -229,6 +240,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/dca'
+    | '/donate'
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
@@ -250,6 +262,7 @@ export interface RootRouteChildren {
   ArticlesRoute: typeof ArticlesRouteWithChildren
   BearMarketRoute: typeof BearMarketRoute
   DcaRoute: typeof DcaRoute
+  DonateRoute: typeof DonateRoute
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
   HalvingDatesRoute: typeof HalvingDatesRoute
@@ -316,6 +329,13 @@ declare module '@tanstack/react-router' {
       path: '/embed'
       fullPath: '/embed'
       preLoaderRoute: typeof EmbedRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/donate': {
+      id: '/donate'
+      path: '/donate'
+      fullPath: '/donate'
+      preLoaderRoute: typeof DonateRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dca': {
@@ -418,6 +438,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRoute: ArticlesRouteWithChildren,
   BearMarketRoute: BearMarketRoute,
   DcaRoute: DcaRoute,
+  DonateRoute: DonateRoute,
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,
   HalvingDatesRoute: HalvingDatesRoute,

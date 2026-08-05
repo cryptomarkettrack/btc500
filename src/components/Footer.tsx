@@ -1,4 +1,4 @@
-import { Instagram, Mail } from "lucide-react";
+import { Heart, Instagram, Mail } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/site";
 
@@ -17,11 +17,7 @@ export function Footer() {
               halving, sell 500 days after.
             </p>
             <p className="mt-3 text-[11px] text-muted-foreground/80">
-              <a
-                href={SITE_URL}
-                className="hover:text-foreground transition-colors"
-                rel="home"
-              >
+              <a href={SITE_URL} className="hover:text-foreground transition-colors" rel="home">
                 btc500.net
               </a>
             </p>
@@ -87,6 +83,14 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Embed Kit
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/donate"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Donate
                 </Link>
               </li>
             </ul>
@@ -177,6 +181,14 @@ export function Footer() {
                 <Mail className="h-4 w-4" />
                 Email
               </a>
+              <Link
+                to="/donate"
+                className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                aria-label="Donate to BTC500"
+              >
+                <Heart className="h-4 w-4" />
+                Donate
+              </Link>
             </div>
           </div>
         </div>

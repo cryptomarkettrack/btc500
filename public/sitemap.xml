@@ -202,4 +202,17 @@
     </image:image>
   </url>
 
+  <url>
+    <loc>https://btc500.net/donate</loc>
+    <lastmod>2026-08-05</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/donate" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/donate" />
+    <image:image>
+      <image:loc>https://btc500.net/og/default.png</image:loc>
+      <image:title>Donate — Support BTC500</image:title>
+    </image:image>
+  </url>
+
 </urlset>
