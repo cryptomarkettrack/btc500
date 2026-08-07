@@ -16,10 +16,11 @@ const FETCH_TIMEOUT_MS = DEFAULT_FETCH_TIMEOUT_MS;
 
 // --- Binance Futures API types ---
 
+/** Binance returns numeric fields as strings; OKX path parseFloats them. */
 interface OpenInterestHistory {
-  sumOpenInterest: number;
-  sumOpenInterestValue: number;
-  timestamp: number;
+  sumOpenInterest: number | string;
+  sumOpenInterestValue: number | string;
+  timestamp: number | string;
 }
 
 interface LongShortRatio {
@@ -56,6 +57,18 @@ interface Kline {
   trades: number;
 }
 
+export type DataSourceName = "Binance" | "OKX" | "none";
+
+export interface LiquidationSources {
+  openInterest: DataSourceName;
+  longShort: DataSourceName;
+  topTrader: DataSourceName;
+  funding: DataSourceName;
+  taker: DataSourceName;
+  klines: DataSourceName;
+  currentOI: DataSourceName;
+}
+
 // --- Combined data type sent to client ---
 
 export interface LiquidationData {
@@ -81,6 +94,7 @@ export interface LiquidationData {
     rate: number;
     markPrice: number;
   }[];
+  /** buyRatio is always buyVol / (buyVol + sellVol) in [0, 1] */
   takerRatios: {
     timestamp: number;
     buyRatio: number;
@@ -97,11 +111,23 @@ export interface LiquidationData {
   }[];
   currentOI: {
     symbol: string;
+    /** Open interest in BTC */
     oi: number;
+    /** Open interest notional in USD when available */
+    oiValue: number;
     time: number;
   };
   fetchDate: string;
+  /** Human-readable primary source summary, e.g. "Binance" or "Mixed (Binance + OKX)" */
   source: string;
+  /** Per-metric provenance */
+  sources: LiquidationSources;
+  /** Public API endpoints used (for attribution UI) */
+  endpoints: {
+    name: string;
+    url: string;
+    source: DataSourceName;
+  }[];
 }
 
 // --- Source configuration ---
@@ -124,6 +150,30 @@ const OKX_BASE = "https://www.okx.com";
 const HEADERS = {
   "User-Agent": DEFAULT_USER_AGENT,
 };
+
+// Public docs for attribution (not necessarily the exact path called)
+const ENDPOINT_DOCS = {
+  binanceOIHist: "https://fapi.binance.com/futures/data/openInterestHist?symbol=BTCUSDT&period=4h",
+  binanceGlobalLS:
+    "https://fapi.binance.com/futures/data/globalLongShortAccountRatio?symbol=BTCUSDT&period=4h",
+  binanceTopLS:
+    "https://fapi.binance.com/futures/data/topLongShortPositionRatio?symbol=BTCUSDT&period=4h",
+  binanceFunding: "https://fapi.binance.com/fapi/v1/fundingRate?symbol=BTCUSDT",
+  binanceTaker:
+    "https://fapi.binance.com/futures/data/takerlongshortRatio?symbol=BTCUSDT&period=4h",
+  binanceKlines: "https://fapi.binance.com/fapi/v1/klines?symbol=BTCUSDT&interval=4h",
+  binanceCurrentOI: "https://fapi.binance.com/fapi/v1/openInterest?symbol=BTCUSDT",
+  okxOIHist:
+    "https://www.okx.com/api/v5/rubik/stat/contracts/open-interest-history?instId=BTC-USDT-SWAP&period=4H",
+  okxGlobalLS:
+    "https://www.okx.com/api/v5/rubik/stat/contracts/long-short-account-ratio?instId=BTC-USDT-SWAP&period=1H",
+  okxFunding: "https://www.okx.com/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP",
+  okxTaker:
+    "https://www.okx.com/api/v5/rubik/stat/taker-volume-contract?instId=BTC-USDT-SWAP&ccy=BTC",
+  okxKlines: "https://www.okx.com/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=4H",
+  okxCurrentOI:
+    "https://www.okx.com/api/v5/public/open-interest?instType=SWAP&instId=BTC-USDT-SWAP",
+} as const;
 
 // --- Core fetch helpers ---
 
@@ -149,7 +199,7 @@ async function tryFetch<T>(url: string, retries = MAX_RETRIES): Promise<T | null
         return null;
       }
       return (await res.json()) as T;
-    } catch (err: any) {
+    } catch {
       if (attempt < retries) {
         await sleep(BASE_DELAY_MS * Math.pow(2, attempt - 1));
       }
@@ -167,6 +217,25 @@ async function tryBinanceMirrors<T>(path: string): Promise<T | null> {
     if (data) return data;
   }
   return null;
+}
+
+function byTimestampAsc<T extends { timestamp: number }>(a: T, b: T): number {
+  return a.timestamp - b.timestamp;
+}
+
+/**
+ * Binance `buySellRatio` is buyVol/sellVol (can be > 1).
+ * Normalize to share of total volume in [0, 1].
+ */
+function buyShareFromVolumes(buyVol: number, sellVol: number, buySellRatio?: number): number {
+  const total = buyVol + sellVol;
+  if (total > 0 && Number.isFinite(total)) {
+    return buyVol / total;
+  }
+  if (buySellRatio != null && Number.isFinite(buySellRatio) && buySellRatio > 0) {
+    return buySellRatio / (1 + buySellRatio);
+  }
+  return 0.5;
 }
 
 // ============================================================
@@ -214,20 +283,21 @@ async function binanceTaker(period: string, limit: number): Promise<TakerRatio[]
 }
 
 async function binanceKlines(interval: string, limit: number): Promise<Kline[]> {
-  const raw = await tryBinanceMirrors<any[]>(
+  // Binance kline rows: [openTime, o, h, l, c, volume, closeTime, quoteVol, trades, ...]
+  const raw = await tryBinanceMirrors<(string | number)[][]>(
     `/fapi/v1/klines?symbol=BTCUSDT&interval=${interval}&limit=${limit}`,
   );
   if (!raw) return [];
   return raw.map((k) => ({
-    openTime: k[0],
-    open: parseFloat(k[1]),
-    high: parseFloat(k[2]),
-    low: parseFloat(k[3]),
-    close: parseFloat(k[4]),
-    volume: parseFloat(k[5]),
-    closeTime: k[6],
-    quoteVolume: parseFloat(k[7]),
-    trades: k[8],
+    openTime: Number(k[0]),
+    open: parseFloat(String(k[1])),
+    high: parseFloat(String(k[2])),
+    low: parseFloat(String(k[3])),
+    close: parseFloat(String(k[4])),
+    volume: parseFloat(String(k[5])), // base asset (BTC)
+    closeTime: Number(k[6]),
+    quoteVolume: parseFloat(String(k[7])),
+    trades: Number(k[8]),
   }));
 }
 
@@ -247,25 +317,22 @@ async function binanceCurrentOI(): Promise<{
 
 /**
  * OKX Open Interest History
- * Endpoint: /api/v5/rubik/stat/contracts/open-interest-history
  * Returns: [[timestamp, oi_contracts, oi_btc, oi_usd], ...]
  */
 async function okxOI(period: string, limit: number): Promise<OpenInterestHistory[]> {
-  // OKX supports 5m, 4H, 1D — we use 4H to match Binance
   const data = await tryFetch<{ code: string; data: string[][] }>(
     `${OKX_BASE}/api/v5/rubik/stat/contracts/open-interest-history?instId=BTC-USDT-SWAP&period=${period === "4h" ? "4H" : period}`,
   );
   if (!data || data.code !== "0" || !data.data?.length) return [];
   return data.data.slice(-limit).map((row) => ({
-    timestamp: parseInt(row[0]),
-    sumOpenInterest: parseFloat(row[2] || row[1]), // row[2] = BTC amount
-    sumOpenInterestValue: parseFloat(row[3] || "0"), // row[3] = USD value
+    timestamp: parseInt(row[0], 10),
+    sumOpenInterest: parseFloat(row[2] || row[1]), // BTC amount
+    sumOpenInterestValue: parseFloat(row[3] || "0"), // USD value
   }));
 }
 
 /**
  * OKX Long/Short Ratio
- * Endpoint: /api/v5/rubik/stat/contracts/long-short-account-ratio
  * Returns: [[timestamp, ratio], ...]
  * Periods: 5m, 1H, 1D
  */
@@ -274,11 +341,8 @@ async function okxGlobalLS(_period: string, limit: number): Promise<LongShortRat
     `${OKX_BASE}/api/v5/rubik/stat/contracts/long-short-account-ratio?instId=BTC-USDT-SWAP&period=1H&ccy=BTC`,
   );
   if (!data || data.code !== "0" || !data.data?.length) return [];
-  // OKX only returns ratio, not long/short splits — compute approximate splits
   return data.data.slice(-limit).map((row) => {
     const ratio = parseFloat(row[1]);
-    // ratio = longAccounts / shortAccounts
-    // longRatio = ratio / (1 + ratio), shortRatio = 1 / (1 + ratio)
     const longRatio = ratio / (1 + ratio);
     const shortRatio = 1 / (1 + ratio);
     return {
@@ -286,23 +350,19 @@ async function okxGlobalLS(_period: string, limit: number): Promise<LongShortRat
       longAccount: longRatio.toFixed(4),
       shortAccount: shortRatio.toFixed(4),
       longShortRatio: row[1],
-      timestamp: parseInt(row[0]),
+      timestamp: parseInt(row[0], 10),
     };
   });
 }
 
-/**
- * OKX Top Trader L/S — no direct equivalent on OKX public API.
- * Returns empty array (Binance data only for this metric).
- */
+/** OKX has no public top-trader L/S equivalent. */
 async function okxTopTraderLS(_period: string, _limit: number): Promise<LongShortRatio[]> {
   return [];
 }
 
 /**
  * OKX Funding Rate History
- * Endpoint: /api/v5/public/funding-rate-history
- * Returns: { data: [{ fundingRate, fundingTime, ... }, ...] }
+ * Returns newest-first.
  */
 async function okxFunding(limit: number): Promise<FundingRate[]> {
   const data = await tryFetch<{
@@ -310,79 +370,87 @@ async function okxFunding(limit: number): Promise<FundingRate[]> {
     data: { fundingRate: string; fundingTime: string }[];
   }>(`${OKX_BASE}/api/v5/public/funding-rate-history?instId=BTC-USDT-SWAP&limit=${limit}`);
   if (!data || data.code !== "0" || !data.data?.length) return [];
-  return data.data.slice(-limit).map((row) => ({
-    symbol: "BTCUSDT",
-    fundingTime: parseInt(row.fundingTime),
-    fundingRate: row.fundingRate,
-    markPrice: "0",
-  }));
+  return data.data
+    .slice(0, limit)
+    .map((row) => ({
+      symbol: "BTCUSDT",
+      fundingTime: parseInt(row.fundingTime, 10),
+      fundingRate: row.fundingRate,
+      markPrice: "0",
+    }))
+    .sort((a, b) => a.fundingTime - b.fundingTime);
 }
 
 /**
  * OKX Taker Buy/Sell Volume
- * Endpoint: /api/v5/rubik/stat/taker-volume-contract
- * Returns: [[timestamp, buyVol, sellVol], ...]
+ * Returns: [[timestamp, buyVol, sellVol], ...] in BTC
  */
 async function okxTaker(_period: string, limit: number): Promise<TakerRatio[]> {
   const data = await tryFetch<{ code: string; data: string[][] }>(
     `${OKX_BASE}/api/v5/rubik/stat/taker-volume-contract?instId=BTC-USDT-SWAP&ccy=BTC&instType=CONTRACTS`,
   );
   if (!data || data.code !== "0" || !data.data?.length) return [];
-  return data.data.slice(-limit).map((row) => {
+  // OKX returns newest-first; reverse then take last `limit` chronologically
+  const chronological = [...data.data].reverse().slice(-limit);
+  return chronological.map((row) => {
     const buyVol = parseFloat(row[1]);
     const sellVol = parseFloat(row[2]);
-    const total = buyVol + sellVol;
+    const share = buyShareFromVolumes(buyVol, sellVol);
     return {
-      buySellRatio: total > 0 ? (buyVol / total).toString() : "0.5",
+      buySellRatio: share.toString(),
       sellVol: row[2],
       buyVol: row[1],
-      timestamp: parseInt(row[0]),
+      timestamp: parseInt(row[0], 10),
     };
   });
 }
 
 /**
  * OKX Klines (candles)
- * Endpoint: /api/v5/market/candles
- * Returns: [[ts, open, high, low, close, vol, volCcy, ...], ...] newest first
+ * [ts, open, high, low, close, vol(contracts), volCcy(BTC), volCcyQuote(USD), confirm]
+ * Newest first.
  */
 async function okxKlines(limit: number): Promise<Kline[]> {
   const data = await tryFetch<{ code: string; data: string[][] }>(
     `${OKX_BASE}/api/v5/market/candles?instId=BTC-USDT-SWAP&bar=4H&limit=${Math.min(limit, 300).toString()}`,
   );
   if (!data || data.code !== "0" || !data.data?.length) return [];
-  // OKX returns newest-first, reverse for chronological
   return data.data.reverse().map((k) => ({
-    openTime: parseInt(k[0]),
+    openTime: parseInt(k[0], 10),
     open: parseFloat(k[1]),
     high: parseFloat(k[2]),
     low: parseFloat(k[3]),
     close: parseFloat(k[4]),
-    volume: parseFloat(k[5]),
-    closeTime: parseInt(k[0]) + 4 * 3600_000 - 1,
-    quoteVolume: parseFloat(k[7]),
+    // Prefer BTC base volume (volCcy) so it matches Binance units
+    volume: parseFloat(k[6] || k[5]),
+    closeTime: parseInt(k[0], 10) + 4 * 3600_000 - 1,
+    quoteVolume: parseFloat(k[7] || "0"),
     trades: 0,
   }));
 }
 
 /**
  * OKX Current Open Interest
- * Endpoint: /api/v5/public/open-interest
+ * oi = contracts, oiCcy = BTC, oiUsd = USD
  */
 async function okxCurrentOI(): Promise<{
   symbol: string;
   openInterest: string;
+  oiUsd: string;
   time: number;
 } | null> {
   const data = await tryFetch<{
     code: string;
-    data: { instId: string; oi: string; ts: string }[];
+    data: { instId: string; oi: string; oiCcy?: string; oiUsd?: string; ts: string }[];
   }>(`${OKX_BASE}/api/v5/public/open-interest?instType=SWAP&instId=BTC-USDT-SWAP`);
   if (data?.code === "0" && data.data?.[0]) {
+    const row = data.data[0];
+    // Prefer oiCcy (BTC amount); oi is contract count (~100× larger for BTC-USDT-SWAP)
     return {
-      symbol: data.data[0].instId,
-      openInterest: data.data[0].oi,
-      time: parseInt(data.data[0].ts),
+      symbol: row.instId,
+      openInterest: row.oiCcy || row.oi,
+      oiUsd: row.oiUsd || "0",
+      time: parseInt(row.ts, 10),
     };
   }
   return null;
@@ -392,54 +460,142 @@ async function okxCurrentOI(): Promise<{
 // Orchestration: try Binance mirrors first, then OKX fallback
 // ============================================================
 
-async function getOpenInterestHist(period: string, limit: number): Promise<OpenInterestHistory[]> {
+async function getOpenInterestHist(
+  period: string,
+  limit: number,
+): Promise<{ data: OpenInterestHistory[]; source: DataSourceName }> {
   const binance = await binanceOI(period, limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance OI hist unavailable, using OKX fallback");
-  return okxOI(period, limit);
+  const okx = await okxOI(period, limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getGlobalLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
+async function getGlobalLongShort(
+  period: string,
+  limit: number,
+): Promise<{ data: LongShortRatio[]; source: DataSourceName }> {
   const binance = await binanceGlobalLS(period, limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance global LS unavailable, using OKX fallback");
-  return okxGlobalLS(period, limit);
+  const okx = await okxGlobalLS(period, limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getTopTraderLongShort(period: string, limit: number): Promise<LongShortRatio[]> {
+async function getTopTraderLongShort(
+  period: string,
+  limit: number,
+): Promise<{ data: LongShortRatio[]; source: DataSourceName }> {
   const binance = await binanceTopTraderLS(period, limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance top trader LS unavailable, using OKX fallback");
-  return okxTopTraderLS(period, limit);
+  const okx = await okxTopTraderLS(period, limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getFundingRates(limit: number): Promise<FundingRate[]> {
+async function getFundingRates(
+  limit: number,
+): Promise<{ data: FundingRate[]; source: DataSourceName }> {
   const binance = await binanceFunding(limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance funding unavailable, using OKX fallback");
-  return okxFunding(limit);
+  const okx = await okxFunding(limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getTakerLongShort(period: string, limit: number): Promise<TakerRatio[]> {
+async function getTakerLongShort(
+  period: string,
+  limit: number,
+): Promise<{ data: TakerRatio[]; source: DataSourceName }> {
   const binance = await binanceTaker(period, limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance taker unavailable, using OKX fallback");
-  return okxTaker(period, limit);
+  const okx = await okxTaker(period, limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getKlines(interval: string, limit: number): Promise<Kline[]> {
+async function getKlines(
+  interval: string,
+  limit: number,
+): Promise<{ data: Kline[]; source: DataSourceName }> {
   const binance = await binanceKlines(interval, limit);
-  if (binance.length > 0) return binance;
+  if (binance.length > 0) return { data: binance, source: "Binance" };
   console.warn("[liquidation] Binance klines unavailable, using OKX fallback");
-  return okxKlines(limit);
+  const okx = await okxKlines(limit);
+  return { data: okx, source: okx.length > 0 ? "OKX" : "none" };
 }
 
-async function getCurrentOI() {
+async function getCurrentOI(): Promise<{
+  data: { symbol: string; openInterest: string; oiUsd: string; time: number };
+  source: DataSourceName;
+}> {
   const binance = await binanceCurrentOI();
-  if (binance && binance.openInterest !== "0") return binance;
+  if (binance && binance.openInterest !== "0") {
+    return {
+      data: {
+        symbol: binance.symbol,
+        openInterest: binance.openInterest,
+        oiUsd: "0",
+        time: binance.time,
+      },
+      source: "Binance",
+    };
+  }
   console.warn("[liquidation] Binance current OI unavailable, using OKX fallback");
   const okx = await okxCurrentOI();
-  return okx ?? { symbol: "BTCUSDT", openInterest: "0", time: Date.now() };
+  if (okx) return { data: okx, source: "OKX" };
+  return {
+    data: { symbol: "BTCUSDT", openInterest: "0", oiUsd: "0", time: Date.now() },
+    source: "none",
+  };
+}
+
+function summarizeSource(sources: LiquidationSources): string {
+  const values = Object.values(sources).filter((s) => s !== "none");
+  const unique = [...new Set(values)];
+  if (unique.length === 0) return "Unavailable";
+  if (unique.length === 1) return unique[0];
+  return `Mixed (${unique.join(" + ")})`;
+}
+
+function buildEndpoints(sources: LiquidationSources) {
+  const rows: { name: string; url: string; source: DataSourceName }[] = [];
+  const push = (name: string, source: DataSourceName, binanceUrl: string, okxUrl: string) => {
+    if (source === "none") return;
+    rows.push({
+      name,
+      source,
+      url: source === "OKX" ? okxUrl : binanceUrl,
+    });
+  };
+  push(
+    "Open Interest History",
+    sources.openInterest,
+    ENDPOINT_DOCS.binanceOIHist,
+    ENDPOINT_DOCS.okxOIHist,
+  );
+  push(
+    "Global Long/Short Ratio",
+    sources.longShort,
+    ENDPOINT_DOCS.binanceGlobalLS,
+    ENDPOINT_DOCS.okxGlobalLS,
+  );
+  push(
+    "Top Trader L/S Ratio",
+    sources.topTrader,
+    ENDPOINT_DOCS.binanceTopLS,
+    ENDPOINT_DOCS.okxGlobalLS,
+  );
+  push("Funding Rate", sources.funding, ENDPOINT_DOCS.binanceFunding, ENDPOINT_DOCS.okxFunding);
+  push("Taker Buy/Sell Volume", sources.taker, ENDPOINT_DOCS.binanceTaker, ENDPOINT_DOCS.okxTaker);
+  push("Price Klines (4h)", sources.klines, ENDPOINT_DOCS.binanceKlines, ENDPOINT_DOCS.okxKlines);
+  push(
+    "Current Open Interest",
+    sources.currentOI,
+    ENDPOINT_DOCS.binanceCurrentOI,
+    ENDPOINT_DOCS.okxCurrentOI,
+  );
+  return rows;
 }
 
 // ============================================================
@@ -448,16 +604,6 @@ async function getCurrentOI() {
 
 async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
   console.log("[liquidation] Starting data fetch...");
-
-  // Determine primary data source by probing one Binance endpoint
-  let source = "Binance";
-  const probe = await tryBinanceMirrors<unknown[]>(
-    `/fapi/v1/klines?symbol=BTCUSDT&interval=1d&limit=1`,
-  );
-  if (!probe) {
-    source = "OKX (Binance geo-restricted)";
-    console.warn("[liquidation] Binance unavailable, all data from OKX");
-  }
 
   const [oiHist, globalLS, topLS, funding, taker, klines, currentOI] = await Promise.all([
     getOpenInterestHist("4h", 200),
@@ -470,50 +616,109 @@ async function fetchLiquidationDataInternal(): Promise<LiquidationData> {
   ]);
   console.log("[liquidation] All data fetched successfully");
 
-  return {
-    openInterestHistory: oiHist.map((d) => ({
-      timestamp: d.timestamp,
-      oi: d.sumOpenInterest,
-      oiValue: d.sumOpenInterestValue,
-    })),
-    longShortRatios: globalLS.map((d) => ({
+  const sources: LiquidationSources = {
+    openInterest: oiHist.source,
+    longShort: globalLS.source,
+    topTrader: topLS.source,
+    funding: funding.source,
+    taker: taker.source,
+    klines: klines.source,
+    currentOI: currentOI.source,
+  };
+
+  // Binance openInterestHist returns sumOpenInterest* as strings — coerce or chart
+  // points become null (Number.isFinite rejects numeric strings).
+  const openInterestHistory = oiHist.data
+    .map((d) => ({
+      timestamp: Number(d.timestamp),
+      oi: parseFloat(String(d.sumOpenInterest)),
+      oiValue: parseFloat(String(d.sumOpenInterestValue || "0")),
+    }))
+    .filter((d) => Number.isFinite(d.timestamp) && Number.isFinite(d.oi))
+    .sort(byTimestampAsc);
+
+  const longShortRatios = globalLS.data
+    .map((d) => ({
       timestamp: d.timestamp,
       longRatio: parseFloat(d.longAccount),
       shortRatio: parseFloat(d.shortAccount),
       ratio: parseFloat(d.longShortRatio),
-    })),
-    topTraderRatios: topLS.map((d) => ({
+    }))
+    .sort(byTimestampAsc);
+
+  const topTraderRatios = topLS.data
+    .map((d) => ({
       timestamp: d.timestamp,
       longRatio: parseFloat(d.longAccount),
       shortRatio: parseFloat(d.shortAccount),
       ratio: parseFloat(d.longShortRatio),
-    })),
-    fundingRates: funding.map((d) => ({
+    }))
+    .sort(byTimestampAsc);
+
+  const fundingRates = funding.data
+    .map((d) => ({
       timestamp: d.fundingTime,
       rate: parseFloat(d.fundingRate),
-      markPrice: parseFloat(d.markPrice),
-    })),
-    takerRatios: taker.map((d) => ({
-      timestamp: d.timestamp,
-      buyRatio: parseFloat(d.buySellRatio),
-      sellVolume: parseFloat(d.sellVol),
-      buyVolume: parseFloat(d.buyVol),
-    })),
-    klines: klines.map((k) => ({
+      markPrice: parseFloat(d.markPrice || "0"),
+    }))
+    .sort(byTimestampAsc);
+
+  // Normalize taker buy ratio to [0, 1] share of volume (Binance API gives buy/sell ratio)
+  const takerRatios = taker.data
+    .map((d) => {
+      const buyVolume = parseFloat(d.buyVol);
+      const sellVolume = parseFloat(d.sellVol);
+      const rawRatio = parseFloat(d.buySellRatio);
+      return {
+        timestamp: d.timestamp,
+        buyRatio: buyShareFromVolumes(buyVolume, sellVolume, rawRatio),
+        sellVolume,
+        buyVolume,
+      };
+    })
+    .sort(byTimestampAsc);
+
+  const mappedKlines = klines.data
+    .map((k) => ({
       timestamp: k.openTime,
       open: k.open,
       high: k.high,
       low: k.low,
       close: k.close,
       volume: k.volume,
-    })),
+    }))
+    .sort(byTimestampAsc);
+
+  const oiBtc = parseFloat(currentOI.data.openInterest);
+  let oiValue = parseFloat(currentOI.data.oiUsd || "0");
+  if (!oiValue || !Number.isFinite(oiValue)) {
+    // Prefer latest OI hist USD value; else estimate from last close
+    const latestHist = openInterestHistory[openInterestHistory.length - 1];
+    if (latestHist?.oiValue) {
+      oiValue = latestHist.oiValue;
+    } else {
+      const lastClose = mappedKlines[mappedKlines.length - 1]?.close ?? 0;
+      oiValue = oiBtc * lastClose;
+    }
+  }
+
+  return {
+    openInterestHistory,
+    longShortRatios,
+    topTraderRatios,
+    fundingRates,
+    takerRatios,
+    klines: mappedKlines,
     currentOI: {
-      symbol: currentOI.symbol,
-      oi: parseFloat(currentOI.openInterest),
-      time: currentOI.time,
+      symbol: currentOI.data.symbol,
+      oi: oiBtc,
+      oiValue,
+      time: currentOI.data.time,
     },
     fetchDate: new Date().toISOString(),
-    source,
+    source: summarizeSource(sources),
+    sources,
+    endpoints: buildEndpoints(sources),
   };
 }
 

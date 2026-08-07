@@ -8,71 +8,158 @@ import { formatChartTimestamp } from "./format";
 
 export type TimeRange = "7d" | "30d" | "all";
 
+/** ~6 × 4h candles per day */
+const CANDLES_PER_DAY = 6;
+
 export function getRangeIndex(dataLength: number, range: TimeRange): number {
   if (range === "all") return 0;
-  if (range === "7d") return Math.max(0, dataLength - 7 * 6); // ~6 4h candles/day × 7
-  if (range === "30d") return Math.max(0, dataLength - 30 * 6);
+  if (range === "7d") return Math.max(0, dataLength - 7 * CANDLES_PER_DAY);
+  if (range === "30d") return Math.max(0, dataLength - 30 * CANDLES_PER_DAY);
   return 0;
 }
 
+/**
+ * Slice all series by the kline time window so ranges stay aligned
+ * even when series have different sampling frequencies.
+ */
 export function sliceLiquidationData(data: LiquidationData, timeRange: TimeRange) {
   const kLen = data.klines.length;
   const idx = getRangeIndex(kLen, timeRange);
-  const scale = (len: number) => Math.max(0, Math.floor(idx * (len / kLen)));
+  const startTs = data.klines[idx]?.timestamp ?? 0;
+
+  const after = <T extends { timestamp: number }>(arr: T[]) =>
+    startTs > 0 ? arr.filter((d) => d.timestamp >= startTs) : arr;
 
   return {
     klines: data.klines.slice(idx),
-    openInterestHistory: data.openInterestHistory.slice(scale(data.openInterestHistory.length)),
-    longShortRatios: data.longShortRatios.slice(scale(data.longShortRatios.length)),
-    topTraderRatios: data.topTraderRatios.slice(scale(data.topTraderRatios.length)),
-    fundingRates: data.fundingRates.slice(scale(data.fundingRates.length)),
-    takerRatios: data.takerRatios.slice(scale(data.takerRatios.length)),
+    openInterestHistory: after(data.openInterestHistory),
+    longShortRatios: after(data.longShortRatios),
+    topTraderRatios: after(data.topTraderRatios),
+    fundingRates: after(data.fundingRates),
+    takerRatios: after(data.takerRatios),
   };
 }
 
 export type SlicedLiquidation = ReturnType<typeof sliceLiquidationData>;
 
+function nearestByTime<T extends { timestamp: number }>(
+  series: T[],
+  ts: number,
+  maxDeltaMs: number,
+): T | undefined {
+  let best: T | undefined;
+  let bestDelta = Infinity;
+  for (const point of series) {
+    const delta = Math.abs(point.timestamp - ts);
+    if (delta < bestDelta && delta <= maxDeltaMs) {
+      best = point;
+      bestDelta = delta;
+    }
+  }
+  return best;
+}
+
+function toFiniteNumber(v: unknown): number | null {
+  if (v == null || v === "") return null;
+  const n = typeof v === "number" ? v : parseFloat(String(v));
+  return Number.isFinite(n) ? n : null;
+}
+
+/**
+ * Merge price klines with OI. Forward-fills OI so the series is continuous
+ * and visible even when sample times don't align perfectly.
+ */
 export function buildPriceOiChartData(sliced: SlicedLiquidation) {
+  const maxDelta = 6 * 60 * 60 * 1000; // allow up to 6h mismatch
+  // Coerce OI fields (APIs may return strings) before merge / chart domain math.
+  const oiSorted = [...sliced.openInterestHistory]
+    .map((d) => ({
+      timestamp: Number(d.timestamp),
+      oi: toFiniteNumber(d.oi),
+      oiValue: toFiniteNumber(d.oiValue),
+    }))
+    .filter((d): d is { timestamp: number; oi: number; oiValue: number | null } =>
+      Number.isFinite(d.timestamp) && d.oi != null,
+    )
+    .sort((a, b) => a.timestamp - b.timestamp);
+
+  let oiIdx = 0;
+  let lastOi: number | null = null;
+  let lastOiValue: number | null = null;
+
   return sliced.klines.map((k) => {
-    const match = sliced.openInterestHistory.find(
-      (oi) => Math.abs(oi.timestamp - k.timestamp) < 4 * 60 * 60 * 1000,
-    );
+    // Advance OI cursor to the latest point at or before this kline (+ small lag)
+    while (oiIdx < oiSorted.length && oiSorted[oiIdx].timestamp <= k.timestamp + maxDelta) {
+      lastOi = oiSorted[oiIdx].oi;
+      lastOiValue = oiSorted[oiIdx].oiValue;
+      oiIdx++;
+    }
+    // Prefer nearest within window if forward-fill is stale
+    const nearest = nearestByTime(oiSorted, k.timestamp, maxDelta);
+    const oi = nearest?.oi ?? lastOi;
+    const oiValue = nearest?.oiValue ?? lastOiValue;
+
     return {
+      ts: k.timestamp,
       time: formatChartTimestamp(k.timestamp),
       price: k.close,
-      oi: match?.oi ?? null,
-      oiValue: match?.oiValue ?? null,
+      oi: toFiniteNumber(oi),
+      oiValue: toFiniteNumber(oiValue),
       volume: k.volume,
     };
   });
 }
 
+/** Tight Y domains so small OI/price moves remain readable (not crushed to 0). */
+export function computeSeriesDomain(
+  values: (number | null | undefined)[],
+  padRatio = 0.08,
+): [number, number] | ["auto", "auto"] {
+  const nums = values.filter((v): v is number => typeof v === "number" && Number.isFinite(v));
+  if (nums.length === 0) return ["auto", "auto"];
+  const min = Math.min(...nums);
+  const max = Math.max(...nums);
+  if (min === max) {
+    const pad = Math.abs(min) * 0.02 || 1;
+    return [min - pad, max + pad];
+  }
+  const span = max - min;
+  const pad = span * padRatio;
+  return [min - pad, max + pad];
+}
+
 export function buildLongShortChartData(sliced: SlicedLiquidation) {
-  return sliced.longShortRatios.map((r, i) => {
-    const top = sliced.topTraderRatios[i];
+  const maxDelta = 4 * 60 * 60 * 1000;
+  return sliced.longShortRatios.map((r) => {
+    const top = nearestByTime(sliced.topTraderRatios, r.timestamp, maxDelta);
     return {
+      ts: r.timestamp,
       time: formatChartTimestamp(r.timestamp),
-      longRatio: r.longRatio,
-      shortRatio: r.shortRatio,
+      longRatio: r.longRatio * 100, // % of accounts long
+      shortRatio: r.shortRatio * 100,
       ratio: r.ratio,
-      topLongRatio: top?.longRatio ?? 0,
-      topShortRatio: top?.shortRatio ?? 0,
+      topLongRatio: top ? top.longRatio * 100 : null,
+      topShortRatio: top ? top.shortRatio * 100 : null,
     };
   });
 }
 
 export function buildFundingChartData(sliced: SlicedLiquidation) {
   return sliced.fundingRates.map((f) => ({
+    ts: f.timestamp,
     time: formatChartTimestamp(f.timestamp),
-    rate: f.rate * 100,
+    rate: f.rate * 100, // percent for display
     markPrice: f.markPrice,
+    fill: f.rate >= 0 ? "#22c55e" : "#ef4444",
   }));
 }
 
 export function buildTakerChartData(sliced: SlicedLiquidation) {
   return sliced.takerRatios.map((t) => ({
+    ts: t.timestamp,
     time: formatChartTimestamp(t.timestamp),
-    buyRatio: t.buyRatio,
+    buyRatio: t.buyRatio, // already [0, 1]
+    buyShare: t.buyRatio * 100,
     buyVolume: t.buyVolume,
     sellVolume: t.sellVolume,
   }));
@@ -115,11 +202,7 @@ export function analyzeMarketSituation(data: LiquidationData): MarketSituation |
 
   const fundingPct = latestFunding * 100;
   const fundingLevel:
-    | "extreme_positive"
-    | "positive"
-    | "neutral"
-    | "negative"
-    | "extreme_negative" =
+    "extreme_positive" | "positive" | "neutral" | "negative" | "extreme_negative" =
     fundingPct > 0.03
       ? "extreme_positive"
       : fundingPct > 0.005
@@ -232,19 +315,19 @@ export function analyzeMarketSituation(data: LiquidationData): MarketSituation |
     signals.push({
       label: "Taker Volume",
       bullish: true,
-      detail: `Buy ratio avg ${(avgBuyRatio * 100).toFixed(1)}% — aggressive buyers dominating, real demand.`,
+      detail: `Buy share avg ${(avgBuyRatio * 100).toFixed(1)}% — aggressive buyers dominating, real demand.`,
     });
   } else if (takerBias === "sellers") {
     signals.push({
       label: "Taker Volume",
       bullish: false,
-      detail: `Buy ratio avg ${(avgBuyRatio * 100).toFixed(1)}% — aggressive sellers dominating, real sell pressure.`,
+      detail: `Buy share avg ${(avgBuyRatio * 100).toFixed(1)}% — aggressive sellers dominating, real sell pressure.`,
     });
   } else {
     signals.push({
       label: "Taker Volume",
       bullish: null,
-      detail: "Buy ratio balanced — no clear taker dominance.",
+      detail: "Buy share balanced — no clear taker dominance.",
     });
   }
 
@@ -279,22 +362,108 @@ export function analyzeMarketSituation(data: LiquidationData): MarketSituation |
 }
 
 export interface LiqZone {
+  /** Bucket midpoint */
   price: number;
+  priceLow: number;
+  priceHigh: number;
+  /** Human label e.g. "$60k–$62k" */
+  label: string;
   volume: number;
+  /** Distance from latest price as % (using midpoint) */
+  distancePct: number;
+  side: "above" | "below" | "at";
 }
 
-export function computeLiqZones(data: LiquidationData): LiqZone[] {
-  const buckets: Record<string, number> = {};
-  const bucketSize = 100;
-  for (const k of data.klines) {
-    const mid = Math.round((k.high + k.low) / 2 / bucketSize) * bucketSize;
-    const key = String(mid);
-    buckets[key] = (buckets[key] || 0) + k.volume;
+/** Round raw step up to a clean price increment ($500, $1k, $2k, …). */
+function niceBucketSize(raw: number): number {
+  if (!Number.isFinite(raw) || raw <= 0) return 1000;
+  const steps = [250, 500, 1000, 1500, 2000, 2500, 5000, 7500, 10000, 15000, 20000, 25000, 50000];
+  for (const s of steps) {
+    if (s >= raw * 0.85) return s;
   }
-  return Object.entries(buckets)
+  // Very wide ranges: round to nearest 25k / 50k
+  const mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const norm = raw / mag;
+  if (norm <= 1.5) return mag * 2;
+  if (norm <= 3.5) return mag * 5;
+  return mag * 10;
+}
+
+function formatZoneLabel(low: number, high: number): string {
+  const fmt = (n: number) => {
+    if (n >= 1000) return `$${(n / 1000).toFixed(n % 1000 === 0 ? 0 : 1)}k`;
+    return `$${Math.round(n)}`;
+  };
+  return `${fmt(low)}–${fmt(high)}`;
+}
+
+/**
+ * Coarse volume-profile clusters over recent price action.
+ * Uses large buckets (~$1k–$5k at typical BTC prices) so the chart
+ * shows meaningful magnets, not $100 noise levels.
+ */
+export function computeLiqZones(data: LiquidationData, latestPrice = 0): LiqZone[] {
+  if (data.klines.length === 0) return [];
+
+  // ~30 days of 4h candles for a wider "zoom out" profile
+  const recent = data.klines.slice(-180);
+  const lows = recent.map((k) => k.low);
+  const highs = recent.map((k) => k.high);
+  const rangeLow = Math.min(...lows);
+  const rangeHigh = Math.max(...highs);
+  const span = Math.max(rangeHigh - rangeLow, (latestPrice || rangeLow) * 0.05);
+
+  // Target ~7–9 large clusters across the full range
+  const bucketSize = niceBucketSize(span / 8);
+  const buckets: Record<number, number> = {};
+
+  for (const k of recent) {
+    // Spread candle volume across every large bucket it trades through
+    const start = Math.floor(k.low / bucketSize) * bucketSize;
+    const end = Math.floor(k.high / bucketSize) * bucketSize;
+    const steps = Math.max(1, Math.round((end - start) / bucketSize) + 1);
+    const share = k.volume / steps;
+    for (let p = start; p <= end + bucketSize * 0.001; p += bucketSize) {
+      const key = Math.round(p); // avoid float keys
+      buckets[key] = (buckets[key] || 0) + share;
+    }
+  }
+
+  // Keep zones that have meaningful volume (drop empty / near-empty edges)
+  const entries = Object.entries(buckets)
     .map(([price, volume]) => ({ price: Number(price), volume }))
-    .sort((a, b) => b.volume - a.volume)
-    .slice(0, 15);
+    .filter((e) => e.volume > 0)
+    .sort((a, b) => a.price - b.price);
+
+  if (entries.length === 0) return [];
+
+  const maxVol = Math.max(...entries.map((e) => e.volume));
+  const minKeep = maxVol * 0.08; // drop tiny edge noise
+
+  return entries
+    .filter((e) => e.volume >= minKeep)
+    .map((e) => {
+      const priceLow = e.price;
+      const priceHigh = e.price + bucketSize;
+      const mid = priceLow + bucketSize / 2;
+      const distancePct = latestPrice > 0 ? ((mid - latestPrice) / latestPrice) * 100 : 0;
+      // "at" if spot sits inside this bucket
+      const side: LiqZone["side"] =
+        latestPrice > 0 && latestPrice >= priceLow && latestPrice < priceHigh
+          ? "at"
+          : distancePct > 0
+            ? "above"
+            : "below";
+      return {
+        price: mid,
+        priceLow,
+        priceHigh,
+        label: formatZoneLabel(priceLow, priceHigh),
+        volume: e.volume,
+        distancePct,
+        side,
+      };
+    });
 }
 
 export interface WatchLevel {
@@ -334,6 +503,10 @@ export function findWatchLevels(
   }
 
   const volLevels = liqZones.map((z) => z.price);
+  // Match tolerance scales with zone size (large clusters ≈ $1k–$5k)
+  const zoneTol =
+    liqZones.length > 0 ? Math.max(500, (liqZones[0].priceHigh - liqZones[0].priceLow) * 0.6) : 500;
+  const swingTol = 400;
   const allLevels = new Set<number>([...swingHighs, ...swingLows, ...volLevels]);
 
   const roundBase = Math.floor(latestPrice / 1000) * 1000;
@@ -346,14 +519,12 @@ export function findWatchLevels(
   }
 
   const levels = Array.from(allLevels)
-    .filter(
-      (l) => Math.abs(l - latestPrice) / latestPrice < 0.08 && Math.abs(l - latestPrice) > 50,
-    )
+    .filter((l) => Math.abs(l - latestPrice) / latestPrice < 0.08 && Math.abs(l - latestPrice) > 50)
     .map((l) => {
       const isAbove = l > latestPrice;
-      const isSwingHigh = swingHighs.some((sh) => Math.abs(sh - l) < 300);
-      const isSwingLow = swingLows.some((sl) => Math.abs(sl - l) < 300);
-      const isVolZone = volLevels.some((v) => Math.abs(v - l) < 300);
+      const isSwingHigh = swingHighs.some((sh) => Math.abs(sh - l) < swingTol);
+      const isSwingLow = swingLows.some((sl) => Math.abs(sl - l) < swingTol);
+      const isVolZone = volLevels.some((v) => Math.abs(v - l) < zoneTol);
       const isRound = l % 1000 === 0;
 
       let type: string;

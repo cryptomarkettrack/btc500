@@ -4,16 +4,20 @@ import { getLiquidationData, type LiquidationData } from "@/lib/liquidation";
 export function useLiquidationData() {
   const [data, setData] = useState<LiquidationData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     let cancelled = false;
     const fetchData = async () => {
       setIsLoading(true);
+      setError(null);
       try {
         const result = await getLiquidationData();
         if (!cancelled) setData(result);
-      } catch {
-        // keep null data
+      } catch (e) {
+        if (!cancelled) {
+          setError(e instanceof Error ? e.message : "Failed to load liquidation data");
+        }
       } finally {
         if (!cancelled) setIsLoading(false);
       }
@@ -26,15 +30,16 @@ export function useLiquidationData() {
 
   const refetch = useCallback(async () => {
     setIsLoading(true);
+    setError(null);
     try {
       const result = await getLiquidationData();
       setData(result);
-    } catch {
-      // keep stale data
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Failed to refresh liquidation data");
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  return { data, isLoading, refetch };
+  return { data, isLoading, error, refetch };
 }
