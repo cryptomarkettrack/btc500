@@ -136,6 +136,46 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "CLARITY Act, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, Bitcoin regulation, Ethereum regulation, digital asset regulation, crypto legislation",
   },
+  {
+    id: "bitcoin-volatility",
+    slug: "bitcoin-volatility",
+    title:
+      "Bitcoin's Volatility Has Nearly Disappeared — Why That Doesn't Mean Risk Is Gone",
+    description:
+      "Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility actually signals for the cycle, options markets, and disciplined accumulation.",
+    keywords:
+      "Bitcoin volatility, Bitcoin DVOL, Bitcoin low volatility, Bitcoin implied volatility, Bitcoin price compression, BTC volatility squeeze, Bitcoin options, Bitcoin market risk, Bitcoin accumulation, BTC500 strategy",
+    date: "August 8, 2026",
+    dateISO: "2026-08-08",
+    dateModified: "2026-08-08",
+    dateModifiedISO: "2026-08-08",
+    readTime: "8 min read",
+    wordCount: 2100,
+    ogImage: `${SITE_URL}/og/default.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "Bitcoin volatility, Bitcoin DVOL, Bitcoin low volatility, Bitcoin implied volatility, Bitcoin price compression, BTC volatility squeeze, Bitcoin options, Bitcoin market risk, BTC500 strategy",
+  },
+  {
+    id: "bitcoin-infrastructure-exploits",
+    slug: "bitcoin-infrastructure-exploits",
+    title:
+      "Coldcard and Lightning Exploits: Why Bitcoin Infrastructure Risk Still Matters",
+    description:
+      "From the ~$116M Coldcard seed-generation theft to BTCPay Lightning node drains — how two back-to-back infrastructure exploits expose the real self-custody risks long-term Bitcoin holders can't ignore.",
+    keywords:
+      "Coldcard hack, Coldcard exploit, Coinkite, BTCPay Server vulnerability, Lightning Network exploit, Bitcoin hardware wallet hack, Bitcoin self custody, Bitcoin security, LND macaroon, Bitcoin infrastructure risk, seed phrase security",
+    date: "August 8, 2026",
+    dateISO: "2026-08-08",
+    dateModified: "2026-08-08",
+    dateModifiedISO: "2026-08-08",
+    readTime: "9 min read",
+    wordCount: 2400,
+    ogImage: `${SITE_URL}/og/default.png`,
+    articleSection: "Bitcoin Security & Self-Custody",
+    schemaKeywords:
+      "Coldcard hack, Coldcard exploit, BTCPay Server, Lightning Network exploit, Bitcoin hardware wallet, self custody, Bitcoin security, Bitcoin infrastructure, seed phrase",
+  },
 ];
 
 /** Returns articles sorted newest-first */

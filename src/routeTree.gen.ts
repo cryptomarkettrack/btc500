@@ -27,6 +27,8 @@ import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
+import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
+import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
 const TimelineRoute = TimelineRouteImport.update({
@@ -120,6 +122,18 @@ const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   path: '/btc500-strategy',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesBitcoinVolatilityRoute =
+  ArticlesBitcoinVolatilityRouteImport.update({
+    id: '/bitcoin-volatility',
+    path: '/bitcoin-volatility',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesBitcoinInfrastructureExploitsRoute =
+  ArticlesBitcoinInfrastructureExploitsRouteImport.update({
+    id: '/bitcoin-infrastructure-exploits',
+    path: '/bitcoin-infrastructure-exploits',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesBearMarketAccumulationRoute =
   ArticlesBearMarketAccumulationRouteImport.update({
     id: '/bear-market-accumulation',
@@ -142,6 +156,8 @@ export interface FileRoutesByFullPath {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
+  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -163,6 +179,8 @@ export interface FileRoutesByTo {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
+  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -185,6 +203,8 @@ export interface FileRoutesById {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
+  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -208,6 +228,8 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bitcoin-infrastructure-exploits'
+    | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -229,6 +251,8 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bitcoin-infrastructure-exploits'
+    | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -250,6 +274,8 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bitcoin-infrastructure-exploits'
+    | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -401,6 +427,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/bitcoin-volatility': {
+      id: '/articles/bitcoin-volatility'
+      path: '/bitcoin-volatility'
+      fullPath: '/articles/bitcoin-volatility'
+      preLoaderRoute: typeof ArticlesBitcoinVolatilityRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/bitcoin-infrastructure-exploits': {
+      id: '/articles/bitcoin-infrastructure-exploits'
+      path: '/bitcoin-infrastructure-exploits'
+      fullPath: '/articles/bitcoin-infrastructure-exploits'
+      preLoaderRoute: typeof ArticlesBitcoinInfrastructureExploitsRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/bear-market-accumulation': {
       id: '/articles/bear-market-accumulation'
       path: '/bear-market-accumulation'
@@ -413,6 +453,8 @@ declare module '@tanstack/react-router' {
 
 interface ArticlesRouteChildren {
   ArticlesBearMarketAccumulationRoute: typeof ArticlesBearMarketAccumulationRoute
+  ArticlesBitcoinInfrastructureExploitsRoute: typeof ArticlesBitcoinInfrastructureExploitsRoute
+  ArticlesBitcoinVolatilityRoute: typeof ArticlesBitcoinVolatilityRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
@@ -422,6 +464,9 @@ interface ArticlesRouteChildren {
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBearMarketAccumulationRoute: ArticlesBearMarketAccumulationRoute,
+  ArticlesBitcoinInfrastructureExploitsRoute:
+    ArticlesBitcoinInfrastructureExploitsRoute,
+  ArticlesBitcoinVolatilityRoute: ArticlesBitcoinVolatilityRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
