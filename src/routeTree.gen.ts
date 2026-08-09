@@ -29,6 +29,7 @@ import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarit
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
 import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
+import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
 const TimelineRoute = TimelineRouteImport.update({
@@ -134,6 +135,11 @@ const ArticlesBitcoinInfrastructureExploitsRoute =
     path: '/bitcoin-infrastructure-exploits',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesBip110RejectionRoute = ArticlesBip110RejectionRouteImport.update({
+  id: '/bip-110-rejection',
+  path: '/bip-110-rejection',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesBearMarketAccumulationRoute =
   ArticlesBearMarketAccumulationRouteImport.update({
     id: '/bear-market-accumulation',
@@ -156,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -203,6 +211,7 @@ export interface FileRoutesById {
   '/simulator': typeof SimulatorRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
+  '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
@@ -228,6 +237,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
@@ -251,6 +261,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
@@ -274,6 +285,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/timeline'
     | '/articles/bear-market-accumulation'
+    | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
     | '/articles/btc500-strategy'
@@ -441,6 +453,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBitcoinInfrastructureExploitsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/bip-110-rejection': {
+      id: '/articles/bip-110-rejection'
+      path: '/bip-110-rejection'
+      fullPath: '/articles/bip-110-rejection'
+      preLoaderRoute: typeof ArticlesBip110RejectionRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/bear-market-accumulation': {
       id: '/articles/bear-market-accumulation'
       path: '/bear-market-accumulation'
@@ -453,6 +472,7 @@ declare module '@tanstack/react-router' {
 
 interface ArticlesRouteChildren {
   ArticlesBearMarketAccumulationRoute: typeof ArticlesBearMarketAccumulationRoute
+  ArticlesBip110RejectionRoute: typeof ArticlesBip110RejectionRoute
   ArticlesBitcoinInfrastructureExploitsRoute: typeof ArticlesBitcoinInfrastructureExploitsRoute
   ArticlesBitcoinVolatilityRoute: typeof ArticlesBitcoinVolatilityRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
@@ -464,6 +484,7 @@ interface ArticlesRouteChildren {
 
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBearMarketAccumulationRoute: ArticlesBearMarketAccumulationRoute,
+  ArticlesBip110RejectionRoute: ArticlesBip110RejectionRoute,
   ArticlesBitcoinInfrastructureExploitsRoute:
     ArticlesBitcoinInfrastructureExploitsRoute,
   ArticlesBitcoinVolatilityRoute: ArticlesBitcoinVolatilityRoute,

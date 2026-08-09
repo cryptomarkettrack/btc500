@@ -22,10 +22,13 @@ Instagram: https://www.instagram.com/btc500halving
 
 ## Strategy articles
 
+- [BIP-110 Rejection](https://btc500.net/articles/bip-110-rejection): What the BIP-110 soft fork failure means for Bitcoin governance and long-term holders.
 - [The BTC500 Strategy](https://btc500.net/articles/btc500-strategy): Deep dive into buy 500 days before / sell 500 days after.
 - [Why BTC500 Exists](https://btc500.net/articles/why-btc500-exists): Why investors keep buying too early in bear markets.
 - [NUPL / RUPL Guide](https://btc500.net/articles/rupl): Complete guide to Net Unrealized Profit/Loss and Bitcoin market psychology.
 - [Ondo Finance Tokenization](https://btc500.net/articles/ondo-finance-tokenization): How Ondo is building Wall Street-ready tokenization rails.
+- [Bitcoin Volatility](https://btc500.net/articles/bitcoin-volatility): Why historically low DVOL does not mean risk has disappeared.
+- [Coldcard & Lightning Exploits](https://btc500.net/articles/bitcoin-infrastructure-exploits): Infrastructure risk lessons from recent wallet and payment-stack incidents.
 
 ## What is BTC500?
 

@@ -176,6 +176,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Coldcard hack, Coldcard exploit, BTCPay Server, Lightning Network exploit, Bitcoin hardware wallet, self custody, Bitcoin security, Bitcoin infrastructure, seed phrase",
   },
+  {
+    id: "bip-110-rejection",
+    slug: "bip-110-rejection",
+    title: "BIP-110 Rejection: What It Means for Bitcoin’s Future",
+    description:
+      "Bitcoin Improvement Proposal BIP-110 failed after near-zero miner support and a stalled minority chain. Here’s what the BIP-110 rejection means for Bitcoin governance, upgrades, and long-term holders.",
+    keywords:
+      "BIP-110, BIP-110 rejection, Bitcoin BIP-110 rejection, what is BIP-110, Bitcoin proposal rejected, Bitcoin governance, Bitcoin Improvement Proposal BIP-110, why BIP-110 was rejected, Bitcoin governance process, Bitcoin upgrades and proposals",
+    date: "August 9, 2026",
+    dateISO: "2026-08-09",
+    dateModified: "2026-08-09",
+    dateModifiedISO: "2026-08-09",
+    readTime: "8 min read",
+    wordCount: 1600,
+    ogImage: `${SITE_URL}/articles/bip-110/bip-110-rejection.png`,
+    articleSection: "Bitcoin Governance",
+    schemaKeywords:
+      "BIP-110, BIP-110 rejection, Bitcoin BIP-110, Bitcoin governance, soft fork, Bitcoin Improvement Proposal, minority chain, Bitcoin upgrades",
+  },
 ];
 
 /** Returns articles sorted newest-first */
