@@ -6,6 +6,10 @@ interface Btc500HeroProps {
   daysLeft?: number;
   /** Hide brand title / price when embedded in a share card that already has them. */
   compact?: boolean;
+  /** Custom H1 text (HTML string). Defaults to the BTC500 brand block. */
+  title?: string;
+  /** For screen-readers / crawlers, a keyword-rich H1 when `title` is used. */
+  srTitle?: string;
 }
 
 /** Match styles.css hero labels — inline so share-card Inter root cannot override. */
@@ -44,7 +48,13 @@ const styleWeAreHere: CSSProperties = {
   letterSpacing: "0.06em",
 };
 
-export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500HeroProps) {
+export function Btc500Hero({
+  price,
+  daysLeft = 500,
+  compact = false,
+  title,
+  srTitle,
+}: Btc500HeroProps) {
   const reactId = useId();
   const fadeGradId = `fadeGrad-${reactId.replace(/:/g, "")}`;
 
@@ -160,7 +170,13 @@ export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500Her
 
           {/* Halving vertical rule */}
           <line className="halving-rule" x1="460" y1="30" x2="460" y2="430" />
-          <text className="halving-label" x="460" y="20" textAnchor="middle" style={styleHalvingLabel}>
+          <text
+            className="halving-label"
+            x="460"
+            y="20"
+            textAnchor="middle"
+            style={styleHalvingLabel}
+          >
             Halving
           </text>
 
@@ -200,12 +216,7 @@ export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500Her
                 {daysLeft}d
               </text>
               {/* "we are here" label with black contrast - positioned right next to the dot */}
-              <text
-                x={currentX}
-                y={currentY + 16}
-                textAnchor="middle"
-                style={styleWeAreHere}
-              >
+              <text x={currentX} y={currentY + 16} textAnchor="middle" style={styleWeAreHere}>
                 we are here
               </text>
             </>
@@ -289,15 +300,19 @@ export function Btc500Hero({ price, daysLeft = 500, compact = false }: Btc500Her
       </div>
 
       {/* Title — keep brand front-and-center; expand keywords for crawlers */}
-      {!compact && (
-        <h1 className="mt-6 text-center text-5xl font-bold tracking-tight sm:text-6xl">
-          BTC<span className="text-primary">500</span>
-          <span className="sr-only">
-            {" "}
-            — Bitcoin Halving Countdown and Investment Strategy
-          </span>
-        </h1>
-      )}
+      {!compact &&
+        (title ? (
+          <h1
+            className="mt-6 text-center text-4xl font-bold tracking-tight sm:text-6xl"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+        ) : (
+          <h1 className="mt-6 text-center text-5xl font-bold tracking-tight sm:text-6xl">
+            BTC<span className="text-primary">500</span>
+            <span className="sr-only"> — Bitcoin Halving Countdown and Investment Strategy</span>
+          </h1>
+        ))}
+      {!compact && srTitle && <span className="sr-only">{srTitle}</span>}
 
       {/* Subtitle — hide in compact so share cards lead with chart + numbers */}
       {!compact && (

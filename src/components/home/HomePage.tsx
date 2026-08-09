@@ -70,6 +70,13 @@ export function HomePage() {
   const completedCycles =
     simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
 
+  // Outcome stat strip — computed from real cycle data, not hardcoded.
+  const totalCompleted = completedCycles.length;
+  const avgReturn =
+    totalCompleted > 0
+      ? completedCycles.reduce((sum, c) => sum + (c.returnPercent ?? 0), 0) / totalCompleted
+      : null;
+
   // Last completed cycle's buy price/date/sell date — used by the P&L preview modal.
   const lastCompletedCycle = simulatorRes.data?.cycles[simulatorRes.data.cycles.length - 1] ?? null;
   const previewBuyPrice = lastCompletedCycle?.buyPrice ?? null;
@@ -84,7 +91,61 @@ export function HomePage() {
           className="flex flex-col gap-6 p-0 sm:p-5"
           style={{ background: "var(--background)" }}
         >
-          <Btc500Hero price={priceRes.data?.price ?? null} daysLeft={buyDays} />
+          {/* ===== 1. OUTCOME STAT STRIP (above the fold) ===== */}
+          <section aria-label="BTC500 outcome stats" className="mx-auto w-full max-w-3xl">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
+                <div className="text-2xl font-bold text-primary sm:text-3xl">
+                  {avgReturn !== null ? `${avgReturn > 0 ? "+" : ""}${avgReturn.toFixed(0)}%` : "—"}
+                </div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Avg ROI per cycle
+                </div>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
+                <div className="text-2xl font-bold text-primary sm:text-3xl">
+                  {totalCompleted > 0 ? `${totalCompleted} of ${totalCompleted}` : "—"}
+                </div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Profitable cycles
+                </div>
+              </div>
+              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
+                <div className="text-2xl font-bold text-primary sm:text-3xl">2</div>
+                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+                  Trades per 4 years
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <Btc500Hero
+            price={priceRes.data?.price ?? null}
+            daysLeft={buyDays}
+            title={`Bitcoin Halving Countdown & The BTC<span class="text-primary">500</span> Strategy`}
+          />
+
+          {/* ===== 1b. HERO DUAL CTAs ===== */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link
+              to="/simulator"
+              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+            >
+              <Calculator className="h-4 w-4" />
+              Calculate My Returns
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+            <Link
+              to="/timeline"
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+            >
+              <LineChart className="h-4 w-4" />
+              See the Timeline
+            </Link>
+          </div>
+          <p className="text-center text-xs text-muted-foreground">
+            Free · No signup · Live data from Binance, CoinGecko & Bitstamp
+          </p>
 
           <CommandCenter
             cycle={cycle}
@@ -156,6 +217,8 @@ export function HomePage() {
               description="Set your buy order exactly 500 days before the next halving. The countdown above tells you exactly when."
               accent="var(--primary)"
               accentSoft="var(--primary-soft)"
+              to="/halving-dates"
+              cta="See the halving schedule"
             />
             <HowItWorksCard
               icon={Zap}
@@ -164,6 +227,8 @@ export function HomePage() {
               description="Hold your position as the halving event passes. This is where the magic happens — reduced supply meets sustained demand."
               accent="var(--info)"
               accentSoft="oklch(0.95 0.04 240)"
+              to="/simulator"
+              cta="Calculate your returns"
             />
             <HowItWorksCard
               icon={Shield}
@@ -172,6 +237,8 @@ export function HomePage() {
               description="Exit exactly 500 days after halving. Lock in profits and wait for the next cycle. Rinse and repeat every ~4 years."
               accent="var(--success)"
               accentSoft="var(--success-soft)"
+              to="/timeline"
+              cta="Watch the timeline"
             />
           </div>
         </motion.section>
@@ -374,6 +441,27 @@ export function HomePage() {
           </div>
 
           <div className="grid gap-4 sm:grid-cols-3">
+            {/* Pinned strategy primer — the entry point into the product */}
+            <Link
+              to="/articles/btc500-strategy"
+              className="group block rounded-[24px] border-2 border-primary/30 bg-primary-soft/40 p-6 transition-all hover:border-primary hover:bg-primary-soft/60"
+            >
+              <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
+                <BookOpen className="h-3 w-3" />
+                Start here
+              </div>
+              <h3 className="text-base font-semibold leading-snug group-hover:text-primary transition-colors">
+                Bitcoin Halving Strategy: Buy 500 Days Before, Sell 500 Days After (Backtested)
+              </h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+                The BTC500 rule explained with real historical returns across every halving since
+                2012.
+              </p>
+              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary">
+                Read the strategy primer
+                <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+              </div>
+            </Link>
             {latestArticles.map((article, i) => (
               <ArticleCard key={article.id} article={article} index={i} />
             ))}
@@ -401,11 +489,11 @@ export function HomePage() {
         >
           <div className="mb-8 text-center">
             <h2 id="faq-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Frequently Asked Questions
+              Bitcoin Halving Questions, Answered
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
               Quick answers about the BTC<span className="text-primary">500</span> strategy, Bitcoin
-              halvings, and the free tools on this site.
+              halving dates, post-halving price behavior, and the free tools on this site.
             </p>
           </div>
 
@@ -430,11 +518,12 @@ export function HomePage() {
             </div>
             <div className="relative z-10">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Ready to Master the Halving Cycle?
+                See What $10,000 Would Be Worth Today
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                The BTC<span className="text-primary">500</span> strategy gives you a clear,
-                data-backed plan. No guesswork, no FOMO, no emotional trading. Just a proven system.
+                Enter any amount into the simulator and see how the BTC
+                <span className="text-primary">500</span> strategy would have performed across every
+                halving cycle since 2012 — using real historical prices.
               </p>
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
@@ -442,7 +531,7 @@ export function HomePage() {
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
                 >
                   <Calculator className="h-4 w-4" />
-                  Try the Simulator
+                  Simulate My Returns
                 </Link>
                 <Link
                   to="/articles"
@@ -509,6 +598,8 @@ function HowItWorksCard({
   description,
   accent,
   accentSoft,
+  to,
+  cta,
 }: {
   icon: React.ElementType;
   step: string;
@@ -516,9 +607,11 @@ function HowItWorksCard({
   description: string;
   accent: string;
   accentSoft: string;
+  to: string;
+  cta: string;
 }) {
   return (
-    <div className="rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
+    <div className="flex flex-col rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
       <div className="mb-4 flex items-center gap-3">
         <span
           className="inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"
@@ -530,6 +623,14 @@ function HowItWorksCard({
       </div>
       <h3 className="text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
+      <Link
+        to={to}
+        className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider transition-colors hover:opacity-80"
+        style={{ color: accent }}
+      >
+        {cta}
+        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+      </Link>
     </div>
   );
 }

@@ -20,6 +20,16 @@ export const FAQ_ITEMS = [
       "Bitcoin halving occurs approximately every 210,000 blocks (~4 years). The block reward paid to miners is cut in half, reducing new Bitcoin supply issued each day. Scarcity from lower issuance has historically coincided with major multi-year price cycles.",
   },
   {
+    question: "What happens to Bitcoin price after halving?",
+    answer:
+      "In each completed halving cycle since 2012, Bitcoin's price rose substantially in the 12–18 months after the halving before peaking and entering a new market cycle. Past performance does not guarantee future results, and the BTC500 strategy exists to capture this recurring post-halving window systematically.",
+  },
+  {
+    question: "Is buying before a Bitcoin halving profitable?",
+    answer:
+      "Historically, buying roughly 500 days before each halving and selling 500 days after has been profitable in every completed cycle — including 2012, 2016 and 2020. The BTC500 simulator lets you backtest any amount against real historical prices to see these returns yourself.",
+  },
+  {
     question: "Is BTC500 free to use?",
     answer:
       "Yes. BTC500's countdown, simulator, timeline, bear-market indicators, liquidation dashboard, articles, and embed widgets are free. No account is required.",
@@ -33,5 +43,15 @@ export const FAQ_ITEMS = [
     question: "What tools does BTC500 include?",
     answer:
       "BTC500 includes a live halving countdown and Cycle Command Center, investment simulator, DCA vs lump sum comparison, interactive timeline, bear market bottom indicators, futures liquidation dashboard, insider trading tracker, crypto news feed, strategy articles, and free embed widgets.",
+  },
+  {
+    question: "What is the average Bitcoin halving cycle length?",
+    answer:
+      "A full Bitcoin halving cycle spans roughly 4 years (approximately 210,000 blocks). The BTC500 strategy uses the 500 days before and 500 days after each halving as the buy and sell window, covering the historically strongest parts of each cycle.",
+  },
+  {
+    question: "How much do I need to start using the BTC500 strategy?",
+    answer:
+      "There is no minimum. The simulator lets you enter any amount — from $100 to $1,000,000+ — and see how the same strategy would have performed across every halving cycle since 2012.",
   },
 ] as const;
