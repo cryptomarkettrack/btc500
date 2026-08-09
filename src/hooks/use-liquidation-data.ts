@@ -1,12 +1,15 @@
 import { useCallback, useEffect, useState } from "react";
 import { getLiquidationData, type LiquidationData } from "@/lib/liquidation";
 
-export function useLiquidationData() {
-  const [data, setData] = useState<LiquidationData | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+/** @param initialData - Server-rendered data from the route loader (SSR/SEO). */
+export function useLiquidationData(initialData?: LiquidationData | null) {
+  const [data, setData] = useState<LiquidationData | null>(initialData ?? null);
+  const [isLoading, setIsLoading] = useState(() => !initialData);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    // Server data already rendered — skip the initial client fetch.
+    if (initialData) return;
     let cancelled = false;
     const fetchData = async () => {
       setIsLoading(true);
@@ -26,7 +29,7 @@ export function useLiquidationData() {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [initialData]);
 
   const refetch = useCallback(async () => {
     setIsLoading(true);

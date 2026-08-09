@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getBearMarketData, type BearMarketIndicatorData } from "@/lib/bear-market.functions";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { BearMarketDashboard } from "@/components/bear-market/BearMarketDashboard";
 
@@ -14,7 +15,15 @@ const bearMarketSchema = generateWebPageSchema({
 });
 
 export const Route = createFileRoute("/bear-market")({
-  component: BearMarketDashboard,
+  component: BearMarketRoute,
+  loader: async (): Promise<BearMarketIndicatorData | null> => {
+    try {
+      return await getBearMarketData();
+    } catch (e) {
+      console.error("[bear-market] Loader error:", e);
+      return null;
+    }
+  },
   head: () =>
     generatePageHead({
       path: "/bear-market",
@@ -24,9 +33,13 @@ export const Route = createFileRoute("/bear-market")({
       keywords:
         "Bitcoin bear market, bottom indicators, MVRV, NUPL, Puell Multiple, on-chain analysis, Bitcoin bottom, cycle bottom score",
       ogTitle: "Bitcoin Bear Market Bottom Indicators | BTC500",
-      ogDescription:
-        "Live on-chain bear market bottom score using historical cycle indicators.",
+      ogDescription: "Live on-chain bear market bottom score using historical cycle indicators.",
       ogImageAlt: "Bitcoin Bear Market Bottom Indicators Dashboard",
       schema: bearMarketSchema,
     }),
 });
+
+function BearMarketRoute() {
+  const initialData = Route.useLoaderData();
+  return <BearMarketDashboard initialData={initialData} />;
+}

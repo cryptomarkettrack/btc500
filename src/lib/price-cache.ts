@@ -229,6 +229,9 @@ export const CacheKeys = {
 
   /** Cycle score / script integrity */
   cycleScore: () => "btc:cycle-score",
+
+  /** Bear market bottom indicator snapshot */
+  bearMarket: () => "btc:bear-market",
 };
 
 // ─── Default TTLs ────────────────────────────────────────────────────────────
@@ -257,6 +260,9 @@ export const TTL = {
 
   /** Cycle score: 15 minutes — path + on-chain refresh without thrashing APIs */
   CYCLE_SCORE: 15 * 60_000,
+
+  /** Bear market indicators: 15 minutes — on-chain metrics don't change sub-minute */
+  BEAR_MARKET: 15 * 60_000,
 };
 
 // ─── Debug helper ────────────────────────────────────────────────────────────

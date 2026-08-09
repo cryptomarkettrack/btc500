@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { getLiquidationData, type LiquidationData } from "@/lib/liquidation";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { LiquidationDashboard } from "@/components/liquidation/LiquidationDashboard";
 
@@ -14,7 +15,15 @@ const liquidationSchema = generateWebPageSchema({
 });
 
 export const Route = createFileRoute("/liquidation")({
-  component: LiquidationDashboard,
+  component: LiquidationRoute,
+  loader: async (): Promise<LiquidationData | null> => {
+    try {
+      return await getLiquidationData();
+    } catch (e) {
+      console.error("[liquidation] Loader error:", e);
+      return null;
+    }
+  },
   head: () =>
     generatePageHead({
       path: "/liquidation",
@@ -33,3 +42,8 @@ export const Route = createFileRoute("/liquidation")({
       schema: liquidationSchema,
     }),
 });
+
+function LiquidationRoute() {
+  const initialData = Route.useLoaderData();
+  return <LiquidationDashboard initialData={initialData} />;
+}

@@ -27,7 +27,8 @@ export const Route = createFileRoute("/")({
         "Buy 500 days before halving. Sell 500 days after. Live cycle score, command center, and historical returns.",
       ogImageAlt: "BTC500 — Bitcoin Halving Countdown & Strategy Dashboard",
       twitterTitle: "BTC500 — Bitcoin Halving Countdown & Strategy",
-      twitterDescription: "Buy 500 days before halving. Sell 500 days after. Track live cycle score.",
+      twitterDescription:
+        "Buy 500 days before halving. Sell 500 days after. Track live cycle score.",
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {
@@ -37,7 +38,12 @@ export const Route = createFileRoute("/")({
       context.queryClient.ensureQueryData(cycleScoreQuery),
       new Promise((resolve) => setTimeout(resolve, 8_000)),
     ]);
-    context.queryClient.prefetchQuery(simulatorPreviewQuery);
+    // Await so the "Avg ROI / Profitable cycles" stats are in the first-pass
+    // HTML (crawlers + no-JS) instead of "—" before hydration.
+    await Promise.race([
+      context.queryClient.ensureQueryData(simulatorPreviewQuery),
+      new Promise((resolve) => setTimeout(resolve, 8_000)),
+    ]);
   },
   component: HomePage,
   pendingComponent: Pending,
@@ -138,4 +144,3 @@ function Pending() {
     </div>
   );
 }
-

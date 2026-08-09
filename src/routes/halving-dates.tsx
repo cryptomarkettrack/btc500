@@ -51,6 +51,14 @@ const faqSchema = {
 };
 
 export const Route = createFileRoute("/halving-dates")({
+  loader: async ({ context }) => {
+    // Ensure the halving countdown + simulator data are in the server-rendered
+    // HTML so crawlers see the actual cycle returns (not "—" placeholders).
+    await Promise.allSettled([
+      context.queryClient.ensureQueryData(halvingQuery),
+      context.queryClient.ensureQueryData(simulatorQuery),
+    ]);
+  },
   head: () =>
     generatePageHead({
       path: "/halving-dates",

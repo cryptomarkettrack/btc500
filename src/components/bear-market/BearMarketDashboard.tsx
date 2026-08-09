@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import type { BearMarketIndicatorData } from "@/lib/bear-market.functions";
 import {
   TrendingDown,
   Target,
@@ -24,17 +25,29 @@ import {
   computeBearComposite,
 } from "@/lib/bear-market/config";
 
-export function BearMarketDashboard() {
+export function BearMarketDashboard({
+  initialData,
+}: {
+  initialData?: BearMarketIndicatorData | null;
+}) {
   const [indicators, setIndicators] = useState<
     Record<string, { current: number | null; bottoms: (number | null)[] }>
-  >({});
-  const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState({ done: 0, total: INDICATORS.length });
+  >(initialData?.indicators ?? {});
+  const [loading, setLoading] = useState(() => !initialData);
+  const [progress, setProgress] = useState(() => ({
+    done: initialData?.loadedCount ?? 0,
+    total: initialData?.totalIndicators ?? INDICATORS.length,
+  }));
   const [copying, setCopying] = useState(false);
   const [copied, setCopied] = useState(false);
   const shareCardRef = useRef<HTMLDivElement>(null);
 
+  // If the server already rendered the cached snapshot, skip the client-side
+  // sequential fetch entirely (server data is at most 15 min stale from cache).
+  const hasServerData = useRef(Boolean(initialData)).current;
+
   useEffect(() => {
+    if (hasServerData) return;
     let cancelled = false;
 
     async function loadIndicators() {

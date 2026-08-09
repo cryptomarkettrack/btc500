@@ -32,6 +32,7 @@ import {
   Loader2,
 } from "lucide-react";
 import { useLiquidationData } from "@/hooks/use-liquidation-data";
+import type { LiquidationData } from "@/lib/liquidation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import {
   type TimeRange,
@@ -142,8 +143,8 @@ function ChartTooltipShell({
   );
 }
 
-export function LiquidationDashboard() {
-  const { data, isLoading, error, refetch } = useLiquidationData();
+export function LiquidationDashboard({ initialData }: { initialData?: LiquidationData | null }) {
+  const { data, isLoading, error, refetch } = useLiquidationData(initialData);
   const isMobile = useIsMobile();
   const [timeRange, setTimeRange] = useState<TimeRange>("30d");
   const [showSources, setShowSources] = useState(false);
