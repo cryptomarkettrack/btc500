@@ -1,4 +1,4 @@
-import { SITE_URL, generatePageHead, TWITTER_HANDLE } from "./site";
+import { SITE_URL, generatePageHead, generateArticleSpeakableSchema, TWITTER_HANDLE } from "./site";
 
 export { SITE_URL };
 
@@ -139,8 +139,7 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-volatility",
     slug: "bitcoin-volatility",
-    title:
-      "Bitcoin's Volatility Has Nearly Disappeared — Why That Doesn't Mean Risk Is Gone",
+    title: "Bitcoin's Volatility Has Nearly Disappeared — Why That Doesn't Mean Risk Is Gone",
     description:
       "Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility actually signals for the cycle, options markets, and disciplined accumulation.",
     keywords:
@@ -159,8 +158,7 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-infrastructure-exploits",
     slug: "bitcoin-infrastructure-exploits",
-    title:
-      "Coldcard and Lightning Exploits: Why Bitcoin Infrastructure Risk Still Matters",
+    title: "Coldcard and Lightning Exploits: Why Bitcoin Infrastructure Risk Still Matters",
     description:
       "From the ~$116M Coldcard seed-generation theft to BTCPay Lightning node drains — how two back-to-back infrastructure exploits expose the real self-custody risks long-term Bitcoin holders can't ignore.",
     keywords:
@@ -292,7 +290,7 @@ export function generateArticleHead(article: ArticleMeta) {
     twitterDescription: article.description,
     publishedTime: `${article.dateISO}T00:00:00Z`,
     modifiedTime: `${article.dateModifiedISO}T00:00:00Z`,
-    schema: generateArticleSchema(article),
+    schema: [generateArticleSchema(article), generateArticleSpeakableSchema(pageUrl)],
   });
 
   head.meta.push(

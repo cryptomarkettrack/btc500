@@ -1,17 +1,23 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cycleScoreQuery, halvingQuery, simulatorPreviewQuery } from "@/lib/queries";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
 
-const homePageSchema = generateWebPageSchema({
-  path: "/",
-  name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
-  description:
-    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, script integrity score, block progress, historical returns & investment simulator.",
-  breadcrumbs: [{ name: "Home", path: "/" }],
-});
+const homePageSchema = [
+  generateWebPageSchema({
+    path: "/",
+    name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
+    description:
+      "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, script integrity score, block progress, historical returns & investment simulator.",
+    breadcrumbs: [{ name: "Home", path: "/" }],
+  }),
+  generateSpeakableSchema({
+    path: "/",
+    cssSelectors: ["#hero-tagline"],
+  }),
+];
 
 export const Route = createFileRoute("/")({
   head: () =>

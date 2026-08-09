@@ -1,6 +1,8 @@
 # BTC500 — https://btc500.net
 # Allow search engines and AI crawlers to index public content.
-# Last updated: 2026-07-27
+# Last updated: 2026-08-09
+
+# Complete knowledge base for AI/answer engines: https://btc500.net/llms-full.txt
 
 User-agent: *
 Allow: /
@@ -32,7 +34,9 @@ User-agent: Bingbot
 Allow: /
 Disallow: /embed
 
+# ============================================================
 # AI / answer-engine crawlers (citations drive discovery traffic)
+# ============================================================
 User-agent: GPTBot
 Allow: /
 Disallow: /embed
@@ -41,7 +45,15 @@ User-agent: ChatGPT-User
 Allow: /
 Disallow: /embed
 
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /embed
+
 User-agent: ClaudeBot
+Allow: /
+Disallow: /embed
+
+User-agent: Claude-User
 Allow: /
 Disallow: /embed
 
@@ -50,6 +62,10 @@ Allow: /
 Disallow: /embed
 
 User-agent: PerplexityBot
+Allow: /
+Disallow: /embed
+
+User-agent: Perplexity-User
 Allow: /
 Disallow: /embed
 
@@ -70,6 +86,42 @@ Allow: /
 Disallow: /embed
 
 User-agent: meta-externalagent
+Allow: /
+Disallow: /embed
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /embed
+
+User-agent: CCBot
+Allow: /
+Disallow: /embed
+
+User-agent: Diffbot
+Allow: /
+Disallow: /embed
+
+User-agent: ImagesiftBot
+Allow: /
+Disallow: /embed
+
+User-agent: omgili
+Allow: /
+Disallow: /embed
+
+User-agent: omgilibot
+Allow: /
+Disallow: /embed
+
+User-agent: YouBot
+Allow: /
+Disallow: /embed
+
+User-agent: SemrushBot
+Allow: /
+Disallow: /embed
+
+User-agent: Dotbot
 Allow: /
 Disallow: /embed
 

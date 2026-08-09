@@ -153,7 +153,7 @@ export function ClarityActArticle({ title, date, readTime }: ArticleProps) {
       >
         <div className="space-y-6 leading-relaxed text-foreground/90">
           {/* ============ INTRODUCTION ============ */}
-          <p>
+          <p className="lead">
             The <strong>CLARITY Act</strong> (officially the{" "}
             <strong>Digital Asset Market Clarity Act of 2025</strong>) is a bipartisan bill in the
             U.S. Congress that would finally write clear rules for cryptocurrency regulation. It

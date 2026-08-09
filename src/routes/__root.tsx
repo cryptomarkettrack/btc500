@@ -267,6 +267,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "manifest", href: "/manifest.json" },
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
       { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "llms.txt" },
+      { rel: "alternate", type: "text/plain", href: "/llms-full.txt", title: "llms-full.txt" },
       // Fallback canonical — page routes override with their own
       { rel: "canonical", href: `${SITE_URL}/` },
       { rel: "alternate", hrefLang: "en", href: `${SITE_URL}/` },

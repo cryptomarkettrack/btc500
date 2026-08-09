@@ -317,6 +317,7 @@ export function Btc500Hero({
       {/* Subtitle — hide in compact so share cards lead with chart + numbers */}
       {!compact && (
         <p
+          id="hero-tagline"
           className="mt-4 max-w-md text-center text-sm leading-relaxed text-muted-foreground"
           style={{ fontFamily: FONT_MONO }}
         >

@@ -50,6 +50,37 @@ export interface WebPageSchemaOptions {
   dateModified?: string;
 }
 
+export interface SpeakableSchemaOptions {
+  path: string;
+  /** CSS selectors pointing at the concise, speakable summary content on the page. */
+  cssSelectors: string[];
+  /** Optional XPath expressions pointing at speakable content (alternative to cssSelector). */
+  xpath?: string[];
+}
+
+/**
+ * JSON-LD Speakable schema — the core AEO structured-data technique.
+ * Lets answer engines (Google Assistant, Siri, Perplexity, ChatGPT with search)
+ * pull the exact short summary paragraph from the page as the spoken answer.
+ */
+export function generateSpeakableSchema({ path, cssSelectors, xpath }: SpeakableSchemaOptions) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SpeakableSpecification",
+    cssSelector: cssSelectors,
+    ...(xpath && xpath.length ? { xpath } : {}),
+    mainEntityOfPage: absoluteUrl(path),
+  };
+}
+
+/** Convenience: speakable schema pointing at a `.lead` paragraph (used by all articles). */
+export function generateArticleSpeakableSchema(path: string) {
+  return generateSpeakableSchema({
+    path,
+    cssSelectors: [".lead"],
+  });
+}
+
 /** Absolute URL for a site path (leading slash optional). */
 export function absoluteUrl(path = "/"): string {
   if (!path || path === "/") return `${SITE_URL}/`;

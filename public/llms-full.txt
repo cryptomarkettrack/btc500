@@ -1,0 +1,166 @@
+# BTC500 — Complete Knowledge Base
+
+> Live at https://btc500.net — Free Bitcoin halving countdown, cycle score, and investment tools built around the BTC500 strategy: buy exactly 500 days before each Bitcoin halving and sell exactly 500 days after.
+
+**Site:** https://btc500.net
+**Contact:** btc500halving@gmail.com
+**X/Twitter:** https://x.com/btc500halving
+**Instagram:** https://www.instagram.com/btc500halving
+**Last updated:** 2026-08-09
+
+---
+
+## 1. What is BTC500?
+
+BTC500 is a simple, rules-based Bitcoin investment approach timed to Bitcoin's roughly 4-year halving cycle:
+
+1. **Buy** Bitcoin exactly **500 days before** the next halving.
+2. **Hold** through the halving.
+3. **Sell** exactly **500 days after** the halving.
+4. **Repeat** each ~4-year cycle.
+
+The site is free educational software and market data tooling. It includes a live halving countdown, a Cycle Command Center with a cycle score, an investment simulator, a DCA-vs-lump-sum comparison, an interactive timeline, a bear-market bottom indicator composite, a futures liquidation dashboard, an SEC insider-trading dashboard, a crypto news feed, and free embeddable widgets.
+
+**Nothing on this site is financial advice. Past performance does not guarantee future results.**
+
+---
+
+## 2. Key Facts: Bitcoin Halvings
+
+| Halving | Date (approx) | Block height |
+| --- | --- | --- |
+| 2012 Halving | 2012-11-28 | 210,000 |
+| 2016 Halving | 2016-07-09 | 420,000 |
+| 2020 Halving | 2020-05-11 | 630,000 |
+| 2024 Halving | 2024-04-20 | 840,000 |
+| **Next halving** | **~April 2028 (projected)** | **1,050,000** |
+
+### How the halving works
+
+- A Bitcoin halving cuts the block reward paid to miners **in half**.
+- It happens automatically every **210,000 blocks** (~4 years).
+- It reduces the new supply of Bitcoin entering circulation.
+- Historically, lower issuance has coincided with major multi-year price cycles.
+- The exact next-halving date depends on Bitcoin's average block time; BTC500 tracks live block height and estimates the countdown automatically.
+
+### BTC500 buy/sell windows
+
+| Halving | Buy window (500 days before) | Sell window (500 days after) |
+| --- | --- | --- |
+| 2012 | 2011-07-16 | 2014-04-12 |
+| 2016 | 2015-02-24 | 2017-11-21 |
+| 2020 | 2018-12-27 | 2021-09-22 |
+| 2024 | 2022-12-06 | 2025-09-01 |
+
+---
+
+## 3. Frequently Asked Questions
+
+### What is the BTC500 strategy?
+The BTC500 strategy is a simple Bitcoin investment approach: buy exactly 500 days before each halving event and sell exactly 500 days after. This rules-based method is designed to capture historically strong parts of Bitcoin's roughly four-year halving cycle without day-trading or technical analysis.
+
+### When is the next Bitcoin halving?
+The next Bitcoin halving is projected for around April 2028, when block height reaches 1,050,000. The exact date depends on Bitcoin's average block time. BTC500 tracks live block height and estimates the countdown automatically.
+
+### How does the Bitcoin halving work?
+Bitcoin halving occurs approximately every 210,000 blocks (~4 years). The block reward paid to miners is cut in half, reducing new Bitcoin supply issued each day. Scarcity from lower issuance has historically coincided with major multi-year price cycles.
+
+### What happens to Bitcoin price after halving?
+In each completed halving cycle since 2012, Bitcoin's price rose substantially in the 12–18 months after the halving before peaking and entering a new market cycle. Past performance does not guarantee future results.
+
+### Is buying before a Bitcoin halving profitable?
+Historically, buying roughly 500 days before each halving and selling 500 days after has been profitable in every completed cycle — including 2012, 2016 and 2020. The BTC500 simulator lets you backtest any amount against real historical prices.
+
+### Is BTC500 free to use?
+Yes. The countdown, simulator, timeline, bear-market indicators, liquidation dashboard, articles, and embed widgets are free. No account is required.
+
+### Is this financial advice?
+No. BTC500 is educational software and market data tooling. Nothing on the site is financial, investment, or trading advice.
+
+### How much do I need to start using the BTC500 strategy?
+There is no minimum. The simulator lets you enter any amount — from $100 to $1,000,000+ — and see how the same strategy would have performed across every halving cycle since 2012.
+
+---
+
+## 4. On-Chain & Market Indicators Used by BTC500
+
+### Bear Market Bottom Composite
+BTC500's bear-market dashboard combines several on-chain and market metrics into a bottom indicator composite:
+
+| Indicator | What it measures |
+| --- | --- |
+| **MVRV** (Market Value to Realized Value) | Ratio of market cap to realized cap; high values suggest overvaluation, low values historically mark bottoms. |
+| **NUPL** (Net Unrealized Profit/Loss) | Share of supply in profit vs loss; drives market psychology phases (hope, optimism, belief, anxiety, denial, hope again). |
+| **Puell Multiple** | Ratio of daily miner issuance value to its 365-day moving average; extremes signal miner stress or capitulation. |
+| **SOPR** (Spent Output Profit Ratio) | Whether coins moved on-chain are being spent at a profit or loss; read with 1 being neutral. |
+| **MA200 weekly** | 200-week moving average, a long-term accumulation reference line. |
+
+### Futures Liquidation Dashboard
+- **Open Interest** — total value of open BTC futures contracts.
+- **Funding Rates** — periodic payments between longs and shorts that signal positioning and market heat.
+- **Long/Short Ratios** — aggregate trader positioning on major exchanges.
+
+### Insider Trading Dashboard
+- Parses **SEC Form 4** filings for insider buys vs sells.
+- Flags patterns in corporate insider behavior.
+
+---
+
+## 5. Article Summaries & Key Claims
+
+### The BTC500 Strategy
+A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle: buy 500 days before, sell 500 days after. https://btc500.net/articles/btc500-strategy
+
+### Why BTC500 Exists
+The most expensive mistake Bitcoin investors keep repeating is buying too early during bear markets. The BTC500 strategy was created to discipline entry timing around halvings. https://btc500.net/articles/why-btc500-exists
+
+### NUPL / RUPL Guide
+Net Unrealized Profit/Loss (NUPL) describes five phases of Bitcoin market sentiment, from capitulation (denial) to euphoria (belief). Relative Unrealized Profit/Loss (RUPL) normalizes it over the market cycle. https://btc500.net/articles/rupl
+
+### The Consensus Bottom Is a Trap
+When the entire market agrees on the same bottom target, that target loses its power. In 2022 the crowd was convinced $30,000 was the floor; Bitcoin fell to ~$16,000. Disciplined accumulation during bear markets beats waiting for a "confirmed bottom." https://btc500.net/articles/bear-market-accumulation
+
+### What Is the CLARITY Act?
+The CLARITY (Clear Legislation for Interpretation and Regulation of the Digital Assets) Act would split US crypto regulation between the SEC and the CFTC, giving the CFTC primary spot-market authority over digital commodities like Bitcoin and Ethereum. https://btc500.net/articles/clarity-act
+
+### Bitcoin's Volatility Has Nearly Disappeared
+Deribit's DVOL collapsed near 35 as Bitcoin hovered around $65,000. Historically low implied volatility does not mean risk is gone; options markets and price compression can precede large moves. https://btc500.net/articles/bitcoin-volatility
+
+### Coldcard & Lightning Exploits
+Two back-to-back infrastructure incidents — an estimated ~$116M Coldcard seed-generation theft and BTCPay Lightning node drains — expose real self-custody risks for long-term Bitcoin holders. https://btc500.net/articles/bitcoin-infrastructure-exploits
+
+### BIP-110 Rejection
+Bitcoin Improvement Proposal BIP-110 (reduced data temporary soft fork) failed after near-zero miner support and a stalled minority chain. The episode is a case study in Bitcoin governance. https://btc500.net/articles/bip-110-rejection
+
+### Ondo Finance Tokenization
+Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC's first tokenized securities trades to 430+ tokenized stocks and $1B+ in volume, positioning itself as a bridge between traditional finance and on-chain finance. https://btc500.net/articles/ondo-finance-tokenization
+
+---
+
+## 6. Tools & Pages
+
+| Tool | URL | Purpose |
+| --- | --- | --- |
+| Home / Halving Countdown | https://btc500.net/ | Live countdown, Cycle Command Center, cycle score |
+| Halving Dates | https://btc500.net/halving-dates | Full 2012–2028 schedule with buy/sell windows |
+| Investment Simulator | https://btc500.net/simulator | Backtest BTC500 across all completed cycles |
+| DCA vs Lump Sum | https://btc500.net/dca | Compare DCA vs lump-sum around buy/sell dates |
+| Time Machine | https://btc500.net/timeline | Interactive replay of halving-cycle prices |
+| Bear Market Bottom | https://btc500.net/bear-market | On-chain bottom composite (MVRV, NUPL, Puell, SOPR) |
+| Liquidation Dashboard | https://btc500.net/liquidation | OI, funding rates, long/short ratios |
+| Insider Trading | https://btc500.net/insider-trading | SEC Form 4 analysis |
+| Crypto News | https://btc500.net/news | Aggregated Bitcoin & crypto headlines |
+| Articles | https://btc500.net/articles | Strategy guides & on-chain education |
+| Embed Kit | https://btc500.net/embed-kit | Free countdown / cycle-score widgets |
+| Donate | https://btc500.net/donate | Support with BTC, ETH, USDC |
+
+---
+
+## 7. Notices & Access
+
+- BTC500 is free educational software. Nothing is financial advice.
+- Historical prices come from Bitstamp (public/btc-usd-max.csv).
+- /embed pages are excluded from search indexes.
+- Sitemap: https://btc500.net/sitemap.xml
+- Robots: https://btc500.net/robots.txt
+- Short index (llms.txt): https://btc500.net/llms.txt
