@@ -27,6 +27,7 @@ import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
+import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
 import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
 import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
 import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
@@ -123,6 +124,12 @@ const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
   path: '/btc500-strategy',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesBitcoinWeekAheadRoute =
+  ArticlesBitcoinWeekAheadRouteImport.update({
+    id: '/bitcoin-week-ahead',
+    path: '/bitcoin-week-ahead',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesBitcoinVolatilityRoute =
   ArticlesBitcoinVolatilityRouteImport.update({
     id: '/bitcoin-volatility',
@@ -165,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
+  '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -189,6 +197,7 @@ export interface FileRoutesByTo {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
+  '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -214,6 +223,7 @@ export interface FileRoutesById {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
+  '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -240,6 +250,7 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
+    | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -264,6 +275,7 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
+    | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -288,6 +300,7 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
+    | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
@@ -439,6 +452,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/bitcoin-week-ahead': {
+      id: '/articles/bitcoin-week-ahead'
+      path: '/bitcoin-week-ahead'
+      fullPath: '/articles/bitcoin-week-ahead'
+      preLoaderRoute: typeof ArticlesBitcoinWeekAheadRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/bitcoin-volatility': {
       id: '/articles/bitcoin-volatility'
       path: '/bitcoin-volatility'
@@ -475,6 +495,7 @@ interface ArticlesRouteChildren {
   ArticlesBip110RejectionRoute: typeof ArticlesBip110RejectionRoute
   ArticlesBitcoinInfrastructureExploitsRoute: typeof ArticlesBitcoinInfrastructureExploitsRoute
   ArticlesBitcoinVolatilityRoute: typeof ArticlesBitcoinVolatilityRoute
+  ArticlesBitcoinWeekAheadRoute: typeof ArticlesBitcoinWeekAheadRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
@@ -488,6 +509,7 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBitcoinInfrastructureExploitsRoute:
     ArticlesBitcoinInfrastructureExploitsRoute,
   ArticlesBitcoinVolatilityRoute: ArticlesBitcoinVolatilityRoute,
+  ArticlesBitcoinWeekAheadRoute: ArticlesBitcoinWeekAheadRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,

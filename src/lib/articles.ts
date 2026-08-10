@@ -175,6 +175,25 @@ export const articles: ArticleMeta[] = [
       "Coldcard hack, Coldcard exploit, BTCPay Server, Lightning Network exploit, Bitcoin hardware wallet, self custody, Bitcoin security, Bitcoin infrastructure, seed phrase",
   },
   {
+    id: "bitcoin-week-ahead",
+    slug: "bitcoin-week-ahead",
+    title: "Bitcoin This Week (Aug 10–16, 2026): ETF Flows, CPI, and the $65,000 Test",
+    description:
+      "What actually matters in Bitcoin this week: daily spot ETF flow reports, US CPI due mid-week, weekly options expiry, the CLARITY Act September countdown — and the one date that beats them all, the official BTC500 buy date on November 30, 2026.",
+    keywords:
+      "Bitcoin this week, Bitcoin weekly outlook, Bitcoin week ahead, Bitcoin ETF flows, Bitcoin ETF inflows, Bitcoin CPI, Bitcoin $65000, Bitcoin 65k resistance, Bitcoin macro week, BTC ETF inflows, Bitcoin halving countdown, BTC500 strategy",
+    date: "August 10, 2026",
+    dateISO: "2026-08-10",
+    dateModified: "2026-08-10",
+    dateModifiedISO: "2026-08-10",
+    readTime: "8 min read",
+    wordCount: 2100,
+    ogImage: `${SITE_URL}/og/default.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "Bitcoin this week, Bitcoin weekly outlook, Bitcoin ETF flows, Bitcoin ETF inflows, Bitcoin CPI, Bitcoin week ahead, BTC ETF inflows, Bitcoin halving countdown, BTC500 strategy",
+  },
+  {
     id: "bip-110-rejection",
     slug: "bip-110-rejection",
     title: "BIP-110 Rejection: What It Means for Bitcoin’s Future",
