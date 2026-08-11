@@ -48,6 +48,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 
 ## Strategy articles
 
+- [Bitcoin's Strongest Hands Are Back (Aug 11, 2026)](https://btc500.net/articles/strongest-hands): 90 elite wallets holding 10,000+ BTC hit a six-month high — what whale accumulation through the noise says about the halving cycle and the Nov 30 buy window.
 - [Bitcoin This Week (Aug 10–16, 2026)](https://btc500.net/articles/bitcoin-week-ahead): Weekly brief — ETF flows, US CPI, options expiry, CLARITY countdown, and the one rule that beats them all.
 - [BIP-110 Rejection](https://btc500.net/articles/bip-110-rejection): What the BIP-110 soft fork failure means for Bitcoin governance and long-term holders.
 - [The BTC500 Strategy](https://btc500.net/articles/btc500-strategy): Deep dive into buy 500 days before / sell 500 days after.

@@ -1,0 +1,39 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ogtitle ogdesc">
+  <title id="ogtitle">Bitcoin's Strongest Hands Are Back — 90 Elite Wallets, 10,000+ BTC Each</title>
+  <desc id="ogdesc">BTC500 on-chain signal: 90 elite Bitcoin wallets holding 10,000+ BTC hit a six-month high in August 2026.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#181218"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1020" cy="90" r="280" fill="none" stroke="#f97316" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="1020" cy="90" r="200" fill="none" stroke="#f97316" stroke-opacity="0.07" stroke-width="2"/>
+
+  <rect x="40" y="36" width="1120" height="558" rx="28" fill="url(#cardg)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="76" y="88" font-size="26" font-weight="700" fill="#fb923c" letter-spacing="5">BTC500 · ON-CHAIN SIGNAL · AUG 11, 2026</text>
+
+    <text x="72" y="172" font-size="74" font-weight="800" fill="#ffffff">Bitcoin's Strongest Hands</text>
+    <text x="72" y="256" font-size="74" font-weight="800" fill="#ffffff">Are <tspan fill="#f97316">Back.</tspan></text>
+
+    <rect x="72" y="300" width="220" height="150" rx="16" fill="#0f0f16" stroke="#f97316" stroke-width="3"/>
+    <text x="102" y="406" font-size="110" font-weight="800" fill="#fb923c">90</text>
+    <text x="102" y="442" font-size="18" font-weight="600" fill="#71717a" letter-spacing="3">ELITE WALLETS</text>
+
+    <rect x="320" y="300" width="520" height="150" rx="16" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+    <text x="354" y="364" font-size="28" font-weight="700" fill="#ffffff">Each holding <tspan fill="#fb923c" font-weight="800">10,000+ BTC</tspan></text>
+    <text x="354" y="406" font-size="22" fill="#a1a1aa">Six-month high. Accumulation continued</text>
+    <text x="354" y="438" font-size="22" fill="#a1a1aa">through Coldcard fallout &amp; CLARITY delays.</text>
+
+    <rect x="72" y="482" width="1056" height="80" rx="14" fill="#f97316"/>
+    <text x="102" y="532" font-size="34" font-weight="800" fill="#0b0b11">BUY DATE NOV 30, 2026</text>
+    <text x="860" y="532" font-size="26" font-weight="700" fill="#0b0b11">111 days away →</text>
+  </g>
+</svg>

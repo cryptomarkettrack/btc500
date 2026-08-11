@@ -23,6 +23,7 @@ import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
+import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
@@ -103,6 +104,11 @@ const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
   path: '/why-btc500-exists',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
+  id: '/strongest-hands',
+  path: '/strongest-hands',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
   id: '/rupl',
   path: '/rupl',
@@ -177,6 +183,7 @@ export interface FileRoutesByFullPath {
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesByTo {
@@ -202,6 +209,7 @@ export interface FileRoutesByTo {
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesById {
@@ -228,6 +236,7 @@ export interface FileRoutesById {
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRouteTypes {
@@ -255,6 +264,7 @@ export interface FileRouteTypes {
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   id:
     | '__root__'
@@ -305,6 +316,7 @@ export interface FileRouteTypes {
     | '/articles/clarity-act'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
 }
@@ -424,6 +436,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/strongest-hands': {
+      id: '/articles/strongest-hands'
+      path: '/strongest-hands'
+      fullPath: '/articles/strongest-hands'
+      preLoaderRoute: typeof ArticlesStrongestHandsRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/rupl': {
       id: '/articles/rupl'
       path: '/rupl'
@@ -500,6 +519,7 @@ interface ArticlesRouteChildren {
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
+  ArticlesStrongestHandsRoute: typeof ArticlesStrongestHandsRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
 
@@ -514,6 +534,7 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesClarityActRoute: ArticlesClarityActRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
+  ArticlesStrongestHandsRoute: ArticlesStrongestHandsRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }
 

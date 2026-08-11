@@ -20,6 +20,10 @@ dist-ssr
 .wrangler/
 .dev.vars
 
+# Search Console API — private credentials and generated reports
+scripts/search-console/credentials.json
+scripts/search-console/output/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -30,3 +34,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+*.md
+search-console/

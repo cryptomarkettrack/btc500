@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-09
+**Last updated:** 2026-08-11
 
 ---
 
@@ -107,6 +107,12 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 ---
 
 ## 5. Article Summaries & Key Claims
+
+### Bitcoin's Strongest Hands Are Back
+The count of elite Bitcoin wallets holding more than 10,000 BTC hit a six-month high of 90 (as of August 11, 2026), a combined floor of 900,000+ BTC worth over $58 billion at current prices. Mid-sized whales (1,000–10,000 BTC) accumulated first and the largest wallets followed — the classic smart-money pattern. The strongest hands kept accumulating through the Coldcard exploit and the CLARITY Act delay; the signal is accumulation, not panic. https://btc500.net/articles/strongest-hands
+
+### Bitcoin This Week
+Weekly brief for August 10–16, 2026: daily spot ETF flow reports (net inflows around $850M–$1B the prior week, ~4x daily mining issuance), US CPI and PPI mid-week, weekly jobless claims, and a Friday BTC options expiry. Bitcoin is trading near $65,000 with DVOL near 35. None of it changes the one rule that matters: buy exactly 500 days before the halving on November 30, 2026. https://btc500.net/articles/bitcoin-week-ahead
 
 ### The BTC500 Strategy
 A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle: buy 500 days before, sell 500 days after. https://btc500.net/articles/btc500-strategy

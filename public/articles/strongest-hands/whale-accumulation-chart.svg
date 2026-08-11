@@ -1,0 +1,77 @@
+<svg width="1536" height="1024" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Elite Wallets (10,000+ BTC) — Six-Month Trend Ending at 90</title>
+  <desc id="desc">Illustrative directional trend of elite Bitcoin wallet counts over six months ending August 2026, with the reported six-month high of 90 at the endpoint. Accumulation continued through the Coldcard exploit and CLARITY Act delays.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#181218"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1536" height="1024" fill="url(#bg)"/>
+  <circle cx="1350" cy="140" r="380" fill="none" stroke="#f97316" stroke-opacity="0.12" stroke-width="2"/>
+  <circle cx="1350" cy="140" r="300" fill="none" stroke="#f97316" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="1350" cy="140" r="220" fill="none" stroke="#f97316" stroke-opacity="0.08" stroke-width="2"/>
+
+  <rect x="88" y="80" width="1360" height="864" rx="36" fill="url(#cardg)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="128" y="170" font-size="34" font-weight="700" fill="#fb923c" letter-spacing="6">BTC500 · WHALE WATCH · FEB–AUG 2026</text>
+
+    <text x="124" y="252" font-size="58" font-weight="800" fill="#ffffff">Elite Wallets (10,000+ BTC)</text>
+    <text x="128" y="308" font-size="30" fill="#a1a1aa" font-weight="500">Six-month trend — endpoint is a reported six-month high</text>
+
+    <!-- chart area: baseline y=800, top y=400 -->
+    <rect x="190" y="400" width="1156" height="400" rx="16" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+
+    <line x1="190" y1="800" x2="1346" y2="800" stroke="#3f3f4a" stroke-width="3"/>
+    <line x1="190" y1="600" x2="1346" y2="600" stroke="#26262f" stroke-width="2" stroke-dasharray="6 8"/>
+
+    <!-- event markers -->
+    <line x1="1020" y1="420" x2="1020" y2="800" stroke="#f97316" stroke-width="2" stroke-dasharray="7 7" stroke-opacity="0.55"/>
+    <line x1="1180" y1="420" x2="1180" y2="800" stroke="#f97316" stroke-width="2" stroke-dasharray="7 7" stroke-opacity="0.55"/>
+    <text x="1016" y="448" font-size="20" font-weight="600" fill="#fb923c" text-anchor="middle">Coldcard</text>
+    <text x="1016" y="474" font-size="20" font-weight="600" fill="#fb923c" text-anchor="middle">fallout</text>
+    <text x="1176" y="448" font-size="20" font-weight="600" fill="#fb923c" text-anchor="middle">CLARITY</text>
+    <text x="1176" y="474" font-size="20" font-weight="600" fill="#fb923c" text-anchor="middle">delays</text>
+
+    <!-- bars: Feb 58, Mar 62, Apr 66, May 71, Jun 77, Jul 84, Aug 90 -->
+    <rect x="210" y="542" width="96" height="258" rx="8" fill="#2e2e3a"/>
+    <rect x="336" y="524" width="96" height="276" rx="8" fill="#2e2e3a"/>
+    <rect x="462" y="507" width="96" height="293" rx="8" fill="#2e2e3a"/>
+    <rect x="588" y="484" width="96" height="316" rx="8" fill="#34344a"/>
+    <rect x="714" y="458" width="96" height="342" rx="8" fill="#34344a"/>
+    <rect x="840" y="427" width="96" height="373" rx="8" fill="#7c3a12"/>
+    <rect x="1090" y="400" width="96" height="400" rx="8" fill="url(#acc)"/>
+
+    <g font-size="24" fill="#a1a1aa" text-anchor="middle" font-weight="600">
+      <text x="258" y="522">58</text>
+      <text x="384" y="504">62</text>
+      <text x="510" y="487">66</text>
+      <text x="636" y="464">71</text>
+      <text x="762" y="438">77</text>
+      <text x="888" y="407">84</text>
+      <text x="1138" y="378" fill="#fb923c" font-weight="800" font-size="30">90</text>
+    </g>
+
+    <g font-size="22" fill="#71717a" text-anchor="middle" font-weight="600" letter-spacing="2">
+      <text x="258" y="838">FEB</text>
+      <text x="384" y="838">MAR</text>
+      <text x="510" y="838">APR</text>
+      <text x="636" y="838">MAY</text>
+      <text x="762" y="838">JUN</text>
+      <text x="888" y="838">JUL</text>
+      <text x="1138" y="838" fill="#fb923c">AUG</text>
+    </g>
+
+    <rect x="124" y="876" width="1292" height="34" rx="10" fill="#0f0f16"/>
+    <text x="144" y="898" font-size="19" fill="#71717a">Illustrative trend — only the 90-wallet endpoint reflects reported data (Aug 2026, six-month high).</text>
+  </g>
+</svg>

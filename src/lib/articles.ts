@@ -212,6 +212,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "BIP-110, BIP-110 rejection, Bitcoin BIP-110, Bitcoin governance, soft fork, Bitcoin Improvement Proposal, minority chain, Bitcoin upgrades",
   },
+  {
+    id: "strongest-hands",
+    slug: "strongest-hands",
+    title: "Bitcoin's Strongest Hands Are Back: 90 Elite Wallets Now Hold 10,000+ BTC Each",
+    description:
+      "The count of elite Bitcoin wallets holding over 10,000 BTC just hit a six-month high of 90. Here's what whale accumulation through the noise tells us about the halving cycle and the November 30, 2026 buy window.",
+    keywords:
+      "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, Bitcoin whale wallets 2026, elite Bitcoin wallets, on-chain Bitcoin accumulation, Bitcoin six-month high, whale accumulation halving, Bitcoin buy date, BTC500 strategy, Bitcoin accumulation phase",
+    date: "August 11, 2026",
+    dateISO: "2026-08-11",
+    dateModified: "2026-08-11",
+    dateModifiedISO: "2026-08-11",
+    readTime: "9 min read",
+    wordCount: 2400,
+    ogImage: `${SITE_URL}/articles/strongest-hands/og-strongest-hands.png`,
+    articleSection: "Bitcoin On-Chain Analysis",
+    schemaKeywords:
+      "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, on-chain Bitcoin accumulation, whale accumulation halving, Bitcoin buy date, BTC500 strategy",
+  },
 ];
 
 /** Returns articles sorted newest-first */

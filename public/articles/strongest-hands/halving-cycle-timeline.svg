@@ -1,0 +1,71 @@
+<svg width="1536" height="1024" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">Why Whale Accumulation Matters Now — The BTC500 Cycle Map</title>
+  <desc id="desc">Cycle map from August 2026 to August 2029: whales accumulating now, BTC500 buy date November 30 2026 (500 days before the halving), halving April 2028 at block 1,050,000, and sell date August 26 2029.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#181218"/>
+    </linearGradient>
+    <linearGradient id="acc" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f97316"/>
+      <stop offset="1" stop-color="#fb923c"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1536" height="1024" fill="url(#bg)"/>
+  <circle cx="1350" cy="140" r="380" fill="none" stroke="#f97316" stroke-opacity="0.12" stroke-width="2"/>
+  <circle cx="1350" cy="140" r="300" fill="none" stroke="#f97316" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="1350" cy="140" r="220" fill="none" stroke="#f97316" stroke-opacity="0.08" stroke-width="2"/>
+
+  <rect x="88" y="80" width="1360" height="864" rx="36" fill="url(#cardg)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="128" y="170" font-size="34" font-weight="700" fill="#fb923c" letter-spacing="6">BTC500 · CYCLE MAP</text>
+
+    <text x="124" y="252" font-size="58" font-weight="800" fill="#ffffff">Why whale accumulation matters now</text>
+    <text x="128" y="308" font-size="30" fill="#a1a1aa" font-weight="500">The 500-day pre-halving window opens on November 30, 2026</text>
+
+    <!-- window bars (behind spine, below it) -->
+    <!-- accumulate: BUY DATE → HALVING -->
+    <rect x="530" y="500" width="400" height="28" rx="10" fill="#f97316" fill-opacity="0.18" stroke="#f97316" stroke-opacity="0.5" stroke-width="2"/>
+    <text x="730" y="519" font-size="18" font-weight="700" fill="#fb923c" text-anchor="middle" letter-spacing="2">ACCUMULATE</text>
+    <!-- hold & sell: HALVING → SELL -->
+    <rect x="930" y="500" width="360" height="28" rx="10" fill="#34d399" fill-opacity="0.14" stroke="#34d399" stroke-opacity="0.4" stroke-width="2"/>
+    <text x="1110" y="519" font-size="18" font-weight="700" fill="#34d399" text-anchor="middle" letter-spacing="2">HOLD &amp; SELL</text>
+
+    <!-- timeline spine -->
+    <line x1="200" y1="490" x2="1280" y2="490" stroke="#3f3f4a" stroke-width="4"/>
+
+    <!-- node 1: NOW -->
+    <circle cx="200" cy="490" r="18" fill="#0f0f16" stroke="#a1a1aa" stroke-width="4"/>
+    <text x="200" y="444" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">NOW</text>
+    <text x="200" y="558" font-size="24" font-weight="700" fill="#d4d4d8" text-anchor="middle">Aug 2026</text>
+    <text x="200" y="588" font-size="20" fill="#a1a1aa" text-anchor="middle">Whales accumulating</text>
+
+    <!-- node 2: BUY DATE -->
+    <circle cx="530" cy="490" r="24" fill="#f97316"/>
+    <text x="530" y="434" font-size="24" font-weight="800" fill="#fb923c" text-anchor="middle">BUY DATE</text>
+    <text x="530" y="558" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">Nov 30, 2026</text>
+    <text x="530" y="588" font-size="20" fill="#a1a1aa" text-anchor="middle">500 days before halving</text>
+    <text x="530" y="616" font-size="20" fill="#fb923c" font-weight="600" text-anchor="middle">111 days away</text>
+
+    <!-- node 3: HALVING -->
+    <circle cx="930" cy="490" r="28" fill="#ffffff" stroke="#f97316" stroke-width="6"/>
+    <text x="930" y="434" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">HALVING</text>
+    <text x="930" y="558" font-size="24" font-weight="700" fill="#ffffff" text-anchor="middle">Apr 13, 2028</text>
+    <text x="930" y="588" font-size="20" fill="#a1a1aa" text-anchor="middle">Block 1,050,000 · issuance halves</text>
+
+    <!-- node 4: SELL -->
+    <circle cx="1280" cy="490" r="18" fill="#0f0f16" stroke="#a1a1aa" stroke-width="4"/>
+    <text x="1280" y="444" font-size="24" font-weight="800" fill="#ffffff" text-anchor="middle">SELL</text>
+    <text x="1280" y="558" font-size="24" font-weight="700" fill="#d4d4d8" text-anchor="middle">Aug 26, 2029</text>
+    <text x="1280" y="588" font-size="20" fill="#a1a1aa" text-anchor="middle">500 days after halving</text>
+
+    <rect x="124" y="690" width="1292" height="120" rx="18" fill="#f97316"/>
+    <text x="158" y="764" font-size="44" font-weight="800" fill="#0b0b11">90 WALLETS. ONE RULE. NOV 30, 2026.</text>
+  </g>
+</svg>
+
