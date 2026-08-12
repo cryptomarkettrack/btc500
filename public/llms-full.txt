@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-11
+**Last updated:** 2026-08-12
 
 ---
 
@@ -107,6 +107,9 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 ---
 
 ## 5. Article Summaries & Key Claims
+
+### Goldman Sachs vs BlackRock: The $2.25B Bitcoin Income ETF War
+Goldman Sachs is acquiring NEOS, an ETF issuer running covered-call bitcoin income products, for $2.25 billion — expanding its derivative-powered ETF platform to about $130 billion in total assets and taking direct aim at BlackRock's BITA income fund (reported August 12, 2026). Income and staking products hold their bitcoin or ether rather than trading it, which reduces sellable float at a time when cumulative spot bitcoin ETF net inflows have reached $52.5 billion and daily inflows have run near 4x daily mining issuance. The institutional shift toward holding-style products is structurally supportive heading into the April 2028 halving, and it changes nothing about the BTC500 rule: buy exactly 500 days before on November 30, 2026. https://btc500.net/articles/goldman-vs-blackrock
 
 ### Bitcoin's Strongest Hands Are Back
 The count of elite Bitcoin wallets holding more than 10,000 BTC hit a six-month high of 90 (as of August 11, 2026), a combined floor of 900,000+ BTC worth over $58 billion at current prices. Mid-sized whales (1,000–10,000 BTC) accumulated first and the largest wallets followed — the classic smart-money pattern. The strongest hands kept accumulating through the Coldcard exploit and the CLARITY Act delay; the signal is accumulation, not panic. https://btc500.net/articles/strongest-hands

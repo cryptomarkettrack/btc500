@@ -25,6 +25,7 @@ import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.w
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
+import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
@@ -114,6 +115,12 @@ const ArticlesOndoFinanceTokenizationRoute =
     path: '/ondo-finance-tokenization',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesGoldmanVsBlackrockRoute =
+  ArticlesGoldmanVsBlackrockRouteImport.update({
+    id: '/goldman-vs-blackrock',
+    path: '/goldman-vs-blackrock',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesClarityActRoute = ArticlesClarityActRouteImport.update({
   id: '/clarity-act',
   path: '/clarity-act',
@@ -174,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
@@ -199,6 +207,7 @@ export interface FileRoutesByTo {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
@@ -225,6 +234,7 @@ export interface FileRoutesById {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
@@ -252,6 +262,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/strongest-hands'
@@ -277,6 +288,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/strongest-hands'
@@ -302,6 +314,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/strongest-hands'
@@ -437,6 +450,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/goldman-vs-blackrock': {
+      id: '/articles/goldman-vs-blackrock'
+      path: '/goldman-vs-blackrock'
+      fullPath: '/articles/goldman-vs-blackrock'
+      preLoaderRoute: typeof ArticlesGoldmanVsBlackrockRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/clarity-act': {
       id: '/articles/clarity-act'
       path: '/clarity-act'
@@ -497,6 +517,7 @@ interface ArticlesRouteChildren {
   ArticlesBitcoinWeekAheadRoute: typeof ArticlesBitcoinWeekAheadRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
+  ArticlesGoldmanVsBlackrockRoute: typeof ArticlesGoldmanVsBlackrockRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesStrongestHandsRoute: typeof ArticlesStrongestHandsRoute
@@ -512,6 +533,7 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBitcoinWeekAheadRoute: ArticlesBitcoinWeekAheadRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
+  ArticlesGoldmanVsBlackrockRoute: ArticlesGoldmanVsBlackrockRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesStrongestHandsRoute: ArticlesStrongestHandsRoute,

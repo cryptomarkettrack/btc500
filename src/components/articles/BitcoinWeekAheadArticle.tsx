@@ -88,7 +88,15 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
               <strong>Key takeaway:</strong> After the strongest ETF week since April ( ~$850M–$1B
               of net inflows), institutional demand has become Bitcoin&apos;s dominant buyer. That
               demand is the story this week — not BIP-110, which died over the weekend, and not the
-              CLARITY Act, which is now officially a September event.
+              CLARITY Act, which is now officially a September event. And it is about to get more
+              competitive: Goldman Sachs just moved into the bitcoin income ETF race with a{" "}
+              <a
+                href="/articles/goldman-vs-blackrock"
+                className="font-semibold text-primary underline"
+              >
+                $2.25 billion NEOS deal aimed at BlackRock&apos;s BITA fund
+              </a>
+              .
             </p>
           </div>
 

@@ -231,6 +231,25 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, on-chain Bitcoin accumulation, whale accumulation halving, Bitcoin buy date, BTC500 strategy",
   },
+{
+    id: "goldman-vs-blackrock",
+    slug: "goldman-vs-blackrock",
+    title: "Goldman Sachs Just Declared War on BlackRock's Bitcoin ETF",
+    description:
+      "Goldman Sachs is buying into the bitcoin income ETF business for $2.25 billion through NEOS, building a $130 billion derivative platform aimed at BlackRock's BITA fund. What the ETF war means for bitcoin supply, the halving cycle, and the November 30, 2026 buy date.",
+    keywords:
+      "Goldman Sachs bitcoin ETF, BlackRock bitcoin ETF, bitcoin income ETF, NEOS buyout, Goldman Sachs NEOS, bitcoin ETF war, covered call bitcoin ETF, institutional bitcoin adoption, bitcoin ETF custody, bitcoin supply shock, BTC500 strategy, bitcoin halving",
+    date: "August 12, 2026",
+    dateISO: "2026-08-12",
+    dateModified: "2026-08-12",
+    dateModifiedISO: "2026-08-12",
+    readTime: "9 min read",
+    wordCount: 2400,
+    ogImage: `${SITE_URL}/articles/goldman-vs-blackrock/og-goldman-vs-blackrock.png`,
+    articleSection: "Bitcoin Markets & Institutional Adoption",
+    schemaKeywords:
+      "Goldman Sachs bitcoin ETF, BlackRock bitcoin ETF, NEOS, bitcoin income ETF, institutional bitcoin adoption, bitcoin ETF war",
+  },
 ];
 
 /** Returns articles sorted newest-first */

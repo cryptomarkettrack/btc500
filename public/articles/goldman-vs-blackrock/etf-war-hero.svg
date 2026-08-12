@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1536" height="1024" viewBox="0 0 1536 1024">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#151c33"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f59e0b"/>
+      <stop offset="1" stop-color="#f97316"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1536" height="1024" fill="url(#bg)"/>
+
+  <!-- Subtle grid lines -->
+  <g stroke="#1f2740" stroke-width="2" opacity="0.5">
+    <line x1="0" y1="256" x2="1536" y2="256"/>
+    <line x1="0" y1="512" x2="1536" y2="512"/>
+    <line x1="0" y1="768" x2="1536" y2="768"/>
+    <line x1="384" y1="0" x2="384" y2="1024"/>
+    <line x1="768" y1="0" x2="768" y2="1024"/>
+    <line x1="1152" y1="0" x2="1152" y2="1024"/>
+  </g>
+
+  <!-- Top label -->
+  <text x="80" y="96" font-family="Inter, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="4" fill="#f97316">BTC500</text>
+  <text x="80" y="140" font-family="Inter, Arial, sans-serif" font-size="20" letter-spacing="2" fill="#8b93b0">INSTITUTIONAL ETF WAR</text>
+
+  <!-- Competitors -->
+  <text x="80" y="320" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" fill="#ffffff">GOLDMAN SACHS</text>
+  <text x="80" y="390" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" fill="#0ea5e9">vs</text>
+  <text x="80" y="470" font-family="Inter, Arial, sans-serif" font-size="56" font-weight="800" fill="#ffffff">BLACKROCK</text>
+
+  <!-- Headline deal -->
+  <text x="80" y="610" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700" fill="#f8fafc">The bitcoin income ETF is now a two-front race</text>
+
+  <!-- Big stat box -->
+  <rect x="80" y="660" width="600" height="210" rx="28" fill="#1a2240" stroke="#f97316" stroke-width="2"/>
+  <text x="120" y="730" font-family="Inter, Arial, sans-serif" font-size="26" letter-spacing="2" fill="#8b93b0">NEOS BUYOUT</text>
+  <text x="120" y="800" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="800" fill="url(#gold)">$2.25B</text>
+
+  <!-- Right stat -->
+  <rect x="720" y="660" width="600" height="210" rx="28" fill="#1a2240" stroke="#2563eb" stroke-width="2"/>
+  <text x="760" y="730" font-family="Inter, Arial, sans-serif" font-size="26" letter-spacing="2" fill="#8b93b0">DERIVATIVE ETF PLATFORM</text>
+  <text x="760" y="800" font-family="Inter, Arial, sans-serif" font-size="88" font-weight="800" fill="#3b82f6">$130B</text>
+
+  <!-- Bitcoin symbol (explicit shapes) -->
+  <g transform="translate(1380,180) scale(2.2)">
+    <circle cx="0" cy="0" r="42" fill="none" stroke="#f97316" stroke-width="6"/>
+    <path d="M 8 -26 L 8 26 M 8 -26 L -8 -26 L -8 -18 M 8 26 L -8 26 L -8 18 M 22 -6 L -22 -6 M 14 -14 L -14 -14 M 14 6 L -14 6"
+          fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round"/>
+  </g>
+
+  <!-- Footer -->
+  <text x="80" y="950" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="600" fill="#f8fafc">Buy 500 days before the halving. Sell 500 days after.</text>
+  <text x="80" y="985" font-family="Inter, Arial, sans-serif" font-size="18" fill="#8b93b0">Next buy date: Nov 30, 2026 · Halving ~April 2028 · btc500.net</text>
+</svg>
