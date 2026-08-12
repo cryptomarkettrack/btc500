@@ -158,7 +158,6 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 | Crypto News | https://btc500.net/news | Aggregated Bitcoin & crypto headlines |
 | Articles | https://btc500.net/articles | Strategy guides & on-chain education |
 | Embed Kit | https://btc500.net/embed-kit | Free countdown / cycle-score widgets |
-| Donate | https://btc500.net/donate | Support with BTC, ETH, USDC |
 
 ---
 

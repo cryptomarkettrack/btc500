@@ -44,7 +44,6 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [Crypto News](https://btc500.net/news): Aggregated Bitcoin and cryptocurrency headlines.
 - [Articles Hub](https://btc500.net/articles): Strategy guides, on-chain education, and market analysis.
 - [Embed Kit](https://btc500.net/embed-kit): Free iframe widgets for countdown badges and cycle score cards.
-- [Donate](https://btc500.net/donate): Support BTC500 with BTC, BEP-20 BTC, ETH, or USDC donations.
 
 ## Strategy articles
 
