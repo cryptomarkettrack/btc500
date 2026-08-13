@@ -25,10 +25,9 @@ export const Route = createFileRoute("/simulator")({
   head: () =>
     generatePageHead({
       path: "/simulator",
-      title:
-        "BTC500 Simulator — Bitcoin Halving Returns Calculator | How Much Would You Have Earned?",
+      title: "BTC500 Simulator — Bitcoin Halving Returns Calculator",
       description:
-        "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
+        "See what you'd have earned investing in Bitcoin with the BTC500 strategy across past halving cycles. Enter an amount to calculate your returns.",
       keywords:
         "Bitcoin halving simulator, BTC500 calculator, Bitcoin investment returns, halving cycle returns, Bitcoin strategy backtest, crypto investment calculator, Bitcoin profit calculator",
       ogTitle: "BTC500 Simulator — Bitcoin Halving Returns Calculator",
@@ -180,7 +179,7 @@ function Simulator() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Bitcoin className="h-5 w-5 text-primary" />
-                    <h3 className="text-lg font-bold">{cycle.label}</h3>
+                    <h2 className="text-lg font-bold">{cycle.label}</h2>
                   </div>
                   {cycle.returnPercent !== null && (
                     <span
@@ -250,6 +249,30 @@ function Simulator() {
                 )}
               </motion.div>
             ))}
+          </div>
+
+          {/* SEO / informational content */}
+          <div className="mx-auto mt-12 max-w-3xl space-y-5 text-sm leading-relaxed text-muted-foreground">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              What the BTC500 Simulator Shows
+            </h2>
+            <p>
+              The BTC500 strategy is a rules-based Bitcoin investing approach: buy exactly 500 days
+              before each halving and sell exactly 500 days after. This simulator backtests that
+              rule against real historical prices for the halving cycles that began in 2012, 2016,
+              2020 and 2024.
+            </p>
+            <p>
+              Enter any investment amount to see what would have been allocated in each cycle, the
+              buy and sell prices captured by the strategy, and the resulting profit or loss across
+              every completed cycle. The totals card sums the outcome of repeating the same dollar
+              amount in each of those cycles.
+            </p>
+            <p>
+              A backtest cannot predict future returns — it only shows what historically happened
+              when a fixed 500-day buy/sell rule was followed around each Bitcoin halving. Treat it
+              as a research tool, not financial advice.
+            </p>
           </div>
 
           <p className="mt-8 text-center text-xs text-muted-foreground">

@@ -43,9 +43,9 @@ export const Route = createFileRoute("/timeline")({
   head: () =>
     generatePageHead({
       path: "/timeline",
-      title: "BTC500 Time Machine — Replay Bitcoin Halving Cycles | Interactive Timeline",
+      title: "BTC500 Time Machine — Replay Bitcoin Halving Cycles",
       description:
-        "Explore the BTC500 strategy through an interactive timeline. Compare a $20,000 investment across current and previous halving cycles with real historical Bitcoin prices.",
+        "Replay Bitcoin halving cycles with the BTC500 interactive timeline and follow a $20,000 investment through real historical prices.",
       keywords:
         "Bitcoin timeline, BTC500 time machine, Bitcoin halving history, Bitcoin price history, Bitcoin investment timeline, halving cycle comparison, Bitcoin backtest",
       ogTitle: "BTC500 Time Machine — Interactive Bitcoin Timeline",
@@ -338,6 +338,29 @@ function Timeline() {
               showSell
             />
           )}
+
+          {/* SEO / informational content */}
+          <div className="mx-auto mt-12 max-w-3xl space-y-5 text-sm leading-relaxed text-muted-foreground">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">
+              How to Read the BTC500 Time Machine
+            </h2>
+            <p>
+              The time machine replays Bitcoin&apos;s price history around each halving. It follows a
+              hypothetical $20,000 investment through the current cycle and the previous cycle using
+              actual historical prices, letting you drag the timeline or press play to watch a
+              halving cycle unfold day by day.
+            </p>
+            <p>
+              The BTC500 strategy is simple: enter the market 500 days before a halving and exit 500
+              days after. Comparing the current cycle against a previous one at the same day offset
+              shows how the buy and sell signal feels in real time versus how it looked after the
+              fact.
+            </p>
+            <p>
+              Only confirmed historical prices are used here — there are no future price predictions.
+              Past performance does not guarantee future results.
+            </p>
+          </div>
 
           <p className="mt-4 text-center text-xs text-muted-foreground">
             Historical prices from Bitstamp. Only real historical Bitcoin prices are used. No future

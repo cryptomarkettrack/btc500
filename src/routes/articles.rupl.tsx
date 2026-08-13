@@ -115,7 +115,7 @@ function RuplPage() {
           text-align: center;
         }
 
-        .strategy-box h3 {
+        .strategy-box h2 {
           margin-top: 0;
           color: var(--primary);
         }

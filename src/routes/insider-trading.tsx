@@ -52,9 +52,9 @@ export const Route = createFileRoute("/insider-trading")({
   head: () =>
     generatePageHead({
       path: "/insider-trading",
-      title: "Insider Trading Dashboard — SEC Form 4 Buy vs Sell Analysis | BTC500",
+      title: "Insider Trading Dashboard — SEC Form 4 Analysis | BTC500",
       description:
-        "Real-time insider trading data from SEC Form 4 filings. Analyze insider buy vs sell ratios, track corporate insider transactions, and identify market sentiment trends with interactive charts.",
+        "Real-time insider trading data from SEC Form 4 filings. Analyze insider buy vs sell ratios and track corporate insider transactions.",
       keywords:
         "insider trading, SEC Form 4, insider buying, insider selling, corporate insiders, stock market insider transactions, insider trading dashboard, buy sell ratio, insider sentiment, SEC filings",
       ogTitle: "Insider Trading Dashboard — SEC Form 4 Analysis | BTC500",

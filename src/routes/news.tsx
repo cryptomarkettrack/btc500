@@ -29,7 +29,7 @@ export const Route = createFileRoute("/news")({
       path: "/news",
       title: "Crypto News — Bitcoin & Cryptocurrency News Feed | BTC500",
       description:
-        "Latest cryptocurrency and Bitcoin news aggregated from Cointelegraph. Stay updated with real-time crypto market news, Bitcoin price analysis, and blockchain industry developments.",
+        "Latest Bitcoin and cryptocurrency news aggregated from Cointelegraph. Stay updated on crypto markets and blockchain developments.",
       keywords:
         "crypto news, Bitcoin news, cryptocurrency news, Bitcoin price, crypto market, blockchain news, Cointelegraph, crypto headlines, digital assets news",
       ogDescription:

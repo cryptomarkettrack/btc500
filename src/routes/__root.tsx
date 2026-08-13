@@ -268,10 +268,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
       { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "llms.txt" },
       { rel: "alternate", type: "text/plain", href: "/llms-full.txt", title: "llms-full.txt" },
-      // Fallback canonical — page routes override with their own
-      { rel: "canonical", href: `${SITE_URL}/` },
-      { rel: "alternate", hrefLang: "en", href: `${SITE_URL}/` },
-      { rel: "alternate", hrefLang: "x-default", href: `${SITE_URL}/` },
+      // NOTE: No fallback canonical here. Emitting one pointing at "/" caused every
+      // page to render TWO canonicals (this one + the route's self-canonical), which
+      // made Google canonicalize all pages to the homepage. Each page route emits its
+      // own self-canonical via generatePageHead/generateArticleHead (including "/"),
+      // so a fallback is unnecessary and harmful.
     ],
     scripts: [
       {

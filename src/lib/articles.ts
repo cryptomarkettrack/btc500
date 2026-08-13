@@ -25,7 +25,7 @@ export const articles: ArticleMeta[] = [
   {
     id: "btc500-strategy",
     slug: "btc500-strategy",
-    title: "The BTC500 Strategy: Buy 500 Days Before Halving, Sell 500 Days After",
+    title: "BTC500 Strategy: Buy 500 Days Before Halving",
     description:
       "A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.",
     keywords:
@@ -44,9 +44,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "why-btc500-exists",
     slug: "why-btc500-exists",
-    title: "Why BTC500 Exists: The Most Expensive Mistake Bitcoin Investors Keep Repeating",
+    title: "Why BTC500 Exists: Avoid This Bitcoin Mistake",
     description:
-      "Learn why the BTC500 strategy was created to help investors avoid the most common and costly mistake in Bitcoin investing - buying too early during bear markets.",
+      "Learn why the BTC500 strategy helps investors avoid the most costly Bitcoin mistake — buying too early in bear markets.",
     keywords:
       "Bitcoin investing mistakes, BTC500 strategy, Bitcoin bear market, buying the bottom, Bitcoin investment timing, halving cycle strategy",
     date: "July 13, 2026",
@@ -63,9 +63,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "rupl",
     slug: "rupl",
-    title: "Net Unrealized Profit/Loss (NUPL): The Complete Guide to Bitcoin Market Psychology",
+    title: "What Is NUPL? Bitcoin Market Psychology Guide",
     description:
-      "Understand Bitcoin's NUPL indicator — the five phases of market sentiment, how it's calculated, and how to use Relative Unrealized Profit/Loss to time the halving cycle.",
+      "Understand Bitcoin's NUPL indicator: the five phases of market sentiment, how it's calculated, and how to use RUPL to time the halving cycle.",
     keywords:
       "Bitcoin NUPL, Net Unrealized Profit Loss, RUPL, Bitcoin market psychology, Bitcoin on-chain indicators, halving cycle indicators",
     date: "July 13, 2026",
@@ -82,9 +82,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "ondo-finance-tokenization",
     slug: "ondo-finance-tokenization",
-    title: "Why Ondo Finance Is Building the Infrastructure Wall Street Will Actually Use",
+    title: "Why Ondo Finance Is Tokenizing Wall Street",
     description:
-      "From DTCC's first tokenized securities trades to 430+ tokenized stocks and $1B+ in volume — how Ondo Finance is becoming the compliant bridge between Wall Street and on-chain finance.",
+      "From DTCC's first tokenized trades to 430+ tokenized stocks — how Ondo Finance is bridging Wall Street and on-chain finance.",
     keywords:
       "Ondo Finance, ONDO token, tokenized stocks, DTCC tokenization, BlackRock BUIDL, tokenized securities, DeFi compliance, institutional crypto, wall street blockchain",
     date: "July 16, 2026",
@@ -101,9 +101,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "bear-market-accumulation",
     slug: "bear-market-accumulation",
-    title: "The Consensus Bottom Is a Trap: Why the Crowd's Bear Market Target Never Arrives",
+    title: "The Consensus Bottom Is a Trap: Bear Market Guide",
     description:
-      "When the entire market agrees on the same bottom target, that target loses its power. Learn why disciplined investors accumulate during bear markets instead of waiting for the crowd's 'confirmed bottom.'",
+      "When everyone agrees on the same bottom target, it loses its power. Learn why disciplined investors accumulate in bear markets instead.",
     keywords:
       "Bitcoin bear market, consensus bottom, Bitcoin accumulation, MA200 weekly, Bitcoin bottom target, BTC500 strategy, Bitcoin halving cycle, forced selling, Bitcoin whale",
     date: "August 3, 2026",
@@ -120,9 +120,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "clarity-act",
     slug: "clarity-act",
-    title: "What Is the CLARITY Act? The Complete Guide to US Crypto Regulation",
+    title: "CLARITY Act Explained: A Guide to US Crypto Regulation",
     description:
-      "The CLARITY Act explained in plain English. Learn how this landmark crypto bill would split regulation between the SEC and CFTC, what it means for Bitcoin, Ethereum, and the whole digital asset market.",
+      "The CLARITY Act explained: how this crypto bill would split regulation between the SEC and CFTC, and what it means for Bitcoin and Ethereum.",
     keywords:
       "CLARITY Act, What is the CLARITY Act, CLARITY Act explained, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, crypto legislation, Bitcoin regulation, Ethereum regulation, digital asset regulation, blockchain regulation",
     date: "August 4, 2026",
@@ -139,9 +139,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-volatility",
     slug: "bitcoin-volatility",
-    title: "Bitcoin's Volatility Has Nearly Disappeared — Why That Doesn't Mean Risk Is Gone",
+    title: "Bitcoin Volatility Is Gone — But Risk Remains",
     description:
-      "Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility actually signals for the cycle, options markets, and disciplined accumulation.",
+      "Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility signals for the cycle.",
     keywords:
       "Bitcoin volatility, Bitcoin DVOL, Bitcoin low volatility, Bitcoin implied volatility, Bitcoin price compression, BTC volatility squeeze, Bitcoin options, Bitcoin market risk, Bitcoin accumulation, BTC500 strategy",
     date: "August 8, 2026",
@@ -158,9 +158,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-infrastructure-exploits",
     slug: "bitcoin-infrastructure-exploits",
-    title: "Coldcard and Lightning Exploits: Why Bitcoin Infrastructure Risk Still Matters",
+    title: "Coldcard & Lightning Exploits: Bitcoin Security Risk",
     description:
-      "From the ~$116M Coldcard seed-generation theft to BTCPay Lightning node drains — how two back-to-back infrastructure exploits expose the real self-custody risks long-term Bitcoin holders can't ignore.",
+      "From the ~$116M Coldcard seed theft to BTCPay Lightning node drains — how infrastructure exploits expose real Bitcoin self-custody risks.",
     keywords:
       "Coldcard hack, Coldcard exploit, Coinkite, BTCPay Server vulnerability, Lightning Network exploit, Bitcoin hardware wallet hack, Bitcoin self custody, Bitcoin security, LND macaroon, Bitcoin infrastructure risk, seed phrase security",
     date: "August 8, 2026",
@@ -177,9 +177,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-week-ahead",
     slug: "bitcoin-week-ahead",
-    title: "Bitcoin This Week (Aug 10–16, 2026): ETF Flows, CPI, and the $65,000 Test",
+    title: "Bitcoin This Week: ETF Flows, CPI & the $65,000 Test",
     description:
-      "What actually matters in Bitcoin this week: daily spot ETF flow reports, US CPI due mid-week, weekly options expiry, the CLARITY Act September countdown — and the one date that beats them all, the official BTC500 buy date on November 30, 2026.",
+      "What matters in Bitcoin this week: spot ETF flows, US CPI, options expiry, and the official BTC500 buy date on November 30, 2026.",
     keywords:
       "Bitcoin this week, Bitcoin weekly outlook, Bitcoin week ahead, Bitcoin ETF flows, Bitcoin ETF inflows, Bitcoin CPI, Bitcoin $65000, Bitcoin 65k resistance, Bitcoin macro week, BTC ETF inflows, Bitcoin halving countdown, BTC500 strategy",
     date: "August 10, 2026",
@@ -196,9 +196,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "bip-110-rejection",
     slug: "bip-110-rejection",
-    title: "BIP-110 Rejection: What It Means for Bitcoin’s Future",
+    title: "BIP-110 Rejection: What It Means for Bitcoin",
     description:
-      "Bitcoin Improvement Proposal BIP-110 failed after near-zero miner support and a stalled minority chain. Here’s what the BIP-110 rejection means for Bitcoin governance, upgrades, and long-term holders.",
+      "Bitcoin proposal BIP-110 failed after near-zero miner support. Here's what the rejection means for Bitcoin governance and upgrades.",
     keywords:
       "BIP-110, BIP-110 rejection, Bitcoin BIP-110 rejection, what is BIP-110, Bitcoin proposal rejected, Bitcoin governance, Bitcoin Improvement Proposal BIP-110, why BIP-110 was rejected, Bitcoin governance process, Bitcoin upgrades and proposals",
     date: "August 9, 2026",
@@ -215,9 +215,9 @@ export const articles: ArticleMeta[] = [
   {
     id: "strongest-hands",
     slug: "strongest-hands",
-    title: "Bitcoin's Strongest Hands Are Back: 90 Elite Wallets Now Hold 10,000+ BTC Each",
+    title: "90 Elite Bitcoin Wallets: Strongest Hands Are Back",
     description:
-      "The count of elite Bitcoin wallets holding over 10,000 BTC just hit a six-month high of 90. Here's what whale accumulation through the noise tells us about the halving cycle and the November 30, 2026 buy window.",
+      "Elite Bitcoin wallets holding 10,000+ BTC just hit a six-month high of 90. Here's what whale accumulation says about the halving cycle.",
     keywords:
       "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, Bitcoin whale wallets 2026, elite Bitcoin wallets, on-chain Bitcoin accumulation, Bitcoin six-month high, whale accumulation halving, Bitcoin buy date, BTC500 strategy, Bitcoin accumulation phase",
     date: "August 11, 2026",
@@ -234,9 +234,9 @@ export const articles: ArticleMeta[] = [
 {
     id: "goldman-vs-blackrock",
     slug: "goldman-vs-blackrock",
-    title: "Goldman Sachs Just Declared War on BlackRock's Bitcoin ETF",
+    title: "Goldman Sachs vs BlackRock: The Bitcoin ETF War",
     description:
-      "Goldman Sachs is buying into the bitcoin income ETF business for $2.25 billion through NEOS, building a $130 billion derivative platform aimed at BlackRock's BITA fund. What the ETF war means for bitcoin supply, the halving cycle, and the November 30, 2026 buy date.",
+      "Goldman Sachs is buying into the bitcoin income ETF business for $2.25B via NEOS. What the ETF war means for bitcoin supply and the halving cycle.",
     keywords:
       "Goldman Sachs bitcoin ETF, BlackRock bitcoin ETF, bitcoin income ETF, NEOS buyout, Goldman Sachs NEOS, bitcoin ETF war, covered call bitcoin ETF, institutional bitcoin adoption, bitcoin ETF custody, bitcoin supply shock, BTC500 strategy, bitcoin halving",
     date: "August 12, 2026",

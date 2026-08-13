@@ -28,10 +28,19 @@ const articlesListSchema = {
 };
 
 export const Route = createFileRoute("/articles")({
-  head: () =>
-    generatePageHead({
+  head: (ctx) => {
+    // This route is the parent of all article pages (/articles/:slug). TanStack
+    // merges (does not dedupe) <link rel="canonical"> tags across matched routes, so
+    // if we always emit a canonical here, every article page renders TWO canonicals
+    // (this one pointing at /articles + the article's own) and Google resolves to the
+    // wrong one. Emit this route's head ONLY when it is the matched leaf (the /articles
+    // list page itself), and contribute nothing when a child article is matched.
+    const isArticlesList = ctx.matches[ctx.matches.length - 1]?.routeId === "/articles";
+    if (!isArticlesList) return { meta: [], links: [] } as const;
+
+    return generatePageHead({
       path: "/articles",
-      title: "Articles — BTC500 Strategy, Halving Guides & On-Chain Insights",
+      title: "Articles — BTC500 Strategy & Halving Guides",
       description:
         "Learn about the BTC500 investment strategy. Articles explaining the Bitcoin halving cycle, buy/sell timing, NUPL, and historical performance.",
       keywords:
@@ -40,7 +49,8 @@ export const Route = createFileRoute("/articles")({
       ogDescription: "Learn about the BTC500 investment strategy and Bitcoin halving cycles.",
       ogImageAlt: "Articles — BTC500 Strategy & Insights",
       schema: [articlesPageSchema, articlesListSchema],
-    }),
+    });
+  },
   component: Articles,
 });
 

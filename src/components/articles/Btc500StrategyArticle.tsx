@@ -48,7 +48,7 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           </p>
 
           <div className="strategy-box">
-            <h3>The Core Strategy</h3>
+            <h2>The Core Strategy</h2>
             <div className="formula">
               BUY: 500 days before halving
               <br />

@@ -23,9 +23,9 @@ export const Route = createFileRoute("/")({
   head: () =>
     generatePageHead({
       path: "/",
-      title: "BTC500 — Bitcoin Halving Countdown & Investment Strategy | Buy 500 Days Before",
+      title: "BTC500 — Bitcoin Halving Countdown & Strategy",
       description:
-        "Track the Bitcoin 500 strategy. Buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, cycle score, investment simulator, and shareable cards.",
+        "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell 500 days after, with a live cycle score and investment simulator.",
       keywords:
         "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, cycle score, buy Bitcoin, crypto halving, Bitcoin investment, halving countdown, Bitcoin trading, Bitcoin price, block height",
       ogTitle: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
@@ -39,16 +39,15 @@ export const Route = createFileRoute("/")({
     }),
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(halvingQuery);
-    // Warm cycle score for Command Center; don't block home forever if APIs lag
+    // Warm the down-page stats (cycle score + simulator preview) in PARALLEL with a single
+    // cap so they render in the first-pass HTML when fast, but never block TTFB for ~16s
+    // (the previous two sequential 8s races caused the 10s+ server response time).
     await Promise.race([
-      context.queryClient.ensureQueryData(cycleScoreQuery),
-      new Promise((resolve) => setTimeout(resolve, 8_000)),
-    ]);
-    // Await so the "Avg ROI / Profitable cycles" stats are in the first-pass
-    // HTML (crawlers + no-JS) instead of "—" before hydration.
-    await Promise.race([
-      context.queryClient.ensureQueryData(simulatorPreviewQuery),
-      new Promise((resolve) => setTimeout(resolve, 8_000)),
+      Promise.all([
+        context.queryClient.ensureQueryData(cycleScoreQuery),
+        context.queryClient.ensureQueryData(simulatorPreviewQuery),
+      ]),
+      new Promise((resolve) => setTimeout(resolve, 6_000)),
     ]);
   },
   component: HomePage,

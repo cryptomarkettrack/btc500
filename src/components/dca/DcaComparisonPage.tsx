@@ -350,7 +350,7 @@ export function DcaComparisonPage() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
                       <Bitcoin className="h-5 w-5 text-primary" />
-                      <h3 className="text-lg font-bold">{cycle.label}</h3>
+                      <h2 className="text-lg font-bold">{cycle.label}</h2>
                     </div>
                     {cycle.winner === "lump-sum" && (
                       <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-muted-foreground">

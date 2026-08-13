@@ -27,9 +27,9 @@ export const Route = createFileRoute("/liquidation")({
   head: () =>
     generatePageHead({
       path: "/liquidation",
-      title: "BTC Liquidation Dashboard — Bitcoin Futures OI, Funding & Long/Short | BTC500",
+      title: "BTC Liquidation Dashboard — Bitcoin Futures Data | BTC500",
       description:
-        "Real-time Bitcoin futures liquidation data: live open interest, funding rates, long/short ratios, taker buy/sell volume and market analysis from Binance Futures. Track BTC liquidations and market sentiment.",
+        "Live Bitcoin futures liquidation data: open interest, funding rates, long/short ratios, and taker volume from Binance Futures.",
       keywords:
         "Bitcoin liquidation, BTC futures, crypto liquidations, open interest Bitcoin, funding rate, long short ratio, BTC perpetual futures, Binance futures, liquidation heatmap, crypto derivatives, Bitcoin OI",
       ogTitle: "BTC Liquidation Dashboard — Live Bitcoin Futures Data | BTC500",

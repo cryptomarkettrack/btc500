@@ -46,7 +46,7 @@ export function RuplArticle({ title, date, readTime }: ArticleProps) {
           </p>
 
           <div className="strategy-box">
-            <h3>What is NUPL?</h3>
+            <h2>What is NUPL?</h2>
             <div className="formula">
               NUPL = Market Cap − Realized Cap
               <br />

@@ -27,9 +27,9 @@ export const Route = createFileRoute("/bear-market")({
   head: () =>
     generatePageHead({
       path: "/bear-market",
-      title: "Bitcoin Bear Market Bottom Indicators — On-Chain Signal Score | BTC500",
+      title: "Bitcoin Bear Market Bottom Indicators | BTC500",
       description:
-        "Track Bitcoin bear market bottom signals with live on-chain indicators: MVRV, NUPL, Puell Multiple, SOPR and more. Composite score across historical cycle bottoms.",
+        "Track Bitcoin bear market bottom signals with live on-chain indicators like MVRV, NUPL, Puell Multiple and SOPR — a composite cycle-bottom score.",
       keywords:
         "Bitcoin bear market, bottom indicators, MVRV, NUPL, Puell Multiple, on-chain analysis, Bitcoin bottom, cycle bottom score",
       ogTitle: "Bitcoin Bear Market Bottom Indicators | BTC500",

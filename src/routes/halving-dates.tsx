@@ -234,23 +234,23 @@ function HalvingDates() {
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div>
-              <h3 className="font-semibold text-foreground">When is the next Bitcoin halving?</h3>
+              <h2 className="font-semibold text-foreground">When is the next Bitcoin halving?</h2>
               <p className="mt-1 text-muted-foreground">
                 The next Bitcoin halving is projected for around April 2028, when block height
                 reaches 1,050,000. The exact date depends on Bitcoin's average block time.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">
+              <h2 className="font-semibold text-foreground">
                 What are all the Bitcoin halving dates?
-              </h3>
+              </h2>
               <p className="mt-1 text-muted-foreground">
                 Bitcoin halvings occurred on November 28, 2012, July 9, 2016, May 11, 2020, and
                 April 20, 2024. The next halving is projected for around April 2028.
               </p>
             </div>
             <div>
-              <h3 className="font-semibold text-foreground">How often does Bitcoin halve?</h3>
+              <h2 className="font-semibold text-foreground">How often does Bitcoin halve?</h2>
               <p className="mt-1 text-muted-foreground">
                 Bitcoin halves approximately every 210,000 blocks, which is roughly every four
                 years. The block reward paid to miners is cut in half at each halving.

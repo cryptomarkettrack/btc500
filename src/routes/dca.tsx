@@ -20,9 +20,9 @@ export const Route = createFileRoute("/dca")({
   head: () =>
     generatePageHead({
       path: "/dca",
-      title: "DCA vs Lump Sum — BTC500 Bitcoin Halving Strategy Comparison | Should You DCA?",
+      title: "DCA vs Lump Sum — Bitcoin Halving Strategy | BTC500",
       description:
-        "Compare dollar-cost-averaging (DCA) vs lump sum investing with the BTC500 Bitcoin halving strategy. See if spreading your buy/sell over days beats going all-in at once.",
+        "Compare dollar-cost-averaging (DCA) vs lump sum with the BTC500 halving strategy. See if spreading your buy/sell beats going all-in at once.",
       keywords:
         "Bitcoin DCA, lump sum vs DCA, dollar cost averaging Bitcoin, BTC500 strategy comparison, Bitcoin halving DCA, crypto investment strategy, lump sum investing",
       ogTitle: "DCA vs Lump Sum — BTC500 Bitcoin Halving Strategy Comparison",
