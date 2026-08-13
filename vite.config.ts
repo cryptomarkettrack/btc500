@@ -14,6 +14,9 @@ export default defineConfig({
   },
   vite: {
     build: {
+      // Emit source maps so large first-party bundles satisfy Lighthouse's
+      // "valid source maps" best-practice and debugging is possible in production.
+      sourcemap: true,
       rollupOptions: {
         output: {
           // Split large chunks to avoid mobile browser memory limits

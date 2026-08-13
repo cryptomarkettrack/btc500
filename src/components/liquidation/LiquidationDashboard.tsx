@@ -288,7 +288,7 @@ export function LiquidationDashboard({ initialData }: { initialData?: Liquidatio
               <p className="animate-pulse text-sm sm:text-base">
                 Loading BTC perpetual futures data…
               </p>
-              <p className="text-xs text-muted-foreground/80">
+              <p className="text-xs text-muted-foreground">
                 Binance Futures first, OKX fallback if geo-restricted
               </p>
             </div>

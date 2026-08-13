@@ -21,11 +21,13 @@ export function addDays(d: Date, n: number): Date {
 }
 
 export function daysBetween(a: Date, b: Date): number {
-  // Normalize to local midnight so the countdown changes at calendar-day boundaries,
-  // not at arbitrary times of day that depend on when the halving was estimated.
-  const aLocal = new Date(a.getFullYear(), a.getMonth(), a.getDate());
-  const bLocal = new Date(b.getFullYear(), b.getMonth(), b.getDate());
-  return Math.round((bLocal.getTime() - aLocal.getTime()) / DAY);
+  // Compute in UTC so the result is identical on the SSR server (usually UTC) and the
+  // client (any user timezone). Previously this used LOCAL midnight, which made the
+  // countdown "days" number differ between server and client on non-UTC timezones and
+  // triggered React hydration mismatches (error #418).
+  const aUtc = Date.UTC(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
+  const bUtc = Date.UTC(b.getUTCFullYear(), b.getUTCMonth(), b.getUTCDate());
+  return Math.round((bUtc - aUtc) / DAY);
 }
 
 export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): CycleInfo {

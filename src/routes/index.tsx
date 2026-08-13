@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
-import { cycleScoreQuery, halvingQuery, simulatorPreviewQuery } from "@/lib/queries";
+import { halvingQuery } from "@/lib/queries";
+import { estimateHalvingInfo } from "@/lib/btc.functions";
 import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
@@ -38,17 +39,14 @@ export const Route = createFileRoute("/")({
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(halvingQuery);
-    // Warm the down-page stats (cycle score + simulator preview) in PARALLEL with a single
-    // cap so they render in the first-pass HTML when fast, but never block TTFB for ~16s
-    // (the previous two sequential 8s races caused the 10s+ server response time).
-    await Promise.race([
-      Promise.all([
-        context.queryClient.ensureQueryData(cycleScoreQuery),
-        context.queryClient.ensureQueryData(simulatorPreviewQuery),
-      ]),
-      new Promise((resolve) => setTimeout(resolve, 6_000)),
-    ]);
+    // Seed the countdown with a deterministic estimate (from the known 2024 halving anchor)
+    // so the hero above-the-fold content paints instantly instead of waiting on external
+    // block-height APIs, which previously blocked the whole HTML stream (FCP/LCP ~4-6s).
+    // The live height is fetched client-side after mount and refines these values.
+    // NOTE: cycle score + simulator preview are NOT prefetched here — doing so would
+    // resolve after the HTML is rendered and break hydration (server showed a skeleton,
+    // client hydrated with data). Their client-side useQuery() fills them in after mount.
+    context.queryClient.setQueryData(halvingQuery.queryKey, estimateHalvingInfo());
   },
   component: HomePage,
   pendingComponent: Pending,

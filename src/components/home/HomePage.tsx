@@ -1,4 +1,4 @@
-import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery, useQuery, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   Calculator,
@@ -22,7 +22,7 @@ import { CycleShareCard } from "@/components/CycleShareCard";
 import { Btc500Hero } from "@/components/Btc500Hero";
 import { CommandCenter } from "@/components/home/CommandCenter";
 import { PhasePreviewModal } from "@/components/home/PhasePreviewModal";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
 import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
@@ -38,6 +38,13 @@ export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
+  const queryClient = useQueryClient();
+
+  // Refine the seeded (estimated) block height with the live value after hydration —
+  // client-only, so it never blocks or mismatches the server-rendered HTML.
+  useEffect(() => {
+    queryClient.refetchQueries({ queryKey: halvingQuery.queryKey, type: "active" }).catch(() => {});
+  }, [queryClient]);
 
   const cycle = computeCycle(
     now,

@@ -4,7 +4,12 @@
  */
 
 import { queryOptions } from "@tanstack/react-query";
-import { getHalvingInfo, getBtcPrice } from "@/lib/btc.functions";
+import {
+  getHalvingInfo,
+  getBtcPrice,
+  estimateHalvingInfo,
+  type HalvingInfo,
+} from "@/lib/btc.functions";
 import { getSimulatorData } from "@/lib/simulator.functions";
 import { getTimelineData } from "@/lib/timeline.functions";
 import { getDcaData } from "@/lib/dca.functions";
@@ -19,6 +24,11 @@ export const halvingQuery = queryOptions({
   queryFn: () => getHalvingInfo(),
   staleTime: HOUR,
   refetchInterval: HOUR,
+  // Deterministic estimate is provided synchronously so the hero renders instantly on
+  // BOTH the SSR server and the client with the SAME snapshot — avoiding a hydration
+  // mismatch between the server's time and the client's time. The live block height is
+  // fetched in the background after mount and refines these values.
+  initialData: (): HalvingInfo => estimateHalvingInfo(),
 });
 
 export const btcPriceQuery = queryOptions({

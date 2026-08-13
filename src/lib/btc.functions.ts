@@ -20,23 +20,38 @@ async function fetchBlockHeight(): Promise<number> {
       if (!r.ok) continue;
       const n = s.parse(await r.text());
       if (Number.isFinite(n) && n > 800000) return n;
-    } catch {}
+      // Try the next source if this one fails or returns an unusable height.
+    } catch {
+      // Provider unavailable — fall through to the next source.
+    }
   }
   throw new Error("block-height-unavailable");
 }
 
-export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async () => {
-  const height = await fetchBlockHeight();
+// Estimate last halving date by working backwards from known height 840000 on 2024-04-20 09:09 UTC
+const KNOWN_HEIGHT = 840000;
+const KNOWN_DATE = Date.UTC(2024, 3, 20, 9, 9, 0);
+const BLOCK_MS = AVG_BLOCK_MINUTES * 60_000;
+
+export interface HalvingInfo {
+  height: number;
+  nextHalvingBlock: number;
+  lastHalvingBlock: number;
+  nextHalvingDate: string;
+  lastHalvingDate: string;
+}
+
+/**
+ * Pure derivation of the halving-cycle info for a given block height.
+ * Shared by the live server function and the deterministic client/server estimate
+ * so first paint is never blocked on external block-height APIs.
+ */
+export function deriveHalvingInfo(height: number, now: number = Date.now()): HalvingInfo {
   const nextHalvingBlock = HALVING_BLOCKS.find((b) => b > height) ?? 1050000;
   const lastHalvingBlock = [...HALVING_BLOCKS].reverse().find((b) => b <= height) ?? 840000;
   const blocksUntilNext = nextHalvingBlock - height;
-  const nextHalvingDate = new Date(Date.now() + blocksUntilNext * AVG_BLOCK_MINUTES * 60_000);
-  // Estimate last halving date by working backwards from known height 840000 on 2024-04-20 09:09 UTC
-  const KNOWN_HEIGHT = 840000;
-  const KNOWN_DATE = Date.UTC(2024, 3, 20, 9, 9, 0);
-  const lastHalvingDate = new Date(
-    KNOWN_DATE + (lastHalvingBlock - KNOWN_HEIGHT) * AVG_BLOCK_MINUTES * 60_000,
-  );
+  const nextHalvingDate = new Date(now + blocksUntilNext * BLOCK_MS);
+  const lastHalvingDate = new Date(KNOWN_DATE + (lastHalvingBlock - KNOWN_HEIGHT) * BLOCK_MS);
   return {
     height,
     nextHalvingBlock,
@@ -44,6 +59,25 @@ export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async ()
     nextHalvingDate: nextHalvingDate.toISOString(),
     lastHalvingDate: lastHalvingDate.toISOString(),
   };
+}
+
+/**
+ * Deterministic estimate of the current block height derived from the known 2024
+ * halving anchor (block 840000) + 10-minute blocks. No network required — lets the
+ * countdown render instantly and get refined when the live height arrives.
+ */
+export function estimateCurrentBlockHeight(now: number = Date.now()): number {
+  return Math.max(KNOWN_HEIGHT, Math.floor(KNOWN_HEIGHT + (now - KNOWN_DATE) / BLOCK_MS));
+}
+
+/** Deterministic halving info used to seed the countdown before the live fetch resolves. */
+export function estimateHalvingInfo(now: number = Date.now()): HalvingInfo {
+  return deriveHalvingInfo(estimateCurrentBlockHeight(now), now);
+}
+
+export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async () => {
+  const height = await fetchBlockHeight();
+  return deriveHalvingInfo(height);
 });
 
 /**
@@ -87,7 +121,10 @@ async function fetchBtcPriceFromProviders(): Promise<{ price: number; ts: number
     try {
       const p = await src();
       if (Number.isFinite(p) && p > 0) return { price: p, ts: Date.now() };
-    } catch {}
+      // Try the next provider if this one fails or returns a non-positive price.
+    } catch {
+      // Provider unavailable — fall through to the next source.
+    }
   }
   throw new Error("btc-price-unavailable");
 }

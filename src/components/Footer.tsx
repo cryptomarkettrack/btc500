@@ -16,7 +16,7 @@ export function Footer() {
               Bitcoin halving countdown and investment strategy platform. Buy 500 days before
               halving, sell 500 days after.
             </p>
-            <p className="mt-3 text-[11px] text-muted-foreground/80">
+            <p className="mt-3 text-[11px] text-muted-foreground">
               <a href={SITE_URL} className="hover:text-foreground transition-colors" rel="home">
                 btc500.net
               </a>

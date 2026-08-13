@@ -185,6 +185,7 @@ export function Btc500Hero({
             <>
               {/* Vertical line from bottom to current price position */}
               <line
+                suppressHydrationWarning
                 x1={currentX}
                 y1={currentY}
                 x2={currentX}
@@ -195,7 +196,14 @@ export function Btc500Hero({
                 opacity="0.6"
               />
               {/* Pulsing dot at current position */}
-              <circle cx={currentX} cy={currentY} r="6" fill="var(--primary)" opacity="0.3">
+              <circle
+                suppressHydrationWarning
+                cx={currentX}
+                cy={currentY}
+                r="6"
+                fill="var(--primary)"
+                opacity="0.3"
+              >
                 <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
                 <animate
                   attributeName="opacity"
@@ -204,9 +212,16 @@ export function Btc500Hero({
                   repeatCount="indefinite"
                 />
               </circle>
-              <circle cx={currentX} cy={currentY} r="4" fill="var(--primary)" />
+              <circle
+                suppressHydrationWarning
+                cx={currentX}
+                cy={currentY}
+                r="4"
+                fill="var(--primary)"
+              />
               {/* Days remaining label */}
               <text
+                suppressHydrationWarning
                 x={currentX}
                 y={currentY - 18}
                 textAnchor="middle"
@@ -216,7 +231,13 @@ export function Btc500Hero({
                 {daysLeft}d
               </text>
               {/* "we are here" label with black contrast - positioned right next to the dot */}
-              <text x={currentX} y={currentY + 16} textAnchor="middle" style={styleWeAreHere}>
+              <text
+                suppressHydrationWarning
+                x={currentX}
+                y={currentY + 16}
+                textAnchor="middle"
+                style={styleWeAreHere}
+              >
                 we are here
               </text>
             </>
