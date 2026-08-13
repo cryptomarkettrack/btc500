@@ -6,7 +6,7 @@
   <!-- Core product pages -->
   <url>
     <loc>https://btc500.net/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-08-13</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/" />
@@ -121,6 +121,33 @@
       <image:loc>https://btc500.net/og/default.png</image:loc>
       <image:title>Crypto News — Bitcoin &amp; Cryptocurrency Headlines</image:title>
     </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.net/about</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/about" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/about" />
+  </url>
+
+  <url>
+    <loc>https://btc500.net/privacy</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/privacy" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/privacy" />
+  </url>
+
+  <url>
+    <loc>https://btc500.net/terms</loc>
+    <lastmod>2026-08-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/terms" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/terms" />
   </url>
 
   <url>

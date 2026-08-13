@@ -2,7 +2,14 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
 import { halvingQuery } from "@/lib/queries";
 import { estimateHalvingInfo } from "@/lib/btc.functions";
-import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
+import {
+  generateFaqSchema,
+  generateHowToSchema,
+  generatePageHead,
+  generateSpeakableSchema,
+  generateWebPageSchema,
+} from "@/lib/site";
+import { FAQ_ITEMS } from "@/lib/faq";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
 
@@ -11,31 +18,33 @@ const homePageSchema = [
     path: "/",
     name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
     description:
-      "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live Cycle Command Center, script integrity score, block progress, historical returns & investment simulator.",
+      "When is 500 days before the next Bitcoin halving? Track the live buy date, cycle score, and BTC500 rule: buy 500 days before each halving and sell 500 days after.",
     breadcrumbs: [{ name: "Home", path: "/" }],
   }),
   generateSpeakableSchema({
     path: "/",
-    cssSelectors: ["#hero-tagline"],
+    cssSelectors: ["#hero-tagline", "#btc500-definition", "#buy-date-answer"],
   }),
+  generateHowToSchema(),
+  generateFaqSchema(FAQ_ITEMS),
 ];
 
 export const Route = createFileRoute("/")({
   head: () =>
     generatePageHead({
       path: "/",
-      title: "BTC500 — Bitcoin Halving Countdown & Strategy",
+      title: "Bitcoin Halving Countdown — 500 Days Before | BTC500",
       description:
-        "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell 500 days after, with a live cycle score and investment simulator.",
+        "When is 500 days before the next Bitcoin halving? Live buy-date countdown, cycle score, and a free simulator that backtests the BTC500 rule since 2012.",
       keywords:
-        "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, cycle score, buy Bitcoin, crypto halving, Bitcoin investment, halving countdown, Bitcoin trading, Bitcoin price, block height",
+        "when is 500 days before the next bitcoin halving, Bitcoin halving countdown, Bitcoin 500 day cycle, BTC500, Bitcoin strategy, next Bitcoin halving, buy Bitcoin before halving",
       ogTitle: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
       ogDescription:
-        "Buy 500 days before halving. Sell 500 days after. Live cycle score, command center, and historical returns.",
+        "When is 500 days before the next Bitcoin halving? Buy then. Sell 500 days after. Live cycle score and historical returns.",
       ogImageAlt: "BTC500 — Bitcoin Halving Countdown & Strategy Dashboard",
-      twitterTitle: "BTC500 — Bitcoin Halving Countdown & Strategy",
+      twitterTitle: "Bitcoin Halving Countdown — 500 Days Before | BTC500",
       twitterDescription:
-        "Buy 500 days before halving. Sell 500 days after. Track live cycle score.",
+        "When is 500 days before the next Bitcoin halving? Live countdown and free simulator.",
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {

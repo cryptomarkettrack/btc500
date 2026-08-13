@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>BTC500 — Bitcoin Halving Strategy</title>
+    <link>https://btc500.net/</link>
+    <description>Free Bitcoin halving countdown, cycle tools, and strategy articles. Buy 500 days before each halving. Sell 500 days after.</description>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 13 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <atom:link href="https://btc500.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Goldman Sachs vs BlackRock: The Bitcoin ETF War</title>
+      <link>https://btc500.net/articles/goldman-vs-blackrock</link>
+      <guid>https://btc500.net/articles/goldman-vs-blackrock</guid>
+      <pubDate>Wed, 12 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Goldman Sachs is buying into the bitcoin income ETF business for $2.25B via NEOS. What the ETF war means for bitcoin supply and the halving cycle.</description>
+    </item>
+    <item>
+      <title>90 Elite Bitcoin Wallets: Strongest Hands Are Back</title>
+      <link>https://btc500.net/articles/strongest-hands</link>
+      <guid>https://btc500.net/articles/strongest-hands</guid>
+      <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Elite Bitcoin wallets holding 10,000+ BTC just hit a six-month high of 90. Here's what whale accumulation says about the halving cycle.</description>
+    </item>
+    <item>
+      <title>Bitcoin This Week: ETF Flows, CPI &amp; the $65,000 Test</title>
+      <link>https://btc500.net/articles/bitcoin-week-ahead</link>
+      <guid>https://btc500.net/articles/bitcoin-week-ahead</guid>
+      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
+      <description>What matters in Bitcoin this week: spot ETF flows, US CPI, options expiry, and the official BTC500 buy date on November 30, 2026.</description>
+    </item>
+    <item>
+      <title>BIP-110 Rejection: What It Means for Bitcoin</title>
+      <link>https://btc500.net/articles/bip-110-rejection</link>
+      <guid>https://btc500.net/articles/bip-110-rejection</guid>
+      <pubDate>Sun, 09 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Bitcoin proposal BIP-110 failed after near-zero miner support. Here's what the rejection means for Bitcoin governance and upgrades.</description>
+    </item>
+    <item>
+      <title>Bitcoin Volatility Is Gone — But Risk Remains</title>
+      <link>https://btc500.net/articles/bitcoin-volatility</link>
+      <guid>https://btc500.net/articles/bitcoin-volatility</guid>
+      <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility signals for the cycle.</description>
+    </item>
+    <item>
+      <title>Coldcard &amp; Lightning Exploits: Bitcoin Security Risk</title>
+      <link>https://btc500.net/articles/bitcoin-infrastructure-exploits</link>
+      <guid>https://btc500.net/articles/bitcoin-infrastructure-exploits</guid>
+      <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+      <description>From the ~$116M Coldcard seed theft to BTCPay Lightning node drains — how infrastructure exploits expose real Bitcoin self-custody risks.</description>
+    </item>
+    <item>
+      <title>CLARITY Act Explained: A Guide to US Crypto Regulation</title>
+      <link>https://btc500.net/articles/clarity-act</link>
+      <guid>https://btc500.net/articles/clarity-act</guid>
+      <pubDate>Tue, 04 Aug 2026 00:00:00 GMT</pubDate>
+      <description>The CLARITY Act explained: how this crypto bill would split regulation between the SEC and CFTC, and what it means for Bitcoin and Ethereum.</description>
+    </item>
+    <item>
+      <title>The Consensus Bottom Is a Trap: Bear Market Guide</title>
+      <link>https://btc500.net/articles/bear-market-accumulation</link>
+      <guid>https://btc500.net/articles/bear-market-accumulation</guid>
+      <pubDate>Mon, 03 Aug 2026 00:00:00 GMT</pubDate>
+      <description>When everyone agrees on the same bottom target, it loses its power. Learn why disciplined investors accumulate in bear markets instead.</description>
+    </item>
+    <item>
+      <title>Why Ondo Finance Is Tokenizing Wall Street</title>
+      <link>https://btc500.net/articles/ondo-finance-tokenization</link>
+      <guid>https://btc500.net/articles/ondo-finance-tokenization</guid>
+      <pubDate>Thu, 16 Jul 2026 00:00:00 GMT</pubDate>
+      <description>From DTCC's first tokenized trades to 430+ tokenized stocks — how Ondo Finance is bridging Wall Street and on-chain finance.</description>
+    </item>
+    <item>
+      <title>What Is NUPL? Bitcoin Market Psychology Guide</title>
+      <link>https://btc500.net/articles/rupl</link>
+      <guid>https://btc500.net/articles/rupl</guid>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Understand Bitcoin's NUPL indicator: the five phases of market sentiment, how it's calculated, and how to use RUPL to time the halving cycle.</description>
+    </item>
+    <item>
+      <title>Why BTC500 Exists: Avoid This Bitcoin Mistake</title>
+      <link>https://btc500.net/articles/why-btc500-exists</link>
+      <guid>https://btc500.net/articles/why-btc500-exists</guid>
+      <pubDate>Mon, 13 Jul 2026 00:00:00 GMT</pubDate>
+      <description>Learn why the BTC500 strategy helps investors avoid the most costly Bitcoin mistake — buying too early in bear markets.</description>
+    </item>
+    <item>
+      <title>BTC500 Strategy: Buy 500 Days Before Halving</title>
+      <link>https://btc500.net/articles/btc500-strategy</link>
+      <guid>https://btc500.net/articles/btc500-strategy</guid>
+      <pubDate>Mon, 15 Jan 2024 00:00:00 GMT</pubDate>
+      <description>A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.</description>
+    </item>
+  </channel>
+</rss>

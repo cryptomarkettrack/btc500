@@ -33,7 +33,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 
 ## Primary pages
 
-- [Home / Halving Countdown](https://btc500.net/): Live Bitcoin halving countdown, cycle command center, cycle score, buy/sell windows, and historical performance overview.
+- [Home / Halving Countdown](https://btc500.net/): Live Bitcoin halving countdown, cycle command center, cycle score, buy/sell windows, and historical performance overview. Answers “when is 500 days before the next Bitcoin halving?”
 - [Halving Dates](https://btc500.net/halving-dates): Complete halving schedule 2012–2028 with block heights and BTC500 buy/sell windows.
 - [Investment Simulator](https://btc500.net/simulator): Backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles with any investment amount.
 - [DCA vs Lump Sum](https://btc500.net/dca): Compare dollar-cost averaging vs lump-sum entry and exit around BTC500 buy/sell dates.
@@ -44,6 +44,11 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [Crypto News](https://btc500.net/news): Aggregated Bitcoin and cryptocurrency headlines.
 - [Articles Hub](https://btc500.net/articles): Strategy guides, on-chain education, and market analysis.
 - [Embed Kit](https://btc500.net/embed-kit): Free iframe widgets for countdown badges and cycle score cards.
+- [About](https://btc500.net/about): Methodology, data sources, and who BTC500 is for.
+- [Privacy](https://btc500.net/privacy)
+- [Terms](https://btc500.net/terms)
+- [Pricing](https://btc500.net/pricing.md): BTC500 is free. No paid plans.
+- [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
 
@@ -64,6 +69,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 
 - What is the BTC500 strategy? Buy Bitcoin exactly 500 days before each halving and sell exactly 500 days after. This rules-based method captures historically strong parts of Bitcoin's ~4-year halving cycle without day-trading.
 - When is the next Bitcoin halving? Projected for around April 2028 at block height 1,050,000. Exact date depends on average block time.
+- When is 500 days before the next Bitcoin halving? The BTC500 buy date is 500 calendar days before the next estimated halving. The live date is on https://btc500.net/ and https://btc500.net/halving-dates.
 - How does the halving work? Every 210,000 blocks (~4 years) the block reward is cut in half, reducing new supply. Lower issuance has historically coincided with multi-year price cycles.
 - Has the strategy been profitable? In every completed cycle (2012, 2016, 2020) buying 500 days before and selling 500 days after has been profitable. Past performance does not guarantee future results.
 - Is BTC500 free? Yes. Countdown, simulator, timeline, dashboards, articles, and embed widgets are free with no account required.

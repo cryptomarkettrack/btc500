@@ -1,0 +1,5 @@
+Contact: mailto:btc500halving@gmail.com
+Expires: 2027-08-13T00:00:00.000Z
+Preferred-Languages: en
+Canonical: https://btc500.net/.well-known/security.txt
+Policy: https://btc500.net/privacy

@@ -33,6 +33,14 @@ const faqSchema = {
     },
     {
       "@type": "Question",
+      name: "When is 500 days before the next Bitcoin halving?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The BTC500 buy date is 500 calendar days before the next estimated halving. Because the halving is triggered at block 1,050,000, that buy date moves if blocks arrive faster or slower than ten minutes. See the live window on this page.",
+      },
+    },
+    {
+      "@type": "Question",
       name: "What are all the Bitcoin halving dates?",
       acceptedAnswer: {
         "@type": "Answer",
@@ -62,9 +70,9 @@ export const Route = createFileRoute("/halving-dates")({
   head: () =>
     generatePageHead({
       path: "/halving-dates",
-      title: "Bitcoin Halving Dates — Complete Schedule 2012–2028 | BTC500",
+      title: "When Is the Next Bitcoin Halving? Dates 2012–2028 | BTC500",
       description:
-        "Every Bitcoin halving date from 2012 to 2028, with block heights, buy and sell windows, and the BTC500 strategy applied to each cycle.",
+        "When is 500 days before the next Bitcoin halving? Full schedule 2012–2028 with block heights and BTC500 buy/sell windows for every cycle.",
       keywords:
         "Bitcoin halving dates, Bitcoin halving schedule, when is the next Bitcoin halving, Bitcoin halving 2028, Bitcoin halving history, Bitcoin halving 2012 2016 2020 2024, Bitcoin halving block height",
       ogTitle: "Bitcoin Halving Dates — Complete Schedule 2012–2028",
@@ -238,6 +246,16 @@ function HalvingDates() {
               <p className="mt-1 text-muted-foreground">
                 The next Bitcoin halving is projected for around April 2028, when block height
                 reaches 1,050,000. The exact date depends on Bitcoin's average block time.
+              </p>
+            </div>
+            <div>
+              <h2 className="font-semibold text-foreground">
+                When is 500 days before the next Bitcoin halving?
+              </h2>
+              <p className="mt-1 text-muted-foreground">
+                The BTC500 buy date is 500 calendar days before the next estimated halving. Because
+                the event is triggered at block 1,050,000, that buy date moves if blocks arrive
+                faster or slower than ten minutes. The live window is in the table above.
               </p>
             </div>
             <div>

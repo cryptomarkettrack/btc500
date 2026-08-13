@@ -10,7 +10,9 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
@@ -20,6 +22,7 @@ import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
 import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
@@ -39,9 +42,19 @@ const TimelineRoute = TimelineRouteImport.update({
   path: '/timeline',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SimulatorRoute = SimulatorRouteImport.update({
   id: '/simulator',
   path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -87,6 +100,11 @@ const BearMarketRoute = BearMarketRouteImport.update({
 const ArticlesRoute = ArticlesRouteImport.update({
   id: '/articles',
   path: '/articles',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -163,6 +181,7 @@ const ArticlesBearMarketAccumulationRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
@@ -172,7 +191,9 @@ export interface FileRoutesByFullPath {
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
+  '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
@@ -189,6 +210,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
@@ -198,7 +220,9 @@ export interface FileRoutesByTo {
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
+  '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
@@ -216,6 +240,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/dca': typeof DcaRoute
@@ -225,7 +250,9 @@ export interface FileRoutesById {
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/news': typeof NewsRoute
+  '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
+  '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
@@ -244,6 +271,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/articles'
     | '/bear-market'
     | '/dca'
@@ -253,7 +281,9 @@ export interface FileRouteTypes {
     | '/insider-trading'
     | '/liquidation'
     | '/news'
+    | '/privacy'
     | '/simulator'
+    | '/terms'
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
@@ -270,6 +300,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/articles'
     | '/bear-market'
     | '/dca'
@@ -279,7 +310,9 @@ export interface FileRouteTypes {
     | '/insider-trading'
     | '/liquidation'
     | '/news'
+    | '/privacy'
     | '/simulator'
+    | '/terms'
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
@@ -296,6 +329,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/articles'
     | '/bear-market'
     | '/dca'
@@ -305,7 +339,9 @@ export interface FileRouteTypes {
     | '/insider-trading'
     | '/liquidation'
     | '/news'
+    | '/privacy'
     | '/simulator'
+    | '/terms'
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
@@ -323,6 +359,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   ArticlesRoute: typeof ArticlesRouteWithChildren
   BearMarketRoute: typeof BearMarketRoute
   DcaRoute: typeof DcaRoute
@@ -332,7 +369,9 @@ export interface RootRouteChildren {
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
   NewsRoute: typeof NewsRoute
+  PrivacyRoute: typeof PrivacyRoute
   SimulatorRoute: typeof SimulatorRoute
+  TermsRoute: typeof TermsRoute
   TimelineRoute: typeof TimelineRoute
 }
 
@@ -345,11 +384,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TimelineRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/simulator': {
       id: '/simulator'
       path: '/simulator'
       fullPath: '/simulator'
       preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -413,6 +466,13 @@ declare module '@tanstack/react-router' {
       path: '/articles'
       fullPath: '/articles'
       preLoaderRoute: typeof ArticlesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -546,6 +606,7 @@ const ArticlesRouteWithChildren = ArticlesRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   ArticlesRoute: ArticlesRouteWithChildren,
   BearMarketRoute: BearMarketRoute,
   DcaRoute: DcaRoute,
@@ -555,7 +616,9 @@ const rootRouteChildren: RootRouteChildren = {
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
   NewsRoute: NewsRoute,
+  PrivacyRoute: PrivacyRoute,
   SimulatorRoute: SimulatorRoute,
+  TermsRoute: TermsRoute,
   TimelineRoute: TimelineRoute,
 }
 export const routeTree = rootRouteImport

@@ -1,4 +1,4 @@
-import { Instagram, Mail } from "lucide-react";
+import { Instagram, Mail, Rss } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { SITE_URL } from "@/lib/site";
 
@@ -35,6 +35,14 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Halving Countdown
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/halving-dates"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Halving Dates
                 </Link>
               </li>
               <li>
@@ -137,51 +145,93 @@ export function Footer() {
             </ul>
           </nav>
 
-          {/* Social */}
-          <div>
+          {/* Company */}
+          <nav aria-label="Company">
             <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              Connect
+              Company
             </h2>
-            <div className="flex flex-col gap-2">
-              <a
-                href="https://www.instagram.com/btc500halving"
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Follow BTC500 on Instagram"
-              >
-                <Instagram className="h-4 w-4" />
-                Instagram
-              </a>
-              <a
-                href="https://x.com/btc500halving"
-                target="_blank"
-                rel="noopener noreferrer me"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Follow BTC500 on X (Twitter)"
-              >
-                <svg viewBox="0 0 24 24" className="h-4 w-4 fill-current" aria-hidden="true">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                X (Twitter)
-              </a>
-              <a
-                href="mailto:btc500halving@gmail.com"
-                className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
-                aria-label="Email BTC500"
-              >
-                <Mail className="h-4 w-4" />
-                Email
-              </a>
-            </div>
-          </div>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  to="/about"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  About & methodology
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/privacy"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Privacy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/terms"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Terms
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="/feed.xml"
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                >
+                  <Rss className="h-3.5 w-3.5" />
+                  RSS
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://x.com/btc500halving"
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Follow BTC500 on X (Twitter)"
+                >
+                  <svg viewBox="0 0 24 24" className="h-3.5 w-3.5 fill-current" aria-hidden="true">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+                  </svg>
+                  X
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://www.instagram.com/btc500halving"
+                  target="_blank"
+                  rel="noopener noreferrer me"
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Follow BTC500 on Instagram"
+                >
+                  <Instagram className="h-3.5 w-3.5" />
+                  Instagram
+                </a>
+              </li>
+              <li>
+                <a
+                  href="mailto:btc500halving@gmail.com"
+                  className="inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground"
+                  aria-label="Email BTC500"
+                >
+                  <Mail className="h-3.5 w-3.5" />
+                  Email
+                </a>
+              </li>
+            </ul>
+          </nav>
         </div>
 
         <div className="mt-8 border-t border-border/40 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} BTC<span className="text-primary">500</span>. All
-            rights reserved. Not financial advice. Past performance does not guarantee future
-            results.
+            rights reserved.{" "}
+            <Link to="/terms" className="hover:text-foreground">
+              Not financial advice
+            </Link>
+            . Past performance does not guarantee future results.
           </p>
         </div>
       </div>

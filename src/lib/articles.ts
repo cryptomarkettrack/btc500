@@ -1,4 +1,10 @@
-import { SITE_URL, generatePageHead, generateArticleSpeakableSchema, TWITTER_HANDLE } from "./site";
+import {
+  SITE_URL,
+  LOGO_URL,
+  generatePageHead,
+  generateArticleSpeakableSchema,
+  TWITTER_HANDLE,
+} from "./site";
 
 export { SITE_URL };
 
@@ -231,7 +237,7 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, on-chain Bitcoin accumulation, whale accumulation halving, Bitcoin buy date, BTC500 strategy",
   },
-{
+  {
     id: "goldman-vs-blackrock",
     slug: "goldman-vs-blackrock",
     title: "Goldman Sachs vs BlackRock: The Bitcoin ETF War",
@@ -271,7 +277,7 @@ export function generateArticleSchema(article: ArticleMeta) {
 
   return {
     "@context": "https://schema.org",
-    "@type": "Article",
+    "@type": ["Article", "BlogPosting"],
     headline: article.title,
     description: article.description,
     inLanguage: "en-US",
@@ -279,6 +285,7 @@ export function generateArticleSchema(article: ArticleMeta) {
       "@type": "Organization",
       name: "BTC500",
       url: `${SITE_URL}/`,
+      sameAs: [`${SITE_URL}/about`],
     },
     publisher: {
       "@type": "Organization",
@@ -286,9 +293,16 @@ export function generateArticleSchema(article: ArticleMeta) {
       url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/favicon.svg`,
+        url: LOGO_URL,
+        width: 512,
+        height: 512,
       },
     },
+    about: {
+      "@type": "Thing",
+      name: "Bitcoin halving",
+    },
+    citation: `${SITE_URL}/articles/btc500-strategy`,
     datePublished: article.dateISO,
     dateModified: article.dateModifiedISO,
     image: [article.ogImage],

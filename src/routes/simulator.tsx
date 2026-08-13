@@ -4,22 +4,25 @@ import { motion } from "framer-motion";
 import { Calculator, DollarSign, TrendingUp, TrendingDown, Bitcoin } from "lucide-react";
 import { formatUsd } from "@/lib/format";
 import { simulatorQuery } from "@/lib/queries";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generateDatasetSchema, generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { Input } from "@/components/ui/input";
 import { useState, useMemo } from "react";
 
-const simulatorPageSchema = generateWebPageSchema({
-  path: "/simulator",
-  name: "BTC500 Simulator — Bitcoin Halving Returns Calculator",
-  description:
-    "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
-  breadcrumbs: [
-    { name: "Home", path: "/" },
-    { name: "Simulator", path: "/simulator" },
-  ],
-});
+const simulatorPageSchema = [
+  generateWebPageSchema({
+    path: "/simulator",
+    name: "BTC500 Simulator — Bitcoin Halving Returns Calculator",
+    description:
+      "See how much you would have earned investing in Bitcoin using the BTC500 strategy across past halving cycles. Enter any investment amount and calculate your returns from the 2012, 2016, 2020, and 2024 halving cycles.",
+    breadcrumbs: [
+      { name: "Home", path: "/" },
+      { name: "Simulator", path: "/simulator" },
+    ],
+  }),
+  generateDatasetSchema(),
+];
 
 export const Route = createFileRoute("/simulator")({
   head: () =>

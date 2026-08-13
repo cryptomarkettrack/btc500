@@ -1,8 +1,10 @@
 # BTC500 — https://btc500.net
 # Allow search engines and AI crawlers to index public content.
-# Last updated: 2026-08-09
+# Last updated: 2026-08-13
 
 # Complete knowledge base for AI/answer engines: https://btc500.net/llms-full.txt
+# Machine-readable pricing (free): https://btc500.net/pricing.md
+# Article feed: https://btc500.net/feed.xml
 
 User-agent: *
 Allow: /
@@ -15,6 +17,7 @@ Disallow: /api/
 
 # Sitemap
 Sitemap: https://btc500.net/sitemap.xml
+Sitemap: https://btc500.net/feed.xml
 
 # Google
 User-agent: Googlebot

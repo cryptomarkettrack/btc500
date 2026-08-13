@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-12
+**Last updated:** 2026-08-13
 
 ---
 
@@ -51,6 +51,7 @@ The site is free educational software and market data tooling. It includes a liv
 | 2016 | 2015-02-24 | 2017-11-21 |
 | 2020 | 2018-12-27 | 2021-09-22 |
 | 2024 | 2022-12-06 | 2025-09-01 |
+| Next (~April 2028) | Live on https://btc500.net/halving-dates (moves with block time) | Halving + 500 days |
 
 ---
 
@@ -61,6 +62,9 @@ The BTC500 strategy is a simple Bitcoin investment approach: buy exactly 500 day
 
 ### When is the next Bitcoin halving?
 The next Bitcoin halving is projected for around April 2028, when block height reaches 1,050,000. The exact date depends on Bitcoin's average block time. BTC500 tracks live block height and estimates the countdown automatically.
+
+### When is 500 days before the next Bitcoin halving?
+The BTC500 buy date is 500 calendar days before the next estimated halving. Because the event is triggered at block 1,050,000, that buy date moves if blocks arrive faster or slower than ten minutes. The live date is on https://btc500.net/ and https://btc500.net/halving-dates.
 
 ### How does the Bitcoin halving work?
 Bitcoin halving occurs approximately every 210,000 blocks (~4 years). The block reward paid to miners is cut in half, reducing new Bitcoin supply issued each day. Scarcity from lower issuance has historically coincided with major multi-year price cycles.
@@ -161,6 +165,9 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 | Crypto News | https://btc500.net/news | Aggregated Bitcoin & crypto headlines |
 | Articles | https://btc500.net/articles | Strategy guides & on-chain education |
 | Embed Kit | https://btc500.net/embed-kit | Free countdown / cycle-score widgets |
+| About | https://btc500.net/about | Methodology, data sources, contact |
+| Privacy | https://btc500.net/privacy | Privacy policy |
+| Terms | https://btc500.net/terms | Terms of use / disclaimer |
 
 ---
 
@@ -172,3 +179,5 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 - Sitemap: https://btc500.net/sitemap.xml
 - Robots: https://btc500.net/robots.txt
 - Short index (llms.txt): https://btc500.net/llms.txt
+- Pricing (free): https://btc500.net/pricing.md
+- RSS: https://btc500.net/feed.xml

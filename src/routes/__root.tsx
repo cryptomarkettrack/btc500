@@ -14,6 +14,7 @@ import "../styles.css";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
+import { PageBreadcrumbs } from "../components/PageBreadcrumbs";
 import {
   SITE_URL,
   SITE_NAME,
@@ -21,12 +22,14 @@ import {
   DEFAULT_OG_IMAGE_ALT,
   TWITTER_HANDLE,
   SOCIAL_PROFILES,
+  LOGO_URL,
+  CONTACT_EMAIL,
 } from "@/lib/site";
-import { FAQ_ITEMS } from "@/lib/faq";
 
 const websiteSchema = {
   "@context": "https://schema.org",
   "@type": "WebSite",
+  "@id": `${SITE_URL}/#website`,
   name: SITE_NAME,
   alternateName: [
     "BTC500 — Bitcoin Halving Countdown & Strategy",
@@ -37,32 +40,36 @@ const websiteSchema = {
   description:
     "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, cycle score, block progress, historical returns & investment simulator.",
   inLanguage: "en-US",
-  publisher: {
-    "@type": "Organization",
-    name: SITE_NAME,
-    url: `${SITE_URL}/`,
-  },
+  publisher: { "@id": `${SITE_URL}/#organization` },
 };
 
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "Organization",
+  "@id": `${SITE_URL}/#organization`,
   name: SITE_NAME,
   url: `${SITE_URL}/`,
   logo: {
     "@type": "ImageObject",
-    url: `${SITE_URL}/favicon.svg`,
-    width: 64,
-    height: 64,
+    url: LOGO_URL,
+    width: 512,
+    height: 512,
   },
   image: DEFAULT_OG_IMAGE,
   description:
     "Bitcoin halving countdown and investment strategy platform for the BTC500 strategy.",
-  email: "btc500halving@gmail.com",
+  email: CONTACT_EMAIL,
+  foundingDate: "2026-07-11",
+  knowsAbout: [
+    "Bitcoin halving",
+    "Bitcoin investment strategy",
+    "BTC500 strategy",
+    "Bitcoin cycle timing",
+  ],
   sameAs: [...SOCIAL_PROFILES],
   contactPoint: {
     "@type": "ContactPoint",
-    email: "btc500halving@gmail.com",
+    email: CONTACT_EMAIL,
     contactType: "customer support",
     availableLanguage: "English",
   },
@@ -76,12 +83,14 @@ const webAppSchema = {
   applicationCategory: "FinanceApplication",
   operatingSystem: "Any",
   browserRequirements: "Requires JavaScript",
+  isAccessibleForFree: true,
   description:
     "A Bitcoin halving countdown and investment strategy tool that helps track the BTC500 strategy: buy 500 days before halving, sell 500 days after.",
   offers: {
     "@type": "Offer",
     price: "0",
     priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
   },
   featureList: [
     "Live Bitcoin halving countdown",
@@ -95,19 +104,7 @@ const webAppSchema = {
     "Free embeddable countdown widgets",
   ],
   screenshot: DEFAULT_OG_IMAGE,
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ_ITEMS.map((item) => ({
-    "@type": "Question",
-    name: item.question,
-    acceptedAnswer: {
-      "@type": "Answer",
-      text: item.answer,
-    },
-  })),
+  publisher: { "@id": `${SITE_URL}/#organization` },
 };
 
 function NotFoundComponent() {
@@ -268,6 +265,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "sitemap", type: "application/xml", href: "/sitemap.xml" },
       { rel: "alternate", type: "text/plain", href: "/llms.txt", title: "llms.txt" },
       { rel: "alternate", type: "text/plain", href: "/llms-full.txt", title: "llms-full.txt" },
+      { rel: "alternate", type: "application/rss+xml", href: "/feed.xml", title: "BTC500 RSS" },
       // NOTE: No fallback canonical here. Emitting one pointing at "/" caused every
       // page to render TWO canonicals (this one + the route's self-canonical), which
       // made Google canonicalize all pages to the homepage. Each page route emits its
@@ -286,10 +284,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         type: "application/ld+json",
         content: JSON.stringify(webAppSchema),
-      },
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(faqSchema),
       },
     ],
   }),
@@ -324,9 +318,18 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <div className="flex min-h-screen flex-col">
+        {!isEmbed && (
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-primary-foreground"
+          >
+            Skip to content
+          </a>
+        )}
         {!isEmbed && <Nav />}
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <main className="flex-1">
+        <main id="main-content" className="flex-1">
+          {!isEmbed && <PageBreadcrumbs pathname={pathname} />}
           <Outlet />
         </main>
         {!isEmbed && <Footer />}

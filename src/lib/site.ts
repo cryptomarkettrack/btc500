@@ -9,6 +9,9 @@ export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
 export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Strategy";
+export const SITE_DATE_MODIFIED = "2026-08-13";
+export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
+export const CONTACT_EMAIL = "btc500halving@gmail.com";
 
 /** Primary brand social profiles (also used in Organization schema). */
 export const SOCIAL_PROFILES = [
@@ -95,7 +98,7 @@ export function generateWebPageSchema({
   description,
   breadcrumbs,
   datePublished = "2024-01-15",
-  dateModified = "2026-07-27",
+  dateModified = SITE_DATE_MODIFIED,
 }: WebPageSchemaOptions) {
   const url = absoluteUrl(path);
   return {
@@ -117,7 +120,9 @@ export function generateWebPageSchema({
       url: `${SITE_URL}/`,
       logo: {
         "@type": "ImageObject",
-        url: `${SITE_URL}/favicon.svg`,
+        url: LOGO_URL,
+        width: 512,
+        height: 512,
       },
     },
     mainEntityOfPage: {
@@ -238,4 +243,117 @@ export function generatePageHead({
     links,
     ...(scripts ? { scripts } : {}),
   };
+}
+
+export function generateFaqSchema(items: ReadonlyArray<{ question: string; answer: string }>) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+}
+
+/** HowTo markup for the visible 3-step BTC500 rule. Only emit on pages that show the steps. */
+export function generateHowToSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: "How to use the BTC500 Bitcoin strategy",
+    description:
+      "A three-step, rules-based Bitcoin approach: buy 500 days before each halving, hold through the event, and sell 500 days after.",
+    totalTime: "P1000D",
+    estimatedCost: {
+      "@type": "MonetaryAmount",
+      currency: "USD",
+      value: "0",
+    },
+    step: [
+      {
+        "@type": "HowToStep",
+        position: 1,
+        name: "Buy 500 days before the next Bitcoin halving",
+        text: "Buy Bitcoin on the date that is exactly 500 days before the next halving. BTC500 tracks live block height and shows that buy date on the homepage countdown.",
+        url: `${SITE_URL}/#step-buy`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 2,
+        name: "Hold through the halving",
+        text: "Hold the position as the halving occurs (every 210,000 blocks, roughly every four years). Do not trade the headlines around the event.",
+        url: `${SITE_URL}/#step-hold`,
+      },
+      {
+        "@type": "HowToStep",
+        position: 3,
+        name: "Sell 500 days after the halving",
+        text: "Exit exactly 500 days after the halving, then wait for the next cycle's buy date. Repeat every ~4 years. Past performance does not guarantee future results.",
+        url: `${SITE_URL}/#step-sell`,
+      },
+    ],
+  };
+}
+
+export function generateDatasetSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Dataset",
+    name: "BTC500 historical Bitcoin prices",
+    description:
+      "Daily Bitcoin USD prices from Bitstamp used to backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles.",
+    url: `${SITE_URL}/simulator`,
+    creator: {
+      "@type": "Organization",
+      name: SITE_NAME,
+      url: `${SITE_URL}/`,
+    },
+    license: "https://creativecommons.org/licenses/by/4.0/",
+    temporalCoverage: "2011-08-18/..",
+    variableMeasured: "Bitcoin closing price in USD",
+    measurementTechnique: "Historical daily close from Bitstamp",
+    isAccessibleForFree: true,
+  };
+}
+
+const PAGE_LABELS: Record<string, string> = {
+  "/": "Home",
+  "/halving-dates": "Halving Dates",
+  "/simulator": "Simulator",
+  "/dca": "DCA vs Lump Sum",
+  "/timeline": "Time Machine",
+  "/bear-market": "Bear Market Meter",
+  "/liquidation": "Liquidation",
+  "/insider-trading": "Insider Trading",
+  "/news": "News",
+  "/articles": "Articles",
+  "/embed-kit": "Embed Kit",
+  "/about": "About",
+  "/privacy": "Privacy",
+  "/terms": "Terms",
+};
+
+/** Visible breadcrumb trail for a path. Homepage and embeds return []. */
+export function crumbsForPath(pathname: string, articleTitle?: string): BreadcrumbItem[] {
+  if (!pathname || pathname === "/" || pathname.startsWith("/embed")) return [];
+
+  if (pathname.startsWith("/articles/")) {
+    return [
+      { name: "Home", path: "/" },
+      { name: "Articles", path: "/articles" },
+      { name: articleTitle || "Article", path: pathname },
+    ];
+  }
+
+  const label = PAGE_LABELS[pathname];
+  if (!label) return [];
+  return [
+    { name: "Home", path: "/" },
+    { name: label, path: pathname },
+  ];
 }

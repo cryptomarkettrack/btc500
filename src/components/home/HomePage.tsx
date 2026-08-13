@@ -25,6 +25,8 @@ import { PhasePreviewModal } from "@/components/home/PhasePreviewModal";
 import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
+import { trackCta } from "@/lib/analytics";
+import { SITE_DATE_MODIFIED } from "@/lib/site";
 import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
@@ -136,6 +138,7 @@ export function HomePage() {
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link
               to="/simulator"
+              onClick={() => trackCta("hero", "/simulator")}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
             >
               <Calculator className="h-4 w-4" />
@@ -144,6 +147,7 @@ export function HomePage() {
             </Link>
             <Link
               to="/timeline"
+              onClick={() => trackCta("hero", "/timeline")}
               className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
             >
               <LineChart className="h-4 w-4" />
@@ -153,6 +157,40 @@ export function HomePage() {
           <p className="text-center text-xs text-muted-foreground">
             Free · No signup · Live data from Binance, CoinGecko & Bitstamp
           </p>
+
+          <section
+            aria-labelledby="definition-heading"
+            className="mx-auto w-full max-w-3xl rounded-2xl border border-border/60 bg-card px-5 py-5 sm:px-6"
+          >
+            <h2 id="definition-heading" className="text-sm font-semibold text-foreground">
+              What is BTC500?
+            </h2>
+            <p
+              id="btc500-definition"
+              className="mt-2 text-sm leading-relaxed text-muted-foreground"
+            >
+              BTC500 is a rules-based Bitcoin approach: buy exactly 500 days before each halving and
+              sell exactly 500 days after. The site is free educational software with a live
+              countdown, historical simulator, and cycle tools. Nothing here is financial advice.
+            </p>
+            <div className="mt-4 border-t border-border/50 pt-4">
+              <h2 className="text-sm font-semibold text-foreground">
+                When is 500 days before the next Bitcoin halving?
+              </h2>
+              <p
+                id="buy-date-answer"
+                className="mt-2 text-sm leading-relaxed text-muted-foreground"
+              >
+                The BTC500 buy date is {formatUtcDay(cycle.buyDate)} — 500 days before the next
+                estimated halving on {formatUtcDay(cycle.nextHalving)}. That date moves if Bitcoin
+                blocks come in faster or slower than ten minutes.{" "}
+                <Link to="/halving-dates" className="font-semibold text-primary hover:underline">
+                  See every cycle date
+                </Link>
+                .
+              </p>
+            </div>
+          </section>
 
           <CommandCenter
             cycle={cycle}
@@ -218,6 +256,7 @@ export function HomePage() {
 
           <div className="grid gap-6 sm:grid-cols-3">
             <HowItWorksCard
+              id="step-buy"
               icon={Target}
               step="1"
               title="Buy 500 Days Before"
@@ -228,6 +267,7 @@ export function HomePage() {
               cta="See the halving schedule"
             />
             <HowItWorksCard
+              id="step-hold"
               icon={Zap}
               step="2"
               title="Hold Through Halving"
@@ -238,6 +278,7 @@ export function HomePage() {
               cta="Calculate your returns"
             />
             <HowItWorksCard
+              id="step-sell"
               icon={Shield}
               step="3"
               title="Sell 500 Days After"
@@ -248,6 +289,88 @@ export function HomePage() {
               cta="Watch the timeline"
             />
           </div>
+        </motion.section>
+
+        {/* ===== COMPARISON (AEO extractable table) ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+          aria-labelledby="compare-heading"
+        >
+          <div className="mb-8 text-center">
+            <h2 id="compare-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+              BTC500 vs buy-and-hold vs monthly DCA
+            </h2>
+            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+              Same asset. Different rules. BTC500 is for people who want a cycle window they can
+              audit — not a replacement for every strategy.
+            </p>
+          </div>
+          <div className="overflow-x-auto rounded-[24px] border border-border/60 bg-card">
+            <table className="w-full min-w-[36rem] text-left text-sm">
+              <caption className="sr-only">
+                Comparison of BTC500, buy-and-hold, and monthly dollar-cost averaging
+              </caption>
+              <thead>
+                <tr className="border-b border-border/60 text-xs uppercase tracking-wider text-muted-foreground">
+                  <th scope="col" className="px-5 py-3 font-semibold">
+                    Approach
+                  </th>
+                  <th scope="col" className="px-5 py-3 font-semibold">
+                    Rule
+                  </th>
+                  <th scope="col" className="px-5 py-3 font-semibold">
+                    Trades per cycle
+                  </th>
+                  <th scope="col" className="px-5 py-3 font-semibold">
+                    Best for
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr className="border-b border-border/40 bg-primary-soft/30">
+                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
+                    BTC500
+                  </th>
+                  <td className="px-5 py-4 text-muted-foreground">
+                    Buy 500 days before the halving, sell 500 days after
+                  </td>
+                  <td className="px-5 py-4 text-muted-foreground">2</td>
+                  <td className="px-5 py-4 text-muted-foreground">
+                    A dated window you can backtest
+                  </td>
+                </tr>
+                <tr className="border-b border-border/40">
+                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
+                    Buy and hold
+                  </th>
+                  <td className="px-5 py-4 text-muted-foreground">Never sell</td>
+                  <td className="px-5 py-4 text-muted-foreground">0</td>
+                  <td className="px-5 py-4 text-muted-foreground">Maximum time in market</td>
+                </tr>
+                <tr>
+                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
+                    Monthly DCA
+                  </th>
+                  <td className="px-5 py-4 text-muted-foreground">
+                    Buy a fixed amount every month
+                  </td>
+                  <td className="px-5 py-4 text-muted-foreground">~48</td>
+                  <td className="px-5 py-4 text-muted-foreground">Smoothing entry over years</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p className="mt-4 text-center text-xs text-muted-foreground">
+            Compare lump-sum BTC500 dates against spreading buys on the{" "}
+            <Link to="/dca" className="font-semibold text-primary hover:underline">
+              DCA vs lump sum
+            </Link>{" "}
+            tool.
+          </p>
         </motion.section>
 
         {/* ===== HISTORICAL RETURNS PREVIEW ===== */}
@@ -321,6 +444,7 @@ export function HomePage() {
             <div className="mt-6 text-center">
               <Link
                 to="/simulator"
+                onClick={() => trackCta("historical_returns", "/simulator")}
                 className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
               >
                 <Calculator className="h-4 w-4" />
@@ -535,6 +659,7 @@ export function HomePage() {
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <Link
                   to="/simulator"
+                  onClick={() => trackCta("final_cta", "/simulator")}
                   className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
                 >
                   <Calculator className="h-4 w-4" />
@@ -554,7 +679,7 @@ export function HomePage() {
 
         <p className="mt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
-          Binance, CoinGecko, Coinbase & Kraken.
+          Binance, CoinGecko, Coinbase & Kraken. Last reviewed {SITE_DATE_MODIFIED}.
         </p>
       </main>
 
@@ -581,6 +706,15 @@ export function HomePage() {
   );
 }
 
+function formatUtcDay(d: Date): string {
+  return d.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
     <details className="group rounded-2xl border border-border/60 bg-card open:shadow-sm">
@@ -599,6 +733,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
 }
 
 function HowItWorksCard({
+  id,
   icon: Icon,
   step,
   title,
@@ -608,6 +743,7 @@ function HowItWorksCard({
   to,
   cta,
 }: {
+  id?: string;
   icon: React.ElementType;
   step: string;
   title: string;
@@ -618,7 +754,10 @@ function HowItWorksCard({
   cta: string;
 }) {
   return (
-    <div className="flex flex-col rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
+    <div
+      id={id}
+      className="flex flex-col rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
+    >
       <div className="mb-4 flex items-center gap-3">
         <span
           className="inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"

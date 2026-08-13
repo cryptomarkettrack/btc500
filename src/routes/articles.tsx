@@ -1,6 +1,7 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
+import { ArticleEndMatter } from "@/components/ArticleEndMatter";
 import { getArticlesSorted, SITE_URL } from "@/lib/articles";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generatePageHead, generateWebPageSchema, SITE_DATE_MODIFIED } from "@/lib/site";
 
 const articlesPageSchema = generateWebPageSchema({
   path: "/articles",
@@ -11,7 +12,7 @@ const articlesPageSchema = generateWebPageSchema({
     { name: "Home", path: "/" },
     { name: "Articles", path: "/articles" },
   ],
-  dateModified: "2026-07-16",
+  dateModified: SITE_DATE_MODIFIED,
 });
 
 const articlesListSchema = {
@@ -63,9 +64,11 @@ function Articles() {
 
   // If on a child route, only render the Outlet
   if (isOnChildRoute) {
+    const slug = location.pathname.replace("/articles/", "");
     return (
       <div className="min-h-screen bg-background text-foreground">
         <Outlet />
+        <ArticleEndMatter slug={slug} />
       </div>
     );
   }

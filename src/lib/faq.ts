@@ -15,6 +15,11 @@ export const FAQ_ITEMS = [
       "The next Bitcoin halving is projected for around April 2028, when block height reaches 1,050,000. The exact date depends on Bitcoin's average block time. BTC500 tracks live block height and estimates the countdown automatically.",
   },
   {
+    question: "When is 500 days before the next Bitcoin halving?",
+    answer:
+      "The BTC500 buy date is the calendar day 500 days before the next estimated Bitcoin halving. Because the halving is triggered by block height (1,050,000), that buy date moves if blocks come in faster or slower than ten minutes. The live date is on the BTC500 homepage countdown and the halving-dates schedule.",
+  },
+  {
     question: "How does the Bitcoin halving work?",
     answer:
       "Bitcoin halving occurs approximately every 210,000 blocks (~4 years). The block reward paid to miners is cut in half, reducing new Bitcoin supply issued each day. Scarcity from lower issuance has historically coincided with major multi-year price cycles.",
