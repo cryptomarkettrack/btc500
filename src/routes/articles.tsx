@@ -2,6 +2,9 @@ import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-rout
 import { ArticleEndMatter } from "@/components/ArticleEndMatter";
 import { getArticlesSorted, SITE_URL } from "@/lib/articles";
 import { generatePageHead, generateWebPageSchema, SITE_DATE_MODIFIED } from "@/lib/site";
+import { Input } from "@/components/ui/input";
+import { Search } from "lucide-react";
+import { useState, useMemo } from "react";
 
 const articlesPageSchema = generateWebPageSchema({
   path: "/articles",
@@ -57,6 +60,19 @@ export const Route = createFileRoute("/articles")({
 
 function Articles() {
   const sortedArticles = getArticlesSorted();
+  const [searchQuery, setSearchQuery] = useState("");
+
+  // Filter articles based on search query
+  const filteredArticles = useMemo(() => {
+    if (!searchQuery.trim()) return sortedArticles;
+    const query = searchQuery.toLowerCase().trim();
+    return sortedArticles.filter((article) =>
+      article.title.toLowerCase().includes(query) ||
+      article.description.toLowerCase().includes(query) ||
+      article.keywords.toLowerCase().includes(query) ||
+      article.articleSection.toLowerCase().includes(query)
+    );
+  }, [sortedArticles, searchQuery]);
 
   // Check if we're on a child route (article page)
   const location = useLocation();
@@ -85,8 +101,28 @@ function Articles() {
           </p>
         </header>
 
+        {/* Search Bar */}
+        <div className="mb-8 max-w-xl mx-auto">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
+            <Input
+              type="search"
+              placeholder="Search articles by keyword..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-10 pr-4"
+              aria-label="Search articles"
+            />
+          </div>
+          {searchQuery && (
+            <p className="mt-2 text-sm text-muted-foreground text-center">
+              Showing {filteredArticles.length} of {sortedArticles.length} articles
+            </p>
+          )}
+        </div>
+
         <div className="grid gap-6">
-          {sortedArticles.map((article) => (
+          {filteredArticles.map((article) => (
             <Link
               key={article.id}
               to={`/articles/${article.slug}` as "/articles/btc500-strategy"}
@@ -124,13 +160,24 @@ function Articles() {
           ))}
         </div>
 
-        <div className="mt-16 rounded-2xl border border-border/60 bg-card p-8 text-center">
-          <h2 className="text-lg font-semibold">More articles coming soon</h2>
-          <p className="mt-2 text-muted-foreground">
-            We&apos;re working on more in-depth analysis of the BTC500 strategy, historical
-            performance data, and advanced investment techniques.
-          </p>
-        </div>
+        {filteredArticles.length === 0 && searchQuery && (
+          <div className="mt-8 rounded-2xl border border-border/60 bg-card p-8 text-center">
+            <h2 className="text-lg font-semibold">No articles found</h2>
+            <p className="mt-2 text-muted-foreground">
+              Try adjusting your search terms or browse all articles below.
+            </p>
+          </div>
+        )}
+
+        {!searchQuery && (
+          <div className="mt-16 rounded-2xl border border-border/60 bg-card p-8 text-center">
+            <h2 className="text-lg font-semibold">More articles coming soon</h2>
+            <p className="mt-2 text-muted-foreground">
+              We&apos;re working on more in-depth analysis of the BTC500 strategy, historical
+              performance data, and advanced investment techniques.
+            </p>
+          </div>
+        )}
       </main>
     </div>
   );
