@@ -1205,6 +1205,16 @@ export function ClarityActArticle({ title, date, readTime }: ArticleProps) {
               <ul className="ml-6 space-y-2">
                 <li>
                   <a
+                    href="/articles/sec-cancels-regulation-crypto"
+                    className="text-primary underline hover:text-primary/80"
+                  >
+                    SEC Cancels Regulation Crypto Vote (August 14, 2026)
+                  </a>{" "}
+                  — the agency rulemaking track is paused the same month the Senate recessed
+                  without a CLARITY floor vote.
+                </li>
+                <li>
+                  <a
                     href="/articles/btc500-strategy"
                     className="text-primary underline hover:text-primary/80"
                   >

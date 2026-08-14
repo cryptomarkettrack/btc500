@@ -287,6 +287,13 @@ export function GoldmanVsBlackrockArticle({ title, date, readTime }: ArticleProp
           <h2>Related Reading</h2>
           <ul>
             <li>
+              <a href="/articles/sec-cancels-regulation-crypto" className="font-semibold text-primary underline">
+                SEC Cancels Regulation Crypto Vote
+              </a>{" "}
+              — Friday&apos;s offering-rules meeting was pulled with no new date; Bitcoin&apos;s
+              classification does not change.
+            </li>
+            <li>
               <a href="/articles/bitcoin-week-ahead" className="font-semibold text-primary underline">
                 Bitcoin This Week (Aug 10–16, 2026)
               </a>{" "}

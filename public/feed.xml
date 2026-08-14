@@ -5,8 +5,15 @@
     <link>https://btc500.net/</link>
     <description>Free Bitcoin halving countdown, cycle tools, and strategy articles. Buy 500 days before each halving. Sell 500 days after.</description>
     <language>en-us</language>
-    <lastBuildDate>Wed, 13 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 14 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://btc500.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>SEC Cancels Regulation Crypto Vote: What It Means</title>
+      <link>https://btc500.net/articles/sec-cancels-regulation-crypto</link>
+      <guid>https://btc500.net/articles/sec-cancels-regulation-crypto</guid>
+      <pubDate>Fri, 14 Aug 2026 00:00:00 GMT</pubDate>
+      <description>The SEC cancelled Friday's Regulation Crypto vote with no new date. Here's what the delay means for Bitcoin and the November 30, 2026 buy window.</description>
+    </item>
     <item>
       <title>Goldman Sachs vs BlackRock: The Bitcoin ETF War</title>
       <link>https://btc500.net/articles/goldman-vs-blackrock</link>

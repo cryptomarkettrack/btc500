@@ -238,6 +238,25 @@ export const articles: ArticleMeta[] = [
       "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, on-chain Bitcoin accumulation, whale accumulation halving, Bitcoin buy date, BTC500 strategy",
   },
   {
+    id: "sec-cancels-regulation-crypto",
+    slug: "sec-cancels-regulation-crypto",
+    title: "SEC Cancels Regulation Crypto Vote: What It Means",
+    description:
+      "The SEC cancelled Friday's Regulation Crypto vote with no new date. Here's what the delay means for Bitcoin and the November 30, 2026 buy window.",
+    keywords:
+      "SEC Regulation Crypto, SEC cancels crypto meeting, Regulation Crypto Assets, Paul Atkins crypto rules, SEC crypto offering exemption, SEC tailored offering regime, crypto investment contract rules August 2026, CLARITY Act delay, Bitcoin regulation 2026, BTC500 strategy",
+    date: "August 14, 2026",
+    dateISO: "2026-08-14",
+    dateModified: "August 14, 2026",
+    dateModifiedISO: "2026-08-14",
+    readTime: "9 min read",
+    wordCount: 2100,
+    ogImage: `${SITE_URL}/articles/sec-cancels-regulation-crypto/og-sec-cancels-regulation-crypto.png`,
+    articleSection: "Crypto Regulation & Policy",
+    schemaKeywords:
+      "SEC Regulation Crypto, Regulation Crypto Assets, SEC crypto rules, Paul Atkins, crypto offering exemption, CLARITY Act, Bitcoin regulation, BTC500 strategy",
+  },
+  {
     id: "goldman-vs-blackrock",
     slug: "goldman-vs-blackrock",
     title: "Goldman Sachs vs BlackRock: The Bitcoin ETF War",

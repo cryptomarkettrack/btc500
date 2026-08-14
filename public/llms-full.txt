@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-13
+**Last updated:** 2026-08-14
 
 ---
 
@@ -111,6 +111,9 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 ---
 
 ## 5. Article Summaries & Key Claims
+
+### SEC Cancels Regulation Crypto Vote: What It Means
+The U.S. SEC cancelled its August 14, 2026 open meeting on Regulation Crypto Assets, citing an unforeseen scheduling issue and naming no new date. The cancelled vote was Chair Paul Atkins' first formal crypto rulemaking — a tailored offering regime for certain investment contracts, previewed March 17 as a startup exemption (~$5M / 4 years), a fundraising exemption (~$75M / 12 months), and a safe harbor once essential managerial efforts cease. Bitcoin is treated as a digital commodity under Atkins' taxonomy; the delay does not reclassify BTC or move the BTC500 buy date of November 30, 2026 (108 days from August 14). https://btc500.net/articles/sec-cancels-regulation-crypto
 
 ### Goldman Sachs vs BlackRock: The $2.25B Bitcoin Income ETF War
 Goldman Sachs is acquiring NEOS, an ETF issuer running covered-call bitcoin income products, for $2.25 billion — expanding its derivative-powered ETF platform to about $130 billion in total assets and taking direct aim at BlackRock's BITA income fund (reported August 12, 2026). Income and staking products hold their bitcoin or ether rather than trading it, which reduces sellable float at a time when cumulative spot bitcoin ETF net inflows have reached $52.5 billion and daily inflows have run near 4x daily mining issuance. The institutional shift toward holding-style products is structurally supportive heading into the April 2028 halving, and it changes nothing about the BTC500 rule: buy exactly 500 days before on November 30, 2026. https://btc500.net/articles/goldman-vs-blackrock

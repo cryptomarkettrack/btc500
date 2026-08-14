@@ -26,6 +26,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
+import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
@@ -122,6 +123,12 @@ const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
   path: '/strongest-hands',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesSecCancelsRegulationCryptoRoute =
+  ArticlesSecCancelsRegulationCryptoRouteImport.update({
+    id: '/sec-cancels-regulation-crypto',
+    path: '/sec-cancels-regulation-crypto',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
   id: '/rupl',
   path: '/rupl',
@@ -205,6 +212,7 @@ export interface FileRoutesByFullPath {
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -234,6 +242,7 @@ export interface FileRoutesByTo {
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -264,6 +273,7 @@ export interface FileRoutesById {
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
+  '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -295,6 +305,7 @@ export interface FileRouteTypes {
     | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/sec-cancels-regulation-crypto'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
@@ -324,6 +335,7 @@ export interface FileRouteTypes {
     | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/sec-cancels-regulation-crypto'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   id:
@@ -353,6 +365,7 @@ export interface FileRouteTypes {
     | '/articles/goldman-vs-blackrock'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
+    | '/articles/sec-cancels-regulation-crypto'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
@@ -496,6 +509,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesStrongestHandsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/sec-cancels-regulation-crypto': {
+      id: '/articles/sec-cancels-regulation-crypto'
+      path: '/sec-cancels-regulation-crypto'
+      fullPath: '/articles/sec-cancels-regulation-crypto'
+      preLoaderRoute: typeof ArticlesSecCancelsRegulationCryptoRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/rupl': {
       id: '/articles/rupl'
       path: '/rupl'
@@ -580,6 +600,7 @@ interface ArticlesRouteChildren {
   ArticlesGoldmanVsBlackrockRoute: typeof ArticlesGoldmanVsBlackrockRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
+  ArticlesSecCancelsRegulationCryptoRoute: typeof ArticlesSecCancelsRegulationCryptoRoute
   ArticlesStrongestHandsRoute: typeof ArticlesStrongestHandsRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -596,6 +617,8 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesGoldmanVsBlackrockRoute: ArticlesGoldmanVsBlackrockRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
+  ArticlesSecCancelsRegulationCryptoRoute:
+    ArticlesSecCancelsRegulationCryptoRoute,
   ArticlesStrongestHandsRoute: ArticlesStrongestHandsRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }

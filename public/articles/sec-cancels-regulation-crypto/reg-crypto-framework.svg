@@ -1,0 +1,48 @@
+<svg width="1536" height="860" viewBox="0 0 1536 860" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="ftitle fdesc">
+  <title id="ftitle">Regulation Crypto — three proposed pathways</title>
+  <desc id="fdesc">Atkins March 17 preview: startup exemption about $5 million over up to four years, fundraising exemption about $75 million per 12 months, and an investment-contract safe harbor once essential managerial efforts cease.</desc>
+  <defs>
+    <linearGradient id="fbg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#141824"/>
+    </linearGradient>
+    <linearGradient id="fcard" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1536" height="860" fill="url(#fbg)"/>
+  <rect x="64" y="48" width="1408" height="764" rx="32" fill="url(#fcard)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="104" y="120" font-size="26" font-weight="700" fill="#fb923c" letter-spacing="4">REGULATION CRYPTO ASSETS · MARCH 17 PREVIEW</text>
+    <text x="104" y="188" font-size="44" font-weight="800" fill="#ffffff">Three proposed pathways — not adopted text</text>
+
+    <rect x="104" y="240" width="400" height="460" rx="24" fill="#0f0f16" stroke="#f97316" stroke-width="2"/>
+    <text x="136" y="300" font-size="20" font-weight="700" fill="#fb923c" letter-spacing="3">1 · STARTUP</text>
+    <text x="136" y="380" font-size="56" font-weight="800" fill="#ffffff">$5M</text>
+    <text x="136" y="430" font-size="24" font-weight="600" fill="#a1a1aa">over up to 4 years</text>
+    <text x="136" y="500" font-size="22" fill="#d4d4d8">Whitepaper-style</text>
+    <text x="136" y="534" font-size="22" fill="#d4d4d8">disclosures. Notices</text>
+    <text x="136" y="568" font-size="22" fill="#d4d4d8">when entering and exiting.</text>
+    <text x="136" y="640" font-size="20" fill="#71717a">Non-exclusive exemption</text>
+
+    <rect x="536" y="240" width="400" height="460" rx="24" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+    <text x="568" y="300" font-size="20" font-weight="700" fill="#fb923c" letter-spacing="3">2 · FUNDRAISING</text>
+    <text x="568" y="380" font-size="56" font-weight="800" fill="#ffffff">$75M</text>
+    <text x="568" y="430" font-size="24" font-weight="600" fill="#a1a1aa">per 12-month period</text>
+    <text x="568" y="500" font-size="22" fill="#d4d4d8">Disclosure filing plus</text>
+    <text x="568" y="534" font-size="22" fill="#d4d4d8">financial condition</text>
+    <text x="568" y="568" font-size="22" fill="#d4d4d8">and financial statements.</text>
+    <text x="568" y="640" font-size="20" fill="#71717a">Still optional vs other paths</text>
+
+    <rect x="968" y="240" width="440" height="460" rx="24" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+    <text x="1000" y="300" font-size="20" font-weight="700" fill="#fb923c" letter-spacing="3">3 · SAFE HARBOR</text>
+    <text x="1000" y="380" font-size="48" font-weight="800" fill="#ffffff">Exit</text>
+    <text x="1000" y="430" font-size="24" font-weight="600" fill="#a1a1aa">when efforts cease</text>
+    <text x="1000" y="500" font-size="22" fill="#d4d4d8">Rule-based standard for</text>
+    <text x="1000" y="534" font-size="22" fill="#d4d4d8">when a token leaves</text>
+    <text x="1000" y="568" font-size="22" fill="#d4d4d8">federal securities laws.</text>
+    <text x="1000" y="640" font-size="20" fill="#71717a">Howey still applies until then</text>
+  </g>
+</svg>

@@ -155,7 +155,14 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
                   </td>
                   <td className="py-4 align-top">
                     Weekly expiry day can pin or squeeze price near $65K, while retail sales and
-                    Michigan sentiment confirm — or kill — the stagflation narrative.
+                    Michigan sentiment confirm — or kill — the stagflation narrative. The SEC also{" "}
+                    <a
+                      href="/articles/sec-cancels-regulation-crypto"
+                      className="font-semibold text-primary underline"
+                    >
+                      cancelled Friday&apos;s Regulation Crypto vote
+                    </a>{" "}
+                    with no new date.
                   </td>
                 </tr>
                 <tr className="border-b border-border/60">
