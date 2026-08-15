@@ -51,6 +51,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
+- [Solar Eclipse and Bitcoin Halving (Aug 15, 2026)](https://btc500.net/articles/solar-eclipse-bitcoin-halving): The August 12 total solar eclipse proved that rare predictable events reward preparation — and Bitcoin's halving follows the same principle. What the eclipse teaches about timing the market with the BTC500 strategy.\n
 
 - [SEC Cancels Regulation Crypto Vote (Aug 14, 2026)](https://btc500.net/articles/sec-cancels-regulation-crypto): The SEC cancelled Friday's Regulation Crypto Assets meeting with no new date — what the delay means for Bitcoin and the Nov 30 buy window.
 - [Goldman Sachs vs BlackRock: The $2.25B Bitcoin Income ETF War (Aug 12, 2026)](https://btc500.net/articles/goldman-vs-blackrock): Goldman's NEOS buyout builds a $130 billion income ETF platform aimed at BlackRock's BITA fund — what holding-style products mean for bitcoin supply and the Nov 30 buy date.

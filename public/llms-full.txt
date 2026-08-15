@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-14
+**Last updated:** 2026-08-15
 
 ---
 
@@ -129,6 +129,8 @@ A deep dive into the simplest and most effective Bitcoin investment strategy bas
 
 ### Why BTC500 Exists
 The most expensive mistake Bitcoin investors keep repeating is buying too early during bear markets. The BTC500 strategy was created to discipline entry timing around halvings. https://btc500.net/articles/why-btc500-exists
+### Solar Eclipse and Bitcoin Halving — What Rare, Predictable Events Tell Us
+The total solar eclipse of August 12, 2026 was predicted decades in advance by orbital mechanics — yet most people only searched for it when it was already happening (searches surged 600%). Bitcoin's halving follows the identical pattern: a rare, perfectly predictable event that most investors ignore until prices have already moved. The BTC500 strategy treats the halving the way an astronomer treats an eclipse — mark the date, follow the math, ignore the crowd. The next buy date is November 30, 2026. https://btc500.net/articles/solar-eclipse-bitcoin-halving
 
 ### NUPL / RUPL Guide
 Net Unrealized Profit/Loss (NUPL) describes five phases of Bitcoin market sentiment, from capitulation (denial) to euphoria (belief). Relative Unrealized Profit/Loss (RUPL) normalizes it over the market cycle. https://btc500.net/articles/rupl

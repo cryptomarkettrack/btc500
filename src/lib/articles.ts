@@ -28,6 +28,26 @@ export interface ArticleMeta {
 }
 
 export const articles: ArticleMeta[] = [
+{
+    id: "solar-eclipse-bitcoin-halving",
+    slug: "solar-eclipse-bitcoin-halving",
+    title:
+      "Solar Eclipse and Bitcoin Halving: What Rare, Predictable Events Tell Us",
+    description:
+      "The August 12, 2026 total solar eclipse proved that rare predictable events reward preparation. Bitcoin's halving follows the same principle — here's what the eclipse teaches us about timing the next crypto cycle with the BTC500 strategy.",
+    keywords:
+      "solar eclipse 2026 bitcoin halving, bitcoin halving vs solar eclipse, bitcoin and solar eclipse connection, BTC500 strategy, rare predictable events bitcoin, bitcoin halving 2028 date, bitcoin halving countdown 2028, when is the next bitcoin halving, bitcoin halving cycle, bitcoin accumulation strategy, bitcoin bear market 2026, buy 500 days before halving",
+    date: "August 15, 2026",
+    dateISO: "2026-08-15",
+    dateModified: "August 15, 2026",
+    dateModifiedISO: "2026-08-15",
+    readTime: "7 min read",
+    wordCount: 1900,
+    ogImage: `${SITE_URL}/articles/solar-eclipse-bitcoin-halving/og-solar-eclipse-bitcoin-halving.png`,
+    articleSection: "Bitcoin Investment Strategy",
+    schemaKeywords:
+      "Bitcoin halving, solar eclipse 2026, BTC500 strategy, Bitcoin investment timing, halving cycle, Bitcoin accumulation, rare predictable events",
+  },
   {
     id: "btc500-strategy",
     slug: "btc500-strategy",

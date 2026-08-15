@@ -419,6 +419,16 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
               </a>{" "}
               — the $2.25 billion bitcoin income ETF fight happening while Washington stalls.
             </li>
+<li>
+              <a
+                href="/articles/solar-eclipse-bitcoin-halving"
+                className="font-semibold text-primary underline"
+              >
+                Solar Eclipse and Bitcoin Halving
+              </a>{" "}
+              — what rare predictable events teach about timing the market — and why the Aug 12
+              eclipse proved the same logic applies to the halving.
+            </li>
           </ul>
 
           <p>

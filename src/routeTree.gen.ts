@@ -26,6 +26,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
+import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes/articles.solar-eclipse-bitcoin-halving'
 import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
@@ -123,6 +124,12 @@ const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
   path: '/strongest-hands',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesSolarEclipseBitcoinHalvingRoute =
+  ArticlesSolarEclipseBitcoinHalvingRouteImport.update({
+    id: '/solar-eclipse-bitcoin-halving',
+    path: '/solar-eclipse-bitcoin-halving',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesSecCancelsRegulationCryptoRoute =
   ArticlesSecCancelsRegulationCryptoRouteImport.update({
     id: '/sec-cancels-regulation-crypto',
@@ -213,6 +220,7 @@ export interface FileRoutesByFullPath {
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
+  '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -243,6 +251,7 @@ export interface FileRoutesByTo {
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
+  '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -274,6 +283,7 @@ export interface FileRoutesById {
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
+  '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -306,6 +316,7 @@ export interface FileRouteTypes {
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
+    | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
@@ -336,6 +347,7 @@ export interface FileRouteTypes {
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
+    | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   id:
@@ -366,6 +378,7 @@ export interface FileRouteTypes {
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
+    | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
     | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
@@ -509,6 +522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesStrongestHandsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/solar-eclipse-bitcoin-halving': {
+      id: '/articles/solar-eclipse-bitcoin-halving'
+      path: '/solar-eclipse-bitcoin-halving'
+      fullPath: '/articles/solar-eclipse-bitcoin-halving'
+      preLoaderRoute: typeof ArticlesSolarEclipseBitcoinHalvingRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/sec-cancels-regulation-crypto': {
       id: '/articles/sec-cancels-regulation-crypto'
       path: '/sec-cancels-regulation-crypto'
@@ -601,6 +621,7 @@ interface ArticlesRouteChildren {
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesSecCancelsRegulationCryptoRoute: typeof ArticlesSecCancelsRegulationCryptoRoute
+  ArticlesSolarEclipseBitcoinHalvingRoute: typeof ArticlesSolarEclipseBitcoinHalvingRoute
   ArticlesStrongestHandsRoute: typeof ArticlesStrongestHandsRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
@@ -619,6 +640,8 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesSecCancelsRegulationCryptoRoute:
     ArticlesSecCancelsRegulationCryptoRoute,
+  ArticlesSolarEclipseBitcoinHalvingRoute:
+    ArticlesSolarEclipseBitcoinHalvingRoute,
   ArticlesStrongestHandsRoute: ArticlesStrongestHandsRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }
