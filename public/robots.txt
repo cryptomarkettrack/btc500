@@ -1,144 +1,16 @@
 # BTC500 — https://btc500.net
-# Allow search engines and AI crawlers to index public content.
-# Last updated: 2026-08-13
-
-# Complete knowledge base for AI/answer engines: https://btc500.net/llms-full.txt
-# Machine-readable pricing (free): https://btc500.net/pricing.md
-# Article feed: https://btc500.net/feed.xml
+# Allow search engines and AI crawlers to crawl public content.
 
 User-agent: *
 Allow: /
-Allow: /og/
-Allow: /articles/
-Allow: /icons/
-Disallow: /embed
-Disallow: /embed?
+
+# Private/API endpoints
 Disallow: /api/
 
-# Sitemap
+# Embeddable widget endpoints
+# Keep the /embed-kit landing page crawlable.
+Disallow: /embed/
+Disallow: /embed$
+
+# Primary XML sitemap
 Sitemap: https://btc500.net/sitemap.xml
-Sitemap: https://btc500.net/feed.xml
-
-# Google
-User-agent: Googlebot
-Allow: /
-Disallow: /embed
-
-User-agent: Googlebot-Image
-Allow: /og/
-Allow: /articles/
-Allow: /icons/
-Allow: /apple-touch-icon.png
-Allow: /favicon.svg
-Allow: /favicon.ico
-
-# Bing
-User-agent: Bingbot
-Allow: /
-Disallow: /embed
-
-# ============================================================
-# AI / answer-engine crawlers (citations drive discovery traffic)
-# ============================================================
-User-agent: GPTBot
-Allow: /
-Disallow: /embed
-
-User-agent: ChatGPT-User
-Allow: /
-Disallow: /embed
-
-User-agent: OAI-SearchBot
-Allow: /
-Disallow: /embed
-
-User-agent: ClaudeBot
-Allow: /
-Disallow: /embed
-
-User-agent: Claude-User
-Allow: /
-Disallow: /embed
-
-User-agent: anthropic-ai
-Allow: /
-Disallow: /embed
-
-User-agent: PerplexityBot
-Allow: /
-Disallow: /embed
-
-User-agent: Perplexity-User
-Allow: /
-Disallow: /embed
-
-User-agent: Google-Extended
-Allow: /
-Disallow: /embed
-
-User-agent: Applebot
-Allow: /
-Disallow: /embed
-
-User-agent: Applebot-Extended
-Allow: /
-Disallow: /embed
-
-User-agent: Bytespider
-Allow: /
-Disallow: /embed
-
-User-agent: meta-externalagent
-Allow: /
-Disallow: /embed
-
-User-agent: cohere-ai
-Allow: /
-Disallow: /embed
-
-User-agent: CCBot
-Allow: /
-Disallow: /embed
-
-User-agent: Diffbot
-Allow: /
-Disallow: /embed
-
-User-agent: ImagesiftBot
-Allow: /
-Disallow: /embed
-
-User-agent: omgili
-Allow: /
-Disallow: /embed
-
-User-agent: omgilibot
-Allow: /
-Disallow: /embed
-
-User-agent: YouBot
-Allow: /
-Disallow: /embed
-
-User-agent: SemrushBot
-Allow: /
-Disallow: /embed
-
-User-agent: Dotbot
-Allow: /
-Disallow: /embed
-
-# DuckDuckGo
-User-agent: DuckDuckBot
-Allow: /
-Disallow: /embed
-
-# Yahoo
-User-agent: Slurp
-Allow: /
-Disallow: /embed
-
-# Yandex
-User-agent: YandexBot
-Allow: /
-Disallow: /embed
