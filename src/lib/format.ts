@@ -18,6 +18,34 @@ export function formatUtc(d: Date): string {
   return `${d.getUTCHours().toString().padStart(2, "0")}:${d.getUTCMinutes().toString().padStart(2, "0")} UTC`;
 }
 
+/** ISO date (YYYY-MM-DD) → "16 Jul 2011" in UTC. */
+export function formatIsoDay(iso: string): string {
+  const value = /^\d{4}-\d{2}-\d{2}$/.test(iso) ? `${iso}T00:00:00Z` : iso;
+  return new Date(value).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+}
+
+/** BTC amount with enough precision to stay readable at any stack size. */
+export function formatBtc(n: number): string {
+  const digits = n >= 100 ? 2 : n >= 1 ? 4 : 6;
+  return `${n.toLocaleString("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: digits,
+  })} BTC`;
+}
+
+/** Return multiple: 87,800x / 34.2x / 6.18x */
+export function formatMultiple(n: number): string {
+  if (!Number.isFinite(n)) return "—";
+  if (n >= 100) return `${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}x`;
+  if (n >= 10) return `${n.toFixed(1)}x`;
+  return `${n.toFixed(2)}x`;
+}
+
 /** Compact USD: $1.23B / $45.6M / $1.2K / $99 */
 export function formatCompactUsd(value: number, options?: { maxFractionDigits?: number }): string {
   const digits = options?.maxFractionDigits;

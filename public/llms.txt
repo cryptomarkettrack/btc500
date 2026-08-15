@@ -35,7 +35,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 
 - [Home / Halving Countdown](https://btc500.net/): Live Bitcoin halving countdown, cycle command center, cycle score, buy/sell windows, and historical performance overview. Answers “when is 500 days before the next Bitcoin halving?”
 - [Halving Dates](https://btc500.net/halving-dates): Complete halving schedule 2012–2028 with block heights and BTC500 buy/sell windows.
-- [Investment Simulator](https://btc500.net/simulator): Backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles with any investment amount.
+- [Investment Simulator](https://btc500.net/simulator): Backtest the BTC500 strategy across the 2012, 2016, 2020, and 2024 halving cycles. Enter any amount (default $50,000), reinvest profits or repeat the same cash each cycle, and compare against buy-and-hold from the first buy date to the last sell date.
 - [DCA vs Lump Sum](https://btc500.net/dca): Compare dollar-cost averaging vs lump-sum entry and exit around BTC500 buy/sell dates.
 - [Time Machine](https://btc500.net/timeline): Interactive timeline replaying Bitcoin prices across past and current halving cycles.
 - [Bear Market Bottom Indicators](https://btc500.net/bear-market): On-chain bottom composite using MVRV, NUPL, Puell Multiple, SOPR and more.

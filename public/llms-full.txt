@@ -161,7 +161,7 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 | --- | --- | --- |
 | Home / Halving Countdown | https://btc500.net/ | Live countdown, Cycle Command Center, cycle score |
 | Halving Dates | https://btc500.net/halving-dates | Full 2012–2028 schedule with buy/sell windows |
-| Investment Simulator | https://btc500.net/simulator | Backtest BTC500 across all completed cycles |
+| Investment Simulator | https://btc500.net/simulator | Backtest BTC500 across all completed cycles; reinvest or repeat a stake; compare vs buy-and-hold |
 | DCA vs Lump Sum | https://btc500.net/dca | Compare DCA vs lump-sum around buy/sell dates |
 | Time Machine | https://btc500.net/timeline | Interactive replay of halving-cycle prices |
 | Bear Market Bottom | https://btc500.net/bear-market | On-chain bottom composite (MVRV, NUPL, Puell, SOPR) |

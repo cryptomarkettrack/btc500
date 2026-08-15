@@ -48,7 +48,7 @@ async function loadCsvData(): Promise<Map<string, number>> {
       const parts = line.split(",");
       if (parts.length < 2) continue;
 
-      // Parse date: "2013-04-28 00:00:00 UTC" -> "2013-04-28"
+      // Parse date: "2011-07-17 00:00:00 UTC" -> "2011-07-17"
       const dateTimeStr = parts[0].trim();
       const dateStr = dateTimeStr.split(" ")[0];
 

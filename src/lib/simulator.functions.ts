@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getBtcPriceFromCsv } from "./csv-price-loader";
 import { fetchBtcPriceFromBitstamp } from "./bitstamp-fetcher";
+import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
 import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 import { HALVINGS, addDays } from "./halvings";
 
@@ -24,18 +25,20 @@ export interface SimulatorResult {
 }
 
 async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
-  // First, try to get price from CSV for dates before 2016-07-12
   const csvPrice = await getBtcPriceFromCsv(dateStr);
   if (csvPrice !== null) {
     return csvPrice;
   }
 
-  // For Bitstamp fetches, use the centralized cache
-  return fetchWithCache(
+  const bitstamp = await fetchWithCache(
     CacheKeys.historicalPrice(dateStr),
     () => fetchBtcPriceFromBitstamp(dateStr),
     { ttl: TTL.HISTORICAL_PRICE, staleWhileRevalidate: false },
   );
+  if (bitstamp !== null) return bitstamp;
+
+  // Last resort. 2012-cycle dates now live in btc-usd-max.csv (2011-07-17 onward).
+  return fetchBtcPriceFromBlockchain(dateStr);
 }
 
 export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {

@@ -17,11 +17,12 @@ export const HALVINGS: HalvingEvent[] = [
   { date: "2024-04-20", block: 840000, label: "2024 Halving" },
 ];
 
-/** Add calendar days to a YYYY-MM-DD string and return YYYY-MM-DD. */
+/** Add calendar days to a YYYY-MM-DD string and return YYYY-MM-DD (UTC). */
 export function addDays(dateStr: string, days: number): string {
-  const d = new Date(dateStr);
-  d.setDate(d.getDate() + days);
-  return d.toISOString().split("T")[0];
+  const iso = /^\d{4}-\d{2}-\d{2}$/.test(dateStr) ? `${dateStr}T00:00:00Z` : dateStr;
+  const d = new Date(iso);
+  d.setUTCDate(d.getUTCDate() + days);
+  return d.toISOString().slice(0, 10);
 }
 
 /** Parse a YYYY-MM-DD (or ISO) date string to UTC midnight epoch ms. */

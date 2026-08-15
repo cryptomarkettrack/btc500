@@ -314,7 +314,7 @@ export function generateDatasetSchema() {
       url: `${SITE_URL}/`,
     },
     license: "https://creativecommons.org/licenses/by/4.0/",
-    temporalCoverage: "2011-08-18/..",
+    temporalCoverage: "2011-07-17/..",
     variableMeasured: "Bitcoin closing price in USD",
     measurementTechnique: "Historical daily close from Bitstamp",
     isAccessibleForFree: true,

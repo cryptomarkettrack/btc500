@@ -222,7 +222,10 @@ export const CacheKeys = {
   dca: (buyDays: number, sellDays: number) => `btc:dca:${buyDays}:${sellDays}`,
 
   /** Simulator data */
-  simulator: () => "btc:simulator",
+  simulator: () => "btc:simulator:v2",
+
+  /** blockchain.info daily market-price series */
+  blockchainSeries: () => "btc:blockchain-series",
 
   /** Timeline data */
   timeline: () => "btc:timeline",
