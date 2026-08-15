@@ -50,7 +50,7 @@ export const CYCLE_SCORE_COMPONENT_META: Record<CycleScoreComponentId, CycleScor
       "Compute days since the last halving. For each prior completed cycle, take price on that same day-offset ÷ price on that cycle’s halving day. Take the median of those multiples. Current multiple = live BTC price ÷ this cycle’s price on the last-halving date. Score is higher when current multiple is within ~±25–35% of the median; running much hotter or colder lowers the score (weight 40%).",
     weightLabel: "40% of Cycle Score",
     dataSources:
-      "Historical daily closes from the site BTC price archive (CSV; CoinGecko max series) with Bitstamp OHLC fallback for missing dates. Live price from Binance → CoinGecko → Coinbase → Kraken. Halving dates from the known Bitcoin block schedule.",
+      "Historical daily closes from the site BTC price archive (CSV; CoinGecko max series). Bitstamp OHLC is used only for dates after the last archive print. Live price from Binance → CoinGecko → Coinbase → Kraken. Halving dates from the known Bitcoin block schedule.",
   },
   drawdown: {
     id: "drawdown",

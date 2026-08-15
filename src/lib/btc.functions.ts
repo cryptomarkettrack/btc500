@@ -5,27 +5,41 @@ import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 const HALVING_BLOCKS = [210000, 420000, 630000, 840000, 1050000, 1260000, 1470000];
 const AVG_BLOCK_MINUTES = 10;
 
+const BLOCK_HEIGHT_SOURCE_TIMEOUT_MS = 4_000;
+const BLOCK_HEIGHT_OVERALL_TIMEOUT_MS = 6_000;
+
 async function fetchBlockHeight(): Promise<number> {
   const sources = [
-    { url: "https://mempool.space/api/blocks/tip/height", parse: (t: string) => parseInt(t) },
-    { url: "https://blockchain.info/q/getblockcount", parse: (t: string) => parseInt(t) },
+    { url: "https://mempool.space/api/blocks/tip/height", parse: (t: string) => parseInt(t, 10) },
+    { url: "https://blockchain.info/q/getblockcount", parse: (t: string) => parseInt(t, 10) },
     {
       url: "https://blockstream.info/api/blocks/tip/height",
-      parse: (t: string) => parseInt(t),
+      parse: (t: string) => parseInt(t, 10),
     },
   ];
-  for (const s of sources) {
-    try {
-      const r = await fetch(s.url, { signal: AbortSignal.timeout(5000) });
-      if (!r.ok) continue;
-      const n = s.parse(await r.text());
-      if (Number.isFinite(n) && n > 800000) return n;
-      // Try the next source if this one fails or returns an unusable height.
-    } catch {
-      // Provider unavailable — fall through to the next source.
+
+  const attempt = async (): Promise<number> => {
+    for (const s of sources) {
+      try {
+        const r = await fetch(s.url, {
+          signal: AbortSignal.timeout(BLOCK_HEIGHT_SOURCE_TIMEOUT_MS),
+        });
+        if (!r.ok) continue;
+        const n = s.parse(await r.text());
+        if (Number.isFinite(n) && n > 800000) return n;
+      } catch {
+        // Provider unavailable — fall through to the next source.
+      }
     }
-  }
-  throw new Error("block-height-unavailable");
+    throw new Error("block-height-unavailable");
+  };
+
+  return Promise.race([
+    attempt(),
+    new Promise<number>((_, reject) => {
+      setTimeout(() => reject(new Error("block-height-timeout")), BLOCK_HEIGHT_OVERALL_TIMEOUT_MS);
+    }),
+  ]);
 }
 
 // Estimate last halving date by working backwards from known height 840000 on 2024-04-20 09:09 UTC
@@ -75,9 +89,22 @@ export function estimateHalvingInfo(now: number = Date.now()): HalvingInfo {
   return deriveHalvingInfo(estimateCurrentBlockHeight(now), now);
 }
 
+/**
+ * Live tip height when the providers respond in time; otherwise the
+ * deterministic 10-minute-block estimate. Never throws.
+ */
+export async function resolveHalvingInfo(now: number = Date.now()): Promise<HalvingInfo> {
+  try {
+    const height = await fetchBlockHeight();
+    return deriveHalvingInfo(height, now);
+  } catch (err) {
+    console.error("[halving] live height unavailable, using estimate:", err);
+    return estimateHalvingInfo(now);
+  }
+}
+
 export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async () => {
-  const height = await fetchBlockHeight();
-  return deriveHalvingInfo(height);
+  return resolveHalvingInfo();
 });
 
 /**
@@ -130,8 +157,13 @@ async function fetchBtcPriceFromProviders(): Promise<{ price: number; ts: number
 }
 
 export const getBtcPrice = createServerFn({ method: "GET" }).handler(async () => {
-  return fetchWithCache(CacheKeys.btcPrice(), () => fetchBtcPriceFromProviders(), {
-    ttl: TTL.LIVE_PRICE,
-    staleWhileRevalidate: true,
-  });
+  try {
+    return await fetchWithCache(CacheKeys.btcPrice(), () => fetchBtcPriceFromProviders(), {
+      ttl: TTL.LIVE_PRICE,
+      staleWhileRevalidate: true,
+    });
+  } catch (err) {
+    console.error("[btc-price] all live providers failed:", err);
+    throw err;
+  }
 });

@@ -4,6 +4,7 @@
  */
 
 import { dateToMs } from "./halvings";
+import { fetchWithTimeout } from "./http";
 import { CacheKeys, fetchWithCache, TTL } from "./price-cache";
 
 /** Last-resort closes if every live source is down. Source: blockchain.info market-price. */
@@ -15,7 +16,7 @@ const SEEDED_EARLY_PRICES: Record<string, number> = {
 async function loadBlockchainSeries(): Promise<Map<string, number>> {
   const url =
     "https://api.blockchain.info/charts/market-price?timespan=all&format=json&sampled=false";
-  const res = await fetch(url, { signal: AbortSignal.timeout(10_000) });
+  const res = await fetchWithTimeout(url, {}, 5_000);
   if (!res.ok) throw new Error(`blockchain.info ${res.status}`);
 
   const json = (await res.json()) as { values?: Array<{ x: number; y: number }> };

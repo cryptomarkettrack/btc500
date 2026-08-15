@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { simulatorQuery } from "@/lib/queries";
+import { emptySimulatorCycles } from "@/lib/simulator.functions";
 import { SIMULATOR_FAQ } from "@/lib/simulator-faq";
 import {
   mergeSimulatorSearch,
@@ -126,7 +127,14 @@ export const Route = createFileRoute("/simulator")({
         "Backtest $500, $1,000, or any amount across Bitcoin’s 500-day halving cycle.",
       schema: simulatorPageSchema,
     }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(simulatorQuery),
+  loader: async ({ context }) => {
+    try {
+      await context.queryClient.ensureQueryData(simulatorQuery);
+    } catch (err) {
+      console.error("[simulator] loader failed; page will render without prices:", err);
+      context.queryClient.setQueryData(simulatorQuery.queryKey, { cycles: emptySimulatorCycles() });
+    }
+  },
   component: SimulatorRoute,
   pendingComponent: RoutePending,
   errorComponent: ({ error }) => <RouteDataError error={error} />,

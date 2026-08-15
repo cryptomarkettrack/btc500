@@ -219,16 +219,16 @@ export const CacheKeys = {
   monthlyKlines: (year: number, month: number) => `btc:klines:${year}-${month}`,
 
   /** DCA comparison data */
-  dca: (buyDays: number, sellDays: number) => `btc:dca:${buyDays}:${sellDays}`,
+  dca: (buyDays: number, sellDays: number) => `btc:dca:v2:${buyDays}:${sellDays}`,
 
-  /** Simulator data (v3 includes price on the halving date) */
-  simulator: () => "btc:simulator:v3",
+  /** Simulator data (v4 = bundled CSV, no Bitstamp for covered dates) */
+  simulator: () => "btc:simulator:v4",
 
   /** blockchain.info daily market-price series */
   blockchainSeries: () => "btc:blockchain-series",
 
-  /** Timeline data */
-  timeline: () => "btc:timeline",
+  /** Timeline data (v2 = CSV-first, Bitstamp only after last archive day) */
+  timeline: () => "btc:timeline:v2",
 
   /** Cycle score / script integrity */
   cycleScore: () => "btc:cycle-score",

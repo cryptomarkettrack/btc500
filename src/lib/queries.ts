@@ -10,9 +10,9 @@ import {
   estimateHalvingInfo,
   type HalvingInfo,
 } from "@/lib/btc.functions";
-import { getSimulatorData } from "@/lib/simulator.functions";
-import { getTimelineData } from "@/lib/timeline.functions";
-import { getDcaData } from "@/lib/dca.functions";
+import { emptySimulatorCycles, getSimulatorData } from "@/lib/simulator.functions";
+import { emptyTimelineData, getTimelineData } from "@/lib/timeline.functions";
+import { emptyDcaCycles, getDcaData } from "@/lib/dca.functions";
 import { getCycleScore } from "@/lib/cycle-score.functions";
 
 const HOUR = 60 * 60_000;
@@ -40,7 +40,14 @@ export const btcPriceQuery = queryOptions({
 
 export const simulatorQuery = queryOptions({
   queryKey: ["simulator"],
-  queryFn: () => getSimulatorData(),
+  queryFn: async () => {
+    try {
+      return await getSimulatorData();
+    } catch (err) {
+      console.error("[simulator] query failed:", err);
+      return { cycles: emptySimulatorCycles() };
+    }
+  },
   staleTime: HOUR,
   refetchInterval: HOUR,
 });
@@ -48,14 +55,28 @@ export const simulatorQuery = queryOptions({
 /** Home page preview uses a distinct key so it can be prefetched independently. */
 export const simulatorPreviewQuery = queryOptions({
   queryKey: ["simulator-preview"],
-  queryFn: () => getSimulatorData(),
+  queryFn: async () => {
+    try {
+      return await getSimulatorData();
+    } catch (err) {
+      console.error("[simulator-preview] query failed:", err);
+      return { cycles: emptySimulatorCycles() };
+    }
+  },
   staleTime: HOUR,
   refetchInterval: HOUR,
 });
 
 export const timelineQuery = queryOptions({
   queryKey: ["timeline"],
-  queryFn: () => getTimelineData(),
+  queryFn: async () => {
+    try {
+      return await getTimelineData();
+    } catch (err) {
+      console.error("[timeline] query failed:", err);
+      return emptyTimelineData();
+    }
+  },
   staleTime: HOUR,
   refetchInterval: HOUR,
 });
@@ -63,14 +84,22 @@ export const timelineQuery = queryOptions({
 export const dcaQuery = (dcaBuyDays: number, dcaSellDays: number) =>
   queryOptions({
     queryKey: ["dca", dcaBuyDays, dcaSellDays],
-    queryFn: () => getDcaData({ data: { dcaBuyDays, dcaSellDays } }),
+    queryFn: async () => {
+      try {
+        return await getDcaData({ data: { dcaBuyDays, dcaSellDays } });
+      } catch (err) {
+        console.error("[dca] query failed:", err);
+        return { cycles: emptyDcaCycles(dcaBuyDays, dcaSellDays) };
+      }
+    },
     staleTime: HOUR,
     refetchInterval: HOUR,
   });
 
 export const cycleScoreQuery = queryOptions({
   queryKey: ["cycle-score"],
-  queryFn: () => getCycleScore(),
+  queryFn: getCycleScore,
   staleTime: QUARTER_HOUR,
   refetchInterval: QUARTER_HOUR,
+  retry: 1,
 });

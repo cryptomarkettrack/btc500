@@ -1,9 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
-import { getBtcPriceFromCsv } from "./csv-price-loader";
-import { fetchBtcPriceFromBitstamp } from "./bitstamp-fetcher";
-import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
-import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
 import { HALVINGS, addDays } from "./halvings";
+import { CacheKeys, fetchWithCache, TTL } from "./price-cache";
 
 export interface CycleResult {
   label: string;
@@ -29,58 +26,65 @@ export interface SimulatorResult {
   totalProfit: number | null;
 }
 
-async function fetchBtcPriceOnDate(dateStr: string): Promise<number | null> {
-  const csvPrice = await getBtcPriceFromCsv(dateStr);
-  if (csvPrice !== null) {
-    return csvPrice;
-  }
+function cycleFromPrices(
+  halving: (typeof HALVINGS)[number],
+  buyPrice: number | null,
+  halvingPrice: number | null,
+  sellPrice: number | null,
+): CycleResult {
+  const buyDate = addDays(halving.date, -500);
+  const sellDate = addDays(halving.date, 500);
+  return {
+    label: halving.label,
+    halvingDate: halving.date,
+    buyDate,
+    sellDate,
+    buyPrice,
+    halvingPrice,
+    sellPrice,
+    returnMultiplier: buyPrice && sellPrice ? sellPrice / buyPrice : null,
+    returnPercent: buyPrice && sellPrice ? ((sellPrice - buyPrice) / buyPrice) * 100 : null,
+    toHalvingMultiplier: buyPrice && halvingPrice ? halvingPrice / buyPrice : null,
+    toHalvingPercent:
+      buyPrice && halvingPrice ? ((halvingPrice - buyPrice) / buyPrice) * 100 : null,
+    profit: null, // computed client-side based on user input
+  };
+}
 
-  const bitstamp = await fetchWithCache(
-    CacheKeys.historicalPrice(dateStr),
-    () => fetchBtcPriceFromBitstamp(dateStr),
-    { ttl: TTL.HISTORICAL_PRICE, staleWhileRevalidate: false },
+export function emptySimulatorCycles(): CycleResult[] {
+  return HALVINGS.map((halving) => cycleFromPrices(halving, null, null, null));
+}
+
+async function buildSimulatorCycles(): Promise<CycleResult[]> {
+  const { getHistoricalBtcPrice, getHistoricalDataset } = await import("./historical-price.server");
+  const dataset = await getHistoricalDataset();
+  console.info(
+    `[simulator] dataset source=${dataset.source} size=${dataset.size} ${dataset.firstDate}→${dataset.lastDate}`,
   );
-  if (bitstamp !== null) return bitstamp;
 
-  // Last resort. 2012-cycle dates now live in btc-usd-max.csv (2011-07-17 onward).
-  return fetchBtcPriceFromBlockchain(dateStr);
+  const cycles: CycleResult[] = [];
+  for (const halving of HALVINGS) {
+    const buyDate = addDays(halving.date, -500);
+    const sellDate = addDays(halving.date, 500);
+    const [buyPrice, halvingPrice, sellPrice] = await Promise.all([
+      getHistoricalBtcPrice(buyDate),
+      getHistoricalBtcPrice(halving.date),
+      getHistoricalBtcPrice(sellDate),
+    ]);
+    cycles.push(cycleFromPrices(halving, buyPrice, halvingPrice, sellPrice));
+  }
+  return cycles;
 }
 
 export const getSimulatorData = createServerFn({ method: "GET" }).handler(async () => {
-  return fetchWithCache(
-    CacheKeys.simulator(),
-    async () => {
-      const cycles: CycleResult[] = [];
-
-      for (const halving of HALVINGS) {
-        const buyDate = addDays(halving.date, -500);
-        const sellDate = addDays(halving.date, 500);
-
-        const [buyPrice, halvingPrice, sellPrice] = await Promise.all([
-          fetchBtcPriceOnDate(buyDate),
-          fetchBtcPriceOnDate(halving.date),
-          fetchBtcPriceOnDate(sellDate),
-        ]);
-
-        cycles.push({
-          label: halving.label,
-          halvingDate: halving.date,
-          buyDate,
-          sellDate,
-          buyPrice,
-          halvingPrice,
-          sellPrice,
-          returnMultiplier: buyPrice && sellPrice ? sellPrice / buyPrice : null,
-          returnPercent: buyPrice && sellPrice ? ((sellPrice - buyPrice) / buyPrice) * 100 : null,
-          toHalvingMultiplier: buyPrice && halvingPrice ? halvingPrice / buyPrice : null,
-          toHalvingPercent:
-            buyPrice && halvingPrice ? ((halvingPrice - buyPrice) / buyPrice) * 100 : null,
-          profit: null, // computed client-side based on user input
-        });
-      }
-
-      return { cycles };
-    },
-    { ttl: TTL.SIMULATOR, staleWhileRevalidate: false },
-  );
+  try {
+    return await fetchWithCache(
+      CacheKeys.simulator(),
+      async () => ({ cycles: await buildSimulatorCycles() }),
+      { ttl: TTL.SIMULATOR, staleWhileRevalidate: false },
+    );
+  } catch (err) {
+    console.error("[simulator] failed to build historical result:", err);
+    return { cycles: emptySimulatorCycles() };
+  }
 });

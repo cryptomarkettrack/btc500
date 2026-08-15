@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Clock, Play, Pause, ArrowLeftRight } from "lucide-react";
-import type { TimelineDay } from "@/lib/timeline.functions";
+import { emptyTimelineData, type TimelineDay } from "@/lib/timeline.functions";
 import { timelineQuery } from "@/lib/queries";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { CycleCard } from "@/components/timeline/CycleCard";
@@ -55,7 +55,14 @@ export const Route = createFileRoute("/timeline")({
       twitterDescription: "Replay Bitcoin history with the BTC500 strategy.",
       schema: timelinePageSchema,
     }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(timelineQuery),
+  loader: async ({ context }) => {
+    try {
+      await context.queryClient.ensureQueryData(timelineQuery);
+    } catch (err) {
+      console.error("[timeline] loader failed; page will render an empty timeline:", err);
+      context.queryClient.setQueryData(timelineQuery.queryKey, emptyTimelineData());
+    }
+  },
   component: Timeline,
   pendingComponent: TimelinePending,
   errorComponent: ({ error }) => <RouteDataError error={error} message="Data updating..." />,

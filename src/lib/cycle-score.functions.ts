@@ -3,9 +3,7 @@
  */
 
 import { createServerFn } from "@tanstack/react-start";
-import { getBtcPriceFromCsv, getBtcPricesFromCsvRange } from "./csv-price-loader";
-import { fetchBtcPriceFromBitstamp } from "./bitstamp-fetcher";
-import { getHalvingInfo, getBtcPrice } from "./btc.functions";
+import { estimateHalvingInfo, getBtcPrice, resolveHalvingInfo } from "./btc.functions";
 import { HALVINGS, addDays } from "./halvings";
 import { computeCycle, daysBetween } from "./phase";
 import { computeCycleScore, type CycleScoreResult } from "./cycle-score";
@@ -55,13 +53,8 @@ async function fetchBearMarketComposite(): Promise<BearCompositeResult | null> {
 }
 
 async function priceOnDate(dateStr: string): Promise<number | null> {
-  const csv = await getBtcPriceFromCsv(dateStr);
-  if (csv != null) return csv;
-  return fetchWithCache(
-    CacheKeys.historicalPrice(dateStr),
-    () => fetchBtcPriceFromBitstamp(dateStr),
-    { ttl: TTL.HISTORICAL_PRICE, staleWhileRevalidate: false },
-  );
+  const { getHistoricalBtcPrice } = await import("./historical-price.server");
+  return getHistoricalBtcPrice(dateStr);
 }
 
 /**
@@ -87,7 +80,8 @@ async function estimateCycleDrawdown(
   const start = lastHalvingDate.slice(0, 10);
   const end = new Date().toISOString().slice(0, 10);
   try {
-    const map = await getBtcPricesFromCsvRange(start, end);
+    const { getHistoricalBtcPricesRange } = await import("./historical-price.server");
+    const map = await getHistoricalBtcPricesRange(start, end);
     let peak = currentPrice;
     // Also include sparse sampling via historical if CSV is thin at the end
     if (map.size > 0) {
@@ -96,7 +90,7 @@ async function estimateCycleDrawdown(
       }
     } else {
       // Fallback: monthly samples
-      let cursor = new Date(start + "T00:00:00Z");
+      const cursor = new Date(start + "T00:00:00Z");
       const endD = new Date(end + "T00:00:00Z");
       while (cursor <= endD) {
         const ds = cursor.toISOString().slice(0, 10);
@@ -116,7 +110,7 @@ async function buildCycleScore(): Promise<CycleScoreResult> {
   const now = new Date();
 
   const [halving, priceRes, bearComposite] = await Promise.all([
-    getHalvingInfo(),
+    resolveHalvingInfo(),
     getBtcPrice().catch(() => null),
     fetchBearMarketComposite().catch(() => null),
   ]);
@@ -185,9 +179,37 @@ async function buildCycleScore(): Promise<CycleScoreResult> {
   });
 }
 
-export const getCycleScore = createServerFn({ method: "GET" }).handler(async () => {
-  return fetchWithCache(CacheKeys.cycleScore(), () => buildCycleScore(), {
-    ttl: TTL.CYCLE_SCORE,
-    staleWhileRevalidate: true,
+function fallbackCycleScore(): CycleScoreResult {
+  const now = new Date();
+  const halving = estimateHalvingInfo(now.getTime());
+  const cycle = computeCycle(
+    now,
+    new Date(halving.nextHalvingDate),
+    new Date(halving.lastHalvingDate),
+  );
+  return computeCycleScore({
+    phase: cycle.phase,
+    daysFromLastHalving: Math.max(0, daysBetween(new Date(halving.lastHalvingDate), now)),
+    daysUntilBuy: cycle.daysUntilBuy,
+    daysUntilSell: cycle.daysUntilSell,
+    daysUntilHalving: Math.max(0, daysBetween(now, new Date(halving.nextHalvingDate))),
+    currentPrice: null,
+    currentMultiple: null,
+    historicalMultiples: [],
+    drawdownFromPeak: null,
+    onChainBottomPoints: null,
+    now,
   });
+}
+
+export const getCycleScore = createServerFn({ method: "GET" }).handler(async () => {
+  try {
+    return await fetchWithCache(CacheKeys.cycleScore(), () => buildCycleScore(), {
+      ttl: TTL.CYCLE_SCORE,
+      staleWhileRevalidate: true,
+    });
+  } catch (err) {
+    console.error("[cycle-score] failed to assemble score:", err);
+    return fallbackCycleScore();
+  }
 });
