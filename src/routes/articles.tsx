@@ -66,11 +66,12 @@ function Articles() {
   const filteredArticles = useMemo(() => {
     if (!searchQuery.trim()) return sortedArticles;
     const query = searchQuery.toLowerCase().trim();
-    return sortedArticles.filter((article) =>
-      article.title.toLowerCase().includes(query) ||
-      article.description.toLowerCase().includes(query) ||
-      article.keywords.toLowerCase().includes(query) ||
-      article.articleSection.toLowerCase().includes(query)
+    return sortedArticles.filter(
+      (article) =>
+        article.title.toLowerCase().includes(query) ||
+        article.description.toLowerCase().includes(query) ||
+        article.keywords.toLowerCase().includes(query) ||
+        article.articleSection.toLowerCase().includes(query),
     );
   }, [sortedArticles, searchQuery]);
 
@@ -96,15 +97,24 @@ function Articles() {
         <header className="mb-12 text-center">
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Articles</h1>
           <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-            Learn about the BTC500 investment strategy, Bitcoin halving cycles, and how to maximize
-            your returns with data-driven timing.
+            Strategy, weekly outlook, and cycle notes. Start with the{" "}
+            <Link
+              to="/bitcoin-500-day-cycle"
+              className="font-semibold text-primary hover:underline"
+            >
+              Bitcoin 500-day cycle
+            </Link>{" "}
+            if you want the methodology first.
           </p>
         </header>
 
         {/* Search Bar */}
         <div className="mb-8 max-w-xl mx-auto">
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" aria-hidden="true" />
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground"
+              aria-hidden="true"
+            />
             <Input
               type="search"
               placeholder="Search articles by keyword..."

@@ -1,6 +1,11 @@
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
+import { useNow } from "@/hooks/use-now";
+import { formatUsd } from "@/lib/format";
+import { computeCycle } from "@/lib/phase";
+import { btcPriceQuery, halvingQuery } from "@/lib/queries";
 
 interface ArticleProps {
   title: string;
@@ -9,6 +14,28 @@ interface ArticleProps {
 }
 
 export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps) {
+  const { data: halving } = useSuspenseQuery(halvingQuery);
+  const priceRes = useQuery(btcPriceQuery);
+  const now = useNow(60_000);
+  const cycle = computeCycle(
+    now,
+    new Date(halving.nextHalvingDate),
+    new Date(halving.lastHalvingDate),
+  );
+  const buyLabel = cycle.buyDate.toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+  const livePrice = priceRes.data?.price ?? null;
+  const cyclePhase =
+    cycle.phase === "wait-buy"
+      ? `Waiting to buy · ${cycle.daysUntilBuy} days to T-500`
+      : cycle.phase === "wait-sell"
+        ? `In the window · ${cycle.daysUntilSell} days to T+500`
+        : "500-day window complete";
+
   return (
     <>
       {/* Article header */}
@@ -25,7 +52,9 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
           <Clock className="h-4 w-4" />
           <span>{readTime}</span>
           <span>·</span>
-          <span>{date}</span>
+          <span>Published {date}</span>
+          <span>·</span>
+          <span>Updated August 15, 2026</span>
         </div>
         <h1 className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
       </motion.header>
@@ -47,11 +76,91 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
           </p>
 
           <p>
-            Most Monday articles chase every headline. This one does the opposite. The week ahead
-            has five events worth knowing and exactly one rule that matters: the official BTC500 buy
-            date — <strong>November 30, 2026</strong> — is now about <strong>112 days away</strong>.
-            Everything below is context for that date, not a reason to change it.
+            Most Monday articles chase every headline. This one does the opposite. The week has
+            events worth knowing and one 500-day-cycle date that does not move with the tape: the
+            official BTC500 T-500 buy date, currently <strong>{buyLabel}</strong>. Everything below
+            is context for that date, not a reason to change it.
           </p>
+
+          <div className="highlight-box">
+            <p>
+              <strong>Publication:</strong> week of August 10–16, 2026 · last updated August 15,
+              2026. Price and cycle figures below refresh with the live BTC500 feed. Weekly
+              commentary stays dated so this page can be updated in place rather than forked.
+            </p>
+          </div>
+
+          <h2>Where the 500-day cycle sits this week</h2>
+          <p>
+            This is a weekly market outlook with BTC500 cycle context — not a generic Bitcoin news
+            desk. The{" "}
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              Bitcoin 500-day cycle
+            </Link>{" "}
+            is the map; the tape this week is weather.
+          </p>
+          <div className="overflow-x-auto">
+            <table className="w-full border-collapse text-left text-sm">
+              <tbody>
+                <tr className="border-b border-border/60">
+                  <th className="py-3 pr-4 font-semibold">BTC price</th>
+                  <td className="py-3">
+                    {livePrice != null ? formatUsd(livePrice) : "Live price loading…"} (spot, BTC500
+                    feed)
+                  </td>
+                </tr>
+                <tr className="border-b border-border/60">
+                  <th className="py-3 pr-4 font-semibold">Cycle position</th>
+                  <td className="py-3">{cyclePhase}</td>
+                </tr>
+                <tr className="border-b border-border/60">
+                  <th className="py-3 pr-4 font-semibold">T-500 / buy date</th>
+                  <td className="py-3">{buyLabel}</td>
+                </tr>
+                <tr>
+                  <th className="py-3 pr-4 font-semibold">Halving / T+500</th>
+                  <td className="py-3">
+                    Next halving ~
+                    {cycle.nextHalving.toLocaleDateString("en-US", {
+                      month: "long",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}{" "}
+                    · T+500{" "}
+                    {cycle.sellDate.toLocaleDateString("en-US", {
+                      day: "numeric",
+                      month: "long",
+                      year: "numeric",
+                      timeZone: "UTC",
+                    })}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>What BTC500 is watching this week</h2>
+          <ul>
+            <li>
+              <strong>Spot ETF flows</strong> — whether institutional demand keeps absorbing new
+              issuance near the recent $65,000 area.
+            </li>
+            <li>
+              <strong>US CPI and PPI</strong> — the highest-variance macro prints on the calendar,
+              because they can shove risk assets around without changing the buy date.
+            </li>
+            <li>
+              <strong>Market structure</strong> — compressed volatility plus elevated futures
+              leverage. Flows can buy Bitcoin; leverage can unwind it.
+            </li>
+            <li>
+              <strong>The T-500 clock</strong> — none of the above moves{" "}
+              <Link to="/simulator" className="font-semibold text-primary underline">
+                the 500-day rule
+              </Link>
+              . They only change how noisy the wait feels.
+            </li>
+          </ul>
 
           {/* Hero image */}
           <figure
@@ -316,8 +425,8 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
             History is not a prediction, but every completed cycle — 2012, 2016, 2020 — rewarded the
             investor who bought on a fixed date and held through the noise. The ETF era adds a new
             buyer, not a new rule. The{" "}
-            <Link to="/" className="font-semibold text-primary underline">
-              countdown
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              500-day cycle
             </Link>{" "}
             still controls the story: 500 days before, buy. 500 days after, sell.
           </p>
@@ -376,8 +485,11 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
               <h3>What is the BTC500 strategy?</h3>
               <p>
                 Buy Bitcoin exactly 500 days before each halving, hold through the event, and sell
-                exactly 500 days after. No indicators, no day trading — one fixed rule backed by
-                historical cycle data and tracked publicly.
+                exactly 500 days after. The{" "}
+                <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+                  500-day cycle explainer
+                </Link>{" "}
+                has the dates and prices. Nothing here is financial advice.
               </p>
             </div>
           </div>
@@ -403,13 +515,17 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
             <p>
               Check the live{" "}
               <Link to="/" className="font-semibold text-primary underline">
-                halving countdown
+                cycle countdown
               </Link>
-              , run the numbers on the{" "}
+              , read the{" "}
+              <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+                500-day cycle
+              </Link>
+              , run the{" "}
               <Link to="/simulator" className="font-semibold text-primary underline">
-                investment simulator
+                simulator
               </Link>
-              , and review every cycle on the{" "}
+              , and walk the{" "}
               <Link to="/timeline" className="font-semibold text-primary underline">
                 timeline
               </Link>

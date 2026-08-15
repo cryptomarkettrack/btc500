@@ -32,6 +32,20 @@
   </url>
 
   <url>
+    <loc>https://btc500.net/bitcoin-500-day-cycle</loc>
+    <lastmod>2026-08-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.98</priority>
+    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/bitcoin-500-day-cycle" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/bitcoin-500-day-cycle" />
+    <image:image>
+      <image:loc>https://btc500.net/og/default.png</image:loc>
+      <image:title>Bitcoin 500-Day Cycle — BTC500</image:title>
+      <image:caption>Track Bitcoin from 500 days before each halving through 500 days after</image:caption>
+    </image:image>
+  </url>
+
+  <url>
     <loc>https://btc500.net/simulator</loc>
     <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -192,15 +206,15 @@
 
   <url>
     <loc>https://btc500.net/articles/bitcoin-week-ahead</loc>
-    <lastmod>2026-08-10</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bitcoin-week-ahead" />
     <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bitcoin-week-ahead" />
     <image:image>
       <image:loc>https://btc500.net/articles/weekly-brief/weekly-brief-hero.svg</image:loc>
-      <image:title>Bitcoin This Week — ETF Flows, CPI, and the $65,000 Test</image:title>
-      <image:caption>Five events, one rule: nothing changes the November 30, 2026 BTC500 buy date</image:caption>
+      <image:title>Bitcoin Weekly Outlook — Price, ETF Flows &amp; Key Events</image:title>
+      <image:caption>Weekly Bitcoin outlook with BTC500 500-day cycle context</image:caption>
     </image:image>
   </url>
 
@@ -312,7 +326,7 @@
 
   <url>
     <loc>https://btc500.net/articles/btc500-strategy</loc>
-    <lastmod>2026-07-13</lastmod>
+    <lastmod>2026-08-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
     <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/btc500-strategy" />

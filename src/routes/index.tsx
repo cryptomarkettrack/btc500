@@ -16,9 +16,9 @@ import { HomePage } from "@/components/home/HomePage";
 const homePageSchema = [
   generateWebPageSchema({
     path: "/",
-    name: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
+    name: "Bitcoin 500-Day Cycle | BTC500",
     description:
-      "When is 500 days before the next Bitcoin halving? Track the live buy date, cycle score, and BTC500 rule: buy 500 days before each halving and sell 500 days after.",
+      "Track Bitcoin's historical performance from 500 days before the halving through 500 days after it. Live countdown, cycle score, and free simulator.",
     breadcrumbs: [{ name: "Home", path: "/" }],
   }),
   generateSpeakableSchema({
@@ -33,18 +33,18 @@ export const Route = createFileRoute("/")({
   head: () =>
     generatePageHead({
       path: "/",
-      title: "Bitcoin Halving Countdown — 500 Days Before | BTC500",
+      title: "Bitcoin 500-Day Cycle — Halving Countdown | BTC500",
       description:
-        "When is 500 days before the next Bitcoin halving? Live buy-date countdown, cycle score, and a free simulator that backtests the BTC500 rule since 2012.",
+        "Track Bitcoin from 500 days before the halving through 500 days after. When is 500 days before the next Bitcoin halving? Live countdown and free simulator.",
       keywords:
-        "when is 500 days before the next bitcoin halving, Bitcoin halving countdown, Bitcoin 500 day cycle, BTC500, Bitcoin strategy, next Bitcoin halving, buy Bitcoin before halving",
-      ogTitle: "BTC500 — Bitcoin Halving Countdown & Investment Strategy",
+        "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving",
+      ogTitle: "Bitcoin 500-Day Cycle | BTC500",
       ogDescription:
-        "When is 500 days before the next Bitcoin halving? Buy then. Sell 500 days after. Live cycle score and historical returns.",
-      ogImageAlt: "BTC500 — Bitcoin Halving Countdown & Strategy Dashboard",
-      twitterTitle: "Bitcoin Halving Countdown — 500 Days Before | BTC500",
+        "Track Bitcoin's historical performance from 500 days before the halving through 500 days after it. Live countdown and free simulator.",
+      ogImageAlt: "BTC500 — Bitcoin 500-Day Cycle countdown",
+      twitterTitle: "Bitcoin 500-Day Cycle — Halving Countdown | BTC500",
       twitterDescription:
-        "When is 500 days before the next Bitcoin halving? Live countdown and free simulator.",
+        "Track Bitcoin from 500 days before each halving through 500 days after. Live countdown and free simulator.",
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {

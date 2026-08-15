@@ -131,7 +131,14 @@ export function HomePage() {
           <Btc500Hero
             price={priceRes.data?.price ?? null}
             daysLeft={buyDays}
-            title={`Bitcoin Halving Countdown & The BTC<span class="text-primary">500</span> Strategy`}
+            title={`Bitcoin <span class="text-primary">500-Day</span> Cycle`}
+            srTitle="Bitcoin 500-Day Cycle — historical performance from 500 days before each halving through 500 days after"
+            tagline={
+              <span className="font-semibold text-foreground">
+                Track Bitcoin&apos;s historical performance from 500 days before the halving through
+                500 days after it.
+              </span>
+            }
           />
 
           {/* ===== 1b. HERO DUAL CTAs ===== */}
@@ -142,7 +149,7 @@ export function HomePage() {
               className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
             >
               <Calculator className="h-4 w-4" />
-              Calculate My Returns
+              Explore the Simulator
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
@@ -151,27 +158,55 @@ export function HomePage() {
               className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
             >
               <LineChart className="h-4 w-4" />
-              See the Timeline
+              View the Timeline
             </Link>
           </div>
           <p className="text-center text-xs text-muted-foreground">
             Free · No signup · Live data from Binance, CoinGecko & Bitstamp
           </p>
 
+          <nav
+            aria-label="BTC500 core pages"
+            className="mx-auto grid w-full max-w-3xl gap-2 sm:grid-cols-2"
+          >
+            <ClusterLink
+              to="/bitcoin-500-day-cycle"
+              label="Bitcoin 500-Day Cycle"
+              hint="How T-500 and T+500 are defined"
+            />
+            <ClusterLink
+              to="/simulator"
+              label="Simulator"
+              hint="Backtest $500, $1,000, or any amount"
+            />
+            <ClusterLink to="/timeline" label="Timeline" hint="Replay each historical window" />
+            <ClusterLink
+              to="/articles/btc500-strategy"
+              label="BTC500 Strategy"
+              hint="When the rule buys and sells"
+            />
+          </nav>
+
           <section
             aria-labelledby="definition-heading"
             className="mx-auto w-full max-w-3xl rounded-2xl border border-border/60 bg-card px-5 py-5 sm:px-6"
           >
             <h2 id="definition-heading" className="text-sm font-semibold text-foreground">
-              What is BTC500?
+              What is the Bitcoin 500-day cycle?
             </h2>
             <p
               id="btc500-definition"
               className="mt-2 text-sm leading-relaxed text-muted-foreground"
             >
-              BTC500 is a rules-based Bitcoin approach: buy exactly 500 days before each halving and
-              sell exactly 500 days after. The site is free educational software with a live
-              countdown, historical simulator, and cycle tools. Nothing here is financial advice.
+              BTC500 measures one window: 500 days before each Bitcoin halving through 500 days
+              after it. The live countdown on this page is that window for the current cycle. The{" "}
+              <Link
+                to="/bitcoin-500-day-cycle"
+                className="font-semibold text-primary hover:underline"
+              >
+                500-day cycle explainer
+              </Link>{" "}
+              is the full methodology. Nothing here is financial advice.
             </p>
             <div className="mt-4 border-t border-border/50 pt-4">
               <h2 className="text-sm font-semibold text-foreground">
@@ -249,8 +284,15 @@ export function HomePage() {
               How BTC<span className="text-primary">500</span> Works
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-              A dead-simple, rules-based Bitcoin investment strategy built around the halving cycle.
-              No charts, no TA, no emotions.
+              One 500-day window around each Bitcoin halving. Buy at T-500, hold through the event,
+              sell at T+500. The{" "}
+              <Link
+                to="/bitcoin-500-day-cycle"
+                className="font-semibold text-primary hover:underline"
+              >
+                cycle explainer
+              </Link>{" "}
+              has the dates and prices.
             </p>
           </div>
 
@@ -472,6 +514,14 @@ export function HomePage() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
+              to="/bitcoin-500-day-cycle"
+              icon={BookOpen}
+              title="Bitcoin 500-Day Cycle"
+              description="The canonical explainer: T-500, T+500, and every completed window with real prices."
+              accent="var(--primary)"
+              accentSoft="var(--primary-soft)"
+            />
+            <FeatureCard
               to="/simulator"
               icon={Calculator}
               title="Investment Simulator"
@@ -574,7 +624,7 @@ export function HomePage() {
           <div className="grid gap-4 sm:grid-cols-3">
             {/* Pinned strategy primer — the entry point into the product */}
             <Link
-              to="/articles/btc500-strategy"
+              to="/bitcoin-500-day-cycle"
               className="group block rounded-[24px] border-2 border-primary/30 bg-primary-soft/40 p-6 transition-all hover:border-primary hover:bg-primary-soft/60"
             >
               <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
@@ -582,14 +632,14 @@ export function HomePage() {
                 Start here
               </div>
               <h3 className="text-base font-semibold leading-snug group-hover:text-primary transition-colors">
-                Bitcoin Halving Strategy: Buy 500 Days Before, Sell 500 Days After (Backtested)
+                Bitcoin 500-Day Cycle
               </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                The BTC500 rule explained with real historical returns across every halving since
-                2012.
+                How T-500 and T+500 are defined, what previous windows returned, and where the
+                current cycle sits.
               </p>
               <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary">
-                Read the strategy primer
+                Read the cycle explainer
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
               </div>
             </Link>
@@ -666,7 +716,7 @@ export function HomePage() {
                   Simulate My Returns
                 </Link>
                 <Link
-                  to="/articles"
+                  to="/articles/btc500-strategy"
                   className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
                 >
                   <BookOpen className="h-4 w-4" />
@@ -713,6 +763,29 @@ function formatUtcDay(d: Date): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function ClusterLink({
+  to,
+  label,
+  hint,
+}: {
+  to: "/bitcoin-500-day-cycle" | "/simulator" | "/timeline" | "/articles/btc500-strategy";
+  label: string;
+  hint: string;
+}) {
+  return (
+    <Link
+      to={to}
+      className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card px-4 py-3 text-left transition-all hover:border-primary/40"
+    >
+      <span>
+        <span className="block text-sm font-semibold">{label}</span>
+        <span className="mt-0.5 block text-xs text-muted-foreground">{hint}</span>
+      </span>
+      <ArrowRight className="h-4 w-4 shrink-0 text-primary" />
+    </Link>
+  );
 }
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {

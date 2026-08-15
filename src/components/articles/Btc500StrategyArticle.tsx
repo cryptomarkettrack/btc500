@@ -1,3 +1,4 @@
+import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
 
@@ -38,13 +39,17 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
       >
         <div className="space-y-6 text-foreground/90 leading-relaxed">
           <p className="lead">
-            What if we told you there's a Bitcoin investment strategy so simple, it can be explained
-            in one sentence—yet so powerful, it has consistently outperformed nearly every other
-            approach? Welcome to{" "}
+            People searching for when to buy Bitcoin before a halving usually want a date, not
+            another indicator stack.{" "}
             <strong>
               BTC<span className="text-primary">500</span>
-            </strong>
-            : buy 500 days before each halving, sell 500 days after.
+            </strong>{" "}
+            is one published answer: buy 500 days before each halving, sell 500 days after. The{" "}
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              Bitcoin 500-day cycle
+            </Link>{" "}
+            page is the methodology. This article is the decision walkthrough — including when the
+            rule does <em>not</em> sell.
           </p>
 
           <div className="strategy-box">
@@ -114,6 +119,80 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
               <strong>April 2024:</strong> Fourth halving (6.25 BTC → 3.125 BTC reward)
             </li>
           </ul>
+
+          <h2>When to buy Bitcoin before the halving</h2>
+          <p>
+            The BTC<span className="text-primary">500</span> buy date is T-500: exactly 500 calendar
+            days before the next estimated halving. It is a measurement date, not a claim that the
+            market has bottomed. Historically it has landed in the later part of the post-peak
+            decline or the early recovery — after a lot of the bear-market pain, and before the
+            event itself.
+          </p>
+          <p>
+            The live date moves with block time. Check the{" "}
+            <Link to="/" className="font-semibold text-primary underline">
+              homepage countdown
+            </Link>{" "}
+            rather than memorizing a calendar day. To see what cash put to work on previous T-500
+            dates would have become, use the{" "}
+            <Link to="/simulator" className="font-semibold text-primary underline">
+              simulator
+            </Link>
+            . $500 and $1,000 are valid starting amounts; the math is the same as $50,000.
+          </p>
+
+          <h2>Should you buy Bitcoin before or after the halving?</h2>
+          <p>
+            BTC500 studies a pre-halving entry. That is not the same as saying “after the halving is
+            too late.” Buying after the event is a different rule with a shorter remaining window
+            and a different set of historical prints. The honest comparison is on the{" "}
+            <Link to="/timeline" className="font-semibold text-primary underline">
+              timeline
+            </Link>
+            : look at the price at T-500, at the halving, and at T+500, then decide whether the
+            first half of the window is something you actually want.
+          </p>
+          <p>
+            Nobody on this site can tell you whether <em>you</em> should buy before or after. That
+            depends on time horizon, taxes, and risk you can hold through. The 500-day rule exists
+            so the dates can be audited. It is not financial advice.
+          </p>
+
+          <h2>Should you sell Bitcoin before the halving?</h2>
+          <p>
+            The BTC500 rule does not sell before the event. Selling before the halving would lock in
+            only the T-500-to-halving stretch and skip the post-event half of the window. In
+            completed cycles that second half was often a large share of the full-window move. That
+            is a historical observation, not a promise that the next post-halving stretch will rise.
+          </p>
+          <p>
+            If your plan is to sell into the headline, you are running a different strategy. Publish
+            that rule and backtest it. Do not borrow BTC500’s name for a pre-halving exit it does
+            not make.
+          </p>
+
+          <h2>When to sell Bitcoin after the halving</h2>
+          <p>
+            The historical exit is T+500 — about 16 months after the event. That date is one
+            rules-based sell, not a forecast of the cycle top. Some completed windows were still
+            advancing then; others had already cooled. After T+500 the rule sits in cash until the
+            next T-500, which historically covered the 2018 and 2022 drawdowns and also missed
+            whatever happened in those gaps.
+          </p>
+          <p>
+            Compare T+500 against buy-and-hold on the simulator before treating the cash window as
+            an advantage. Past performance does not guarantee future results.
+          </p>
+
+          <h2>The Bitcoin 500-day cycle, in one picture</h2>
+          <p>
+            T-500 → halving → T+500 is the entire map. The{" "}
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              500-day cycle explainer
+            </Link>{" "}
+            lists every date and price from the same archive this article refers to. If a number is
+            missing there, it is missing here too. We do not invent a close.
+          </p>
 
           <h2>Why This Strategy Works</h2>
 
@@ -276,10 +355,21 @@ export function Btc500StrategyArticle({ title, date, readTime }: ArticleProps) {
           </p>
 
           <p>
-            Remember, the best strategy is one you can stick to. BTC
-            <span className="text-primary">500</span>'s simplicity makes it easy to follow through
-            on, even during volatile market conditions. As you continue your Bitcoin journey, keep
-            this strategy in your toolkit—it might just be the most powerful tool you have.
+            The best rule is one you can stick to. BTC
+            <span className="text-primary">500</span> is simple enough to follow when the tape is
+            loud. It is not a promise. Run the{" "}
+            <Link to="/simulator" className="font-semibold text-primary underline">
+              simulator
+            </Link>
+            , walk the{" "}
+            <Link to="/timeline" className="font-semibold text-primary underline">
+              timeline
+            </Link>
+            , and read the{" "}
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              500-day cycle
+            </Link>{" "}
+            before treating any date as a plan.
           </p>
         </div>
       </motion.article>

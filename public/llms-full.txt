@@ -43,6 +43,17 @@ The site is free educational software and market data tooling. It includes a liv
 - Historically, lower issuance has coincided with major multi-year price cycles.
 - The exact next-halving date depends on Bitcoin's average block time; BTC500 tracks live block height and estimates the countdown automatically.
 
+### Bitcoin 500-day cycle (canonical explainer)
+
+The named concept is the **Bitcoin 500-day cycle**: Bitcoin's historical performance from **500 days before** each halving (**T-500**) through **500 days after** it (**T+500**).
+
+Canonical page: https://btc500.net/bitcoin-500-day-cycle
+
+- T-500 is the BTC500 buy date. T+500 is the BTC500 sell date.
+- Cycles are compared by lining those two dates up across 2012, 2016, 2020, and 2024 using the same daily price archive as the simulator.
+- Historical performance is not a guarantee of future results. Four halvings is a small sample.
+- Related pages: https://btc500.net/simulator · https://btc500.net/timeline · https://btc500.net/articles/btc500-strategy · https://btc500.net/articles/bitcoin-week-ahead
+
 ### BTC500 buy/sell windows
 
 | Halving | Buy window (500 days before) | Sell window (500 days after) |
@@ -121,11 +132,11 @@ Goldman Sachs is acquiring NEOS, an ETF issuer running covered-call bitcoin inco
 ### Bitcoin's Strongest Hands Are Back
 The count of elite Bitcoin wallets holding more than 10,000 BTC hit a six-month high of 90 (as of August 11, 2026), a combined floor of 900,000+ BTC worth over $58 billion at current prices. Mid-sized whales (1,000–10,000 BTC) accumulated first and the largest wallets followed — the classic smart-money pattern. The strongest hands kept accumulating through the Coldcard exploit and the CLARITY Act delay; the signal is accumulation, not panic. https://btc500.net/articles/strongest-hands
 
-### Bitcoin This Week
-Weekly brief for August 10–16, 2026: daily spot ETF flow reports (net inflows around $850M–$1B the prior week, ~4x daily mining issuance), US CPI and PPI mid-week, weekly jobless claims, and a Friday BTC options expiry. Bitcoin is trading near $65,000 with DVOL near 35. None of it changes the one rule that matters: buy exactly 500 days before the halving on November 30, 2026. https://btc500.net/articles/bitcoin-week-ahead
+### Bitcoin Weekly Outlook
+Recurring weekly outlook for August 10–16, 2026 (updated in place): Bitcoin price, spot ETF flows (~$850M–$1B the prior week, ~4x daily mining issuance), US CPI and PPI, jobless claims, options expiry, and current BTC500 500-day-cycle position. The page pairs current market information with cycle context rather than generic news. https://btc500.net/articles/bitcoin-week-ahead
 
 ### The BTC500 Strategy
-A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle: buy 500 days before, sell 500 days after. https://btc500.net/articles/btc500-strategy
+When to buy Bitcoin before the halving (T-500), whether that is the same as buying after the event, why the rule does not sell before the halving, and when T+500 is used as the historical exit. Not financial advice. https://btc500.net/articles/btc500-strategy
 
 ### Why BTC500 Exists
 The most expensive mistake Bitcoin investors keep repeating is buying too early during bear markets. The BTC500 strategy was created to discipline entry timing around halvings. https://btc500.net/articles/why-btc500-exists

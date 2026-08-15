@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Clock, Play, Pause, ArrowLeftRight } from "lucide-react";
@@ -345,9 +345,9 @@ function Timeline() {
               How to Read the BTC500 Time Machine
             </h2>
             <p>
-              The time machine replays Bitcoin&apos;s price history around each halving. It follows a
-              hypothetical $20,000 investment through the current cycle and the previous cycle using
-              actual historical prices, letting you drag the timeline or press play to watch a
+              The time machine replays Bitcoin&apos;s price history around each halving. It follows
+              a hypothetical $20,000 investment through the current cycle and the previous cycle
+              using actual historical prices, letting you drag the timeline or press play to watch a
               halving cycle unfold day by day.
             </p>
             <p>
@@ -357,8 +357,27 @@ function Timeline() {
               fact.
             </p>
             <p>
-              Only confirmed historical prices are used here — there are no future price predictions.
-              Past performance does not guarantee future results.
+              Only confirmed historical prices are used here — there are no future price
+              predictions. Past performance does not guarantee future results. For the full T-500 /
+              T+500 methodology see the{" "}
+              <Link
+                to="/bitcoin-500-day-cycle"
+                className="font-semibold text-primary hover:underline"
+              >
+                Bitcoin 500-day cycle
+              </Link>
+              . Run the same dates in the{" "}
+              <Link to="/simulator" className="font-semibold text-primary hover:underline">
+                simulator
+              </Link>{" "}
+              or read the{" "}
+              <Link
+                to="/articles/btc500-strategy"
+                className="font-semibold text-primary hover:underline"
+              >
+                strategy
+              </Link>
+              .
             </p>
           </div>
 

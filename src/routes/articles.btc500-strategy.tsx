@@ -46,17 +46,31 @@ function Btc500StrategyPage() {
           className="mt-16 rounded-[24px] border border-border/60 bg-card p-8"
         >
           <div className="text-center">
-            <h3 className="text-xl font-semibold">Continue Reading</h3>
+            <h3 className="text-xl font-semibold">See the dates against real prices</h3>
             <p className="mt-2 text-muted-foreground">
-              Explore more articles about the BTC500 strategy and Bitcoin investment insights.
+              The 500-day cycle explainer lists every window. The simulator runs the same rule on
+              any starting amount.
             </p>
-            <Link
-              to="/articles"
-              className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
-            >
-              <ArrowLeft className="h-4 w-4" />
-              Back to All Articles
-            </Link>
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <Link
+                to="/bitcoin-500-day-cycle"
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
+              >
+                Bitcoin 500-Day Cycle
+              </Link>
+              <Link
+                to="/simulator"
+                className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold transition-all hover:border-primary/40 hover:text-primary"
+              >
+                Open the simulator
+              </Link>
+              <Link
+                to="/timeline"
+                className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold transition-all hover:border-primary/40 hover:text-primary"
+              >
+                View the timeline
+              </Link>
+            </div>
           </div>
         </motion.div>
       </main>

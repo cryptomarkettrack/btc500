@@ -221,8 +221,8 @@ export const CacheKeys = {
   /** DCA comparison data */
   dca: (buyDays: number, sellDays: number) => `btc:dca:${buyDays}:${sellDays}`,
 
-  /** Simulator data */
-  simulator: () => "btc:simulator:v2",
+  /** Simulator data (v3 includes price on the halving date) */
+  simulator: () => "btc:simulator:v3",
 
   /** blockchain.info daily market-price series */
   blockchainSeries: () => "btc:blockchain-series",

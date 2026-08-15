@@ -8,7 +8,9 @@ import { dateToMs } from "./halvings";
 
 export type CapitalMode = "compound" | "repeat";
 
-export const AMOUNT_PRESETS = [10_000, 25_000, 50_000, 100_000, 250_000, 1_000_000] as const;
+export const AMOUNT_PRESETS = [
+  500, 1_000, 10_000, 25_000, 50_000, 100_000, 250_000, 1_000_000,
+] as const;
 export const START_YEARS = [2012, 2016, 2020, 2024] as const;
 export type StartYear = (typeof START_YEARS)[number];
 
@@ -41,9 +43,11 @@ export interface CycleRun {
   buyDate: string;
   sellDate: string;
   buyPrice: number | null;
+  halvingPrice: number | null;
   sellPrice: number | null;
   returnMultiplier: number | null;
   returnPercent: number | null;
+  toHalvingPercent: number | null;
   startCapital: number;
   endCapital: number | null;
   profit: number | null;
@@ -181,9 +185,11 @@ function toCycleRun(cycle: CycleResult, startCapital: number): CycleRun {
     buyDate: cycle.buyDate,
     sellDate: cycle.sellDate,
     buyPrice: cycle.buyPrice,
+    halvingPrice: cycle.halvingPrice,
     sellPrice: cycle.sellPrice,
     returnMultiplier: cycle.returnMultiplier,
     returnPercent: cycle.returnPercent,
+    toHalvingPercent: cycle.toHalvingPercent,
     startCapital,
     endCapital,
     profit,

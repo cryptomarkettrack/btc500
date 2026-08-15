@@ -83,6 +83,12 @@ const tools: NavItem[] = [
 
 const research: NavItem[] = [
   {
+    to: "/bitcoin-500-day-cycle",
+    label: "500-Day Cycle",
+    description: "T-500, T+500, and the record",
+    icon: CalendarDays,
+  },
+  {
     to: "/news",
     label: "News",
     description: "Curated crypto headlines",

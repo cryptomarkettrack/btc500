@@ -51,21 +51,21 @@ export const articles: ArticleMeta[] = [
   {
     id: "btc500-strategy",
     slug: "btc500-strategy",
-    title: "BTC500 Strategy: Buy 500 Days Before Halving",
+    title: "BTC500 Strategy: When to Buy Bitcoin Before the Halving",
     description:
-      "A deep dive into the simplest and most effective Bitcoin investment strategy based on the halving cycle.",
+      "Should you buy Bitcoin before or after the halving — and when to sell after it? A rules-based look at the 500-day cycle, with historical windows, not guarantees.",
     keywords:
-      "Bitcoin halving strategy, BTC500 strategy, buy 500 days before halving, sell 500 days after, Bitcoin investment timing, halving cycle strategy",
+      "when to buy Bitcoin before halving, should I buy Bitcoin before or after halving, should you sell Bitcoin before the halving, when to sell Bitcoin after halving, Bitcoin 500-day cycle, BTC500 strategy",
     date: "January 15, 2024",
     dateISO: "2024-01-15",
-    dateModified: "2026-07-13",
-    dateModifiedISO: "2026-07-13",
-    readTime: "8 min read",
-    wordCount: 2500,
+    dateModified: "August 15, 2026",
+    dateModifiedISO: "2026-08-15",
+    readTime: "12 min read",
+    wordCount: 3400,
     ogImage: `${SITE_URL}/og/default.png`,
     articleSection: "Bitcoin Investment Strategy",
     schemaKeywords:
-      "Bitcoin halving, BTC500, Bitcoin strategy, investment strategy, halving countdown, Bitcoin trading",
+      "when to buy Bitcoin before the halving, BTC500 strategy, Bitcoin 500-day cycle, sell after Bitcoin halving, Bitcoin investment timing",
   },
   {
     id: "why-btc500-exists",
@@ -203,21 +203,21 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-week-ahead",
     slug: "bitcoin-week-ahead",
-    title: "Bitcoin This Week: ETF Flows, CPI & the $65,000 Test",
+    title: "Bitcoin Weekly Outlook: Price, ETF Flows & Key Events",
     description:
-      "What matters in Bitcoin this week: spot ETF flows, US CPI, options expiry, and the official BTC500 buy date on November 30, 2026.",
+      "This week’s Bitcoin price, spot ETF flows, CPI/PPI, and market structure — plus where the 500-day halving cycle sits right now.",
     keywords:
-      "Bitcoin this week, Bitcoin weekly outlook, Bitcoin week ahead, Bitcoin ETF flows, Bitcoin ETF inflows, Bitcoin CPI, Bitcoin $65000, Bitcoin 65k resistance, Bitcoin macro week, BTC ETF inflows, Bitcoin halving countdown, BTC500 strategy",
+      "Bitcoin weekly outlook, Bitcoin price this week, Bitcoin ETF flows, Bitcoin CPI, Bitcoin week ahead, Bitcoin market structure, BTC500 cycle, Bitcoin key events",
     date: "August 10, 2026",
     dateISO: "2026-08-10",
-    dateModified: "2026-08-10",
-    dateModifiedISO: "2026-08-10",
-    readTime: "8 min read",
-    wordCount: 2100,
+    dateModified: "August 15, 2026",
+    dateModifiedISO: "2026-08-15",
+    readTime: "9 min read",
+    wordCount: 2400,
     ogImage: `${SITE_URL}/og/default.png`,
     articleSection: "Bitcoin Market Analysis",
     schemaKeywords:
-      "Bitcoin this week, Bitcoin weekly outlook, Bitcoin ETF flows, Bitcoin ETF inflows, Bitcoin CPI, Bitcoin week ahead, BTC ETF inflows, Bitcoin halving countdown, BTC500 strategy",
+      "Bitcoin weekly outlook, Bitcoin price, Bitcoin ETF flows, Bitcoin key events, Bitcoin CPI, BTC500 500-day cycle",
   },
   {
     id: "bip-110-rejection",

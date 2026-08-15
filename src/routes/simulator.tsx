@@ -59,12 +59,38 @@ const simulatorHowToSchema = {
   ],
 };
 
+const simulatorAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "BTC500 Bitcoin Halving Simulator",
+  url: `${SITE_URL}/simulator`,
+  applicationCategory: "FinanceApplication",
+  operatingSystem: "Any",
+  browserRequirements: "Requires JavaScript",
+  isAccessibleForFree: true,
+  description:
+    "Free backtest of the Bitcoin 500-day cycle: buy 500 days before each halving and sell 500 days after, using historical daily prices.",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+    availability: "https://schema.org/InStock",
+  },
+  featureList: [
+    "T-500 and T+500 backtest",
+    "Custom starting amount including $500 and $1,000",
+    "Reinvest or repeat the same cash each cycle",
+    "Buy-and-hold comparison",
+    "2012, 2016, 2020, and 2024 windows",
+  ],
+};
+
 const simulatorPageSchema = [
   generateWebPageSchema({
     path: "/simulator",
-    name: "BTC500 Simulator — What $50,000 Did Across Bitcoin Halvings",
+    name: "Bitcoin Halving Simulator — 500-Day Cycle",
     description:
-      "Backtest the BTC500 rule with real Bitcoin prices. Reinvest $50,000 through every completed cycle since 2012, or run the same amount in each 500-day window.",
+      "What would $500, $1,000, or another amount have become if invested 500 days before a Bitcoin halving? Backtest the BTC500 500-day cycle with real prices.",
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: "Simulator", path: "/simulator" },
@@ -73,6 +99,7 @@ const simulatorPageSchema = [
   }),
   generateDatasetSchema(),
   generateFaqSchema(SIMULATOR_FAQ),
+  simulatorAppSchema,
   generateSpeakableSchema({
     path: "/simulator",
     cssSelectors: [".lead"],
@@ -86,17 +113,17 @@ export const Route = createFileRoute("/simulator")({
   head: () =>
     generatePageHead({
       path: "/simulator",
-      title: "BTC500 Simulator — What $50,000 Did Across Bitcoin Halvings",
+      title: "Bitcoin Halving Simulator — 500-Day Cycle | BTC500",
       description:
-        "Backtest the BTC500 rule with real prices. Reinvest $50,000 through every completed cycle since 2012, or run the same amount each window.",
+        "What would $500, $1,000, or another investment have become if invested 500 days before a Bitcoin halving? Real historical prices. Not financial advice.",
       keywords:
-        "Bitcoin halving simulator, BTC500 calculator, Bitcoin investment returns, $50000 Bitcoin, reinvest Bitcoin halving, halving cycle returns, Bitcoin strategy backtest, crypto investment calculator, Bitcoin profit calculator",
-      ogTitle: "BTC500 Simulator — What $50,000 Did Across Bitcoin Halvings",
+        "Bitcoin halving simulator, Bitcoin 500 day cycle, BTC500 calculator, $500 Bitcoin, $1000 Bitcoin, 500 days before Bitcoin halving, Bitcoin strategy backtest",
+      ogTitle: "Bitcoin Halving Simulator — 500-Day Cycle | BTC500",
       ogDescription:
-        "Reinvest $50,000 through every completed BTC500 window since 2012, or run the same amount each cycle. Real historical prices. Not financial advice.",
-      ogImageAlt: "BTC500 Simulator — Bitcoin Investment Returns Calculator",
+        "See what $500, $1,000, or another amount would have become across Bitcoin’s 500-day halving windows. Real prices. Not financial advice.",
+      ogImageAlt: "Bitcoin Halving Simulator — 500-Day Cycle | BTC500",
       twitterDescription:
-        "Backtest the BTC500 rule with $50,000 across every completed Bitcoin halving cycle.",
+        "Backtest $500, $1,000, or any amount across Bitcoin’s 500-day halving cycle.",
       schema: simulatorPageSchema,
     }),
   loader: ({ context }) => context.queryClient.ensureQueryData(simulatorQuery),

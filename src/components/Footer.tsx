@@ -13,8 +13,8 @@ export function Footer() {
               BTC<span className="text-primary">500</span>
             </Link>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              Bitcoin halving countdown and investment strategy platform. Buy 500 days before
-              halving, sell 500 days after.
+              Bitcoin 500-day cycle tools. Track performance from 500 days before each halving
+              through 500 days after.
             </p>
             <p className="mt-3 text-[11px] text-muted-foreground">
               <a href={SITE_URL} className="hover:text-foreground transition-colors" rel="home">
@@ -35,6 +35,14 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Halving Countdown
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/bitcoin-500-day-cycle"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Bitcoin 500-Day Cycle
                 </Link>
               </li>
               <li>
@@ -128,10 +136,26 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/bitcoin-500-day-cycle"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  500-Day Cycle Explainer
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/articles/btc500-strategy"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  What is BTC500?
+                  BTC500 Strategy
+                </Link>
+              </li>
+              <li>
+                <Link
+                  to="/articles/bitcoin-week-ahead"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  Weekly Outlook
                 </Link>
               </li>
               <li>

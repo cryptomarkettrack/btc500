@@ -11,9 +11,14 @@ export interface CycleResult {
   buyDate: string;
   sellDate: string;
   buyPrice: number | null;
+  /** BTC price on the halving date itself, when a historical print exists. */
+  halvingPrice: number | null;
   sellPrice: number | null;
   returnMultiplier: number | null;
   returnPercent: number | null;
+  /** T-500 → halving return, when both prices exist. */
+  toHalvingMultiplier: number | null;
+  toHalvingPercent: number | null;
   profit: number | null;
 }
 
@@ -51,8 +56,9 @@ export const getSimulatorData = createServerFn({ method: "GET" }).handler(async 
         const buyDate = addDays(halving.date, -500);
         const sellDate = addDays(halving.date, 500);
 
-        const [buyPrice, sellPrice] = await Promise.all([
+        const [buyPrice, halvingPrice, sellPrice] = await Promise.all([
           fetchBtcPriceOnDate(buyDate),
+          fetchBtcPriceOnDate(halving.date),
           fetchBtcPriceOnDate(sellDate),
         ]);
 
@@ -62,9 +68,13 @@ export const getSimulatorData = createServerFn({ method: "GET" }).handler(async 
           buyDate,
           sellDate,
           buyPrice,
+          halvingPrice,
           sellPrice,
           returnMultiplier: buyPrice && sellPrice ? sellPrice / buyPrice : null,
           returnPercent: buyPrice && sellPrice ? ((sellPrice - buyPrice) / buyPrice) * 100 : null,
+          toHalvingMultiplier: buyPrice && halvingPrice ? halvingPrice / buyPrice : null,
+          toHalvingPercent:
+            buyPrice && halvingPrice ? ((halvingPrice - buyPrice) / buyPrice) * 100 : null,
           profit: null, // computed client-side based on user input
         });
       }

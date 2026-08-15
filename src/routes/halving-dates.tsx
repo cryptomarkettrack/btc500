@@ -280,6 +280,13 @@ function HalvingDates() {
         {/* CTA */}
         <div className="flex flex-wrap justify-center gap-3">
           <Link
+            to="/bitcoin-500-day-cycle"
+            className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+          >
+            <BookOpen className="h-4 w-4" />
+            Bitcoin 500-Day Cycle
+          </Link>
+          <Link
             to="/simulator"
             className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
           >

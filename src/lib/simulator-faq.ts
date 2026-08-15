@@ -29,4 +29,9 @@ export const SIMULATOR_FAQ = [
     answer:
       "No. A handful of completed halvings is a small sample. Later cycles have produced smaller multiples as Bitcoin matured. The next window can be better, worse, or fail. Past performance does not guarantee future results, and nothing here is financial advice.",
   },
+  {
+    question: "What would $500 or $1,000 have become?",
+    answer:
+      "Use the starting-amount field or the $500 and $1,000 presets. The result is the same rule applied to that cash: buy 500 days before each selected halving and sell 500 days after, using historical daily prices. Change the first cycle to see how much of the dollar result comes from 2012 versus later windows.",
+  },
 ] as const;

@@ -7,7 +7,6 @@ import {
   Bitcoin,
   BookOpen,
   Calculator,
-  CalendarDays,
   Check,
   ChevronDown,
   Copy,
@@ -164,14 +163,15 @@ function Header({ amount }: { amount: number }) {
     <header className="mb-2 text-center">
       <div className="flex items-center justify-center gap-3">
         <Calculator className="h-8 w-8 text-primary" />
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          BTC<span className="text-primary">500</span> Simulator
-        </h1>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Bitcoin Halving Simulator</h1>
       </div>
+      <p className="mt-2 text-sm font-semibold uppercase tracking-[0.16em] text-primary">
+        500-day cycle · BTC<span className="text-primary">500</span>
+      </p>
       <p className="lead mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-        See what {formatUsd(amount)} would have become under one rule: buy 500 days before each
-        Bitcoin halving, sell 500 days after. Change the stake, the first cycle, and whether profits
-        roll forward.
+        What would {formatUsd(amount)} have become if invested 500 days before a Bitcoin halving?
+        The same question works for $500, $1,000, or any other amount. One rule: buy at T-500, sell
+        at T+500.
       </p>
     </header>
   );
@@ -264,7 +264,7 @@ function Controls({
                     : "border border-border/60 text-muted-foreground hover:border-primary/40 hover:text-foreground",
                 )}
               >
-                {preset >= 1_000_000 ? "$1M" : `$${preset / 1000}K`}
+                {formatPreset(preset)}
               </button>
             ))}
           </div>
@@ -669,10 +669,10 @@ function CycleGrid({ run }: { run: SimulatorRun }) {
               )}
             </div>
 
-            <div className="mt-4 grid grid-cols-2 gap-3">
+            <div className="mt-4 grid grid-cols-3 gap-3">
               <div className="rounded-2xl bg-muted/60 px-4 py-3">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Buy
+                  T-500
                 </div>
                 <div className="mt-1 text-sm font-semibold">{formatIsoDay(cycle.buyDate)}</div>
                 <div className="mt-0.5 text-xs text-muted-foreground">
@@ -683,7 +683,18 @@ function CycleGrid({ run }: { run: SimulatorRun }) {
               </div>
               <div className="rounded-2xl bg-muted/60 px-4 py-3">
                 <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  Sell
+                  Halving
+                </div>
+                <div className="mt-1 text-sm font-semibold">{formatIsoDay(cycle.halvingDate)}</div>
+                <div className="mt-0.5 text-xs text-muted-foreground">
+                  {cycle.halvingPrice !== null
+                    ? `BTC @ ${formatUsd(cycle.halvingPrice)}`
+                    : "Price unavailable"}
+                </div>
+              </div>
+              <div className="rounded-2xl bg-muted/60 px-4 py-3">
+                <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  T+500
                 </div>
                 <div className="mt-1 text-sm font-semibold">{formatIsoDay(cycle.sellDate)}</div>
                 <div className="mt-0.5 text-xs text-muted-foreground">
@@ -856,11 +867,11 @@ function WhyItLooksLikeThis({
           reinvest against buy-and-hold above if that tradeoff is the question you actually have.
         </p>
         <Link
-          to="/articles/btc500-strategy"
-          onClick={() => trackCta("simulator_why", "/articles/btc500-strategy")}
+          to="/bitcoin-500-day-cycle"
+          onClick={() => trackCta("simulator_why", "/bitcoin-500-day-cycle")}
           className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
         >
-          Read how the rule is defined
+          Read the 500-day cycle explainer
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
@@ -967,23 +978,36 @@ function Explainer() {
   return (
     <section className="mx-auto max-w-3xl space-y-4 text-sm leading-relaxed text-muted-foreground">
       <h2 className="text-2xl font-bold tracking-tight text-foreground">
-        What the BTC500 Simulator shows
+        How the Bitcoin halving simulator works
       </h2>
       <p>
-        The BTC500 strategy is a rules-based Bitcoin approach: buy exactly 500 days before each
-        halving and sell exactly 500 days after. This page runs that rule against real historical
-        prices for the 2012, 2016, 2020, and 2024 windows.
+        This tool answers one question: what would $500, $1,000, or another amount have become if it
+        was invested 500 days before a Bitcoin halving and sold 500 days after? That window is the{" "}
+        <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary hover:underline">
+          Bitcoin 500-day cycle
+        </Link>
+        . The numbers are the same daily prices used across BTC500 — not illustrations.
       </p>
+      <h3 className="text-lg font-semibold text-foreground">The T-500 methodology</h3>
+      <p>
+        T-500 is the calendar day 500 days before a known or estimated halving. T+500 is 500 days
+        after it. The simulator buys at the T-500 daily price and sells at the T+500 daily price
+        when both exist. The price on the halving date is shown so you can see how much of the
+        window happened before the event versus after it.
+      </p>
+      <h3 className="text-lg font-semibold text-foreground">What the numbers represent</h3>
       <p>
         Reinvest answers “what if I started with this much and never took money out of the rule?”
         Same amount each cycle answers “what if I put this much to work in every window and pulled
         the result?” Buy-and-hold answers “what if I bought on the first buy date and sat until the
-        last sell date?” None of those paths include fees, taxes, or the market impact of a large
-        order in 2011.
+        last sell date?” A completed window needs both a buy print and a sell print. Incomplete
+        windows stay out of the totals.
       </p>
+      <h3 className="text-lg font-semibold text-foreground">Limitations</h3>
       <p>
-        A backtest cannot predict future returns. It only shows what historically happened when a
-        fixed 500-day buy/sell rule was followed. Treat it as a research tool, not financial advice.
+        Fees, taxes, and slippage are not included. Early-cycle prices depend on thin markets. Four
+        halvings is a small sample, and later windows produced smaller multiples. A backtest cannot
+        predict the next cycle. Treat this as a research tool, not financial advice.
       </p>
     </section>
   );
@@ -1034,10 +1058,10 @@ function RelatedTools() {
       </p>
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <RelatedCard
-          to="/dca"
-          icon={Repeat2}
-          title="DCA vs lump sum"
-          body="See if spreading the buy around the same dates beat going all-in."
+          to="/bitcoin-500-day-cycle"
+          icon={BookOpen}
+          title="500-day cycle"
+          body="How T-500 and T+500 are defined, with every historical window."
         />
         <RelatedCard
           to="/timeline"
@@ -1046,16 +1070,16 @@ function RelatedTools() {
           body="Replay any day in the cycle instead of just the two endpoints."
         />
         <RelatedCard
-          to="/halving-dates"
-          icon={CalendarDays}
-          title="Halving dates"
-          body="Every buy, halving, and sell window from 2012 through 2028."
-        />
-        <RelatedCard
           to="/articles/btc500-strategy"
           icon={BookOpen}
-          title="The rule"
-          body="Why 500 days, what it captures, and what it deliberately ignores."
+          title="The strategy"
+          body="When the rule buys, when it sells, and what it does not claim."
+        />
+        <RelatedCard
+          to="/dca"
+          icon={Repeat2}
+          title="DCA vs lump sum"
+          body="See if spreading the buy around the same dates beat going all-in."
         />
       </div>
     </section>
@@ -1068,7 +1092,12 @@ function RelatedCard({
   title,
   body,
 }: {
-  to: "/dca" | "/timeline" | "/halving-dates" | "/articles/btc500-strategy";
+  to:
+    | "/dca"
+    | "/timeline"
+    | "/halving-dates"
+    | "/articles/btc500-strategy"
+    | "/bitcoin-500-day-cycle";
   icon: React.ElementType;
   title: string;
   body: string;
@@ -1089,6 +1118,12 @@ function RelatedCard({
       <p className="mt-1 text-sm text-muted-foreground">{body}</p>
     </Link>
   );
+}
+
+function formatPreset(n: number): string {
+  if (n >= 1_000_000) return "$1M";
+  if (n >= 1_000 && n % 1_000 === 0) return `$${n / 1_000}K`;
+  return `$${n.toLocaleString("en-US")}`;
 }
 
 function CountUp({ value, format }: { value: number; format: (n: number) => string }) {

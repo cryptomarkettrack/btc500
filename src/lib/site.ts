@@ -9,7 +9,7 @@ export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
 export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Strategy";
-export const SITE_DATE_MODIFIED = "2026-08-13";
+export const SITE_DATE_MODIFIED = "2026-08-15";
 export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
 export const CONTACT_EMAIL = "btc500halving@gmail.com";
 
@@ -323,6 +323,7 @@ export function generateDatasetSchema() {
 
 const PAGE_LABELS: Record<string, string> = {
   "/": "Home",
+  "/bitcoin-500-day-cycle": "Bitcoin 500-Day Cycle",
   "/halving-dates": "Halving Dates",
   "/simulator": "Simulator",
   "/dca": "DCA vs Lump Sum",

@@ -13,8 +13,12 @@ export function ArticleEndMatter({ slug }: { slug: string }) {
       <div className="rounded-[24px] border border-border/60 bg-card p-8 text-center">
         <h2 className="text-xl font-semibold">See the rule against real prices</h2>
         <p className="mx-auto mt-2 max-w-lg text-sm text-muted-foreground">
-          The BTC500 simulator backtests buy-500-days-before / sell-500-days-after across every
-          completed halving cycle using Bitstamp history.
+          The{" "}
+          <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary hover:underline">
+            500-day cycle
+          </Link>{" "}
+          is the methodology. The simulator backtests that window across every completed
+          halving using the same historical prices.
         </p>
         <Link
           to="/simulator"

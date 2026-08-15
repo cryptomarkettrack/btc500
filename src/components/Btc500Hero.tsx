@@ -1,4 +1,4 @@
-import { useId, type CSSProperties } from "react";
+import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatUsd } from "@/lib/phase";
 
 interface Btc500HeroProps {
@@ -10,6 +10,8 @@ interface Btc500HeroProps {
   title?: string;
   /** For screen-readers / crawlers, a keyword-rich H1 when `title` is used. */
   srTitle?: string;
+  /** Replaces the default buy/sell tagline under the H1. */
+  tagline?: ReactNode;
 }
 
 /** Match styles.css hero labels — inline so share-card Inter root cannot override. */
@@ -54,6 +56,7 @@ export function Btc500Hero({
   compact = false,
   title,
   srTitle,
+  tagline,
 }: Btc500HeroProps) {
   const reactId = useId();
   const fadeGradId = `fadeGrad-${reactId.replace(/:/g, "")}`;
@@ -339,12 +342,18 @@ export function Btc500Hero({
       {!compact && (
         <p
           id="hero-tagline"
-          className="mt-4 max-w-md text-center text-sm leading-relaxed text-muted-foreground"
+          className="mt-4 max-w-xl text-center text-sm leading-relaxed text-muted-foreground"
           style={{ fontFamily: FONT_MONO }}
         >
-          <span className="font-semibold text-foreground">Buy 500 days before the halving.</span>
-          <br />
-          <span className="font-semibold text-foreground">Sell 500 days after.</span>
+          {tagline ?? (
+            <>
+              <span className="font-semibold text-foreground">
+                Buy 500 days before the halving.
+              </span>
+              <br />
+              <span className="font-semibold text-foreground">Sell 500 days after.</span>
+            </>
+          )}
         </p>
       )}
 
