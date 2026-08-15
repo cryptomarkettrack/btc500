@@ -1,379 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xhtml="http://www.w3.org/1999/xhtml"
-        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
-<url>
-    <loc>https://btc500.net/articles/solar-eclipse-bitcoin-halving</loc>
-    <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/solar-eclipse-bitcoin-halving" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/solar-eclipse-bitcoin-halving" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/solar-eclipse-bitcoin-halving/og-solar-eclipse-bitcoin-halving.png</image:loc>
-      <image:title>Solar Eclipse and Bitcoin Halving — What Rare, Predictable Events Tell Us</image:title>
-      <image:caption>The August 12, 2026 total solar eclipse proved that rare predictable events reward preparation. Bitcoin's halving follows the same principle.</image:caption>
-    </image:image>
-  </url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Core product pages -->
   <url>
     <loc>https://btc500.net/</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>BTC500 — Bitcoin Halving Countdown &amp; Strategy</image:title>
-      <image:caption>Buy Bitcoin 500 days before halving, sell 500 days after</image:caption>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/bitcoin-500-day-cycle</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.98</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/bitcoin-500-day-cycle" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/bitcoin-500-day-cycle" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Bitcoin 500-Day Cycle — BTC500</image:title>
-      <image:caption>Track Bitcoin from 500 days before each halving through 500 days after</image:caption>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/simulator</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.95</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/simulator" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/simulator" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>BTC500 Simulator — Bitcoin Halving Returns Calculator</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/halving-dates</loc>
     <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/halving-dates" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/halving-dates" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Bitcoin Halving Dates — Complete Schedule 2012–2028</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/dca</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/dca" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/dca" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>DCA vs Lump Sum — BTC500 Strategy Comparison</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/timeline</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/timeline" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/timeline" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>BTC500 Time Machine — Interactive Bitcoin Timeline</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/bear-market</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/bear-market" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/bear-market" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Bitcoin Bear Market Bottom Indicators | BTC500</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/liquidation</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/liquidation" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/liquidation" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>BTC Liquidation Dashboard — OI, Funding &amp; Long/Short</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/insider-trading</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/insider-trading" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/insider-trading" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Insider Trading Dashboard — SEC Form 4 Analysis</image:title>
-    </image:image>
-  </url>
-
-
-  <url>
-    <loc>https://btc500.net/news</loc>
-    <lastmod>2026-07-27</lastmod>
-    <changefreq>hourly</changefreq>
-    <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/news" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/news" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Crypto News — Bitcoin &amp; Cryptocurrency Headlines</image:title>
-    </image:image>
-  </url>
-
-  <url>
-    <loc>https://btc500.net/about</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/about" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/about" />
-  </url>
-
-  <url>
-    <loc>https://btc500.net/privacy</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/privacy" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/privacy" />
-  </url>
-
-  <url>
-    <loc>https://btc500.net/terms</loc>
-    <lastmod>2026-08-13</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/terms" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/terms" />
   </url>
 
   <url>
     <loc>https://btc500.net/embed-kit</loc>
     <lastmod>2026-07-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/embed-kit" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/embed-kit" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>BTC500 Embed Kit — Free Countdown Widgets</image:title>
-    </image:image>
   </url>
 
-  <!-- Research / content hub -->
+  <url>
+    <loc>https://btc500.net/news</loc>
+    <lastmod>2026-07-27</lastmod>
+  </url>
+
+  <url>
+    <loc>https://btc500.net/about</loc>
+    <lastmod>2026-08-13</lastmod>
+  </url>
+
   <url>
     <loc>https://btc500.net/articles</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Articles — BTC500 Strategy &amp; Insights</image:title>
-    </image:image>
+  </url>
+
+  <url>
+    <loc>https://btc500.net/articles/solar-eclipse-bitcoin-halving</loc>
+    <lastmod>2026-08-15</lastmod>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/bitcoin-week-ahead</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bitcoin-week-ahead" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bitcoin-week-ahead" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/weekly-brief/weekly-brief-hero.svg</image:loc>
-      <image:title>Bitcoin Weekly Outlook — Price, ETF Flows &amp; Key Events</image:title>
-      <image:caption>Weekly Bitcoin outlook with BTC500 500-day cycle context</image:caption>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/strongest-hands</loc>
     <lastmod>2026-08-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/strongest-hands" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/strongest-hands" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/strongest-hands/og-strongest-hands.png</image:loc>
-      <image:title>Bitcoin's Strongest Hands Are Back: 90 Elite Wallets Now Hold 10,000+ BTC Each</image:title>
-      <image:caption>90 elite wallets holding 10,000+ BTC hit a six-month high — a combined 900,000+ BTC in the most patient cohort on the network</image:caption>
-    </image:image>
   </url>
-<url>
+
+  <url>
     <loc>https://btc500.net/articles/sec-cancels-regulation-crypto</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/sec-cancels-regulation-crypto" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/sec-cancels-regulation-crypto" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/sec-cancels-regulation-crypto/og-sec-cancels-regulation-crypto.png</image:loc>
-      <image:title>SEC Cancels Regulation Crypto Vote: What It Means</image:title>
-      <image:caption>The SEC cancelled its August 14, 2026 Regulation Crypto Assets meeting with no new date — what the delay means for Bitcoin and the November 30 buy window</image:caption>
-    </image:image>
   </url>
+
   <url>
     <loc>https://btc500.net/articles/goldman-vs-blackrock</loc>
     <lastmod>2026-08-12</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/goldman-vs-blackrock" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/goldman-vs-blackrock" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/goldman-vs-blackrock/og-goldman-vs-blackrock.png</image:loc>
-      <image:title>Goldman Sachs Just Declared War on BlackRock&apos;s Bitcoin ETF</image:title>
-      <image:caption>Goldman&apos;s $2.25 billion NEOS buyout builds a $130 billion bitcoin income ETF platform aimed at BlackRock&apos;s BITA fund</image:caption>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/bip-110-rejection</loc>
     <lastmod>2026-08-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bip-110-rejection" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bip-110-rejection" />
-    <image:image>
-      <image:loc>https://btc500.net/articles/bip-110/bip-110-rejection.png</image:loc>
-      <image:title>BIP-110 Rejection — What It Means for Bitcoin’s Future</image:title>
-      <image:caption>BIP-110 Reduced Data Temporary Softfork failed after near-zero miner support</image:caption>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/bitcoin-volatility</loc>
     <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bitcoin-volatility" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bitcoin-volatility" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Bitcoin Volatility Nearly Disappeared — Why Risk Remains</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/bitcoin-infrastructure-exploits</loc>
     <lastmod>2026-08-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bitcoin-infrastructure-exploits" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bitcoin-infrastructure-exploits" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Coldcard and Lightning Exploits — Bitcoin Infrastructure Risk</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/clarity-act</loc>
     <lastmod>2026-08-04</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/clarity-act" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/clarity-act" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>CLARITY Act — The Complete Guide to US Crypto Regulation</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/bear-market-accumulation</loc>
     <lastmod>2026-08-03</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/bear-market-accumulation" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/bear-market-accumulation" />
-    <image:image>
-      <image:loc>https://btc500.net/og/real-bottom.png</image:loc>
-      <image:title>Consensus Bottom Trap — Why the Crowd's Bear Market Target Never Arrives</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/btc500-strategy</loc>
     <lastmod>2026-08-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/btc500-strategy" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/btc500-strategy" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>The BTC500 Strategy — Bitcoin Halving Investment Strategy</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/why-btc500-exists</loc>
     <lastmod>2026-07-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/why-btc500-exists" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/why-btc500-exists" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Why BTC500 Exists — Bitcoin Investment Strategy</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/rupl</loc>
     <lastmod>2026-07-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.85</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/rupl" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/rupl" />
-    <image:image>
-      <image:loc>https://btc500.net/og/rupl-chart.jpeg</image:loc>
-      <image:title>NUPL Guide — Bitcoin Market Psychology</image:title>
-    </image:image>
   </url>
 
   <url>
     <loc>https://btc500.net/articles/ondo-finance-tokenization</loc>
     <lastmod>2026-07-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.75</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://btc500.net/articles/ondo-finance-tokenization" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://btc500.net/articles/ondo-finance-tokenization" />
-    <image:image>
-      <image:loc>https://btc500.net/og/default.png</image:loc>
-      <image:title>Ondo Finance — Tokenization Infrastructure for Wall Street</image:title>
-    </image:image>
   </url>
 
 </urlset>
