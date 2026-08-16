@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { Clock, Play, Pause, ArrowLeftRight } from "lucide-react";
-import { emptyTimelineData, type TimelineDay } from "@/lib/timeline.functions";
+import { emptyTimelinePayload, type TimelineDay } from "@/lib/timeline.functions";
 import { timelineQuery } from "@/lib/queries";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { CycleCard } from "@/components/timeline/CycleCard";
@@ -60,7 +60,7 @@ export const Route = createFileRoute("/timeline")({
       await context.queryClient.ensureQueryData(timelineQuery);
     } catch (err) {
       console.error("[timeline] loader failed; page will render an empty timeline:", err);
-      context.queryClient.setQueryData(timelineQuery.queryKey, emptyTimelineData());
+      context.queryClient.setQueryData(timelineQuery.queryKey, emptyTimelinePayload());
     }
   },
   component: Timeline,
@@ -69,112 +69,29 @@ export const Route = createFileRoute("/timeline")({
   notFoundComponent: RouteNotFound,
 });
 
+function formatUsdAmount(n: number): string {
+  return n.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    maximumFractionDigits: 0,
+  });
+}
+
 function Timeline() {
   const { data } = useSuspenseQuery(timelineQuery);
-  const { currentCycle, previousCycle } = data;
-
-  // If there's no previous cycle data, show a placeholder message
+  const { currentCycle, previousCycle, investment } = data;
+  const loadFailed = data.status === "unavailable" || data.status === "error";
   const hasPreviousCycleData = previousCycle.days.length > 0;
+  const hasCurrentCycleData = currentCycle.days.length > 0;
 
-  if (!hasPreviousCycleData) {
-    const buyDateFormatted = new Date(currentCycle.buyDate + "T00:00:00Z").toLocaleDateString(
-      "en-US",
-      { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" },
-    );
-
-    return (
-      <div className="min-h-screen bg-background text-foreground">
-        <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
-          <motion.div
-            initial={{ y: 12, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            className="flex flex-col items-center gap-8 text-center"
-          >
-            <Clock className="h-12 w-12 text-primary" />
-            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-              BTC<span className="text-primary">500</span> Time Machine
-            </h1>
-            <p className="max-w-xl text-base text-muted-foreground">
-              The current BTC<span className="text-primary">500</span> cycle hasn't started yet. The
-              buy window opens{" "}
-              <span className="font-semibold text-foreground">{buyDateFormatted}</span> — 500 days
-              before the projected April 2028 halving.
-            </p>
-            <p className="max-w-xl text-sm text-muted-foreground">
-              In the meantime, explore the previous cycle below to see how the strategy performed.
-            </p>
-            <div className="w-full">
-              <InfoPanel
-                currentDay={null}
-                previousDay={
-                  hasPreviousCycleData ? previousCycle.days[previousCycle.days.length - 1] : null
-                }
-              />
-              {hasPreviousCycleData && (
-                <div className="mt-8">
-                  <CycleCard
-                    cycle={previousCycle}
-                    selectedDay={previousCycle.days[0]}
-                    onDayChange={() => {}}
-                    title={previousCycle.label}
-                    showSell
-                  />
-                </div>
-              )}
-            </div>
-            <p className="mt-4 text-center text-xs text-muted-foreground">
-              Historical prices from Bitstamp. Only real historical Bitcoin prices are used.
-            </p>
-          </motion.div>
-        </main>
-      </div>
-    );
-  }
-
-  // Initialize with safe defaults - these will be valid because of the guard above
-  const initialCurrentDay =
-    currentCycle.days.length > 0
-      ? currentCycle.days[currentCycle.days.length - 1]
-      : ({
-          date: "",
-          timestamp: 0,
-          price: 0,
-          dayIndex: 0,
-          btcPurchased: 0,
-          portfolioValue: 0,
-          profitLoss: 0,
-          roiPercent: 0,
-          daysUntilHalving: null,
-          daysAfterHalving: null,
-        } as TimelineDay);
-
-  const initialPreviousDay =
-    previousCycle.days.length > 0
-      ? previousCycle.days[0]
-      : ({
-          date: "",
-          timestamp: 0,
-          price: 0,
-          dayIndex: 0,
-          btcPurchased: 0,
-          portfolioValue: 0,
-          profitLoss: 0,
-          roiPercent: 0,
-          daysUntilHalving: null,
-          daysAfterHalving: null,
-        } as TimelineDay);
-
-  const [currentDay, setCurrentDay] = useState<TimelineDay>(initialCurrentDay);
-  const [previousDay, setPreviousDay] = useState<TimelineDay>(initialPreviousDay);
-
-  // Playback state
+  const [currentDay, setCurrentDay] = useState<TimelineDay | null>(
+    currentCycle.days[currentCycle.days.length - 1] ?? null,
+  );
+  const [previousDay, setPreviousDay] = useState<TimelineDay | null>(previousCycle.days[0] ?? null);
   const [isPlaying, setIsPlaying] = useState(false);
   const playbackRef = useRef<number | null>(null);
   const currentIndexRef = useRef(0);
   const previousIndexRef = useRef(0);
-
-  // Sync mode
   const [syncMode, setSyncMode] = useState(false);
 
   const handleCurrentDayChange = useCallback(
@@ -195,8 +112,8 @@ function Timeline() {
     [previousCycle.days, isPlaying],
   );
 
-  // Sync: move previous cycle to same day index as current
   const handleSync = useCallback(() => {
+    if (!currentDay) return;
     const currentIdx = currentCycle.days.findIndex((d) => d.date === currentDay.date);
     const targetIdx = Math.min(currentIdx, previousCycle.days.length - 1);
     const targetDay = previousCycle.days[targetIdx];
@@ -208,7 +125,6 @@ function Timeline() {
     if (isPlaying) setIsPlaying(false);
   }, [currentCycle.days, currentDay, previousCycle.days, isPlaying]);
 
-  // Playback logic
   useEffect(() => {
     if (!isPlaying) {
       if (playbackRef.current !== null) {
@@ -228,7 +144,6 @@ function Timeline() {
 
       let updated = false;
 
-      // Advance both timelines
       const nextCurrentIdx = currentIndexRef.current + 1;
       if (nextCurrentIdx < currentCycle.days.length) {
         const nextDay = currentCycle.days[nextCurrentIdx];
@@ -262,6 +177,112 @@ function Timeline() {
     };
   }, [isPlaying, currentDay, previousDay, currentCycle.days, previousCycle.days]);
 
+  if (loadFailed && !hasPreviousCycleData && !hasCurrentCycleData) {
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
+          <motion.div
+            initial={{ y: 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center gap-8 text-center"
+          >
+            <Clock className="h-12 w-12 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              BTC<span className="text-primary">500</span> Time Machine
+            </h1>
+            <p className="max-w-xl text-base text-muted-foreground">
+              Historical data could not be loaded. This is not an empty timeline — prices are
+              unavailable right now.
+            </p>
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!hasPreviousCycleData && !hasCurrentCycleData) {
+    const buyDateFormatted = new Date(currentCycle.buyDate + "T00:00:00Z").toLocaleDateString(
+      "en-US",
+      { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" },
+    );
+
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
+          <motion.div
+            initial={{ y: 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center gap-8 text-center"
+          >
+            <Clock className="h-12 w-12 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              BTC<span className="text-primary">500</span> Time Machine
+            </h1>
+            <p className="max-w-xl text-base text-muted-foreground">
+              The {currentCycle.label} buy window opens{" "}
+              <span className="font-semibold text-foreground">{buyDateFormatted}</span>. There is no
+              price path to replay yet for that window.
+            </p>
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
+
+  if (!hasCurrentCycleData && hasPreviousCycleData) {
+    const buyDateFormatted = new Date(currentCycle.buyDate + "T00:00:00Z").toLocaleDateString(
+      "en-US",
+      { day: "2-digit", month: "long", year: "numeric", timeZone: "UTC" },
+    );
+
+    return (
+      <div className="min-h-screen bg-background text-foreground">
+        <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
+          <motion.div
+            initial={{ y: 12, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+            className="flex flex-col items-center gap-8 text-center"
+          >
+            <Clock className="h-12 w-12 text-primary" />
+            <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+              BTC<span className="text-primary">500</span> Time Machine
+            </h1>
+            <p className="max-w-xl text-base text-muted-foreground">
+              The {currentCycle.label} buy window opens{" "}
+              <span className="font-semibold text-foreground">{buyDateFormatted}</span>. The
+              previous realized cycle is below.
+            </p>
+            <div className="w-full">
+              <InfoPanel
+                investment={investment}
+                currentDay={null}
+                previousDay={previousCycle.days[previousCycle.days.length - 1] ?? null}
+                currentPerformanceKind={currentCycle.performanceKind}
+                previousPerformanceKind={previousCycle.performanceKind}
+              />
+              <div className="mt-8">
+                <CycleCard
+                  cycle={previousCycle}
+                  selectedDay={previousCycle.days[0]!}
+                  onDayChange={() => {}}
+                  title={previousCycle.label}
+                  showSell
+                />
+              </div>
+            </div>
+            <p className="mt-4 text-center text-xs text-muted-foreground">
+              Only confirmed historical Bitcoin prices are used. Projected dates are not shown as
+              realized results.
+            </p>
+          </motion.div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
@@ -281,14 +302,20 @@ function Timeline() {
             </div>
             <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
               Explore Bitcoin halving history with the BTC
-              <span className="text-primary">500</span> strategy. Follow a $20,000 investment
-              through every halving cycle since 2012 — drag the timeline or press play to watch
-              history unfold.
+              <span className="text-primary">500</span> strategy. Follow a{" "}
+              {formatUsdAmount(investment)} investment through realized and live cycles — drag the
+              timeline or press play to watch history unfold.
             </p>
           </motion.header>
 
           {/* Info Panel */}
-          <InfoPanel currentDay={currentDay} previousDay={previousDay} />
+          <InfoPanel
+            investment={investment}
+            currentDay={currentDay}
+            previousDay={previousDay}
+            currentPerformanceKind={currentCycle.performanceKind}
+            previousPerformanceKind={previousCycle.performanceKind}
+          />
 
           {/* Controls */}
           <div className="flex flex-wrap items-center justify-center gap-3">
@@ -325,24 +352,24 @@ function Timeline() {
           </div>
 
           {/* Current Cycle Card */}
-          {currentDay && (
+          {currentDay && hasCurrentCycleData && (
             <CycleCard
               cycle={currentCycle}
               selectedDay={currentDay}
               onDayChange={handleCurrentDayChange}
               title={currentCycle.label}
-              showToday
+              showToday={currentCycle.performanceKind !== "realized"}
             />
           )}
 
           {/* Previous Cycle Card */}
-          {previousDay && (
+          {previousDay && hasPreviousCycleData && (
             <CycleCard
               cycle={previousCycle}
               selectedDay={previousDay}
               onDayChange={handlePreviousDayChange}
               title={previousCycle.label}
-              showSell
+              showSell={previousCycle.performanceKind === "realized"}
             />
           )}
 
@@ -353,9 +380,9 @@ function Timeline() {
             </h2>
             <p>
               The time machine replays Bitcoin&apos;s price history around each halving. It follows
-              a hypothetical $20,000 investment through the current cycle and the previous cycle
-              using actual historical prices, letting you drag the timeline or press play to watch a
-              halving cycle unfold day by day.
+              a hypothetical {formatUsdAmount(investment)} investment through the live cycle and the
+              previous realized cycle using actual historical prices, letting you drag the timeline
+              or press play to watch a halving cycle unfold day by day.
             </p>
             <p>
               The BTC500 strategy is simple: enter the market 500 days before a halving and exit 500

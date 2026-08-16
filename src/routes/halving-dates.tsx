@@ -5,7 +5,8 @@ import { CalendarDays, Calculator, Clock, ArrowRight, BookOpen } from "lucide-re
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
-import { HALVINGS, addDays } from "@/lib/halvings";
+import { buildHalvingCycles } from "@/lib/halvings";
+import { estimateFromHalvingInfo, estimateHalvingInfo } from "@/lib/btc.functions";
 import { halvingQuery, simulatorQuery } from "@/lib/queries";
 
 const halvingDatesSchema = generateWebPageSchema({
@@ -63,7 +64,13 @@ export const Route = createFileRoute("/halving-dates")({
     // Ensure the halving countdown + simulator data are in the server-rendered
     // HTML so crawlers see the actual cycle returns (not "—" placeholders).
     await Promise.allSettled([
-      context.queryClient.ensureQueryData(halvingQuery),
+      // fetchQuery ignores the seeded estimate so this page SSR's the live
+      // height/interval snapshot instead of the protocol-600s fallback.
+      context.queryClient.fetchQuery({
+        queryKey: halvingQuery.queryKey,
+        queryFn: halvingQuery.queryFn,
+        staleTime: 0,
+      }),
       context.queryClient.ensureQueryData(simulatorQuery),
     ]);
   },
@@ -99,12 +106,16 @@ function HalvingDates() {
   const halvingRes = useQuery(halvingQuery);
   const simulatorRes = useQuery(simulatorQuery);
 
-  const nextHalvingDate = halvingRes.data?.nextHalvingDate
-    ? halvingRes.data.nextHalvingDate.split("T")[0]
-    : "2028-04-20";
-  const nextHalvingBlock = halvingRes.data?.nextHalvingBlock ?? 1050000;
+  const info = halvingRes.data ?? estimateHalvingInfo();
+  const schedule = buildHalvingCycles(Date.now(), estimateFromHalvingInfo(info));
+  const nextCycle =
+    schedule.find((c) => c.dateKind === "estimated") ?? schedule[schedule.length - 1]!;
+  const nextHalvingDate = nextCycle.date;
+  const nextHalvingBlock = nextCycle.block;
 
   const cycles = simulatorRes.data?.cycles ?? [];
+  const dataUnavailable =
+    simulatorRes.data?.status === "unavailable" || simulatorRes.data?.status === "error";
 
   const getCycle = (halvingDate: string) => cycles.find((c) => c.halvingDate === halvingDate);
 
@@ -136,10 +147,10 @@ function HalvingDates() {
               </div>
               <div className="flex flex-col items-center gap-2 sm:items-end">
                 <Badge variant="outline" className="border-primary/40 text-primary">
-                  Buy window: {formatDate(addDays(nextHalvingDate, -500))}
+                  Buy window: {formatDate(nextCycle.tMinus500)}
                 </Badge>
                 <Badge variant="outline" className="border-primary/40 text-primary">
-                  Sell window: {formatDate(addDays(nextHalvingDate, 500))}
+                  Sell window: {formatDate(nextCycle.tPlus500)}
                 </Badge>
               </div>
             </div>
@@ -167,27 +178,42 @@ function HalvingDates() {
                 </tr>
               </thead>
               <tbody>
-                {HALVINGS.map((halving) => {
+                {schedule.map((halving) => {
                   const cycle = getCycle(halving.date);
-                  const buyDate = addDays(halving.date, -500);
-                  const sellDate = addDays(halving.date, 500);
-                  const isNext = halving.date === "2024-04-20";
+                  const kindLabel =
+                    halving.cycleKind === "current"
+                      ? "Current"
+                      : halving.cycleKind === "future"
+                        ? "Upcoming"
+                        : null;
+                  const returnIsRealized = halving.performanceKind === "realized";
                   return (
                     <tr key={halving.block} className="border-b border-border/40 last:border-0">
                       <td className="py-3 pr-4 font-semibold">
-                        {halving.label}
-                        {isNext && (
+                        {halving.dateKind === "historical"
+                          ? `${halving.date.slice(0, 4)} Halving`
+                          : halving.label}
+                        {kindLabel && (
                           <Badge className="ml-2 text-[10px]" variant="secondary">
-                            Current
+                            {kindLabel}
                           </Badge>
                         )}
                       </td>
-                      <td className="py-3 pr-4 whitespace-nowrap">{formatDate(halving.date)}</td>
+                      <td className="py-3 pr-4 whitespace-nowrap">
+                        {formatDate(halving.date)}
+                        {halving.dateKind === "estimated" && (
+                          <span className="ml-1 text-xs text-muted-foreground">est.</span>
+                        )}
+                      </td>
                       <td className="py-3 pr-4 font-mono">{halving.block.toLocaleString()}</td>
-                      <td className="py-3 pr-4 whitespace-nowrap">{formatDate(buyDate)}</td>
-                      <td className="py-3 pr-4 whitespace-nowrap">{formatDate(sellDate)}</td>
+                      <td className="py-3 pr-4 whitespace-nowrap">
+                        {formatDate(halving.tMinus500)}
+                      </td>
+                      <td className="py-3 pr-4 whitespace-nowrap">
+                        {formatDate(halving.tPlus500)}
+                      </td>
                       <td className="py-3 font-semibold">
-                        {cycle?.returnPercent != null ? (
+                        {returnIsRealized && cycle?.returnPercent != null ? (
                           <span
                             className={cycle.returnPercent > 0 ? "text-green-500" : "text-red-500"}
                           >
@@ -195,7 +221,9 @@ function HalvingDates() {
                             {cycle.returnPercent.toFixed(0)}%
                           </span>
                         ) : (
-                          <span className="text-muted-foreground">—</span>
+                          <span className="text-muted-foreground">
+                            {dataUnavailable ? "unavailable" : "—"}
+                          </span>
                         )}
                       </td>
                     </tr>

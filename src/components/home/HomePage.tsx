@@ -26,7 +26,7 @@ import { useRef, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
-import { SITE_DATE_MODIFIED } from "@/lib/site";
+import { HOME_LAST_REVIEWED } from "@/lib/site";
 import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
@@ -729,7 +729,7 @@ export function HomePage() {
 
         <p className="mt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
-          Binance, CoinGecko, Coinbase & Kraken. Last reviewed {SITE_DATE_MODIFIED}.
+          Binance, CoinGecko, Coinbase & Kraken. Last reviewed {HOME_LAST_REVIEWED}.
         </p>
       </main>
 

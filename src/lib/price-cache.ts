@@ -1,15 +1,16 @@
 /**
- * Centralized in-memory price cache with TTL support.
+ * Instance-local in-memory cache with TTL support.
  *
- * This module provides a unified caching layer for all external data fetches
- * (BTC price, liquidation data, historical prices, klines, etc.) to avoid
- * hitting rate limits (429 responses) from external providers.
+ * This is a short-lived optimization for a single Node/Vercel isolate.
+ * It is NOT shared across Vercel instances, regions, or cold starts.
+ * Do not treat a cache hit as globally authoritative.
  *
  * Key design decisions:
- * - In-memory Map (not Redis) — works server-side in both Node and edge runtimes
+ * - In-memory Map only — no Redis / Edge Config unless the repo already has one
  * - TTL-based expiry — each entry has its own TTL
- * - Stale-while-revalidate pattern — returns stale data while fetching fresh data
- *   to avoid blocking requests when the cache is being refreshed
+ * - Stale-while-revalidate — return stale data while one in-flight refresh runs
+ * - In-flight coalescing — concurrent misses share one fetcher (stampede guard)
+ * - Cache failures never throw in preference to a successful fetch
  * - Separate cache namespaces — different TTLs for different data types
  */
 
@@ -30,9 +31,10 @@ interface CacheOptions {
   staleWhileRevalidate?: boolean;
 }
 
-// ─── Cache Store ─────────────────────────────────────────────────────────────
+// ─── Cache Store (process-local; not shared across Vercel isolates) ───────────
 
 const store = new Map<string, CacheEntry<unknown>>();
+const inflight = new Map<string, Promise<unknown>>();
 
 // ─── Public API ──────────────────────────────────────────────────────────────
 
@@ -44,17 +46,7 @@ const store = new Map<string, CacheEntry<unknown>>();
 function get<T>(key: string): { data: T; isStale: boolean } | null {
   const entry = store.get(key) as CacheEntry<T> | undefined;
   if (!entry) return null;
-
-  const age = Date.now() - entry.timestamp;
-  const isStale = age >= entry.ttl;
-
-  // If stale and stale-while-revalidate is disabled, treat as miss
-  if (isStale && !entry.refreshing) {
-    // Don't delete yet — let the caller decide to refresh
-    return null;
-  }
-
-  return { data: entry.data, isStale };
+  return { data: entry.data, isStale: Date.now() - entry.timestamp >= entry.ttl };
 }
 
 /**
@@ -112,6 +104,35 @@ function stats(): { size: number; keys: string[] } {
  * @param options - Cache options (ttl, staleWhileRevalidate)
  * @returns The cached or freshly fetched data
  */
+function startRefresh<T>(key: string, fetcher: () => Promise<T>, ttl: number): Promise<T> {
+  const existing = inflight.get(key) as Promise<T> | undefined;
+  if (existing) return existing;
+
+  const refreshPromise = fetcher()
+    .then((freshData) => {
+      try {
+        set(key, freshData, ttl);
+      } catch (err) {
+        console.warn(`[price-cache] Failed to store "${key}":`, err);
+      }
+      return freshData;
+    })
+    .catch((err) => {
+      console.warn(`[price-cache] Refresh failed for "${key}":`, err);
+      throw err;
+    })
+    .finally(() => {
+      inflight.delete(key);
+      const entry = store.get(key) as CacheEntry<T> | undefined;
+      if (entry) entry.refreshing = undefined;
+    });
+
+  inflight.set(key, refreshPromise);
+  const entry = store.get(key) as CacheEntry<T> | undefined;
+  if (entry) entry.refreshing = refreshPromise;
+  return refreshPromise;
+}
+
 export async function fetchWithCache<T>(
   key: string,
   fetcher: () => Promise<T>,
@@ -119,62 +140,27 @@ export async function fetchWithCache<T>(
 ): Promise<T> {
   const { ttl = 60_000, staleWhileRevalidate = true } = options;
 
-  // 1. Check cache
-  const cached = get<T>(key);
+  let cached: { data: T; isStale: boolean } | null = null;
+  try {
+    cached = get<T>(key);
+  } catch (err) {
+    console.warn(`[price-cache] Read failed for "${key}":`, err);
+  }
 
-  // 2. If we have fresh data, return it immediately
   if (cached && !cached.isStale) {
     return cached.data;
   }
 
-  // 3. If stale-while-revalidate and we have stale data, return it
-  //    but trigger a background refresh
   if (cached && cached.isStale && staleWhileRevalidate) {
-    // Check if there's already a refresh in-flight
-    const entry = store.get(key) as CacheEntry<T> | undefined;
-    if (entry?.refreshing) {
-      // Don't await — just return stale data; the refresh will update cache
-      return cached.data;
-    }
-
-    // Start background refresh
-    const refreshPromise = fetcher()
-      .then((freshData) => {
-        set(key, freshData, ttl);
-        return freshData;
-      })
-      .catch((err) => {
-        // If refresh fails, keep stale data and log warning
-        console.warn(`[price-cache] Background refresh failed for "${key}":`, err);
-        // Clear the refreshing flag so next request tries again
-        const currentEntry = store.get(key) as CacheEntry<T> | undefined;
-        if (currentEntry) {
-          currentEntry.refreshing = undefined;
-        }
-        throw err;
-      });
-
-    // Store the refresh promise on the entry
-    const currentEntry = store.get(key) as CacheEntry<T> | undefined;
-    if (currentEntry) {
-      currentEntry.refreshing = refreshPromise;
-      // Clear refreshing flag when done (success or failure)
-      refreshPromise.finally(() => {
-        const e = store.get(key) as CacheEntry<T> | undefined;
-        if (e) e.refreshing = undefined;
-      });
-    }
-
+    void startRefresh(key, fetcher, ttl).catch(() => {
+      // Stale value is already being returned; keep serving it.
+    });
     return cached.data;
   }
 
-  // 4. No cache entry at all — fetch synchronously
   try {
-    const freshData = await fetcher();
-    set(key, freshData, ttl);
-    return freshData;
+    return await startRefresh(key, fetcher, ttl);
   } catch (err) {
-    // If fetch fails and we have stale data (shouldn't happen here but just in case)
     if (cached) {
       console.warn(`[price-cache] Fetch failed for "${key}", returning stale data`);
       return cached.data;
@@ -221,14 +207,17 @@ export const CacheKeys = {
   /** DCA comparison data */
   dca: (buyDays: number, sellDays: number) => `btc:dca:v2:${buyDays}:${sellDays}`,
 
-  /** Simulator data (v4 = bundled CSV, no Bitstamp for covered dates) */
-  simulator: () => "btc:simulator:v4",
+  /** Simulator data (v5 = completeness + structured load status) */
+  simulator: () => "btc:simulator:v5",
 
   /** blockchain.info daily market-price series */
   blockchainSeries: () => "btc:blockchain-series",
 
-  /** Timeline data (v2 = CSV-first, Bitstamp only after last archive day) */
-  timeline: () => "btc:timeline:v2",
+  /** Timeline data (v3 = canonical cycle model + completeness) */
+  timeline: () => "btc:timeline:v3",
+
+  /** Tip height + observed block interval (instance-local) */
+  networkState: () => "btc:network-state:v1",
 
   /** Cycle score / script integrity */
   cycleScore: () => "btc:cycle-score",
@@ -257,6 +246,9 @@ export const TTL = {
 
   /** Simulator data: 24 hours — historical halving prices don't change */
   SIMULATOR: 24 * 60 * 60_000,
+
+  /** Bitcoin network snapshot (height + interval): 10 minutes */
+  NETWORK_STATE: 10 * 60_000,
 
   /** Timeline data: 1 hour — current cycle prices update, but historical is static */
   TIMELINE: 60 * 60_000,

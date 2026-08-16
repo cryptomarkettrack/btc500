@@ -1,5 +1,5 @@
 {
-  "name": "tanstack_start_ts",
+  "name": "btc500",
   "private": true,
   "sideEffects": false,
   "type": "module",
@@ -10,7 +10,8 @@
     "preview": "vite preview",
     "lighthouse": "lighthouse https://btc500.net --preset=desktop --quiet",
     "lint": "eslint .",
-    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts && node scripts/verify-historical-csv.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts src/lib/halvings.test.ts src/lib/btc-providers.test.ts src/lib/simulator-result.test.ts src/lib/timeline-build.test.ts && node scripts/verify-historical-csv.mjs",
     "format": "prettier --write .",
     "search-console": "node scripts/search-console/fetch-search-console.ts",
     "search-console:inspect": "node scripts/search-console/inspect-urls.ts"

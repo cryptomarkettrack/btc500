@@ -3,9 +3,14 @@
  * have no candle. The 2012-cycle buy window is now in btc-usd-max.csv.
  */
 
+import { z } from "zod";
 import { dateToMs } from "./halvings";
 import { fetchWithTimeout } from "./http";
 import { CacheKeys, fetchWithCache, TTL } from "./price-cache";
+
+const blockchainSeriesSchema = z.object({
+  values: z.array(z.object({ x: z.number(), y: z.number() })),
+});
 
 /** Last-resort closes if every live source is down. Source: blockchain.info market-price. */
 const SEEDED_EARLY_PRICES: Record<string, number> = {
@@ -19,12 +24,11 @@ async function loadBlockchainSeries(): Promise<Map<string, number>> {
   const res = await fetchWithTimeout(url, {}, 5_000);
   if (!res.ok) throw new Error(`blockchain.info ${res.status}`);
 
-  const json = (await res.json()) as { values?: Array<{ x: number; y: number }> };
-  const values = json.values;
-  if (!Array.isArray(values)) throw new Error("blockchain.info: missing values");
+  const parsed = blockchainSeriesSchema.safeParse(await res.json());
+  if (!parsed.success) throw new Error("blockchain.info: malformed values");
 
   const map = new Map<string, number>();
-  for (const point of values) {
+  for (const point of parsed.data.values) {
     if (!Number.isFinite(point.x) || !Number.isFinite(point.y) || point.y <= 0) continue;
     const date = new Date(point.x * 1000).toISOString().slice(0, 10);
     map.set(date, point.y);

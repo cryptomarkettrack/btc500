@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { HALVINGS, addDays } from "./halvings";
+import { HALVINGS, WINDOW_DAYS, addDays } from "./halvings";
 import { CacheKeys, fetchWithCache, TTL } from "./price-cache";
 
 export interface DcaCycleResult {
@@ -23,8 +23,8 @@ export interface DcaServerResult {
 
 export function emptyDcaCycles(dcaBuyDays: number, dcaSellDays: number): DcaCycleResult[] {
   return HALVINGS.map((halving) => {
-    const buyDate = addDays(halving.date, -500);
-    const sellDate = addDays(halving.date, 500);
+    const buyDate = addDays(halving.date, -WINDOW_DAYS);
+    const sellDate = addDays(halving.date, WINDOW_DAYS);
     return {
       label: halving.label,
       halvingDate: halving.date,
@@ -55,18 +55,18 @@ async function buildDcaCycles(dcaBuyDays: number, dcaSellDays: number): Promise<
   const cycles: DcaCycleResult[] = [];
 
   for (const halving of HALVINGS) {
-    const buyDate = addDays(halving.date, -500);
-    const sellDate = addDays(halving.date, 500);
+    const buyDate = addDays(halving.date, -WINDOW_DAYS);
+    const sellDate = addDays(halving.date, WINDOW_DAYS);
     const buyEndDate = addDays(buyDate, dcaBuyDays);
     const sellEndDate = addDays(sellDate, dcaSellDays);
 
-    const [buyPricesMap, sellPricesMap] = await Promise.all([
+    const [buyPricesRange, sellPricesRange] = await Promise.all([
       getHistoricalBtcPricesRange(buyDate, buyEndDate),
       getHistoricalBtcPricesRange(sellDate, sellEndDate),
     ]);
 
-    const buy = priceSeries(buyDate, dcaBuyDays, buyPricesMap);
-    const sell = priceSeries(sellDate, dcaSellDays, sellPricesMap);
+    const buy = priceSeries(buyDate, dcaBuyDays, buyPricesRange.data);
+    const sell = priceSeries(sellDate, dcaSellDays, sellPricesRange.data);
 
     cycles.push({
       label: halving.label,

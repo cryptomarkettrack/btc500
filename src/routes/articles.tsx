@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { ArticleEndMatter } from "@/components/ArticleEndMatter";
 import { getArticlesSorted, SITE_URL } from "@/lib/articles";
-import { generatePageHead, generateWebPageSchema, SITE_DATE_MODIFIED } from "@/lib/site";
+import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -15,7 +15,7 @@ const articlesPageSchema = generateWebPageSchema({
     { name: "Home", path: "/" },
     { name: "Articles", path: "/articles" },
   ],
-  dateModified: SITE_DATE_MODIFIED,
+  dateModified: getArticlesSorted()[0]?.dateModifiedISO,
 });
 
 const articlesListSchema = {

@@ -9,7 +9,13 @@ export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
 export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Strategy";
-export const SITE_DATE_MODIFIED = "2026-08-15";
+/**
+ * Last time homepage footer copy was reviewed. Page-specific — not a global
+ * "today" stamp and not a default for other pages' dateModified.
+ */
+export const HOME_LAST_REVIEWED = "2026-08-15";
+/** @deprecated Use page-specific dates. Kept so existing homepage imports compile. */
+export const SITE_DATE_MODIFIED = HOME_LAST_REVIEWED;
 export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
 export const CONTACT_EMAIL = "btc500halving@gmail.com";
 
@@ -97,8 +103,8 @@ export function generateWebPageSchema({
   name,
   description,
   breadcrumbs,
-  datePublished = "2024-01-15",
-  dateModified = SITE_DATE_MODIFIED,
+  datePublished,
+  dateModified,
 }: WebPageSchemaOptions) {
   const url = absoluteUrl(path);
   return {
@@ -107,8 +113,8 @@ export function generateWebPageSchema({
     name,
     url,
     description,
-    dateModified,
-    datePublished,
+    ...(dateModified ? { dateModified } : {}),
+    ...(datePublished ? { datePublished } : {}),
     isPartOf: {
       "@type": "WebSite",
       name: SITE_NAME,

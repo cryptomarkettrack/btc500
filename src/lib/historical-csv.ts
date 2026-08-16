@@ -3,7 +3,11 @@
  * No filesystem, no network — safe to unit-test and import anywhere.
  */
 
+import { completenessFromCounts, type Completeness, type DataResult } from "./data-status.ts";
+
 export const HISTORICAL_CSV_FILENAME = "btc-usd-max.csv";
+
+export type HistoricalRangeResult = DataResult<Map<string, number>>;
 
 export interface HistoricalCsvDataset {
   prices: Map<string, number>;
@@ -113,6 +117,20 @@ export function lookupHistoricalPrice(
   return null;
 }
 
+export function eachIsoDay(startDate: string, endDate: string): string[] {
+  const days: string[] = [];
+  const current = new Date(`${startDate}T00:00:00Z`);
+  const end = new Date(`${endDate}T00:00:00Z`);
+  if (Number.isNaN(current.getTime()) || Number.isNaN(end.getTime()) || current > end) {
+    return days;
+  }
+  while (current <= end) {
+    days.push(current.toISOString().slice(0, 10));
+    current.setUTCDate(current.getUTCDate() + 1);
+  }
+  return days;
+}
+
 export function lookupHistoricalPriceRange(
   dataset: HistoricalCsvDataset,
   startDate: string,
@@ -121,18 +139,40 @@ export function lookupHistoricalPriceRange(
   const result = new Map<string, number>();
   if (!dataset.size) return result;
 
-  const current = new Date(`${startDate}T00:00:00Z`);
-  const end = new Date(`${endDate}T00:00:00Z`);
-  if (Number.isNaN(current.getTime()) || Number.isNaN(end.getTime()) || current > end) {
-    return result;
-  }
-
-  while (current <= end) {
-    const dateStr = current.toISOString().slice(0, 10);
+  for (const dateStr of eachIsoDay(startDate, endDate)) {
     const price = dataset.prices.get(dateStr);
     if (price !== undefined) result.set(dateStr, price);
-    current.setUTCDate(current.getUTCDate() + 1);
   }
 
   return result;
+}
+
+/**
+ * Inclusive range assessment. Dates after `asOfDay` are not expected and are
+ * not counted as missing — a live cycle must not look incomplete because
+ * tomorrow has no close yet.
+ */
+export function assessPriceRange(
+  prices: Map<string, number>,
+  startDate: string,
+  endDate: string,
+  source: string,
+  asOfDay?: string,
+): HistoricalRangeResult {
+  const lastExpected = asOfDay && asOfDay < endDate ? asOfDay : endDate;
+  const expected = startDate <= lastExpected ? eachIsoDay(startDate, lastExpected) : [];
+  const missingDates = expected.filter((d) => !prices.has(d));
+  const completeness: Completeness =
+    expected.length === 0
+      ? prices.size === 0
+        ? "empty"
+        : "partial"
+      : completenessFromCounts(expected.length, expected.length - missingDates.length);
+
+  return {
+    data: prices,
+    completeness,
+    source,
+    missingDates,
+  };
 }

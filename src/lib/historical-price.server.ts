@@ -1,15 +1,20 @@
 /**
  * Historical BTC prices for simulator / DCA / timeline / cycle-score.
  * Bundled CSV first. Exchange APIs only for dates after the last CSV print.
+ *
+ * Range lookups return completeness metadata so partial archives cannot be
+ * mistaken for a finished dataset.
  */
 
 import { fetchBtcPriceFromBitstamp, fetchBtcPricesFromBitstampRange } from "./bitstamp-fetcher";
 import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
 import {
+  assessPriceRange,
   lookupHistoricalPrice,
   lookupHistoricalPriceRange,
   needsExternalFallback,
   type HistoricalCsvDataset,
+  type HistoricalRangeResult,
 } from "./historical-csv";
 import { loadHistoricalCsvDataset } from "./historical-csv.server";
 import { CacheKeys, fetchWithCache, TTL } from "./price-cache";
@@ -77,41 +82,48 @@ export async function getHistoricalBtcPrice(dateStr: string): Promise<number | n
 }
 
 /**
- * Inclusive date range. CSV covers the archive; at most one Bitstamp range
- * request fills the tail after the last bundled day.
+ * Inclusive date range with completeness metadata.
+ * CSV covers the archive; at most one Bitstamp range request fills the tail
+ * after the last bundled day. Missing days are listed, never invented.
  */
 export async function getHistoricalBtcPricesRange(
   startDate: string,
   endDate: string,
-): Promise<Map<string, number>> {
+  asOfDay?: string,
+): Promise<HistoricalRangeResult> {
   const dataset = await loadHistoricalCsvDataset();
   const result = lookupHistoricalPriceRange(dataset, startDate, endDate);
+  const sources = [dataset.source];
 
-  if (!needsExternalFallback(endDate, dataset.lastDate)) {
-    return result;
-  }
-
-  const tailStart =
-    dataset.lastDate && startDate <= dataset.lastDate ? nextIsoDay(dataset.lastDate) : startDate;
-  if (!tailStart || tailStart > endDate) return result;
-
-  try {
-    const tail = await fetchWithCache(
-      CacheKeys.historicalRange(tailStart, endDate),
-      () => fetchBtcPricesFromBitstampRange(tailStart, endDate),
-      { ttl: TTL.HISTORICAL_RANGE, staleWhileRevalidate: false },
-    );
-    for (const [date, price] of tail) {
-      if (!result.has(date)) result.set(date, price);
+  if (needsExternalFallback(endDate, dataset.lastDate)) {
+    const tailStart =
+      dataset.lastDate && startDate <= dataset.lastDate ? nextIsoDay(dataset.lastDate) : startDate;
+    if (tailStart && tailStart <= endDate) {
+      try {
+        const tail = await fetchWithCache(
+          CacheKeys.historicalRange(tailStart, endDate),
+          () => fetchBtcPricesFromBitstampRange(tailStart, endDate),
+          { ttl: TTL.HISTORICAL_RANGE, staleWhileRevalidate: false },
+        );
+        let added = 0;
+        for (const [date, price] of tail) {
+          if (!result.has(date)) {
+            result.set(date, price);
+            added += 1;
+          }
+        }
+        if (added > 0) sources.push("bitstamp-tail");
+      } catch (err) {
+        console.error(
+          `[historical-price] recent tail ${tailStart}→${endDate} failed; returning CSV-only range:`,
+          err,
+        );
+        sources.push("bitstamp-tail-failed");
+      }
     }
-  } catch (err) {
-    console.error(
-      `[historical-price] recent tail ${tailStart}→${endDate} failed; returning CSV-only range:`,
-      err,
-    );
   }
 
-  return result;
+  return assessPriceRange(result, startDate, endDate, sources.join("+"), asOfDay);
 }
 
 function nextIsoDay(dateStr: string): string {

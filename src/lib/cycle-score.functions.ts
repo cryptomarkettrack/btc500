@@ -4,7 +4,7 @@
 
 import { createServerFn } from "@tanstack/react-start";
 import { estimateHalvingInfo, getBtcPrice, resolveHalvingInfo } from "./btc.functions";
-import { HALVINGS, addDays } from "./halvings";
+import { HALVINGS, addDays, historicalHalvingByBlock } from "./halvings";
 import { computeCycle, daysBetween } from "./phase";
 import { computeCycleScore, type CycleScoreResult } from "./cycle-score";
 import { fetchWithCache, CacheKeys, TTL } from "./price-cache";
@@ -81,7 +81,8 @@ async function estimateCycleDrawdown(
   const end = new Date().toISOString().slice(0, 10);
   try {
     const { getHistoricalBtcPricesRange } = await import("./historical-price.server");
-    const map = await getHistoricalBtcPricesRange(start, end);
+    const range = await getHistoricalBtcPricesRange(start, end);
+    const map = range.data;
     let peak = currentPrice;
     // Also include sparse sampling via historical if CSV is thin at the end
     if (map.size > 0) {
@@ -124,7 +125,9 @@ async function buildCycleScore(): Promise<CycleScoreResult> {
   const currentPrice = priceRes?.price ?? null;
 
   const lastHalvingDateStr =
-    lastHalving.toISOString().slice(0, 10) || HALVINGS[HALVINGS.length - 1]?.date;
+    historicalHalvingByBlock(halving.lastHalvingBlock)?.date ||
+    lastHalving.toISOString().slice(0, 10) ||
+    HALVINGS[HALVINGS.length - 1]?.date;
 
   // Prefer completed prior cycles for path comparison (avoid comparing against "current" incomplete cycle)
   const comparable = HALVINGS.filter((h) => h.date < lastHalvingDateStr);

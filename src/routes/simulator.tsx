@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { simulatorQuery } from "@/lib/queries";
-import { emptySimulatorCycles } from "@/lib/simulator.functions";
+import { unavailableSimulatorResult } from "@/lib/simulator.functions";
 import { SIMULATOR_FAQ } from "@/lib/simulator-faq";
 import {
   mergeSimulatorSearch,
@@ -132,7 +132,10 @@ export const Route = createFileRoute("/simulator")({
       await context.queryClient.ensureQueryData(simulatorQuery);
     } catch (err) {
       console.error("[simulator] loader failed; page will render without prices:", err);
-      context.queryClient.setQueryData(simulatorQuery.queryKey, { cycles: emptySimulatorCycles() });
+      context.queryClient.setQueryData(
+        simulatorQuery.queryKey,
+        unavailableSimulatorResult("unknown", "upstream", "Historical data could not be loaded."),
+      );
     }
   },
   component: SimulatorRoute,

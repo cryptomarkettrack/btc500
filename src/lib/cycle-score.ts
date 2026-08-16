@@ -70,7 +70,7 @@ export const CYCLE_SCORE_COMPONENT_META: Record<CycleScoreComponentId, CycleScor
       "Buy date = next halving − 500 days; sell date = next halving + 500 days. Phase is derived from “now” vs those dates. Score is high when the rule is clear (waiting for buy, holding post-halving, or nearing sell); slightly adjusted as windows approach (weight 25%).",
     weightLabel: "25% of Cycle Score",
     dataSources:
-      "Next/last halving times estimated from live Bitcoin tip height (mempool.space / blockchain.info / blockstream) and ~10 min average block time, plus the known 210k-block epoch schedule.",
+      "Next halving time is estimated from live Bitcoin tip height (mempool.space / blockchain.info / blockstream) and the recently observed average block interval. Last-halving dates are the recorded historical timestamps. The protocol 10-minute target is only used as a labelled fallback when block data is unavailable.",
   },
   onChain: {
     id: "onChain",

@@ -1,3 +1,5 @@
+import { WINDOW_DAYS } from "./halvings";
+
 export type Phase = "wait-buy" | "wait-sell" | "done";
 
 export interface CycleInfo {
@@ -31,19 +33,19 @@ export function daysBetween(a: Date, b: Date): number {
 }
 
 export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): CycleInfo {
-  const buyDate = addDays(nextHalving, -500);
-  const sellDate = addDays(nextHalving, 500);
+  const buyDate = addDays(nextHalving, -WINDOW_DAYS);
+  const sellDate = addDays(nextHalving, WINDOW_DAYS);
   let phase: Phase;
   if (now < buyDate) phase = "wait-buy";
   else if (now < sellDate) phase = "wait-sell";
   else phase = "done";
 
-  const buyWindowStart = addDays(buyDate, -500); // pre-buy 500-day track
+  const buyWindowStart = addDays(buyDate, -WINDOW_DAYS); // pre-buy 500-day track
   const buyElapsed = (now.getTime() - buyWindowStart.getTime()) / DAY;
-  const buyProgress = Math.max(0, Math.min(1, buyElapsed / 500));
+  const buyProgress = Math.max(0, Math.min(1, buyElapsed / WINDOW_DAYS));
 
   const sellElapsed = (now.getTime() - nextHalving.getTime()) / DAY;
-  const sellProgress = Math.max(0, Math.min(1, sellElapsed / 500));
+  const sellProgress = Math.max(0, Math.min(1, sellElapsed / WINDOW_DAYS));
 
   return {
     now,
@@ -54,7 +56,7 @@ export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): C
     phase,
     daysUntilBuy: Math.max(0, daysBetween(now, buyDate)),
     daysUntilSell: Math.max(0, daysBetween(now, sellDate)),
-    daysUntilNextCycleBuy: Math.max(0, daysBetween(now, addDays(nextHalving, -500))),
+    daysUntilNextCycleBuy: Math.max(0, daysBetween(now, addDays(nextHalving, -WINDOW_DAYS))),
     buyProgress,
     sellProgress,
   };

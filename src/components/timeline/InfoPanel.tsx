@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
 import { AnimatedNumber } from "./AnimatedNumber";
+import type { PerformanceKind } from "@/lib/halvings";
 import type { TimelineDay } from "@/lib/timeline.functions";
 
 interface InfoPanelProps {
+  investment: number;
   currentDay: TimelineDay | null;
   previousDay: TimelineDay | null;
+  currentPerformanceKind?: PerformanceKind;
+  previousPerformanceKind?: PerformanceKind;
 }
 
 function formatUsd(n: number): string {
@@ -15,22 +19,30 @@ function formatUsd(n: number): string {
   });
 }
 
-export function InfoPanel({ currentDay, previousDay }: InfoPanelProps) {
+export function InfoPanel({
+  investment,
+  currentDay,
+  previousDay,
+  currentPerformanceKind,
+  previousPerformanceKind,
+}: InfoPanelProps) {
   const diffPercent =
     currentDay && previousDay && previousDay.portfolioValue > 0
       ? ((currentDay.portfolioValue - previousDay.portfolioValue) / previousDay.portfolioValue) *
         100
       : null;
 
-  const bestPortfolio =
-    currentDay && previousDay
-      ? Math.max(currentDay.portfolioValue, previousDay.portfolioValue)
-      : (currentDay?.portfolioValue ?? previousDay?.portfolioValue ?? null);
+  const historicalCandidates = [
+    currentPerformanceKind === "realized" ? currentDay : null,
+    previousPerformanceKind === "realized" ? previousDay : null,
+  ].filter((d): d is TimelineDay => d != null);
 
-  const bestRoi =
-    currentDay && previousDay
-      ? (currentDay.roiPercent > previousDay.roiPercent ? currentDay : previousDay).roiPercent
-      : (currentDay?.roiPercent ?? previousDay?.roiPercent ?? null);
+  const bestHistorical =
+    historicalCandidates.length === 0
+      ? null
+      : historicalCandidates.reduce((best, day) =>
+          day.portfolioValue > best.portfolioValue ? day : best,
+        );
 
   return (
     <motion.div
@@ -45,7 +57,7 @@ export function InfoPanel({ currentDay, previousDay }: InfoPanelProps) {
           <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
             Investment
           </div>
-          <div className="mt-1 text-xl font-bold">$20,000</div>
+          <div className="mt-1 text-xl font-bold">{formatUsd(investment)}</div>
         </div>
 
         {/* Current cycle portfolio */}
@@ -106,11 +118,11 @@ export function InfoPanel({ currentDay, previousDay }: InfoPanelProps) {
             Best Historical Outcome
           </div>
           <div className="mt-1 text-xl font-bold text-success">
-            {bestPortfolio !== null ? (
+            {bestHistorical ? (
               <>
-                {formatUsd(bestPortfolio)}
+                {formatUsd(bestHistorical.portfolioValue)}
                 <span className="ml-1 text-sm font-semibold">
-                  ({bestRoi !== null ? <AnimatedNumber value={bestRoi} isPercent /> : "—"})
+                  (<AnimatedNumber value={bestHistorical.roiPercent} isPercent />)
                 </span>
               </>
             ) : (

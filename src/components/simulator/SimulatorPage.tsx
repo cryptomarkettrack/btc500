@@ -45,12 +45,45 @@ import {
   type SimulatorSearch,
   type StartYear,
 } from "@/lib/simulator-math";
+import type { DataLoadStatus } from "@/lib/data-status";
 import { SITE_URL } from "@/lib/site";
 import { SimulatorShareCard } from "@/components/simulator/SimulatorShareCard";
 import { Slider } from "@/components/ui/slider";
 import { cn } from "@/lib/utils";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+
+function LoadStatusBanner({
+  status,
+  missingCount,
+}: {
+  status?: DataLoadStatus;
+  missingCount: number;
+}) {
+  if (status === "unavailable" || status === "error") {
+    return (
+      <div
+        role="status"
+        className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center text-sm text-muted-foreground"
+      >
+        Historical data could not be loaded. This is not an empty backtest — cycle prices are
+        unavailable.
+      </div>
+    );
+  }
+  if (status === "partial") {
+    return (
+      <div
+        role="status"
+        className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center text-sm text-muted-foreground"
+      >
+        Some historical prices are missing{missingCount > 0 ? ` (${missingCount} dates)` : ""}.
+        Available cycle results are shown; missing values are not filled in.
+      </div>
+    );
+  }
+  return null;
+}
 
 interface Props {
   search: SimulatorSearch;
@@ -114,6 +147,7 @@ export function SimulatorPage({ search, onChange }: Props) {
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
         <div className="flex flex-col gap-8">
           <Header amount={resolved.amount} />
+          <LoadStatusBanner status={data.status} missingCount={data.missingDates?.length ?? 0} />
           <Controls
             search={resolved}
             draft={draft}

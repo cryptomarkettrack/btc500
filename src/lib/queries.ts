@@ -1,6 +1,10 @@
 /**
  * Shared TanStack Query option factories.
  * Keeps query keys and stale/refetch intervals consistent across routes.
+ *
+ * Local countdown ticks in the browser via useNow() and does not hit the network.
+ * Bitcoin network state (height / interval / estimated date) refreshes on a
+ * 10-minute cadence so we do not hammer upstream block APIs.
  */
 
 import { queryOptions } from "@tanstack/react-query";
@@ -10,25 +14,29 @@ import {
   estimateHalvingInfo,
   type HalvingInfo,
 } from "@/lib/btc.functions";
-import { emptySimulatorCycles, getSimulatorData } from "@/lib/simulator.functions";
-import { emptyTimelineData, getTimelineData } from "@/lib/timeline.functions";
 import { emptyDcaCycles, getDcaData } from "@/lib/dca.functions";
 import { getCycleScore } from "@/lib/cycle-score.functions";
+import { unavailableSimulatorResult, getSimulatorData } from "@/lib/simulator.functions";
+import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
 
-const HOUR = 60 * 60_000;
 const MINUTE = 60_000;
+const NETWORK_REFRESH_MS = 10 * 60_000;
+const HOUR = 60 * 60_000;
 const QUARTER_HOUR = 15 * 60_000;
+
+export const NETWORK_STALE_MS = NETWORK_REFRESH_MS;
 
 export const halvingQuery = queryOptions({
   queryKey: ["halving"],
   queryFn: () => getHalvingInfo(),
-  staleTime: HOUR,
-  refetchInterval: HOUR,
-  // Deterministic estimate is provided synchronously so the hero renders instantly on
-  // BOTH the SSR server and the client with the SAME snapshot — avoiding a hydration
-  // mismatch between the server's time and the client's time. The live block height is
-  // fetched in the background after mount and refines these values.
+  staleTime: NETWORK_REFRESH_MS,
+  refetchInterval: NETWORK_REFRESH_MS,
+  refetchOnMount: true,
+  // Deterministic estimate so the hero renders instantly on both the SSR server
+  // and the client with the same seeded snapshot. Marked stale so the live
+  // height/interval fetch runs after mount instead of waiting a full hour.
   initialData: (): HalvingInfo => estimateHalvingInfo(),
+  initialDataUpdatedAt: 0,
 });
 
 export const btcPriceQuery = queryOptions({
@@ -45,7 +53,11 @@ export const simulatorQuery = queryOptions({
       return await getSimulatorData();
     } catch (err) {
       console.error("[simulator] query failed:", err);
-      return { cycles: emptySimulatorCycles() };
+      return unavailableSimulatorResult(
+        "unknown",
+        "unknown",
+        "Historical data could not be loaded.",
+      );
     }
   },
   staleTime: HOUR,
@@ -60,7 +72,11 @@ export const simulatorPreviewQuery = queryOptions({
       return await getSimulatorData();
     } catch (err) {
       console.error("[simulator-preview] query failed:", err);
-      return { cycles: emptySimulatorCycles() };
+      return unavailableSimulatorResult(
+        "unknown",
+        "unknown",
+        "Historical data could not be loaded.",
+      );
     }
   },
   staleTime: HOUR,
@@ -74,7 +90,7 @@ export const timelineQuery = queryOptions({
       return await getTimelineData();
     } catch (err) {
       console.error("[timeline] query failed:", err);
-      return emptyTimelineData();
+      return emptyTimelinePayload();
     }
   },
   staleTime: HOUR,

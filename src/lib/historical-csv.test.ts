@@ -7,6 +7,7 @@ import { fileURLToPath } from "node:url";
 import { addDays } from "./halvings.ts";
 import {
   isCoveredByDataset,
+  assessPriceRange,
   lookupHistoricalPrice,
   lookupHistoricalPriceRange,
   needsExternalFallback,
@@ -57,6 +58,38 @@ describe("coverage helpers", () => {
     assert.equal(needsExternalFallback("2024-04-20", null), false);
     assert.equal(needsExternalFallback("2026-08-15", "2026-07-11"), true);
     assert.equal(needsExternalFallback("2025-09-02", "2026-07-11"), false);
+  });
+});
+
+describe("assessPriceRange", () => {
+  it("reports a complete range when every expected day is present", () => {
+    const dataset = parseHistoricalCsv(
+      ["event_date,close_price_usd", "2011-07-17,14", "2011-07-18,13"].join("\n"),
+    );
+    const assessed = assessPriceRange(dataset.prices, "2011-07-17", "2011-07-18", "fixture");
+    assert.equal(assessed.completeness, "complete");
+    assert.equal(assessed.missingDates.length, 0);
+    assert.equal(assessed.source, "fixture");
+  });
+
+  it("reports partial data with the missing dates listed", () => {
+    const prices = new Map([["2011-07-17", 14]]);
+    const assessed = assessPriceRange(prices, "2011-07-17", "2011-07-19", "fixture");
+    assert.equal(assessed.completeness, "partial");
+    assert.deepEqual(assessed.missingDates, ["2011-07-18", "2011-07-19"]);
+  });
+
+  it("does not treat future days as missing", () => {
+    const prices = new Map([["2011-07-17", 14]]);
+    const assessed = assessPriceRange(prices, "2011-07-17", "2011-07-19", "fixture", "2011-07-17");
+    assert.equal(assessed.completeness, "complete");
+    assert.deepEqual(assessed.missingDates, []);
+  });
+
+  it("reports empty when no prices exist for an expected window", () => {
+    const assessed = assessPriceRange(new Map(), "2011-07-17", "2011-07-19", "missing");
+    assert.equal(assessed.completeness, "empty");
+    assert.ok(assessed.missingDates.length > 0);
   });
 });
 

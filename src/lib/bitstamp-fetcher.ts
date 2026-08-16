@@ -1,22 +1,23 @@
+import { z } from "zod";
 import { dateToMs } from "./halvings";
 import { fetchWithTimeout } from "./http";
 
 const BITSTAMP_TIMEOUT_MS = 5_000;
 
-type BitstampOhlc = {
-  timestamp: string;
-  open: string;
-  high: string;
-  low: string;
-  close: string;
-  volume: string;
-};
+const bitstampCandleSchema = z.object({
+  timestamp: z.string(),
+  close: z.string(),
+});
 
-function parseBitstampBody(json: unknown): BitstampOhlc[] | null {
-  if (!json || typeof json !== "object") return null;
-  const data = (json as { data?: { ohlc?: unknown } }).data;
-  if (!data || !Array.isArray(data.ohlc)) return null;
-  return data.ohlc as BitstampOhlc[];
+const bitstampBodySchema = z.object({
+  data: z.object({
+    ohlc: z.array(bitstampCandleSchema),
+  }),
+});
+
+function parseBitstampBody(json: unknown): Array<{ timestamp: string; close: string }> | null {
+  const parsed = bitstampBodySchema.safeParse(json);
+  return parsed.success ? parsed.data.data.ohlc : null;
 }
 
 /**
