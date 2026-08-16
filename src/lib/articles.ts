@@ -222,21 +222,21 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-week-ahead",
     slug: "bitcoin-week-ahead",
-    title: "Bitcoin Weekly Outlook: Price, ETF Flows & Key Events",
+    title: "Bitcoin This Week (Aug 17–23): FOMC Minutes & Jackson Hole",
     description:
-      "This week’s Bitcoin price, spot ETF flows, CPI/PPI, and market structure — plus where the 500-day halving cycle sits right now.",
+      "Week of Aug 17–23, 2026: Bitcoin near $63,100, Wednesday’s FOMC minutes, the Wyoming Blockchain Symposium, and ETF flows — plus the Nov 30 buy date.",
     keywords:
-      "Bitcoin weekly outlook, Bitcoin price this week, Bitcoin ETF flows, Bitcoin CPI, Bitcoin week ahead, Bitcoin market structure, BTC500 cycle, Bitcoin key events",
-    date: "August 10, 2026",
-    dateISO: "2026-08-10",
-    dateModified: "August 15, 2026",
-    dateModifiedISO: "2026-08-15",
-    readTime: "9 min read",
-    wordCount: 2400,
-    ogImage: `${SITE_URL}/og/default.png`,
+      "Bitcoin this week August 17-23 2026, Bitcoin weekly outlook, Bitcoin FOMC minutes, Jackson Hole Bitcoin, Wyoming Blockchain Symposium, Bitcoin ETF flows, Bitcoin 63100, Bitcoin week ahead, BTC500 cycle, Paul Atkins SEC Bitcoin, Bitcoin key events",
+    date: "August 17, 2026",
+    dateISO: "2026-08-17",
+    dateModified: "August 17, 2026",
+    dateModifiedISO: "2026-08-17",
+    readTime: "10 min read",
+    wordCount: 2800,
+    ogImage: `${SITE_URL}/articles/weekly-brief/og-bitcoin-week-ahead.png`,
     articleSection: "Bitcoin Market Analysis",
     schemaKeywords:
-      "Bitcoin weekly outlook, Bitcoin price, Bitcoin ETF flows, Bitcoin key events, Bitcoin CPI, BTC500 500-day cycle",
+      "Bitcoin weekly outlook, Bitcoin FOMC minutes, Jackson Hole Bitcoin, Bitcoin ETF flows, Bitcoin key events, BTC500 500-day cycle",
   },
   {
     id: "bip-110-rejection",

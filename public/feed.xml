@@ -5,8 +5,15 @@
     <link>https://btc500.net/</link>
     <description>Free Bitcoin halving countdown, cycle tools, and strategy articles. Buy 500 days before each halving. Sell 500 days after.</description>
     <language>en-us</language>
-    <lastBuildDate>Fri, 14 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 17 Aug 2026 00:00:00 GMT</lastBuildDate>
     <atom:link href="https://btc500.net/feed.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Bitcoin This Week (Aug 17–23): FOMC Minutes &amp; Jackson Hole</title>
+      <link>https://btc500.net/articles/bitcoin-week-ahead</link>
+      <guid>https://btc500.net/articles/bitcoin-week-ahead</guid>
+      <pubDate>Mon, 17 Aug 2026 00:00:00 GMT</pubDate>
+      <description>Week of Aug 17–23, 2026: Bitcoin near $63,100, Wednesday’s FOMC minutes, the Wyoming Blockchain Symposium, and ETF flows — plus the Nov 30 buy date.</description>
+    </item>
     <item>
       <title>SEC Cancels Regulation Crypto Vote: What It Means</title>
       <link>https://btc500.net/articles/sec-cancels-regulation-crypto</link>
@@ -27,13 +34,6 @@
       <guid>https://btc500.net/articles/strongest-hands</guid>
       <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
       <description>Elite Bitcoin wallets holding 10,000+ BTC just hit a six-month high of 90. Here's what whale accumulation says about the halving cycle.</description>
-    </item>
-    <item>
-      <title>Bitcoin Weekly Outlook: Price, ETF Flows &amp; Key Events</title>
-      <link>https://btc500.net/articles/bitcoin-week-ahead</link>
-      <guid>https://btc500.net/articles/bitcoin-week-ahead</guid>
-      <pubDate>Mon, 10 Aug 2026 00:00:00 GMT</pubDate>
-      <description>This week’s Bitcoin price, spot ETF flows, CPI/PPI, and market structure — plus where the 500-day halving cycle sits right now.</description>
     </item>
     <item>
       <title>BIP-110 Rejection: What It Means for Bitcoin</title>

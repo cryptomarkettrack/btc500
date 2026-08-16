@@ -58,7 +58,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [SEC Cancels Regulation Crypto Vote (Aug 14, 2026)](https://btc500.net/articles/sec-cancels-regulation-crypto): The SEC cancelled Friday's Regulation Crypto Assets meeting with no new date — what the delay means for Bitcoin and the Nov 30 buy window.
 - [Goldman Sachs vs BlackRock: The $2.25B Bitcoin Income ETF War (Aug 12, 2026)](https://btc500.net/articles/goldman-vs-blackrock): Goldman's NEOS buyout builds a $130 billion income ETF platform aimed at BlackRock's BITA fund — what holding-style products mean for bitcoin supply and the Nov 30 buy date.
 - [Bitcoin's Strongest Hands Are Back (Aug 11, 2026)](https://btc500.net/articles/strongest-hands): 90 elite wallets holding 10,000+ BTC hit a six-month high — what whale accumulation through the noise says about the halving cycle and the Nov 30 buy window.
-- [Bitcoin Weekly Outlook (Aug 10–16, 2026)](https://btc500.net/articles/bitcoin-week-ahead): Recurring weekly outlook — price, ETF flows, key events, and current 500-day-cycle position.
+- [Bitcoin This Week (Aug 17–23): FOMC Minutes & Jackson Hole](https://btc500.net/articles/bitcoin-week-ahead): Recurring weekly outlook for August 17–23, 2026 — FOMC minutes, Wyoming Blockchain Symposium, ETF flows, and current 500-day-cycle position.
 - [BIP-110 Rejection](https://btc500.net/articles/bip-110-rejection): What the BIP-110 soft fork failure means for Bitcoin governance and long-term holders.
 - [The BTC500 Strategy](https://btc500.net/articles/btc500-strategy): When to buy Bitcoin before the halving, and when the rule sells after it.
 - [Why BTC500 Exists](https://btc500.net/articles/why-btc500-exists): Why investors keep buying too early in bear markets.

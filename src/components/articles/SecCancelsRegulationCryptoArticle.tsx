@@ -406,9 +406,9 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
                 href="/articles/bitcoin-week-ahead"
                 className="font-semibold text-primary underline"
               >
-                Bitcoin This Week (Aug 10–16, 2026)
+                Bitcoin This Week (Aug 17–23, 2026)
               </a>{" "}
-              — ETF flows, CPI, options expiry, and why institutional demand is still the tape.
+              — FOMC minutes, Jackson Hole, ETF flows, and why institutional demand is still the tape.
             </li>
             <li>
               <a

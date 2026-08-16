@@ -15,7 +15,7 @@ const faqSchema = {
       name: "What's happening in Bitcoin this week?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The week of August 10-16, 2026 features daily spot ETF flow reports, US CPI and PPI due mid-week, weekly jobless claims, and a Friday BTC options expiry with retail sales data. Bitcoin is trading near $65,000 with ETF demand absorbing roughly four times daily mining issuance.",
+        text: "The week of August 17-23, 2026 is built around Wednesday's FOMC minutes from the 9-3 July hold, the Wyoming Blockchain Symposium in Jackson Hole, daily spot ETF flow reports, Thursday jobless claims, and Friday flash PMIs plus a weekly BTC options expiry. Bitcoin is trading near $63,100 after last week's in-line CPI failed to break the $63,000-$65,000 range.",
       },
     },
     {
@@ -23,7 +23,7 @@ const faqSchema = {
       name: "Why are Bitcoin ETF flows important?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Spot ETFs are now Bitcoin's dominant marginal buyer. Last week they recorded roughly $850M-$1B in net inflows - the best week since April - which is about 4x the Bitcoin miners create per day at current prices.",
+        text: "Spot ETFs are now Bitcoin's dominant marginal buyer. Last week they recorded roughly $850 million to $1.1 billion in net inflows — the best week since April — which is about 4x the Bitcoin miners create per day at current prices.",
       },
     },
     {
@@ -31,15 +31,15 @@ const faqSchema = {
       name: "Will Bitcoin ETFs break the halving cycle?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "ETFs change the buyer mix, not the supply schedule. The 2028 halving still cuts new issuance in half. Institutional demand can compress or accelerate the cycle, but the 500-day buy/sell rule has worked across every completed cycle so far.",
+        text: "ETFs change the buyer mix, not the supply schedule. The 2028 halving still cuts new issuance in half. Institutional demand can compress or accelerate the cycle, but the 500-day buy/sell rule has worked across every completed cycle so far. Past performance does not guarantee future results.",
       },
     },
     {
       "@type": "Question",
-      name: "Is the $65,000 level important?",
+      name: "Why do the FOMC minutes matter for Bitcoin?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes, in a practical sense. Bitcoin has been coiling under $65,000 with unusually low volatility (DVOL near 35). It is the level where sustained ETF demand has to prove itself, while record derivatives leverage adds unwind risk.",
+        text: "The July FOMC held rates at 3.50%-3.75% on a 9-3 vote, with three regional presidents dissenting for a hike. The minutes show whether that hawkish minority was isolated or close to swaying the committee — the main near-term input for yields, the dollar, and Bitcoin.",
       },
     },
     {

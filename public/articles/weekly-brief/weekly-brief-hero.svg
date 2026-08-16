@@ -1,6 +1,6 @@
 <svg width="1536" height="1024" viewBox="0 0 1536 1024" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
-  <title id="title">Bitcoin This Week — ETF Flows, CPI, and the $65,000 Test</title>
-  <desc id="desc">BTC500 weekly brief for August 10-16, 2026: five events, one rule. ETF flows, US CPI, options expiry, CLARITY countdown, and the official buy date on November 30, 2026.</desc>
+  <title id="title">Bitcoin This Week — FOMC Minutes, Jackson Hole, and the $63,000 Range</title>
+  <desc id="desc">BTC500 weekly brief for August 17-23, 2026: FOMC minutes, Wyoming Blockchain Symposium, options expiry, and the official buy date on November 30, 2026.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#0b0b11"/>
@@ -25,27 +25,27 @@
   <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
     <text x="128" y="170" font-size="34" font-weight="700" fill="#fb923c" letter-spacing="6">BTC500 · BITCOIN THIS WEEK</text>
 
-    <text x="124" y="300" font-size="118" font-weight="800" fill="#ffffff">5 Events,</text>
+    <text x="124" y="300" font-size="118" font-weight="800" fill="#ffffff">Minutes,</text>
     <text x="124" y="424" font-size="118" font-weight="800" fill="#ffffff">One <tspan fill="#f97316">Rule.</tspan></text>
 
-    <text x="128" y="520" font-size="44" fill="#a1a1aa" font-weight="500">ETF Flows · US CPI · Options Expiry · CLARITY Countdown</text>
+    <text x="128" y="520" font-size="40" fill="#a1a1aa" font-weight="500">FOMC Minutes · Jackson Hole · ETF Flows · Options Expiry</text>
 
     <rect x="124" y="580" width="640" height="150" rx="20" fill="#0f0f16" stroke="#f97316" stroke-width="3"/>
-    <text x="160" y="646" font-size="32" font-weight="600" fill="#71717a" letter-spacing="2">THE TEST</text>
-    <text x="160" y="704" font-size="60" font-weight="800" fill="#fb923c">$65,000</text>
+    <text x="160" y="646" font-size="32" font-weight="600" fill="#71717a" letter-spacing="2">THE RANGE</text>
+    <text x="160" y="704" font-size="56" font-weight="800" fill="#fb923c">$63k–$65k</text>
 
     <rect x="816" y="300" width="600" height="430" rx="24" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
-    <text x="852" y="372" font-size="36" font-weight="700" fill="#f97316" letter-spacing="3">AUG 10–16, 2026</text>
+    <text x="852" y="372" font-size="36" font-weight="700" fill="#f97316" letter-spacing="3">AUG 17–23, 2026</text>
     <g font-size="26" fill="#d4d4d8">
-      <text x="852" y="436">MON–FRI   Daily spot ETF flows</text>
-      <text x="852" y="494">TUE–WED   US CPI + PPI (mid-week)</text>
-      <text x="852" y="552">THU       Weekly jobless claims</text>
-      <text x="852" y="610">FRI       Options expiry · retail sales</text>
-      <text x="852" y="668">SEPT      CLARITY Act vote countdown</text>
+      <text x="852" y="436">MON–THU   Wyoming Blockchain Symposium</text>
+      <text x="852" y="494">WED 2pm    FOMC minutes (9–3 hold)</text>
+      <text x="852" y="552">THU        Weekly jobless claims</text>
+      <text x="852" y="610">FRI        Flash PMIs · options expiry</text>
+      <text x="852" y="668">SEPT 15    CLARITY cloture + next FOMC</text>
     </g>
 
     <rect x="124" y="780" width="1292" height="110" rx="18" fill="#f97316"/>
     <text x="158" y="855" font-size="44" font-weight="800" fill="#0b0b11">BUY DATE NOV 30, 2026</text>
-    <text x="1050" y="855" font-size="32" font-weight="700" fill="#0b0b11">112 days away →</text>
+    <text x="1050" y="855" font-size="32" font-weight="700" fill="#0b0b11">106 days away →</text>
   </g>
 </svg>
