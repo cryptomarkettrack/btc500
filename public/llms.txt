@@ -52,6 +52,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
+- [Bitcoin Casino Searches Surged 500% (Aug 16, 2026)](https://btc500.net/articles/bitcoin-casino-searches): Why the week's breakout in casino-adjacent Bitcoin searches is an attention signal, not an investment signal — and how a fixed BTC500 rule beats gambling on the cycle.
 - [Solar Eclipse and Bitcoin Halving (Aug 15, 2026)](https://btc500.net/articles/solar-eclipse-bitcoin-halving): The August 12 total solar eclipse proved that rare predictable events reward preparation — and Bitcoin's halving follows the same principle. What the eclipse teaches about timing the market with the BTC500 strategy.\n
 
 - [SEC Cancels Regulation Crypto Vote (Aug 14, 2026)](https://btc500.net/articles/sec-cancels-regulation-crypto): The SEC cancelled Friday's Regulation Crypto Assets meeting with no new date — what the delay means for Bitcoin and the Nov 30 buy window.

@@ -29,6 +29,25 @@ export interface ArticleMeta {
 
 export const articles: ArticleMeta[] = [
 {
+    id: "bitcoin-casino-searches",
+    slug: "bitcoin-casino-searches",
+    title: "Bitcoin Casino Searches Surged 500%: What It Really Means",
+    description:
+      "Bitcoin casino searches jumped ~500% and bitcoin casinos ~350% in the week to Aug 16, 2026. What the spike in casino-adjacent crypto queries signals about retail attention and the BTC500 halving-cycle buy date.",
+    keywords:
+      "bitcoin casino, bitcoin casinos, bitcoin casino searches surge, bitcoin search trends 2026, bitcoin google trends, bitcoin retail interest, bitcoin casino breakout, bitcoin gambling trend, bitcoin halving cycle attention, BTC500 strategy, bitcoin buy date November 30 2026, online bitcoin casino interest",
+    date: "August 16, 2026",
+    dateISO: "2026-08-16",
+    dateModified: "August 16, 2026",
+    dateModifiedISO: "2026-08-16",
+    readTime: "9 min read",
+    wordCount: 2000,
+    ogImage: `${SITE_URL}/articles/bitcoin-casino-searches/og-bitcoin-casino-searches.png`,
+    articleSection: "Bitcoin Market Trends",
+    schemaKeywords:
+      "bitcoin casino search surge, bitcoin search trends, bitcoin retail attention, bitcoin halving cycle attention, BTC500 strategy",
+  },
+  {
     id: "solar-eclipse-bitcoin-halving",
     slug: "solar-eclipse-bitcoin-halving",
     title:

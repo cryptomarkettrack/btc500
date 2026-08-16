@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-15
+**Last updated:** 2026-08-16
 
 ---
 
@@ -123,6 +123,8 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 
 ## 5. Article Summaries & Key Claims
 
+### Bitcoin Casino Searches Surged 500%: What It Really Means
+Google Trends data for the week of August 9–16, 2026 shows "bitcoin casino" search interest jumped roughly 500% and "bitcoin casinos" rose about 350%, while "bitcoin price" remained the #1 Bitcoin query. The article treats the casino-style breakout as an attention thermometer rather than an investment signal — retail curiosity about fast, leveraged Bitcoin activity historically clusters around exciting phases of the ~4-year halving cycle, but it does not forecast price. It separates gambling (with its house edge and liquidation risk) from the rules-based BTC500 approach (buy exactly 500 days before a halving, sell 500 days after), notes that several breakout entries were brand-specific marketing bursts, includes a responsible-gambling disclaimer, and reasserts the projections: next halving ~April 2028 at block 1,050,000 with the official buy date of November 30, 2026. BTC500 is not affiliated with any casino. https://btc500.net/articles/bitcoin-casino-searches
 ### SEC Cancels Regulation Crypto Vote: What It Means
 The U.S. SEC cancelled its August 14, 2026 open meeting on Regulation Crypto Assets, citing an unforeseen scheduling issue and naming no new date. The cancelled vote was Chair Paul Atkins' first formal crypto rulemaking — a tailored offering regime for certain investment contracts, previewed March 17 as a startup exemption (~$5M / 4 years), a fundraising exemption (~$75M / 12 months), and a safe harbor once essential managerial efforts cease. Bitcoin is treated as a digital commodity under Atkins' taxonomy; the delay does not reclassify BTC or move the BTC500 buy date of November 30, 2026 (108 days from August 14). https://btc500.net/articles/sec-cancels-regulation-crypto
 
