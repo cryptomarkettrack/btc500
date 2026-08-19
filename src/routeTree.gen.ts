@@ -26,6 +26,7 @@ import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
+import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.why-bitcoin-pumped'
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
 import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes/articles.solar-eclipse-bitcoin-halving'
 import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
@@ -126,6 +127,12 @@ const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
   path: '/why-btc500-exists',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const ArticlesWhyBitcoinPumpedRoute =
+  ArticlesWhyBitcoinPumpedRouteImport.update({
+    id: '/why-bitcoin-pumped',
+    path: '/why-bitcoin-pumped',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
   id: '/strongest-hands',
   path: '/strongest-hands',
@@ -237,6 +244,7 @@ export interface FileRoutesByFullPath {
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
+  '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesByTo {
@@ -270,6 +278,7 @@ export interface FileRoutesByTo {
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
+  '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRoutesById {
@@ -304,6 +313,7 @@ export interface FileRoutesById {
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
+  '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
 }
 export interface FileRouteTypes {
@@ -339,6 +349,7 @@ export interface FileRouteTypes {
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
+    | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -372,6 +383,7 @@ export interface FileRouteTypes {
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
+    | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
   id:
     | '__root__'
@@ -405,6 +417,7 @@ export interface FileRouteTypes {
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
     | '/articles/strongest-hands'
+    | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
   fileRoutesById: FileRoutesById
 }
@@ -548,6 +561,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/why-bitcoin-pumped': {
+      id: '/articles/why-bitcoin-pumped'
+      path: '/why-bitcoin-pumped'
+      fullPath: '/articles/why-bitcoin-pumped'
+      preLoaderRoute: typeof ArticlesWhyBitcoinPumpedRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/strongest-hands': {
       id: '/articles/strongest-hands'
       path: '/strongest-hands'
@@ -664,6 +684,7 @@ interface ArticlesRouteChildren {
   ArticlesSecCancelsRegulationCryptoRoute: typeof ArticlesSecCancelsRegulationCryptoRoute
   ArticlesSolarEclipseBitcoinHalvingRoute: typeof ArticlesSolarEclipseBitcoinHalvingRoute
   ArticlesStrongestHandsRoute: typeof ArticlesStrongestHandsRoute
+  ArticlesWhyBitcoinPumpedRoute: typeof ArticlesWhyBitcoinPumpedRoute
   ArticlesWhyBtc500ExistsRoute: typeof ArticlesWhyBtc500ExistsRoute
 }
 
@@ -685,6 +706,7 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesSolarEclipseBitcoinHalvingRoute:
     ArticlesSolarEclipseBitcoinHalvingRoute,
   ArticlesStrongestHandsRoute: ArticlesStrongestHandsRoute,
+  ArticlesWhyBitcoinPumpedRoute: ArticlesWhyBitcoinPumpedRoute,
   ArticlesWhyBtc500ExistsRoute: ArticlesWhyBtc500ExistsRoute,
 }
 

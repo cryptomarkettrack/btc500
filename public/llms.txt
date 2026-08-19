@@ -52,6 +52,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
+- [Why Bitcoin Pumped? (August 19, 2026)](https://btc500.net/articles/why-bitcoin-pumped): Living explainer of the August 19 rally — Treasury long-end buybacks, a $1.4B short squeeze, ETF/whale demand, the White House crypto meeting, and why the BTC500 Nov 30 buy date did not move.
 - [Bitcoin Casino Searches Surged 500% (Aug 16, 2026)](https://btc500.net/articles/bitcoin-casino-searches): Why the week's breakout in casino-adjacent Bitcoin searches is an attention signal, not an investment signal — and how a fixed BTC500 rule beats gambling on the cycle.
 - [Solar Eclipse and Bitcoin Halving (Aug 15, 2026)](https://btc500.net/articles/solar-eclipse-bitcoin-halving): The August 12 total solar eclipse proved that rare predictable events reward preparation — and Bitcoin's halving follows the same principle. What the eclipse teaches about timing the market with the BTC500 strategy.\n
 

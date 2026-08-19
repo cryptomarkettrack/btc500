@@ -28,6 +28,25 @@ export interface ArticleMeta {
 }
 
 export const articles: ArticleMeta[] = [
+  {
+    id: "why-bitcoin-pumped",
+    slug: "why-bitcoin-pumped",
+    title: "Why Bitcoin Pumped? (August 19, 2026)",
+    description:
+      "Bitcoin jumped about 6–7% on August 19, 2026, tagging ~$69,700 as Treasury buybacks, a $1.4B short squeeze, ETF inflows, and a White House crypto meeting hit at once.",
+    keywords:
+      "why bitcoin pumped, why bitcoin is up today, bitcoin rally August 19 2026, bitcoin short squeeze, treasury buybacks bitcoin, white house crypto meeting Trump, ethereum pump, crypto market rally 2026, FOMC minutes bitcoin, bitcoin ETF inflows, BTC500 strategy",
+    date: "August 19, 2026",
+    dateISO: "2026-08-19",
+    dateModified: "August 19, 2026",
+    dateModifiedISO: "2026-08-19",
+    readTime: "8 min read",
+    wordCount: 1900,
+    ogImage: `${SITE_URL}/articles/why-bitcoin-pumped/og-why-bitcoin-pumped.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "why bitcoin pumped, bitcoin rally August 19 2026, bitcoin short squeeze, Treasury buybacks, White House crypto meeting, bitcoin ETF inflows, BTC500 strategy",
+  },
 {
     id: "bitcoin-casino-searches",
     slug: "bitcoin-casino-searches",
