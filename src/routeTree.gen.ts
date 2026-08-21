@@ -32,6 +32,7 @@ import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes
 import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
+import { Route as ArticlesIsTheBottomInRouteImport } from './routes/articles.is-the-bottom-in'
 import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
@@ -161,6 +162,11 @@ const ArticlesOndoFinanceTokenizationRoute =
     path: '/ondo-finance-tokenization',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesIsTheBottomInRoute = ArticlesIsTheBottomInRouteImport.update({
+  id: '/is-the-bottom-in',
+  path: '/is-the-bottom-in',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 const ArticlesGoldmanVsBlackrockRoute =
   ArticlesGoldmanVsBlackrockRouteImport.update({
     id: '/goldman-vs-blackrock',
@@ -239,6 +245,7 @@ export interface FileRoutesByFullPath {
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
+  '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
@@ -273,6 +280,7 @@ export interface FileRoutesByTo {
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
+  '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
@@ -308,6 +316,7 @@ export interface FileRoutesById {
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
+  '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
@@ -344,6 +353,7 @@ export interface FileRouteTypes {
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/goldman-vs-blackrock'
+    | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
@@ -378,6 +388,7 @@ export interface FileRouteTypes {
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/goldman-vs-blackrock'
+    | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
@@ -412,6 +423,7 @@ export interface FileRouteTypes {
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/goldman-vs-blackrock'
+    | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
@@ -603,6 +615,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/is-the-bottom-in': {
+      id: '/articles/is-the-bottom-in'
+      path: '/is-the-bottom-in'
+      fullPath: '/articles/is-the-bottom-in'
+      preLoaderRoute: typeof ArticlesIsTheBottomInRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/goldman-vs-blackrock': {
       id: '/articles/goldman-vs-blackrock'
       path: '/goldman-vs-blackrock'
@@ -679,6 +698,7 @@ interface ArticlesRouteChildren {
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesGoldmanVsBlackrockRoute: typeof ArticlesGoldmanVsBlackrockRoute
+  ArticlesIsTheBottomInRoute: typeof ArticlesIsTheBottomInRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesSecCancelsRegulationCryptoRoute: typeof ArticlesSecCancelsRegulationCryptoRoute
@@ -699,6 +719,7 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
   ArticlesGoldmanVsBlackrockRoute: ArticlesGoldmanVsBlackrockRoute,
+  ArticlesIsTheBottomInRoute: ArticlesIsTheBottomInRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesSecCancelsRegulationCryptoRoute:

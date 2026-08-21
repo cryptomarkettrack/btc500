@@ -52,6 +52,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
+- [Is the Bottom for Bitcoin In? (21 August 2026)](https://btc500.net/articles/is-the-bottom-in): Yes — the low is the $54k–$64k box ($58,566 on 30 June). Soft bull after the 20 August squeeze. Confirmation ladder: $71,500, then $78k, then $82k. BTC500 buy date remains 30 November 2026.
 - [Why Bitcoin Pumped? (August 19, 2026)](https://btc500.net/articles/why-bitcoin-pumped): Living explainer of the August 19 rally — Treasury long-end buybacks, a $1.4B short squeeze, ETF/whale demand, the White House crypto meeting, and why the BTC500 Nov 30 buy date did not move.
 - [Bitcoin Casino Searches Surged 500% (Aug 16, 2026)](https://btc500.net/articles/bitcoin-casino-searches): Why the week's breakout in casino-adjacent Bitcoin searches is an attention signal, not an investment signal — and how a fixed BTC500 rule beats gambling on the cycle.
 - [Solar Eclipse and Bitcoin Halving (Aug 15, 2026)](https://btc500.net/articles/solar-eclipse-bitcoin-halving): The August 12 total solar eclipse proved that rare predictable events reward preparation — and Bitcoin's halving follows the same principle. What the eclipse teaches about timing the market with the BTC500 strategy.\n
@@ -77,6 +78,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - When is 500 days before the next Bitcoin halving? The BTC500 buy date is 500 calendar days before the next estimated halving. The live date is on https://btc500.net/ and https://btc500.net/halving-dates.
 - How does the halving work? Every 210,000 blocks (~4 years) the block reward is cut in half, reducing new supply. Lower issuance has historically coincided with multi-year price cycles.
 - Has the strategy been profitable? In every completed cycle (2012, 2016, 2020) buying 500 days before and selling 500 days after has been profitable. Past performance does not guarantee future results.
+- Is the Bitcoin bottom in as of 21 August 2026? Yes — in the $54,000–$64,000 box. Closing low $58,566 on 30 June 2026. Soft-bull transition after the 19–20 August squeeze. Confirmation is a weekly hold above $71,500, then $78,000, then $82,000. Invalidation: weekly close back inside the box or below $58,566. The BTC500 buy date remains 30 November 2026. Not financial advice.
 - Is BTC500 free? Yes. Countdown, simulator, timeline, dashboards, articles, and embed widgets are free with no account required.
 - Is this financial advice? No. BTC500 is educational software and market data tooling.
 

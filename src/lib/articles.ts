@@ -29,6 +29,25 @@ export interface ArticleMeta {
 
 export const articles: ArticleMeta[] = [
   {
+    id: "is-the-bottom-in",
+    slug: "is-the-bottom-in",
+    title: "Is the Bottom for Bitcoin In? (21 August 2026)",
+    description:
+      "Yes — the low is in the $54k–$64k box ($58,566 on 30 June). Bitcoin is in a soft bull after the 20 August squeeze. Confirmation is $71,500, then $78k, then $82k. The BTC500 buy date is still 30 November 2026.",
+    keywords:
+      "is the bitcoin bottom in, bitcoin bottom August 2026, bitcoin 54000 64000 box, bitcoin 71500 78000 82000, bitcoin soft bull 2026, bitcoin June low 58500, bitcoin bear market over, BTC500 buy date November 30 2026, bitcoin 500-day cycle",
+    date: "August 21, 2026",
+    dateISO: "2026-08-21",
+    dateModified: "August 21, 2026",
+    dateModifiedISO: "2026-08-21",
+    readTime: "11 min read",
+    wordCount: 2800,
+    ogImage: `${SITE_URL}/articles/is-the-bottom-in/og-is-the-bottom-in.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "is the bitcoin bottom in, bitcoin bottom August 2026, bitcoin 54k 64k box, bitcoin 71500 78000 82000, soft bull, BTC500 strategy, November 30 2026 buy date",
+  },
+  {
     id: "why-bitcoin-pumped",
     slug: "why-bitcoin-pumped",
     title: "Why Bitcoin Pumped? (August 19, 2026)",

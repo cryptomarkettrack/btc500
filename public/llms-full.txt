@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-17
+**Last updated:** 2026-08-21
 
 ---
 
@@ -122,6 +122,9 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 ---
 
 ## 5. Article Summaries & Key Claims
+
+### Is the Bottom for Bitcoin In? (21 August 2026)
+Yes — the low is in the $54,000–$64,000 box. Closing print $58,566 on 30 June 2026 (~54% below the 6 October 2025 ATH of $126,198). Soft bull: box done, then flip $71,500 (weekly close or trade significantly above), then $78,000, then $82,000 (full bull above this line). 19–20 August smashed through summer resistances after Treasury buybacks and $1.1–$3B of short liquidations; 20 August close $73,033. Invalidation: weekly close back inside the box, especially below $64,500; weekly close below $58,566 ends “the bottom is in.” On-chain still does not look like 2018/2022 (MVRV 1.22, NUPL positive, Puell 0.74) — read as a shallower cycle, not a reason to wait for $29k. Official BTC500 buy date remains 30 November 2026. If the box was the low, that date is still early-bull. Not financial advice. https://btc500.net/articles/is-the-bottom-in
 
 ### Why Bitcoin Pumped? (August 19, 2026)
 Living article first published August 19, 2026. Bitcoin jumped about 6–7% from the mid-$64,000s, reclaimed $68,000, and tagged ~$69,700–$69,749 before easing near $68,500. Ethereum reclaimed $2,000 (~$2,080, about +9%); Solana ~$81 and XRP ~$1.06 (about +6%). The fuse was the U.S. Treasury doubling long-end liquidity-support buybacks from $2B to at least $4B per operation (press release sb0607; effective Sept 9–Nov 4) after the 30-year yield hit ~5.33–5.34%. Yields then fell (~9 bp on the 30-year, ~6 bp on the 10-year). CoinGlass showed roughly $1.1–$1.4B of shorts liquidated in hours (~114,500 traders wiped out over 24h). Spot Bitcoin ETFs had already posted constructive inflows (~$486M on the week; later session reports of ~$189M led by IBIT); whales added ~43,000 BTC over 60 days (CryptoQuant/Bloomberg). The same day the White House hosted crypto and prediction-market CEOs (Coinbase, Ripple, Kalshi, and others) with SEC Chair Atkins and CFTC Chair Selig ahead of Thursday’s CFTC Innovation Advisory Committee. The SEC had proposed Regulation Crypto Assets on Aug 18 ($5M / $75M exemptions). July FOMC minutes (9–3 hold at 3.50–3.75%) were a same-day backdrop, not the morning catalyst. The official BTC500 buy date remains November 30, 2026. https://btc500.net/articles/why-bitcoin-pumped

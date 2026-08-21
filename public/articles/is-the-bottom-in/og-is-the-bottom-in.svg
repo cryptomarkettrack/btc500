@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="ogtitle ogdesc">
+  <title id="ogtitle">Is the Bottom for Bitcoin In? 21 August 2026</title>
+  <desc id="ogdesc">Verdict: the $54k–$64k box was the low. Soft bull now. Confirmation at $78k then $82k. BTC500 buy date 30 November 2026.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#181218"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1020" cy="90" r="280" fill="none" stroke="#f97316" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="1020" cy="90" r="200" fill="none" stroke="#f97316" stroke-opacity="0.07" stroke-width="2"/>
+
+  <rect x="40" y="36" width="1120" height="558" rx="28" fill="url(#cardg)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="76" y="88" font-size="22" font-weight="700" fill="#fb923c" letter-spacing="4">BTC500 · 21 AUGUST 2026</text>
+
+    <text x="72" y="176" font-size="56" font-weight="800" fill="#ffffff">Is the bottom</text>
+    <text x="72" y="246" font-size="56" font-weight="800" fill="#ffffff">for Bitcoin in?</text>
+
+    <rect x="72" y="292" width="250" height="96" rx="16" fill="#0f0f16" stroke="#16a34a" stroke-width="3"/>
+    <text x="92" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">VERDICT</text>
+    <text x="92" y="370" font-size="30" font-weight="800" fill="#4ade80">BOX WAS LOW</text>
+
+    <rect x="342" y="292" width="280" height="96" rx="16" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+    <text x="362" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">JUNE PRINT</text>
+    <text x="362" y="370" font-size="30" font-weight="800" fill="#ffffff">$58,566</text>
+
+    <rect x="642" y="292" width="470" height="96" rx="16" fill="#0f0f16" stroke="#26262f" stroke-width="2"/>
+    <text x="662" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">CONFIRMATION</text>
+    <text x="662" y="370" font-size="26" font-weight="800" fill="#ffffff">$71.5k · $78k · $82k</text>
+
+    <rect x="72" y="416" width="1040" height="134" rx="16" fill="#f97316"/>
+    <text x="102" y="470" font-size="28" font-weight="800" fill="#0b0b11">BUY DATE STILL 30 NOVEMBER 2026</text>
+    <text x="102" y="512" font-size="22" font-weight="700" fill="#0b0b11">Soft bull now. Full bull after $82k. The date does not move.</text>
+  </g>
+</svg>
