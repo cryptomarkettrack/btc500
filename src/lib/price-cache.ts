@@ -224,6 +224,9 @@ export const CacheKeys = {
 
   /** Bear market bottom indicator snapshot */
   bearMarket: () => "btc:bear-market",
+
+  /** US spot Bitcoin ETF absorption snapshot */
+  etfAbsorption: () => "btc:etf-absorption:v1",
 };
 
 // ─── Default TTLs ────────────────────────────────────────────────────────────
@@ -258,6 +261,9 @@ export const TTL = {
 
   /** Bear market indicators: 15 minutes — on-chain metrics don't change sub-minute */
   BEAR_MARKET: 15 * 60_000,
+
+  /** ETF flows print once after the US cash session — hourly is plenty */
+  ETF_FLOWS: 60 * 60_000,
 };
 
 // ─── Debug helper ────────────────────────────────────────────────────────────

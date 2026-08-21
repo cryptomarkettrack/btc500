@@ -47,7 +47,7 @@ export const FAQ_ITEMS = [
   {
     question: "What tools does BTC500 include?",
     answer:
-      "BTC500 includes a live halving countdown and Cycle Command Center, investment simulator, DCA vs lump sum comparison, interactive timeline, bear market bottom indicators, futures liquidation dashboard, insider trading tracker, crypto news feed, strategy articles, and free embed widgets.",
+      "BTC500 includes a live halving countdown and Cycle Command Center, investment simulator, DCA vs lump sum comparison, interactive timeline, bear market bottom indicators, futures liquidation dashboard, Bitcoin ETF absorption board, insider trading tracker, crypto news feed, strategy articles, and free embed widgets.",
   },
   {
     question: "What is the average Bitcoin halving cycle length?",

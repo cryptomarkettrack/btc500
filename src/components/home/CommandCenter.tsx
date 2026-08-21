@@ -346,6 +346,13 @@ export function CommandCenter({
                 <ArrowRight className="h-3 w-3" />
               </Link>
               <Link
+                to="/bitcoin-etf"
+                className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+              >
+                ETF absorption
+                <ArrowRight className="h-3 w-3" />
+              </Link>
+              <Link
                 to="/embed-kit"
                 className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
               >

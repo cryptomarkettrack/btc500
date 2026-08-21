@@ -337,6 +337,7 @@ const PAGE_LABELS: Record<string, string> = {
   "/bear-market": "Bear Market Meter",
   "/liquidation": "Liquidation",
   "/insider-trading": "Insider Trading",
+  "/bitcoin-etf": "Bitcoin ETF Absorption",
   "/news": "News",
   "/articles": "Articles",
   "/embed-kit": "Embed Kit",

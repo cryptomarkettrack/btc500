@@ -11,6 +11,7 @@ import {
   Zap,
   LineChart,
   LayoutTemplate,
+  Landmark,
   ChevronDown,
   Eye,
   Sparkles,
@@ -571,6 +572,14 @@ export function HomePage() {
               description="Track real-time crypto liquidations across exchanges. See where leverage is getting wiped out."
               accent="oklch(0.577 0.245 27.325)"
               accentSoft="oklch(0.95 0.04 30)"
+            />
+            <FeatureCard
+              to="/bitcoin-etf"
+              icon={Landmark}
+              title="ETF Absorption"
+              description="US spot Bitcoin ETF inflows in BTC, stacked against miner issuance and the 500-day cycle."
+              accent="oklch(0.65 0.15 155)"
+              accentSoft="oklch(0.95 0.04 155)"
             />
             <FeatureCard
               to="/bear-market"

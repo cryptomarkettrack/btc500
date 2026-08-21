@@ -31,11 +31,19 @@ export function formatIsoDay(iso: string): string {
 
 /** BTC amount with enough precision to stay readable at any stack size. */
 export function formatBtc(n: number): string {
-  const digits = n >= 100 ? 2 : n >= 1 ? 4 : 6;
-  return `${n.toLocaleString("en-US", {
+  const abs = Math.abs(n);
+  const digits = abs >= 100 ? 2 : abs >= 1 ? 4 : 6;
+  const body = `${abs.toLocaleString("en-US", {
     minimumFractionDigits: 0,
     maximumFractionDigits: digits,
   })} BTC`;
+  return n < 0 ? `−${body}` : body;
+}
+
+/** Signed BTC: +1,440 BTC / −210 BTC / 0 BTC */
+export function formatSignedBtc(n: number): string {
+  if (n > 0) return `+${formatBtc(n)}`;
+  return formatBtc(n);
 }
 
 /** Return multiple: 87,800x / 34.2x / 6.18x */
@@ -49,16 +57,28 @@ export function formatMultiple(n: number): string {
 /** Compact USD: $1.23B / $45.6M / $1.2K / $99 */
 export function formatCompactUsd(value: number, options?: { maxFractionDigits?: number }): string {
   const digits = options?.maxFractionDigits;
-  if (value >= 1_000_000_000) {
-    return `$${(value / 1_000_000_000).toFixed(digits ?? 2)}B`;
+  const abs = Math.abs(value);
+  let body: string;
+  if (abs >= 1_000_000_000) {
+    body = `$${(abs / 1_000_000_000).toFixed(digits ?? 2)}B`;
+  } else if (abs >= 1_000_000) {
+    body = `$${(abs / 1_000_000).toFixed(digits ?? 2)}M`;
+  } else if (abs >= 1_000) {
+    body = `$${(abs / 1_000).toFixed(digits ?? 1)}K`;
+  } else {
+    body = `$${abs}`;
   }
-  if (value >= 1_000_000) {
-    return `$${(value / 1_000_000).toFixed(digits ?? 2)}M`;
-  }
-  if (value >= 1_000) {
-    return `$${(value / 1_000).toFixed(digits ?? 1)}K`;
-  }
-  return `$${value}`;
+  if (value < 0) return `−${body}`;
+  return body;
+}
+
+/** Signed compact USD: +$517.19M / −$144.6M / $0 */
+export function formatSignedCompactUsd(
+  value: number,
+  options?: { maxFractionDigits?: number },
+): string {
+  if (value > 0) return `+${formatCompactUsd(value, options)}`;
+  return formatCompactUsd(value, options);
 }
 
 /** Compact plain number: 1.23M / 45.6K / 99 */

@@ -16,6 +16,7 @@ import {
   Wrench,
   Library,
   CalendarDays,
+  Landmark,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -78,6 +79,12 @@ const tools: NavItem[] = [
     label: "Insider Trading",
     description: "Public filings tracker",
     icon: TrendingUp,
+  },
+  {
+    to: "/bitcoin-etf",
+    label: "ETF Absorption",
+    description: "Inflows vs miner issuance",
+    icon: Landmark,
   },
 ];
 

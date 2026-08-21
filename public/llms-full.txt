@@ -186,6 +186,7 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 | Bear Market Bottom | https://btc500.net/bear-market | On-chain bottom composite (MVRV, NUPL, Puell, SOPR) |
 | Liquidation Dashboard | https://btc500.net/liquidation | OI, funding rates, long/short ratios |
 | Insider Trading | https://btc500.net/insider-trading | SEC Form 4 analysis |
+| Bitcoin ETF Absorption | https://btc500.net/bitcoin-etf | ETF inflows in BTC vs miner issuance and the 500-day cycle |
 | Crypto News | https://btc500.net/news | Aggregated Bitcoin & crypto headlines |
 | Articles | https://btc500.net/articles | Strategy guides & on-chain education |
 | Embed Kit | https://btc500.net/embed-kit | Free countdown / cycle-score widgets |

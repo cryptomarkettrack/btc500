@@ -20,6 +20,7 @@ import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
 import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
+import { Route as BitcoinEtfRouteImport } from './routes/bitcoin-etf'
 import { Route as Bitcoin500DayCycleRouteImport } from './routes/bitcoin-500-day-cycle'
 import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
@@ -96,6 +97,11 @@ const EmbedRoute = EmbedRouteImport.update({
 const DcaRoute = DcaRouteImport.update({
   id: '/dca',
   path: '/dca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BitcoinEtfRoute = BitcoinEtfRouteImport.update({
+  id: '/bitcoin-etf',
+  path: '/bitcoin-etf',
   getParentRoute: () => rootRouteImport,
 } as any)
 const Bitcoin500DayCycleRoute = Bitcoin500DayCycleRouteImport.update({
@@ -225,6 +231,7 @@ export interface FileRoutesByFullPath {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
+  '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -260,6 +267,7 @@ export interface FileRoutesByTo {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
+  '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -296,6 +304,7 @@ export interface FileRoutesById {
   '/articles': typeof ArticlesRouteWithChildren
   '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
+  '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -333,6 +342,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/bitcoin-500-day-cycle'
+    | '/bitcoin-etf'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -368,6 +378,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/bitcoin-500-day-cycle'
+    | '/bitcoin-etf'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -403,6 +414,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bear-market'
     | '/bitcoin-500-day-cycle'
+    | '/bitcoin-etf'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -439,6 +451,7 @@ export interface RootRouteChildren {
   ArticlesRoute: typeof ArticlesRouteWithChildren
   BearMarketRoute: typeof BearMarketRoute
   Bitcoin500DayCycleRoute: typeof Bitcoin500DayCycleRoute
+  BitcoinEtfRoute: typeof BitcoinEtfRoute
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
@@ -529,6 +542,13 @@ declare module '@tanstack/react-router' {
       path: '/dca'
       fullPath: '/dca'
       preLoaderRoute: typeof DcaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bitcoin-etf': {
+      id: '/bitcoin-etf'
+      path: '/bitcoin-etf'
+      fullPath: '/bitcoin-etf'
+      preLoaderRoute: typeof BitcoinEtfRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/bitcoin-500-day-cycle': {
@@ -741,6 +761,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRoute: ArticlesRouteWithChildren,
   BearMarketRoute: BearMarketRoute,
   Bitcoin500DayCycleRoute: Bitcoin500DayCycleRoute,
+  BitcoinEtfRoute: BitcoinEtfRoute,
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,

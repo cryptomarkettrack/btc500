@@ -95,6 +95,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/bitcoin-etf"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  ETF Absorption
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/embed-kit"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >

@@ -98,7 +98,11 @@ function AboutPage() {
           <Link to="/bear-market" className="text-primary">
             bear-market indicators
           </Link>
-          , liquidations, insider filings, and{" "}
+          , liquidations,{" "}
+          <Link to="/bitcoin-etf" className="text-primary">
+            Bitcoin ETF absorption
+          </Link>
+          , insider filings, and{" "}
           <Link to="/articles" className="text-primary">
             strategy articles
           </Link>
@@ -130,6 +134,9 @@ function AboutPage() {
           <li>Block height: public Bitcoin blockchain APIs</li>
           <li>On-chain bottom indicators: public on-chain series used in the cycle score</li>
           <li>Insider filings: public SEC Form 4 data</li>
+          <li>
+            Bitcoin ETF flows: TFTC open series (SoSoValue aggregates and Farside issuer tables)
+          </li>
         </ul>
       </section>
 
