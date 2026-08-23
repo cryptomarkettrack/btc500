@@ -295,9 +295,9 @@ export function GoldmanVsBlackrockArticle({ title, date, readTime }: ArticleProp
             </li>
             <li>
               <a href="/articles/bitcoin-week-ahead" className="font-semibold text-primary underline">
-                Bitcoin This Week (Aug 17–23, 2026)
+                Bitcoin This Week (Aug 24–31, 2026)
               </a>{" "}
-              — FOMC minutes, Jackson Hole, ETF flows, and why institutional demand is still the story.
+              — Jackson Hole, July Core PCE, ETF flows, and why institutional demand is still the story.
             </li>
             <li>
               <a href="/articles/strongest-hands" className="font-semibold text-primary underline">

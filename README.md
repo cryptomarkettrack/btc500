@@ -16,7 +16,7 @@ The product rule is fixed: buy 500 calendar days before a Bitcoin halving, sell 
 | Build | Vite 8 |
 | Hosting | Vercel (`btc500.net`) |
 
-Package manager: npm or bun. Lockfiles for both are in the repo.
+Package manager: **Bun** (also supports npm). Lockfiles for both are in the repo.
 
 ## Features
 
@@ -51,19 +51,19 @@ The in-memory cache in `src/lib/price-cache.ts` is instance-local (one Vercel is
 ```bash
 git clone https://github.com/cryptomarkettrack/btc500.git
 cd btc500
-npm install   # or: bun install
-npm run dev   # http://localhost:3000
+bun install
+bun run dev   # http://localhost:3000
 ```
 
 | Command | Purpose |
-| --- | --- |
-| `npm run dev` | Vite dev server |
-| `npm run build` | Production build |
-| `npm run preview` | Preview the production build |
-| `npm run lint` | ESLint |
-| `npm run typecheck` | `tsc --noEmit` |
-| `npm test` | Domain tests + CSV integrity check |
-| `npm run format` | Prettier |
+|---------|---------|
+| `bun run dev` | Vite dev server |
+| `bun run build` | Production build |
+| `bun run preview` | Preview the production build |
+| `bun run lint` | ESLint |
+| `bun run typecheck` | `tsc --noEmit` |
+| `bun test` | Domain tests + CSV integrity check |
+| `bun run format` | Prettier |
 
 ## Environment variables
 

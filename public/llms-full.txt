@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-21
+**Last updated:** 2026-08-24
 
 ---
 
@@ -140,8 +140,8 @@ Goldman Sachs is acquiring NEOS, an ETF issuer running covered-call bitcoin inco
 ### Bitcoin's Strongest Hands Are Back
 The count of elite Bitcoin wallets holding more than 10,000 BTC hit a six-month high of 90 (as of August 11, 2026), a combined floor of 900,000+ BTC worth over $58 billion at current prices. Mid-sized whales (1,000–10,000 BTC) accumulated first and the largest wallets followed — the classic smart-money pattern. The strongest hands kept accumulating through the Coldcard exploit and the CLARITY Act delay; the signal is accumulation, not panic. https://btc500.net/articles/strongest-hands
 
-### Bitcoin This Week (Aug 17–23): FOMC Minutes & Jackson Hole
-Recurring weekly outlook for August 17–23, 2026 (updated in place): Bitcoin near $63,100 after an in-line July CPI; Wednesday FOMC minutes from the 9–3 July hold (three dissenters wanted a hike); Wyoming Blockchain Symposium in Jackson Hole (Atkins, Lummis, Scott); spot ETF flows (~$850M–$1.1B the prior week, ~4x daily mining issuance); Thursday jobless claims; Friday flash PMIs and weekly options expiry. CLARITY cloture is September 15. The official BTC500 buy date remains November 30, 2026. The page pairs current market information with cycle context rather than generic news. https://btc500.net/articles/bitcoin-week-ahead
+### Bitcoin This Week (Aug 24–31): Jackson Hole & PCE
+Recurring weekly outlook for August 24–31, 2026 (updated in place): Bitcoin enters near $77,000 after the 19–20 August breakout ended the $54k–$64k summer range (June closing low $58,566; ~$69,700 tagged August 19 on Treasury buyback news and a ~$1.4B short squeeze; $73,033 close August 20; >$3B total liquidations), with the confirmation ladder at $71,500 (traded through), then $78,000 and $82,000 — a soft bull until $82k flips; the July FOMC minutes confirmed the 9–3 hold with the three hike dissenters reading as an isolated minority (median year-end dot 3.8%); the Kansas City Fed's Jackson Hole Economic Symposium runs August 27–29 (Kevin Warsh's marquee speech, theme "Financial Innovation: Implications for Payments and Policy"); July Core PCE lands Friday with weekly options expiry; spot ETF flows were ~$850M last week, ~$1.1B month-to-date (~3.5x daily mining issuance); Thursday jobless claims; CLARITY cloture is September 15. The official BTC500 buy date remains November 30, 2026. The page pairs current market information with cycle context rather than generic news. https://btc500.net/articles/bitcoin-week-ahead
 
 ### The BTC500 Strategy
 When to buy Bitcoin before the halving (T-500), whether that is the same as buying after the event, why the rule does not sell before the halving, and when T+500 is used as the historical exit. Not financial advice. https://btc500.net/articles/btc500-strategy

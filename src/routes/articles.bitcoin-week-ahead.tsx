@@ -15,7 +15,7 @@ const faqSchema = {
       name: "What's happening in Bitcoin this week?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The week of August 17-23, 2026 is built around Wednesday's FOMC minutes from the 9-3 July hold, the Wyoming Blockchain Symposium in Jackson Hole, daily spot ETF flow reports, Thursday jobless claims, and Friday flash PMIs plus a weekly BTC options expiry. Bitcoin is trading near $63,100 after last week's in-line CPI failed to break the $63,000-$65,000 range.",
+        text: "The week of August 24-31, 2026 is built around the Kansas City Fed's Jackson Hole Economic Symposium (August 27-29), July Core PCE on Friday, daily spot ETF flow reports, Thursday jobless claims, and a Friday weekly BTC options expiry. Bitcoin enters near $77,000 after the 19-20 August breakout ended the $54,000-$64,000 summer range, with $78,000 the next confirmation level.",
       },
     },
     {
@@ -23,7 +23,7 @@ const faqSchema = {
       name: "Why are Bitcoin ETF flows important?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Spot ETFs are now Bitcoin's dominant marginal buyer. Last week they recorded roughly $850 million to $1.1 billion in net inflows — the best week since April — which is about 4x the Bitcoin miners create per day at current prices.",
+        text: "Spot ETFs are now Bitcoin's dominant marginal buyer. Last week they recorded roughly $850 million in net inflows, taking August to about $1.1 billion — which is roughly 3.5x the Bitcoin miners create per day at current prices.",
       },
     },
     {
@@ -36,10 +36,10 @@ const faqSchema = {
     },
     {
       "@type": "Question",
-      name: "Why do the FOMC minutes matter for Bitcoin?",
+      name: "Why did the FOMC minutes matter for Bitcoin?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The July FOMC held rates at 3.50%-3.75% on a 9-3 vote, with three regional presidents dissenting for a hike. The minutes show whether that hawkish minority was isolated or close to swaying the committee — the main near-term input for yields, the dollar, and Bitcoin.",
+        text: "The July meeting held rates at 3.50%-3.75% on a 9-3 vote, with three policymakers dissenting for a hike. The minutes framed that hawkish minority as isolated with the median year-end dot at 3.8%, so the Fed itself added no fuel — the same-week rally came from the U.S. Treasury doubling long-end buybacks and a crowded short squeeze that carried Bitcoin from ~$66,000 to ~$69,700 on August 19. The next inputs are Kevin Warsh's Jackson Hole speech and the July Core PCE print ahead of the September 15-16 FOMC.",
       },
     },
     {
