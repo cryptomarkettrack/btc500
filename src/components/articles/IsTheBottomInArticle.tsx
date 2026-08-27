@@ -512,7 +512,15 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
             >
               week of 17–23 August
             </Link>
-            . Figures can be revised as exchanges and funds publish finals.
+            .{" "}
+            <Link
+              to="/articles/bitcoin-80k-breakout"
+              className="font-semibold text-primary underline"
+            >
+              Bitcoin crossed $80,000 on 27 August
+            </Link>{" "}
+            — the breakout read and the hold-the-line levels. Figures can be revised as exchanges
+            and funds publish finals.
           </p>
 
           <h2>FAQ</h2>

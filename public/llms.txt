@@ -53,6 +53,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [RSS](https://btc500.net/feed.xml)
 
 ## Strategy articles
+- [Bitcoin Crosses $80,000: Breakout or Bull Trap? (27 Aug 2026)](https://btc500.net/articles/bitcoin-80k-breakout): Bitcoin closed at $80,161, up 27% in nine sessions. Bullish structure, poor entry — hold, don't chase; scale $74k–$76k, stop $75,781, invalidation $69,224. BTC500 buy date unchanged November 30, 2026.
 - [Is the Bottom for Bitcoin In? (21 August 2026)](https://btc500.net/articles/is-the-bottom-in): Yes — the low is the $54k–$64k box ($58,566 on 30 June). Soft bull after the 20 August squeeze. Confirmation ladder: $71,500, then $78k, then $82k. BTC500 buy date remains 30 November 2026.
 - [Why Bitcoin Pumped? (August 19, 2026)](https://btc500.net/articles/why-bitcoin-pumped): Living explainer of the August 19 rally — Treasury long-end buybacks, a $1.4B short squeeze, ETF/whale demand, the White House crypto meeting, and why the BTC500 Nov 30 buy date did not move.
 - [Bitcoin Casino Searches Surged 500% (Aug 16, 2026)](https://btc500.net/articles/bitcoin-casino-searches): Why the week's breakout in casino-adjacent Bitcoin searches is an attention signal, not an investment signal — and how a fixed BTC500 rule beats gambling on the cycle.

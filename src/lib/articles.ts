@@ -29,6 +29,25 @@ export interface ArticleMeta {
 
 export const articles: ArticleMeta[] = [
   {
+    id: "bitcoin-80k-breakout",
+    slug: "bitcoin-80k-breakout",
+    title: "Bitcoin Crosses $80,000: Breakout or Bull Trap? (27 Aug 2026)",
+    description:
+      "Bitcoin closed at $80,161 on 27 August 2026, +27% in nine sessions. Trend structure says bull but the entry at $80k says wait — pullback zone $74k–$76k, invalidation $69,224. BTC500 buy date is unchanged.",
+    keywords:
+      "bitcoin 80000, bitcoin breakout august 2026, bitcoin 80161, is bitcoin breakout real, bitcoin rsi overbought 82, bitcoin 10 ema 75781, bitcoin 200 sma 69224, bitcoin 10/50 golden cross 2026, bitcoin bull trap or breakout, bitcoin pullback 74k 76k, bitcoin 2028 halving, BTC500 strategy, bitcoin buy date November 30 2026, bitcoin technical analysis 27 august 2026",
+    date: "August 27, 2026",
+    dateISO: "2026-08-27",
+    dateModified: "August 27, 2026",
+    dateModifiedISO: "2026-08-27",
+    readTime: "12 min read",
+    wordCount: 2400,
+    ogImage: `${SITE_URL}/articles/bitcoin-80k-breakout/og-bitcoin-80k-breakout.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "bitcoin 80k breakout, bitcoin august 2026, bitcoin golden cross, bitcoin rsi overbought, bitcoin 74k 76k pullback, bitcoin 200 sma, BTC500 strategy, November 30 2026 buy date",
+  },
+  {
     id: "is-the-bottom-in",
     slug: "is-the-bottom-in",
     title: "Is the Bottom for Bitcoin In? (21 August 2026)",

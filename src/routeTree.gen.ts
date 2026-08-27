@@ -41,6 +41,7 @@ import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.
 import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
 import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
 import { Route as ArticlesBitcoinCasinoSearchesRouteImport } from './routes/articles.bitcoin-casino-searches'
+import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/articles.bitcoin-80k-breakout'
 import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
@@ -213,6 +214,12 @@ const ArticlesBitcoinCasinoSearchesRoute =
     path: '/bitcoin-casino-searches',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesBitcoin80kBreakoutRoute =
+  ArticlesBitcoin80kBreakoutRouteImport.update({
+    id: '/bitcoin-80k-breakout',
+    path: '/bitcoin-80k-breakout',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesBip110RejectionRoute = ArticlesBip110RejectionRouteImport.update({
   id: '/bip-110-rejection',
   path: '/bip-110-rejection',
@@ -245,6 +252,7 @@ export interface FileRoutesByFullPath {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
+  '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
@@ -281,6 +289,7 @@ export interface FileRoutesByTo {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
+  '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
@@ -318,6 +327,7 @@ export interface FileRoutesById {
   '/timeline': typeof TimelineRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
+  '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
   '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
   '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
@@ -356,6 +366,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
+    | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
@@ -392,6 +403,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
+    | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
@@ -428,6 +440,7 @@ export interface FileRouteTypes {
     | '/timeline'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
+    | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
     | '/articles/bitcoin-infrastructure-exploits'
     | '/articles/bitcoin-volatility'
@@ -691,6 +704,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBitcoinCasinoSearchesRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/bitcoin-80k-breakout': {
+      id: '/articles/bitcoin-80k-breakout'
+      path: '/bitcoin-80k-breakout'
+      fullPath: '/articles/bitcoin-80k-breakout'
+      preLoaderRoute: typeof ArticlesBitcoin80kBreakoutRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/bip-110-rejection': {
       id: '/articles/bip-110-rejection'
       path: '/bip-110-rejection'
@@ -711,6 +731,7 @@ declare module '@tanstack/react-router' {
 interface ArticlesRouteChildren {
   ArticlesBearMarketAccumulationRoute: typeof ArticlesBearMarketAccumulationRoute
   ArticlesBip110RejectionRoute: typeof ArticlesBip110RejectionRoute
+  ArticlesBitcoin80kBreakoutRoute: typeof ArticlesBitcoin80kBreakoutRoute
   ArticlesBitcoinCasinoSearchesRoute: typeof ArticlesBitcoinCasinoSearchesRoute
   ArticlesBitcoinInfrastructureExploitsRoute: typeof ArticlesBitcoinInfrastructureExploitsRoute
   ArticlesBitcoinVolatilityRoute: typeof ArticlesBitcoinVolatilityRoute
@@ -731,6 +752,7 @@ interface ArticlesRouteChildren {
 const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBearMarketAccumulationRoute: ArticlesBearMarketAccumulationRoute,
   ArticlesBip110RejectionRoute: ArticlesBip110RejectionRoute,
+  ArticlesBitcoin80kBreakoutRoute: ArticlesBitcoin80kBreakoutRoute,
   ArticlesBitcoinCasinoSearchesRoute: ArticlesBitcoinCasinoSearchesRoute,
   ArticlesBitcoinInfrastructureExploitsRoute:
     ArticlesBitcoinInfrastructureExploitsRoute,

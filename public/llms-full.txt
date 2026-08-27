@@ -6,7 +6,7 @@
 **Contact:** btc500halving@gmail.com
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
-**Last updated:** 2026-08-24
+**Last updated:** 2026-08-27
 
 ---
 
@@ -122,6 +122,9 @@ BTC500's bear-market dashboard combines several on-chain and market metrics into
 ---
 
 ## 5. Article Summaries & Key Claims
+
+### Bitcoin Crosses $80,000: Breakout or Bull Trap? (27 August 2026)
+Bitcoin closed at $80,161.51 on 27 August 2026, a +27% move in nine sessions off the 18 August print of $64,680.71, breaking a ~2.5-month $60k–$68k base on the heaviest volume in 60 days (~$74.5B on 21 August). Structure is genuinely bullish: fresh 10/50 golden cross, 200-day SMA turning up from ~$68,981 after a four-month decline, MACD histogram at a 90-day high, price above the 10 EMA ($75,781.56), 50 SMA ($66,427.09), and 200 SMA ($69,224.09), VWMA ($74,119.26) confirming. The bear case is about entry, not trend: RSI(14) at 82.2 with a mild divergence, a vertical 9-session extension with no retest, and asymmetric 20-day Bollinger bands (upper $83,872 just ~4.6% away vs lower $55,549 ~31% below). Consolidated verdict: HOLD — maintain exposure with a hard stop on a daily close below $75,781 (10 EMA; reduce 30–40% if broken), do not start new longs at $80,161, scale new money 1/3 at $76k–$76.5k, 1/3 at $75k, 1/3 at $73.5k–$74k with stops below $72,500, size ~50% of mid-August (ATR expanded ~88% to ~$2,244), targets $83,872 (upper band) → $85,000 (trim 25–30%) → $90,000, and full-thesis invalidation on a daily close below the 200 SMA at $69,224. The official BTC500 buy date remains November 30, 2026 — the tape does not move the calendar. Not financial advice. https://btc500.net/articles/bitcoin-80k-breakout
 
 ### Is the Bottom for Bitcoin In? (21 August 2026)
 Yes — the low is in the $54,000–$64,000 box. Closing print $58,566 on 30 June 2026 (~54% below the 6 October 2025 ATH of $126,198). Soft bull: box done, then flip $71,500 (weekly close or trade significantly above), then $78,000, then $82,000 (full bull above this line). 19–20 August smashed through summer resistances after Treasury buybacks and $1.1–$3B of short liquidations; 20 August close $73,033. Invalidation: weekly close back inside the box, especially below $64,500; weekly close below $58,566 ends “the bottom is in.” On-chain still does not look like 2018/2022 (MVRV 1.22, NUPL positive, Puell 0.74) — read as a shallower cycle, not a reason to wait for $29k. Official BTC500 buy date remains 30 November 2026. If the box was the low, that date is still early-bull. Not financial advice. https://btc500.net/articles/is-the-bottom-in
