@@ -155,6 +155,13 @@
   }
 }
 
+/* Mono "data" face used by tape / kickers / ledgers (font is preloaded in __root). */
+@layer utilities {
+  .font-data {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+}
+
 /* BTC500 Hero SVG styles */
 .grid-line {
   stroke: var(--border);

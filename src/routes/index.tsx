@@ -18,7 +18,7 @@ const homePageSchema = [
     path: "/",
     name: "Bitcoin 500-Day Cycle | BTC500",
     description:
-      "Track Bitcoin's historical performance from 500 days before the halving through 500 days after it. Live countdown, cycle score, and free simulator.",
+      "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, cycle score, the full record, and a free simulator.",
     breadcrumbs: [{ name: "Home", path: "/" }],
   }),
   generateSpeakableSchema({
@@ -33,18 +33,18 @@ export const Route = createFileRoute("/")({
   head: () =>
     generatePageHead({
       path: "/",
-      title: "Bitcoin 500-Day Cycle — Halving Countdown | BTC500",
+      title: "BTC500 — Trade the calendar, not the noise | Bitcoin 500-Day Cycle",
       description:
-        "Track Bitcoin from 500 days before the halving through 500 days after. When is 500 days before the next Bitcoin halving? Live countdown and free simulator.",
+        "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, cycle score, the full record, and a free simulator.",
       keywords:
         "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving",
-      ogTitle: "Bitcoin 500-Day Cycle | BTC500",
+      ogTitle: "BTC500 — Trade the calendar, not the noise",
       ogDescription:
-        "Track Bitcoin's historical performance from 500 days before the halving through 500 days after it. Live countdown and free simulator.",
+        "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
       ogImageAlt: "BTC500 — Bitcoin 500-Day Cycle countdown",
-      twitterTitle: "Bitcoin 500-Day Cycle — Halving Countdown | BTC500",
+      twitterTitle: "BTC500 — Trade the calendar, not the noise",
       twitterDescription:
-        "Track Bitcoin from 500 days before each halving through 500 days after. Live countdown and free simulator.",
+        "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
       schema: homePageSchema,
     }),
   loader: async ({ context }) => {

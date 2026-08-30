@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { WhyBtc500ExistsArticle } from "@/components/articles/WhyBtc500ExistsArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("why-btc500-exists")!;
-
 export const Route = createFileRoute("/articles/why-btc500-exists")({
-  head: () => generateArticleHead(article),
+  head: () => generateArticleHead(getArticleBySlug("why-btc500-exists")!),
   component: WhyBtc500ExistsPage,
 });
 
 function WhyBtc500ExistsPage() {
+  const article = getArticleBySlug("why-btc500-exists")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

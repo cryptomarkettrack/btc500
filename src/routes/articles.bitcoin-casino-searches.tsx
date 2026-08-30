@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { BitcoinCasinoSearchArticle } from "@/components/articles/BitcoinCasinoSearchArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("bitcoin-casino-searches")!;
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -63,7 +61,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/bitcoin-casino-searches")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("bitcoin-casino-searches")!);
     return {
       ...head,
       scripts: [
@@ -79,6 +77,7 @@ export const Route = createFileRoute("/articles/bitcoin-casino-searches")({
 });
 
 function BitcoinCasinoSearchPage() {
+  const article = getArticleBySlug("bitcoin-casino-searches")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

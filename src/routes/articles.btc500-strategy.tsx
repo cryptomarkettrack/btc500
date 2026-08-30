@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { Btc500StrategyArticle } from "@/components/articles/Btc500StrategyArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("btc500-strategy")!;
-
 export const Route = createFileRoute("/articles/btc500-strategy")({
-  head: () => generateArticleHead(article),
+  head: () => generateArticleHead(getArticleBySlug("btc500-strategy")!),
   component: Btc500StrategyPage,
 });
 
 function Btc500StrategyPage() {
+  const article = getArticleBySlug("btc500-strategy")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

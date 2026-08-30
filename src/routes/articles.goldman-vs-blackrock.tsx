@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { GoldmanVsBlackrockArticle } from "@/components/articles/GoldmanVsBlackrockArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("goldman-vs-blackrock")!;
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -55,7 +53,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/goldman-vs-blackrock")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("goldman-vs-blackrock")!);
     return {
       ...head,
       scripts: [
@@ -71,6 +69,7 @@ export const Route = createFileRoute("/articles/goldman-vs-blackrock")({
 });
 
 function GoldmanVsBlackrockPage() {
+  const article = getArticleBySlug("goldman-vs-blackrock")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

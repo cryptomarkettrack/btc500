@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { StrongestHandsArticle } from "@/components/articles/StrongestHandsArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("strongest-hands")!;
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -39,7 +37,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/strongest-hands")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("strongest-hands")!);
     return {
       ...head,
       scripts: [
@@ -55,6 +53,7 @@ export const Route = createFileRoute("/articles/strongest-hands")({
 });
 
 function StrongestHandsPage() {
+  const article = getArticleBySlug("strongest-hands")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

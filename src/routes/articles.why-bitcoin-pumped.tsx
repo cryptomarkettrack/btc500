@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { WhyBitcoinPumpedArticle } from "@/components/articles/WhyBitcoinPumpedArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("why-bitcoin-pumped")!;
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -63,7 +61,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/why-bitcoin-pumped")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("why-bitcoin-pumped")!);
     return {
       ...head,
       scripts: [
@@ -79,6 +77,7 @@ export const Route = createFileRoute("/articles/why-bitcoin-pumped")({
 });
 
 function WhyBitcoinPumpedPage() {
+  const article = getArticleBySlug("why-bitcoin-pumped")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

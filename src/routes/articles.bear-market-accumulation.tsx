@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { BearMarketAccumulationArticle } from "@/components/articles/BearMarketAccumulationArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("bear-market-accumulation")!;
-
 export const Route = createFileRoute("/articles/bear-market-accumulation")({
-  head: () => generateArticleHead(article),
+  head: () => generateArticleHead(getArticleBySlug("bear-market-accumulation")!),
   component: BearMarketAccumulationPage,
 });
 
 function BearMarketAccumulationPage() {
+  const article = getArticleBySlug("bear-market-accumulation")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

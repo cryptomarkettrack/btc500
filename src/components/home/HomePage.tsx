@@ -31,6 +31,10 @@ import { HOME_LAST_REVIEWED } from "@/lib/site";
 import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
+import { DataTape } from "@/components/home/DataTape";
+import { ProofBand } from "@/components/home/ProofBand";
+import { LedgerCalculator } from "@/components/home/LedgerCalculator";
+import { StickyCta } from "@/components/home/StickyCta";
 
 export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
@@ -86,12 +90,24 @@ export function HomePage() {
     totalCompleted > 0
       ? completedCycles.reduce((sum, c) => sum + (c.returnPercent ?? 0), 0) / totalCompleted
       : null;
+  const profitableCycles = completedCycles.filter((c) => (c.returnPercent ?? 0) > 0).length;
+  const bestReturn =
+    totalCompleted > 0 ? Math.max(...completedCycles.map((c) => c.returnPercent ?? 0)) : null;
 
   // Last completed cycle's buy price/date/sell date — used by the P&L preview modal.
   const lastCompletedCycle = simulatorRes.data?.cycles[simulatorRes.data.cycles.length - 1] ?? null;
   const previewBuyPrice = lastCompletedCycle?.buyPrice ?? null;
   const previewBuyDate = lastCompletedCycle?.buyDate ?? null;
   const previewSellDate = lastCompletedCycle?.sellDate ?? null;
+
+  // Phase-aware hero line (growth redesign): the next dated action, always first.
+  const phaseTagline = isBuyActive
+    ? `Buy window is open — halving lands ${formatUtcDay(cycle.nextHalving)}.`
+    : isSellActive
+      ? `Sell window opens ${formatUtcDay(cycle.sellDate)} — ${sellDays} days from now.`
+      : cycle.phase === "done"
+        ? `Next cycle's buy window opens ${formatUtcDay(cycle.buyDate)} — ${cycle.daysUntilNextCycleBuy} days from now.`
+        : `Buy window opens ${formatUtcDay(cycle.buyDate)} — ${buyDays} days from now.`;
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -101,45 +117,29 @@ export function HomePage() {
           className="flex flex-col gap-6 p-0 sm:p-5"
           style={{ background: "var(--background)" }}
         >
-          {/* ===== 1. OUTCOME STAT STRIP (above the fold) ===== */}
-          <section aria-label="BTC500 outcome stats" className="mx-auto w-full max-w-3xl">
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
-                <div className="text-2xl font-bold text-primary sm:text-3xl">
-                  {avgReturn !== null ? `${avgReturn > 0 ? "+" : ""}${avgReturn.toFixed(0)}%` : "—"}
-                </div>
-                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Avg ROI per cycle
-                </div>
-              </div>
-              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
-                <div className="text-2xl font-bold text-primary sm:text-3xl">
-                  {totalCompleted > 0 ? `${totalCompleted} of ${totalCompleted}` : "—"}
-                </div>
-                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Profitable cycles
-                </div>
-              </div>
-              <div className="rounded-2xl border border-border/60 bg-card px-5 py-4 text-center">
-                <div className="text-2xl font-bold text-primary sm:text-3xl">2</div>
-                <div className="mt-1 text-[11px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
-                  Trades per 4 years
-                </div>
-              </div>
-            </div>
+          {/* ===== HERO — positioning first (growth redesign): the rule in one line, then proof ===== */}
+          <section
+            aria-label="BTC500 strategy summary"
+            className="mx-auto w-full max-w-3xl text-center"
+          >
+            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              One mechanical Bitcoin rule · Two dated trades per cycle
+            </p>
+            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+              No indicators, no narratives.{" "}
+              <strong className="font-semibold text-foreground">
+                Buy 500 days before the halving. Sell 500 days after.
+              </strong>{" "}
+              The dates are fixed; the chart is just the ride.
+            </p>
           </section>
 
           <Btc500Hero
             price={priceRes.data?.price ?? null}
             daysLeft={buyDays}
-            title={`Bitcoin <span class="text-primary">500-Day</span> Cycle`}
+            title={`Trade the <span class="text-primary">calendar</span>, not the noise`}
             srTitle="Bitcoin 500-Day Cycle — historical performance from 500 days before each halving through 500 days after"
-            tagline={
-              <span className="font-semibold text-foreground">
-                Track Bitcoin&apos;s historical performance from 500 days before the halving through
-                500 days after it.
-              </span>
-            }
+            tagline={<span className="font-semibold text-foreground">{phaseTagline}</span>}
           />
 
           {/* ===== 1b. HERO DUAL CTAs ===== */}
@@ -150,7 +150,7 @@ export function HomePage() {
               className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
             >
               <Calculator className="h-4 w-4" />
-              Explore the Simulator
+              See what $10,000 would have done
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
@@ -162,9 +162,23 @@ export function HomePage() {
               View the Timeline
             </Link>
           </div>
-          <p className="text-center text-xs text-muted-foreground">
-            Free · No signup · Live data from Binance, CoinGecko & Bitstamp
+          <p className="font-data text-center text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+            Free to use · No account · Calendar-fixed dates · Block + price data
           </p>
+
+          {/* ===== LIVE DATA TAPE ===== */}
+          <DataTape
+            price={priceRes.data?.price ?? null}
+            nextHalving={cycle.nextHalving}
+            score={cycleScoreRes.data?.score ?? null}
+            height={halving.height}
+            buyDays={buyDays}
+            sellDays={sellDays}
+            isBuyActive={isBuyActive}
+            isSellActive={isSellActive}
+            phaseDone={cycle.phase === "done"}
+            daysUntilNextCycleBuy={cycle.daysUntilNextCycleBuy}
+          />
 
           <nav
             aria-label="BTC500 core pages"
@@ -281,12 +295,15 @@ export function HomePage() {
           className="mt-20"
         >
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-              How BTC<span className="text-primary">500</span> Works
+            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              01 / The rule
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+              The rule, step by step
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
               One 500-day window around each Bitcoin halving. Buy at T-500, hold through the event,
-              sell at T+500. The{" "}
+              sell at T+500. Nothing needs interpreting — the calendar decides. The{" "}
               <Link
                 to="/bitcoin-500-day-cycle"
                 className="font-semibold text-primary hover:underline"
@@ -416,6 +433,23 @@ export function HomePage() {
           </p>
         </motion.section>
 
+        {/* ===== 02. THE RECORD — dark proof band with real archive stats ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+          aria-labelledby="record-heading"
+        >
+          <ProofBand
+            totalCompleted={totalCompleted}
+            profitable={profitableCycles}
+            avgReturn={avgReturn}
+            bestReturn={bestReturn}
+          />
+        </motion.section>
+
         {/* ===== HISTORICAL RETURNS PREVIEW ===== */}
         {completedCycles.length > 0 && (
           <motion.section
@@ -498,6 +532,18 @@ export function HomePage() {
           </motion.section>
         )}
 
+        {/* ===== 04. PUT A NUMBER ON IT — interactive what-if vs the last completed window ===== */}
+        <motion.section
+          initial={{ y: 12, opacity: 0 }}
+          whileInView={{ y: 0, opacity: 1 }}
+          viewport={{ once: true, margin: "-80px" }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="mt-20"
+          aria-label="What would your amount have done"
+        >
+          <LedgerCalculator cycle={lastCompletedCycle} />
+        </motion.section>
+
         {/* ===== FEATURE CARDS — EXPLORE TOOLS ===== */}
         <motion.section
           initial={{ y: 12, opacity: 0 }}
@@ -507,9 +553,15 @@ export function HomePage() {
           className="mt-20"
         >
           <div className="mb-10 text-center">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Explore All Tools</h2>
+            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              05 / Choose your depth
+            </p>
+            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+              Go deeper when you&apos;re ready
+            </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-              Go beyond the countdown. Dive deeper into Bitcoin data, strategy, and market insights.
+              Every tool is free and instant. Start with the explainer, check the record in the
+              simulator, or replay any day on the timeline.
             </p>
           </div>
 
@@ -678,8 +730,11 @@ export function HomePage() {
           aria-labelledby="faq-heading"
         >
           <div className="mb-8 text-center">
-            <h2 id="faq-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
-              Bitcoin Halving Questions, Answered
+            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              06 / Skeptic&apos;s corner
+            </p>
+            <h2 id="faq-heading" className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+              Ask the hard questions
             </h2>
             <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
               Quick answers about the BTC<span className="text-primary">500</span> strategy, Bitcoin
@@ -760,6 +815,20 @@ export function HomePage() {
         buyPrice={previewBuyPrice}
         buyDate={previewBuyDate}
         sellDate={previewSellDate}
+      />
+
+      {/* Mobile sticky CTA — live countdown + score, always one tap from the simulator */}
+      <StickyCta
+        label={
+          isBuyActive
+            ? "Buy window open"
+            : cycle.phase === "done"
+              ? `${cycle.daysUntilNextCycleBuy}d to buy`
+              : cycle.phase === "wait-sell"
+                ? `${sellDays}d to sell`
+                : `${buyDays}d to buy`
+        }
+        score={cycleScoreRes.data?.score ?? null}
       />
     </div>
   );

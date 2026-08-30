@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { ClarityActArticle } from "@/components/articles/ClarityActArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("clarity-act")!;
-
 // FAQ schema for rich results / AI search optimization
 const faqSchema = {
   "@context": "https://schema.org",
@@ -96,7 +94,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/clarity-act")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("clarity-act")!);
     return {
       ...head,
       scripts: [
@@ -112,6 +110,7 @@ export const Route = createFileRoute("/articles/clarity-act")({
 });
 
 function ClarityActPage() {
+  const article = getArticleBySlug("clarity-act")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

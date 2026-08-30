@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { BitcoinVolatilityArticle } from "@/components/articles/BitcoinVolatilityArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("bitcoin-volatility")!;
-
 export const Route = createFileRoute("/articles/bitcoin-volatility")({
-  head: () => generateArticleHead(article),
+  head: () => generateArticleHead(getArticleBySlug("bitcoin-volatility")!),
   component: BitcoinVolatilityPage,
 });
 
 function BitcoinVolatilityPage() {
+  const article = getArticleBySlug("bitcoin-volatility")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

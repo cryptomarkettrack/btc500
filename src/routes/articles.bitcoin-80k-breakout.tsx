@@ -4,8 +4,6 @@ import { motion } from "framer-motion";
 import { Bitcoin80KBreakoutArticle } from "@/components/articles/Bitcoin80KBreakoutArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("bitcoin-80k-breakout")!;
-
 const faqSchema = {
   "@context": "https://schema.org",
   "@type": "FAQPage",
@@ -71,7 +69,7 @@ const faqSchema = {
 
 export const Route = createFileRoute("/articles/bitcoin-80k-breakout")({
   head: () => {
-    const head = generateArticleHead(article);
+    const head = generateArticleHead(getArticleBySlug("bitcoin-80k-breakout")!);
     return {
       ...head,
       scripts: [
@@ -87,6 +85,7 @@ export const Route = createFileRoute("/articles/bitcoin-80k-breakout")({
 });
 
 function Bitcoin80KBreakoutPage() {
+  const article = getArticleBySlug("bitcoin-80k-breakout")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">

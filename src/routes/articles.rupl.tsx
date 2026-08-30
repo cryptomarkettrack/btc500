@@ -4,14 +4,13 @@ import { motion } from "framer-motion";
 import { RuplArticle } from "@/components/articles/RuplArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
 
-const article = getArticleBySlug("rupl")!;
-
 export const Route = createFileRoute("/articles/rupl")({
-  head: () => generateArticleHead(article),
+  head: () => generateArticleHead(getArticleBySlug("rupl")!),
   component: RuplPage,
 });
 
 function RuplPage() {
+  const article = getArticleBySlug("rupl")!;
   return (
     <div className="min-h-screen bg-background text-foreground">
       <main className="mx-auto max-w-4xl px-6 pb-24 pt-10 sm:pt-16">
