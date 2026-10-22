@@ -5,6 +5,7 @@ import {
   generateArticleSpeakableSchema,
   TWITTER_HANDLE,
 } from "./site";
+import { isArchivedArticle } from "./article-archive";
 
 export { SITE_URL };
 
@@ -104,7 +105,7 @@ export const articles: ArticleMeta[] = [
     schemaKeywords:
       "why bitcoin pumped, bitcoin rally August 19 2026, bitcoin short squeeze, Treasury buybacks, White House crypto meeting, bitcoin ETF inflows, BTC500 strategy",
   },
-{
+  {
     id: "bitcoin-casino-searches",
     slug: "bitcoin-casino-searches",
     title: "Bitcoin Casino Searches Surged 500%: What It Really Means",
@@ -126,8 +127,7 @@ export const articles: ArticleMeta[] = [
   {
     id: "solar-eclipse-bitcoin-halving",
     slug: "solar-eclipse-bitcoin-halving",
-    title:
-      "Solar Eclipse and Bitcoin Halving: What Rare, Predictable Events Tell Us",
+    title: "Solar Eclipse and Bitcoin Halving: What Rare, Predictable Events Tell Us",
     description:
       "The August 12, 2026 total solar eclipse proved that rare predictable events reward preparation. Bitcoin's halving follows the same principle — here's what the eclipse teaches us about timing the next crypto cycle with the BTC500 strategy.",
     keywords:
@@ -476,6 +476,12 @@ export function generateArticleSchema(article: ArticleMeta) {
   };
 }
 
+/**
+ * Time-bound market commentary stays published but out of the index.
+ * See ./article-archive.ts for the rule and the current list.
+ */
+export { ARCHIVED_ARTICLE_SLUGS, isArchivedArticle } from "./article-archive";
+
 /** Generate standard article page <head> meta + links + scripts */
 export function generateArticleHead(article: ArticleMeta) {
   const pageUrl = `/articles/${article.slug}`;
@@ -486,6 +492,7 @@ export function generateArticleHead(article: ArticleMeta) {
     title,
     description: article.description,
     keywords: article.keywords,
+    noIndex: isArchivedArticle(article.slug),
     ogTitle: article.title,
     ogDescription: article.description,
     ogImage: article.ogImage,
