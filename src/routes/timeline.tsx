@@ -7,6 +7,7 @@ import { timelineQuery } from "@/lib/queries";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { CycleCard } from "@/components/timeline/CycleCard";
 import { InfoPanel } from "@/components/timeline/InfoPanel";
+import { TimelineExplainer, TIMELINE_FAQ } from "@/components/timeline/TimelineExplainer";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -22,6 +23,16 @@ const timelinePageSchema = generateWebPageSchema({
     { name: "Time Machine", path: "/timeline" },
   ],
 });
+
+const timelineFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: TIMELINE_FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
 
 function TimelinePending() {
   return (
@@ -53,7 +64,7 @@ export const Route = createFileRoute("/timeline")({
         "Replay Bitcoin history with the BTC500 strategy. Compare investments across halving cycles with real price data.",
       ogImageAlt: "BTC500 Time Machine — Interactive Bitcoin Halving Timeline",
       twitterDescription: "Replay Bitcoin history with the BTC500 strategy.",
-      schema: timelinePageSchema,
+      schema: [timelinePageSchema, timelineFaqSchema],
     }),
   loader: async ({ context }) => {
     try {
@@ -278,6 +289,7 @@ function Timeline() {
               realized results.
             </p>
           </motion.div>
+          <TimelineExplainer />
         </main>
       </div>
     );
@@ -420,6 +432,7 @@ function Timeline() {
             price predictions. Past performance does not guarantee future results.
           </p>
         </div>
+        <TimelineExplainer />
       </main>
     </div>
   );

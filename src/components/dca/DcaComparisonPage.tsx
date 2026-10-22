@@ -12,12 +12,10 @@ import {
 } from "lucide-react";
 import { formatUsd } from "@/lib/format";
 import { dcaQuery, simulatorQuery } from "@/lib/queries";
-import {
-  buildCycleComparisons,
-  computeDcaTotals,
-} from "@/lib/dca-compare";
+import { buildCycleComparisons, computeDcaTotals } from "@/lib/dca-compare";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { DcaExplainer } from "@/components/dca/DcaExplainer";
 import { useState, useMemo, useCallback } from "react";
 
 export function DcaComparisonPage() {
@@ -506,6 +504,7 @@ export function DcaComparisonPage() {
             results. DCA assumes equal dollar amounts each day; actual execution prices may vary.
           </p>
         </div>
+        <DcaExplainer />
       </main>
     </div>
   );

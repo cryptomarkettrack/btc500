@@ -4,6 +4,7 @@ import { dcaQuery, simulatorQuery } from "@/lib/queries";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { DcaComparisonPage } from "@/components/dca/DcaComparisonPage";
+import { DCA_FAQ } from "@/components/dca/DcaExplainer";
 
 const dcaPageSchema = generateWebPageSchema({
   path: "/dca",
@@ -15,6 +16,16 @@ const dcaPageSchema = generateWebPageSchema({
     { name: "DCA vs Lump Sum", path: "/dca" },
   ],
 });
+
+const dcaFaqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: DCA_FAQ.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+};
 
 export const Route = createFileRoute("/dca")({
   head: () =>
@@ -31,7 +42,7 @@ export const Route = createFileRoute("/dca")({
       ogImageAlt: "DCA vs Lump Sum — BTC500 Strategy Comparison",
       twitterDescription:
         "Compare DCA vs lump sum investing with the BTC500 strategy across past halving cycles.",
-      schema: dcaPageSchema,
+      schema: [dcaPageSchema, dcaFaqSchema],
     }),
   loader: async ({ context }) => {
     await Promise.allSettled([
