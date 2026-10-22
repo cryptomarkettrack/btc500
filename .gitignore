@@ -37,6 +37,8 @@ scripts/search-console/output/
 *.sw?
 *.md
 !BTC500_GROWTH.md
+!scripts/autonomous/*.md
+!.opencode/agents/*.md
 # Root-level scratch directory only. Without the leading slash this pattern
 # also matched scripts/search-console/, which silently excluded the Search
 # Console tooling from every commit.

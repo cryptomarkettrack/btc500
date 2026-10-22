@@ -85,6 +85,36 @@ Measure on 2026-11-19 (28 days). Success = any non-brand click on
 `/halving-dates` or a new referring domain. Inconclusive if impressions stay
 under 20.
 
+### 2026-10-22 — Daily autonomous cycle at 06:00
+
+- `scripts/autonomous/run-growth-cycle.sh` runs the `growth-cycle` OpenCode
+  agent unattended. Free OpenCode models only, in order: DeepSeek V4.1 Flash →
+  GLM-5.3 Flash → MiniMax M3.1 Flash → MiMo-V2.6 Flash → Flint 40B. A model that
+  crashes or finishes without a commit falls through to the next one.
+- The runner locks against overlapping runs, time-boxes each attempt (90 min,
+  3 h cycle), fast-forwards `main` when the tree is clean, pushes any unpushed
+  commit as a safety net, polls production after the push, writes
+  `~/.local/state/btc500-growth/<date>.log` and `last-status.txt`, and raises a
+  macOS notification on finish or failure.
+- `.opencode/agents/growth-cycle.md` is the headless agent profile: questions and
+  subagents are disabled, `.env*` and Search Console credentials are unreadable,
+  and force-push, history rewrites, `rm -rf`, `sudo`, and `gh` are denied.
+- `scripts/autonomous/GROWTH_PROMPT.md` is the daily brief (inspect → measure
+  Search Console → decide → execute → validate → push → verify production →
+  update this log → report through the commit message).
+- `scripts/autonomous/install-schedule.sh` installs the launchd job
+  `net.btc500.growth` (06:00 daily, `caffeinate -i`, missed runs fire on wake).
+  Use `--status`, `--run-now`, `--uninstall`.
+- Verified: launchd registers the 06:00 calendar trigger; the runner works under
+  an empty launchd-like environment; `opencode run --agent growth-cycle
+  --model opencode/deepseek-v4.1-flash-free` resolves and replies. A full cycle
+  was **not** triggered manually, to avoid racing this session. First real run:
+  2026-10-23 06:00.
+
+**Note for future sessions:** the scheduler is the runner script. Do not add a
+second cron. If a run fails, read `~/.local/state/btc500-growth/<date>.log`
+first; the commit message of the day is the report.
+
 ---
 
 ## Next priorities
