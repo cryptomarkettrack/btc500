@@ -87,6 +87,14 @@ work instead.
 - Update `BTC500_GROWTH.md` in the same commit: what you observed (with the
   measurement date), what you changed, what you verified, experiment status,
   and the next three priorities. Keep it concise.
+- `.gitignore` ignores almost every `*.md` file. Only `BTC500_GROWTH.md`,
+  `scripts/autonomous/*.md` and `.opencode/agents/*.md` are tracked, so a new
+  `.md` file will be silently skipped by `git add`. Put longer research in a
+  page, a test fixture, or a `.txt`/`.json` under a tracked path, and always
+  check `git status` to confirm your files were actually staged.
+- Keep `BTC500_GROWTH.md` under roughly 200 lines: last 3 sessions in full,
+  older sessions compressed into a short history section. Never delete the
+  baseline measurement table.
 
 ## 5. Validate
 
