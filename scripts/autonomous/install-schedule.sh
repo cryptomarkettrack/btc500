@@ -4,7 +4,8 @@
 #
 #   scripts/autonomous/install-schedule.sh            # install + load, 06:00 daily
 #   scripts/autonomous/install-schedule.sh --status   # is it loaded? when did it run?
-#   scripts/autonomous/install-schedule.sh --run-now  # trigger a cycle immediately
+#   scripts/autonomous/install-schedule.sh --run-now  # trigger a full cycle immediately
+#   scripts/autonomous/install-schedule.sh --test     # prove launchd fires (3 min, no cycle)
 #   scripts/autonomous/install-schedule.sh --uninstall
 #
 # The job runs as the logged-in user. If the Mac is asleep at 06:00, launchd
@@ -145,6 +146,7 @@ run_now() {
 case "${1:-}" in
   "")            install_job ;;
   --status)      status_job ;;
+  --test)        exec "$SCRIPT_DIR/smoke-test.sh" ;;
   --uninstall)   uninstall_job ;;
   --run-now)     run_now ;;
   -h|--help)     usage ;;

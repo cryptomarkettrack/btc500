@@ -104,7 +104,11 @@ under 20.
   update this log → report through the commit message).
 - `scripts/autonomous/install-schedule.sh` installs the launchd job
   `net.btc500.growth` (06:00 daily, `caffeinate -i`, missed runs fire on wake).
-  Use `--status`, `--run-now`, `--uninstall`.
+  Use `--status`, `--run-now`, `--test`, `--uninstall`.
+- `--test` schedules a temporary launchd job ~3 minutes ahead, so it proves the
+  scheduler itself rather than just running the script by hand. Verified
+  2026-10-22 at 18:51:00 EEST: launchd fired on the minute, the runner dry run
+  passed, and DeepSeek answered `SMOKE_OK`.
 - Verified: launchd registers the 06:00 calendar trigger; the runner works under
   an empty launchd-like environment; `opencode run --agent growth-cycle
   --model opencode/deepseek-v4.1-flash-free` resolves and replies. A full cycle
