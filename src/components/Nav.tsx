@@ -10,12 +10,12 @@ import {
   Flame,
   Newspaper,
   ArrowLeftRight,
-  TrendingDown,
   LayoutTemplate,
   ChevronDown,
   Wrench,
   Library,
   CalendarDays,
+  CalendarClock,
   Landmark,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
@@ -69,12 +69,6 @@ const tools: NavItem[] = [
     icon: Flame,
   },
   {
-    to: "/bear-market",
-    label: "Bear Market",
-    description: "On-chain bottom meter",
-    icon: TrendingDown,
-  },
-  {
     to: "/insider-trading",
     label: "Insider Trading",
     description: "Public filings tracker",
@@ -94,6 +88,12 @@ const research: NavItem[] = [
     label: "500-Day Cycle",
     description: "T-500, T+500, and the record",
     icon: CalendarDays,
+  },
+  {
+    to: "/when-to-sell-bitcoin-after-halving",
+    label: "When to Sell",
+    description: "Every T+500 exit date",
+    icon: CalendarClock,
   },
   {
     to: "/news",
@@ -122,8 +122,9 @@ export function Nav() {
   const router = useRouter();
   const pathname = router.state.location.pathname;
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [mobileToolsOpen, setMobileToolsOpen] = useState(true);
-  const [mobileResearchOpen, setMobileResearchOpen] = useState(true);
+  // Collapsed by default: the menu stays one screen tall on small phones.
+  const [mobileToolsOpen, setMobileToolsOpen] = useState(false);
+  const [mobileResearchOpen, setMobileResearchOpen] = useState(false);
 
   const toolsActive = isGroupActive(pathname, tools);
   const researchActive = isGroupActive(pathname, research);

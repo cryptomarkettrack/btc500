@@ -11,10 +11,16 @@ import { Analytics } from "@vercel/analytics/react";
 import { useEffect, type ReactNode } from "react";
 
 import "../styles.css";
+import spaceGroteskUrl from "@/assets/fonts/space-grotesk-latin.woff2?url";
+import ibmPlexMono500Url from "@/assets/fonts/ibm-plex-mono-500-latin.woff2?url";
+import ibmPlexMono600Url from "@/assets/fonts/ibm-plex-mono-600-latin.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { PageBreadcrumbs } from "../components/PageBreadcrumbs";
+import { seedHalving } from "@/lib/seed-halving";
+import type { HalvingInfo } from "@/lib/btc.functions";
+import { halvingQuery } from "@/lib/queries";
 import {
   SITE_URL,
   SITE_NAME,
@@ -174,6 +180,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  // Seed the shared halving query from one live tip-height call before SSR, so
+  // every page renders the same countdown the client hydrates with. Without
+  // this the HTML showed a protocol estimate that was days off and visibly
+  // jumped to the live date after hydration.
+  loader: async ({ context }) => {
+    await seedHalving(context.queryClient);
+  },
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -239,24 +252,40 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { name: "twitter:image", content: DEFAULT_OG_IMAGE },
       { name: "twitter:image:alt", content: DEFAULT_OG_IMAGE_ALT },
+      // Site-wide structured data. Must be `meta` entries keyed `script:ld+json`:
+      // TanStack Router does not render `head().scripts` in this version, so the
+      // previous `scripts: [...]` array was emitted into the void on every page.
+      { "script:ld+json": websiteSchema },
+      { "script:ld+json": organizationSchema },
+      { "script:ld+json": webAppSchema },
     ],
     links: [
+      // Self-hosted and preloaded: no render-blocking third-party stylesheet, no
+      // extra DNS/TLS handshakes before first paint. Imported through Vite so
+      // the files are fingerprinted under /assets/* and cached as immutable.
       {
-        rel: "preconnect",
-        href: "https://fonts.googleapis.com",
+        rel: "preload",
+        href: spaceGroteskUrl,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
+      // Both mono weights are above the fold: 500 is the body/data default,
+      // 600 is used by the hero's SVG labels. Preloading only 600 left the 500
+      // face to load late, so the mono text visibly swapped fonts on load.
       {
-        rel: "preconnect",
-        href: "https://fonts.gstatic.com",
+        rel: "preload",
+        href: ibmPlexMono500Url,
+        as: "font",
+        type: "font/woff2",
         crossOrigin: "anonymous",
       },
       {
-        rel: "dns-prefetch",
-        href: "https://fonts.googleapis.com",
-      },
-      {
-        rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap",
+        rel: "preload",
+        href: ibmPlexMono600Url,
+        as: "font",
+        type: "font/woff2",
+        crossOrigin: "anonymous",
       },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },
@@ -271,20 +300,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       // made Google canonicalize all pages to the homepage. Each page route emits its
       // own self-canonical via generatePageHead/generateArticleHead (including "/"),
       // so a fallback is unnecessary and harmful.
-    ],
-    scripts: [
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(websiteSchema),
-      },
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(organizationSchema),
-      },
-      {
-        type: "application/ld+json",
-        content: JSON.stringify(webAppSchema),
-      },
     ],
   }),
   shellComponent: RootShell,
@@ -314,6 +329,16 @@ function RootComponent() {
   const pathname = router.state.location.pathname;
   // Embed widgets must be chrome-free for iframe distribution
   const isEmbed = pathname === "/embed" || pathname.startsWith("/embed?");
+
+  // If the SSR seed could not reach a block-height provider it used the
+  // protocol estimate. Retry the live snapshot only after hydration (never
+  // during it) so the markup always matches and the countdown can correct
+  // itself instead of throwing a React hydration error.
+  useEffect(() => {
+    const info = queryClient.getQueryData<HalvingInfo>(halvingQuery.queryKey);
+    if (info?.heightSource !== "estimated") return;
+    queryClient.refetchQueries({ queryKey: halvingQuery.queryKey, type: "active" }).catch(() => {});
+  }, [queryClient]);
 
   return (
     <QueryClientProvider client={queryClient}>

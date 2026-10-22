@@ -55,6 +55,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  to="/when-to-sell-bitcoin-after-halving"
+                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                >
+                  When to Sell Bitcoin
+                </Link>
+              </li>
+              <li>
+                <Link
                   to="/simulator"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
@@ -75,14 +83,6 @@ export function Footer() {
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
                   Time Machine
-                </Link>
-              </li>
-              <li>
-                <Link
-                  to="/bear-market"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
-                >
-                  Bear Market Meter
                 </Link>
               </li>
               <li>

@@ -376,8 +376,8 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
           </p>
           <p>
             The BTC500{" "}
-            <Link to="/bear-market" className="font-semibold text-primary underline">
-              bear-market composite
+            <Link to="/" className="font-semibold text-primary underline">
+              cycle score
             </Link>{" "}
             still does not look like 2018 or 2022. Mid-August snapshot: MVRV 1.22 (historical
             bottoms were under 1.0), NUPL still positive, Puell 0.74 (not miner capitulation),
@@ -451,10 +451,6 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
               simulator
             </Link>{" "}
             runs the windows against real prices. The{" "}
-            <Link to="/bear-market" className="font-semibold text-primary underline">
-              bear-market page
-            </Link>{" "}
-            is the live composite. The{" "}
             <Link to="/" className="font-semibold text-primary underline">
               homepage
             </Link>{" "}

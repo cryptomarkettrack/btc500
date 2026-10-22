@@ -76,12 +76,12 @@ export const CYCLE_SCORE_COMPONENT_META: Record<CycleScoreComponentId, CycleScor
     id: "onChain",
     label: "On-chain",
     summary:
-      "Same bear-market bottom composite as the Bear Market page (15 BitView indicators, max 30 pts).",
+      "Bear-market bottom composite (15 BitView indicators, max 30 pts) that feeds the Cycle Score.",
     calculation:
-      "Uses the identical scoring as /bear-market: each of 15 indicators awards its tier points when in bottom zone (Tier-1 = 3 pts, Tier-2 = 2, Tier-3 = 1 → max 30). Labels: ≥15 STRONG BUY, ≥10 MODERATE BUY, ≥5 CAUTIOUS, else NOT A BOTTOM. For Cycle Score health, higher bottom heat lowers this sub-score (weight 15%) — more stress on the “script intact” narrative, not a contradiction of the bear page.",
+      "Each of 15 indicators awards its tier points when in the bottom zone (Tier-1 = 3 pts, Tier-2 = 2, Tier-3 = 1 → max 30). Labels: ≥15 STRONG BUY, ≥10 MODERATE BUY, ≥5 CAUTIOUS, else NOT A BOTTOM. For Cycle Score health, higher bottom heat lowers this sub-score (weight 15%) — more stress on the “script intact” narrative, not a contradiction of the bearish signal.",
     weightLabel: "15% of Cycle Score",
     dataSources:
-      "BitView Space daily series (bitview.space) for all 15 indicators used on the Bear Market page (MVRV, Puell, NUPL, STH-MVRV, ATH drawdown, RHODL, Reserve Risk, SOPR, LTH-MVRV, Supply in Profit, STH/LTH-NUPL, LTH Supply, Liveliness, Vaultedness).",
+      "BitView Space daily series (bitview.space) for all 15 indicators in the composite (MVRV, Puell, NUPL, STH-MVRV, ATH drawdown, RHODL, Reserve Risk, SOPR, LTH-MVRV, Supply in Profit, STH/LTH-NUPL, LTH Supply, Liveliness, Vaultedness).",
   },
 };
 
@@ -91,7 +91,7 @@ export const CYCLE_SCORE_OVERALL_META = {
   calculation:
     "Overall = round(0.40×Price path + 0.20×Drawdown + 0.25×Phase + 0.15×On-chain). Status labels also use path vs median, drawdown ≥ 50%, and on-chain bottom score ≥ 15/30 (STRONG BUY zone).",
   dataSources:
-    "Combines exchange spot prices, historical daily BTC closes, block-height-based halving estimates, and the full BitView bear-bottom indicator set (same as /bear-market). Cached ~15 minutes server-side.",
+    "Combines exchange spot prices, historical daily BTC closes, block-height-based halving estimates, and the full BitView bear-bottom indicator set. Cached ~15 minutes server-side.",
 };
 
 export interface CycleScoreResult {
@@ -117,7 +117,7 @@ export interface CycleScoreResult {
   /** Drawdown from estimated cycle peak (0–1, e.g. 0.25 = −25%) */
   drawdownFromPeak: number | null;
   /**
-   * On-chain bottom points — same scale as Bear Market page (0–30).
+   * On-chain bottom points — same scale as the 15-indicator composite (0–30).
    * Higher = more bottom-zone indicators triggered.
    */
   onChainBottomPoints: number | null;
@@ -145,7 +145,7 @@ export interface CycleScoreInputs {
   historicalMultiples: number[];
   /** Drawdown from cycle peak, 0–1 */
   drawdownFromPeak: number | null;
-  /** Bear-market composite points (0–30), same as /bear-market */
+  /** Bear-market composite points (0–30) used by the Cycle Score */
   onChainBottomPoints: number | null;
   onChainMaxPoints?: number;
   onChainTriggeredCount?: number | null;
@@ -323,7 +323,7 @@ function scoreOnChain(
     return { score: 60, detail: "On-chain bottom gauges unavailable right now." };
   }
 
-  // Same thresholds as Bear Market page labels (on 0–30 scale)
+  // Same thresholds as the on-chain bottom labels (0–30 scale)
   // High bottom heat → lower script-health sub-score (stress on the cycle narrative)
   const label =
     opts?.label ??
@@ -340,7 +340,7 @@ function scoreOnChain(
   if (onChainBottomPoints >= 15) {
     return {
       score: 40,
-      detail: `${trig}Deep on-chain bottom zone (${label}) — same composite as Bear Market page.`,
+      detail: `${trig}Deep on-chain bottom zone (${label}) — 15-indicator composite.`,
       metric: `${onChainBottomPoints}/${max} · ${label}`,
     };
   }

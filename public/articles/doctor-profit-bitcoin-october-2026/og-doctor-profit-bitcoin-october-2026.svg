@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="ogtitle ogdesc">
+  <title id="ogtitle">Doctor Profit's $94K Call: The October 2026 Bitcoin Flip</title>
+  <desc id="ogdesc">Doctor Profit shorted Bitcoin at $86,200, closed near $80,600, then flipped long at $81,000 with a $94,000 target. First confirmation is $82,000. Invalidation is $79,000.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0b11"/>
+      <stop offset="1" stop-color="#1a1210"/>
+    </linearGradient>
+    <linearGradient id="cardg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1c1c26"/>
+      <stop offset="1" stop-color="#14141c"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="1030" cy="90" r="280" fill="none" stroke="#f97316" stroke-opacity="0.10" stroke-width="2"/>
+  <circle cx="1030" cy="90" r="200" fill="none" stroke="#f97316" stroke-opacity="0.07" stroke-width="2"/>
+
+  <rect x="40" y="36" width="1120" height="558" rx="28" fill="url(#cardg)" stroke="#2a2a36" stroke-width="2"/>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+    <text x="76" y="88" font-size="22" font-weight="700" fill="#fb923c" letter-spacing="4">BTC500 · 21 OCTOBER 2026</text>
+
+    <text x="72" y="176" font-size="56" font-weight="800" fill="#ffffff">Doctor Profit’s</text>
+    <text x="72" y="246" font-size="56" font-weight="800" fill="#ffffff">October Bitcoin flip</text>
+
+    <rect x="72" y="292" width="310" height="96" rx="16" fill="#0f0f16" stroke="#ef4444" stroke-width="3"/>
+    <text x="92" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">SHORT ENTRY</text>
+    <text x="92" y="370" font-size="32" font-weight="800" fill="#f87171">$86,200</text>
+
+    <rect x="402" y="292" width="300" height="96" rx="16" fill="#0f0f16" stroke="#16a34a" stroke-width="3"/>
+    <text x="422" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">FLIP LONG</text>
+    <text x="422" y="370" font-size="32" font-weight="800" fill="#4ade80">$81,000</text>
+
+    <rect x="722" y="292" width="390" height="96" rx="16" fill="#0f0f16" stroke="#f97316" stroke-width="3"/>
+    <text x="742" y="332" font-size="15" font-weight="600" fill="#71717a" letter-spacing="2">PUBLIC TARGET</text>
+    <text x="742" y="370" font-size="32" font-weight="800" fill="#fb923c">$94,000</text>
+
+    <rect x="72" y="416" width="1040" height="134" rx="16" fill="#f97316"/>
+    <text x="102" y="470" font-size="28" font-weight="800" fill="#0b0b11">FIRST TEST: RECLAIM $82K · INVALIDATION: $79K</text>
+    <text x="102" y="512" font-size="22" font-weight="700" fill="#0b0b11">Ten public posts, the level map, and what the feed leaves out.</text>
+  </g>
+</svg>

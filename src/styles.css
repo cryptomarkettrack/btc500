@@ -4,6 +4,69 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
+ * Self-hosted fonts.
+ *
+ * Previously loaded from fonts.googleapis.com in __root.tsx. That stylesheet
+ * was render-blocking and cost two extra connections on mobile, pushing FCP/LCP
+ * past 4s on a throttled connection. These files are the latin subsets only
+ * (the site is English) and are preloaded in __root.tsx.
+ *
+ * They live in src/assets (not public/) so Vite fingerprints them and serves
+ * them under /assets/*, which every deploy target caches as immutable. Files
+ * under public/fonts were served without a Cache-Control header, so the
+ * browser revalidated them on every visit and the text visibly swapped fonts.
+ */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("./assets/fonts/space-grotesk-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*
+ * Metric-matched fallback.
+ *
+ * space-grotesk-latin.woff2 is ~9% wider than Arial (measured with fontTools),
+ * so swapping to it after first paint reflowed headings and date cards and
+ * pushed mobile CLS to 0.11. These overrides make the Arial fallback occupy the
+ * same width and line box, so the swap is visually quiet.
+ */
+@font-face {
+  font-family: "Space Grotesk Fallback";
+  src: local("Arial");
+  size-adjust: 108.8%;
+  ascent-override: 98.4%;
+  descent-override: 29.2%;
+  line-gap-override: 0%;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("./assets/fonts/ibm-plex-mono-500-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("./assets/fonts/ibm-plex-mono-600-latin.woff2") format("woff2");
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/*
  * Design system definition.
  *
  * The @theme inline block maps CSS custom properties to Tailwind utility
@@ -25,6 +88,9 @@
   --radius-2xl: calc(var(--radius) + 8px);
   --radius-3xl: calc(var(--radius) + 12px);
   --radius-4xl: calc(var(--radius) + 16px);
+  --font-sans: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", "Space Grotesk Fallback", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -72,23 +138,30 @@
   --card-foreground: oklch(0.18 0.02 260);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.18 0.02 260);
-  --primary: oklch(0.72 0.19 55);
+  /*
+   * Light-mode primary is deliberately darker than Bitcoin orange (#f7931a).
+   * The brighter brand tone only reaches ~2.5:1 against the cream background,
+   * which fails WCAG AA for every text label and CTA. This tone keeps the
+   * orange identity at 5.1:1 on the page and 5.4:1 for white button text.
+   */
+  --primary: oklch(0.54 0.19 55);
   --primary-foreground: oklch(1 0 0);
   --primary-soft: oklch(0.96 0.04 60);
   --secondary: oklch(0.96 0.008 85);
   --secondary-foreground: oklch(0.2 0.02 260);
   --muted: oklch(0.955 0.008 85);
   --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.72 0.19 55);
+  --accent: oklch(0.54 0.19 55);
   --accent-foreground: oklch(1 0 0);
-  --success: oklch(0.65 0.15 155);
+  /* 0.48 keeps success text >= 4.7:1 on --success-soft (0.52 was 4.36:1). */
+  --success: oklch(0.48 0.15 155);
   --success-soft: oklch(0.95 0.04 155);
-  --info: oklch(0.65 0.15 240);
+  --info: oklch(0.52 0.16 240);
   --destructive: oklch(0.577 0.245 27.325);
   --destructive-foreground: oklch(0.984 0.003 247.858);
   --border: oklch(0.92 0.01 85);
   --input: oklch(0.92 0.01 85);
-  --ring: oklch(0.72 0.19 55);
+  --ring: oklch(0.54 0.19 55);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -119,7 +192,6 @@
   --muted: oklch(0.24 0.02 260);
   --muted-foreground: oklch(0.7 0.02 260);
   --accent: oklch(0.75 0.19 55);
-  --accent-foreground: oklch(0.15 0.015 260);
   --accent-foreground: oklch(0.15 0.015 260);
   --success: oklch(0.7 0.16 155);
   --success-soft: oklch(0.25 0.06 155);
@@ -152,6 +224,21 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Respect users who ask for less motion (scroll reveals, hover lifts). */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }
 

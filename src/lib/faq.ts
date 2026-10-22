@@ -37,7 +37,7 @@ export const FAQ_ITEMS = [
   {
     question: "Is BTC500 free to use?",
     answer:
-      "Yes. BTC500's countdown, simulator, timeline, bear-market indicators, liquidation dashboard, articles, and embed widgets are free. No account is required.",
+      "Yes. BTC500's countdown, simulator, timeline, liquidation dashboard, articles, and embed widgets are free. No account is required.",
   },
   {
     question: "Is this financial advice?",

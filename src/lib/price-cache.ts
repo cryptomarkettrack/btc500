@@ -219,6 +219,9 @@ export const CacheKeys = {
   /** Tip height + observed block interval (instance-local) */
   networkState: () => "btc:network-state:v1",
 
+  /** Tip height + observation time only (fast SSR countdown seed) */
+  blockHeightSnapshot: () => "btc:block-height-snapshot:v1",
+
   /** Cycle score / script integrity */
   cycleScore: () => "btc:cycle-score",
 

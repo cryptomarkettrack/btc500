@@ -712,11 +712,8 @@ export function ClarityActArticle({ title, date, readTime }: ArticleProps) {
               <a href="/articles/rupl" className="text-primary underline hover:text-primary/80">
                 NUPL (Net Unrealized Profit/Loss)
               </a>{" "}
-              and{" "}
-              <a href="/bear-market" className="text-primary underline hover:text-primary/80">
-                market cycles
-              </a>{" "}
-              aren't directly changed by any law — but the environment in which Bitcoin trades is.
+              and market cycles aren&apos;t directly changed by any law — but the environment in
+              which Bitcoin trades is.
             </p>
           </section>
 

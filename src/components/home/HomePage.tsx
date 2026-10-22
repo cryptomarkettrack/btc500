@@ -1,5 +1,4 @@
-import { useSuspenseQuery, useQuery, useQueryClient } from "@tanstack/react-query";
-import { motion } from "framer-motion";
+import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
 import {
   Calculator,
   BookOpen,
@@ -16,14 +15,13 @@ import {
   Eye,
   Sparkles,
 } from "lucide-react";
-import { computeCycle, formatUsd } from "@/lib/phase";
+import { computeCycle, daysBetween, formatUsd } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
 import { Btc500Hero } from "@/components/Btc500Hero";
 import { CommandCenter } from "@/components/home/CommandCenter";
-import { PhasePreviewModal } from "@/components/home/PhasePreviewModal";
-import { useRef, useState, useEffect } from "react";
+import { lazy, Suspense, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
@@ -36,6 +34,14 @@ import { ProofBand } from "@/components/home/ProofBand";
 import { LedgerCalculator } from "@/components/home/LedgerCalculator";
 import { StickyCta } from "@/components/home/StickyCta";
 
+// Loaded only when the preview dialog is opened. It pulls framer-motion +
+// AnimatePresence, which the landing page otherwise doesn't need.
+const PhasePreviewModal = lazy(() =>
+  import("@/components/home/PhasePreviewModal").then((m) => ({
+    default: m.PhasePreviewModal,
+  })),
+);
+
 export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(btcPriceQuery);
@@ -45,13 +51,6 @@ export function HomePage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
-  const queryClient = useQueryClient();
-
-  // Refine the seeded (estimated) block height with the live value after hydration —
-  // client-only, so it never blocks or mismatches the server-rendered HTML.
-  useEffect(() => {
-    queryClient.refetchQueries({ queryKey: halvingQuery.queryKey, type: "active" }).catch(() => {});
-  }, [queryClient]);
 
   const cycle = computeCycle(
     now,
@@ -109,9 +108,27 @@ export function HomePage() {
         ? `Next cycle's buy window opens ${formatUtcDay(cycle.buyDate)} — ${cycle.daysUntilNextCycleBuy} days from now.`
         : `Buy window opens ${formatUtcDay(cycle.buyDate)} — ${buyDays} days from now.`;
 
+  // The single next dated action, surfaced above the fold instead of only in
+  // the chart label and the sticky bar.
+  const daysToHalving = Math.max(0, daysBetween(now, cycle.nextHalving));
+  const countdownValue = isSellActive
+    ? sellDays
+    : isBuyActive
+      ? daysToHalving
+      : cycle.phase === "done"
+        ? cycle.daysUntilNextCycleBuy
+        : buyDays;
+  const countdownLabel = isSellActive
+    ? "days to sell"
+    : isBuyActive
+      ? "days to halving"
+      : cycle.phase === "done"
+        ? "days to next buy"
+        : "days to buy";
+
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
+      <main className="mx-auto max-w-6xl px-6 pb-24 pt-6 sm:pt-10">
         <div
           ref={heroRef}
           className="flex flex-col gap-6 p-0 sm:p-5"
@@ -123,7 +140,7 @@ export function HomePage() {
             className="mx-auto w-full max-w-3xl text-center"
           >
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              One mechanical Bitcoin rule · Two dated trades per cycle
+              Bitcoin halving countdown · Two dated trades per cycle
             </p>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
               No indicators, no narratives.{" "}
@@ -137,9 +154,25 @@ export function HomePage() {
           <Btc500Hero
             price={priceRes.data?.price ?? null}
             daysLeft={buyDays}
-            title={`Trade the <span class="text-primary">calendar</span>, not the noise`}
+            title={`Trade the <span class="text-primary">calendar</span>, not the noise<span class="mt-3 block text-base font-medium tracking-normal text-muted-foreground sm:text-lg">Bitcoin halving countdown &amp; the 500-day cycle</span>`}
             srTitle="Bitcoin 500-Day Cycle — historical performance from 500 days before each halving through 500 days after"
             tagline={<span className="font-semibold text-foreground">{phaseTagline}</span>}
+            countdown={
+              <div className="mx-auto flex w-full max-w-md flex-col items-center rounded-2xl border border-border/60 bg-card px-5 py-4">
+                <div className="flex items-baseline justify-center gap-2.5">
+                  <span
+                    suppressHydrationWarning
+                    className="font-data text-5xl font-bold leading-none tracking-tighter sm:text-6xl"
+                    style={{ color: isSellActive ? "var(--success)" : "var(--primary)" }}
+                  >
+                    {countdownValue.toLocaleString()}
+                  </span>
+                  <span className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+                    {countdownLabel}
+                  </span>
+                </div>
+              </div>
+            }
           />
 
           {/* ===== 1b. HERO DUAL CTAs ===== */}
@@ -287,13 +320,7 @@ export function HomePage() {
         </div>
 
         {/* ===== HOW IT WORKS SECTION ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-        >
+        <section className="mt-20">
           <div className="mb-10 text-center">
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               01 / The rule
@@ -349,17 +376,10 @@ export function HomePage() {
               cta="Watch the timeline"
             />
           </div>
-        </motion.section>
+        </section>
 
         {/* ===== COMPARISON (AEO extractable table) ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-          aria-labelledby="compare-heading"
-        >
+        <section className="mt-20" aria-labelledby="compare-heading">
           <div className="mb-8 text-center">
             <h2 id="compare-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
               BTC500 vs buy-and-hold vs monthly DCA
@@ -431,34 +451,21 @@ export function HomePage() {
             </Link>{" "}
             tool.
           </p>
-        </motion.section>
+        </section>
 
         {/* ===== 02. THE RECORD — dark proof band with real archive stats ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-          aria-labelledby="record-heading"
-        >
+        <section className="mt-20" aria-labelledby="record-heading">
           <ProofBand
             totalCompleted={totalCompleted}
             profitable={profitableCycles}
             avgReturn={avgReturn}
             bestReturn={bestReturn}
           />
-        </motion.section>
+        </section>
 
         {/* ===== HISTORICAL RETURNS PREVIEW ===== */}
         {completedCycles.length > 0 && (
-          <motion.section
-            initial={{ y: 12, opacity: 0 }}
-            whileInView={{ y: 0, opacity: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-20"
-          >
+          <section className="mt-20">
             <div className="mb-8 text-center">
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
                 Historical Performance
@@ -471,12 +478,8 @@ export function HomePage() {
 
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {completedCycles.map((cycle, i) => (
-                <motion.div
+                <div
                   key={cycle.label}
-                  initial={{ y: 12, opacity: 0 }}
-                  whileInView={{ y: 0, opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: i * 0.08 }}
                   className="rounded-[24px] border border-border/60 bg-card p-5"
                 >
                   <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
@@ -514,7 +517,7 @@ export function HomePage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </div>
               ))}
             </div>
 
@@ -529,29 +532,16 @@ export function HomePage() {
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
-          </motion.section>
+          </section>
         )}
 
         {/* ===== 04. PUT A NUMBER ON IT — interactive what-if vs the last completed window ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-          aria-label="What would your amount have done"
-        >
+        <section className="mt-20" aria-label="What would your amount have done">
           <LedgerCalculator cycle={lastCompletedCycle} />
-        </motion.section>
+        </section>
 
         {/* ===== FEATURE CARDS — EXPLORE TOOLS ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-        >
+        <section className="mt-20">
           <div className="mb-10 text-center">
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               05 / Choose your depth
@@ -614,7 +604,7 @@ export function HomePage() {
               icon={TrendingUp}
               title="Insider Trading Tracker"
               description="Monitor insider transactions at major crypto companies. See who's buying and selling."
-              accent="oklch(0.65 0.15 155)"
+              accent="oklch(0.48 0.15 155)"
               accentSoft="oklch(0.95 0.04 155)"
             />
             <FeatureCard
@@ -630,23 +620,15 @@ export function HomePage() {
               icon={Landmark}
               title="ETF Absorption"
               description="US spot Bitcoin ETF inflows in BTC, stacked against miner issuance and the 500-day cycle."
-              accent="oklch(0.65 0.15 155)"
+              accent="oklch(0.48 0.15 155)"
               accentSoft="oklch(0.95 0.04 155)"
-            />
-            <FeatureCard
-              to="/bear-market"
-              icon={TrendingUp}
-              title="Bear Market Meter"
-              description="On-chain bottom composite — MVRV, Puell, NUPL and more — feeding the Cycle Score."
-              accent="oklch(0.6 0.14 25)"
-              accentSoft="oklch(0.95 0.03 25)"
             />
             <FeatureCard
               to="/dca"
               icon={LineChart}
               title="DCA vs Lump Sum"
               description="Compare spreading buys and sells over days versus going all-in at BTC500 dates."
-              accent="oklch(0.65 0.12 280)"
+              accent="oklch(0.5 0.12 280)"
               accentSoft="oklch(0.95 0.03 280)"
             />
             <FeatureCard
@@ -658,16 +640,10 @@ export function HomePage() {
               accentSoft="oklch(0.95 0.04 240)"
             />
           </div>
-        </motion.section>
+        </section>
 
         {/* ===== LATEST ARTICLES ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-        >
+        <section className="mt-20">
           <div className="mb-8 flex items-center justify-between">
             <div>
               <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Latest Articles</h2>
@@ -718,17 +694,10 @@ export function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
-        </motion.section>
+        </section>
 
         {/* ===== FAQ (visible content mirrors FAQPage JSON-LD for rich results) ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-          aria-labelledby="faq-heading"
-        >
+        <section className="mt-20" aria-labelledby="faq-heading">
           <div className="mb-8 text-center">
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               06 / Skeptic&apos;s corner
@@ -747,16 +716,10 @@ export function HomePage() {
               <FaqItem key={item.question} question={item.question} answer={item.answer} />
             ))}
           </div>
-        </motion.section>
+        </section>
 
         {/* ===== FINAL CTA ===== */}
-        <motion.section
-          initial={{ y: 12, opacity: 0 }}
-          whileInView={{ y: 0, opacity: 1 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-20"
-        >
+        <section className="mt-20">
           <div className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-10 text-center shadow-sm sm:p-16">
             <div className="pointer-events-none absolute -left-16 -top-16 opacity-[0.04]">
               <BtcLogo size={300} />
@@ -789,7 +752,7 @@ export function HomePage() {
               </div>
             </div>
           </div>
-        </motion.section>
+        </section>
 
         <p className="mt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
@@ -806,16 +769,21 @@ export function HomePage() {
         />
       </div>
 
-      {/* Preview modal — shows how the homepage looks after the 500-days-before-halving day */}
-      <PhasePreviewModal
-        open={previewOpen}
-        onOpenChange={setPreviewOpen}
-        cycle={cycle}
-        currentPrice={priceRes.data?.price ?? null}
-        buyPrice={previewBuyPrice}
-        buyDate={previewBuyDate}
-        sellDate={previewSellDate}
-      />
+      {/* Preview modal — shows how the homepage looks after the 500-days-before-halving day.
+          Rendered (and its chunk fetched) only after the user asks for it. */}
+      {previewOpen && (
+        <Suspense fallback={null}>
+          <PhasePreviewModal
+            open={previewOpen}
+            onOpenChange={setPreviewOpen}
+            cycle={cycle}
+            currentPrice={priceRes.data?.price ?? null}
+            buyPrice={previewBuyPrice}
+            buyDate={previewBuyDate}
+            sellDate={previewSellDate}
+          />
+        </Suspense>
+      )}
 
       {/* Mobile sticky CTA — live countdown + score, always one tap from the simulator */}
       <StickyCta
@@ -949,10 +917,7 @@ function FeatureCard({
 }) {
   return (
     <Link to={to}>
-      <motion.div
-        whileHover={{ y: -2 }}
-        className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
-      >
+      <div className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-sm">
         <span
           className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full"
           style={{ background: accentSoft }}
@@ -963,14 +928,11 @@ function FeatureCard({
           {title}
         </h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
-        <div
-          className="mt-4 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider"
-          style={{ color: accent }}
-        >
+        <div className="mt-4 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary">
           Explore
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }
@@ -978,13 +940,7 @@ function FeatureCard({
 function ArticleCard({ article, index }: { article: ArticleMeta; index: number }) {
   return (
     <Link to={`/articles/${article.slug}` as "/articles/btc500-strategy"}>
-      <motion.div
-        initial={{ y: 12, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.5, delay: index * 0.08 }}
-        className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
-      >
+      <div className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
         <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           <span>{article.articleSection}</span>
           <span>·</span>
@@ -1000,7 +956,7 @@ function ArticleCard({ article, index }: { article: ArticleMeta; index: number }
           Read article
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
-      </motion.div>
+      </div>
     </Link>
   );
 }

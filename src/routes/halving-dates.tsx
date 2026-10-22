@@ -63,16 +63,8 @@ export const Route = createFileRoute("/halving-dates")({
   loader: async ({ context }) => {
     // Ensure the halving countdown + simulator data are in the server-rendered
     // HTML so crawlers see the actual cycle returns (not "—" placeholders).
-    await Promise.allSettled([
-      // fetchQuery ignores the seeded estimate so this page SSR's the live
-      // height/interval snapshot instead of the protocol-600s fallback.
-      context.queryClient.fetchQuery({
-        queryKey: halvingQuery.queryKey,
-        queryFn: halvingQuery.queryFn,
-        staleTime: 0,
-      }),
-      context.queryClient.ensureQueryData(simulatorQuery),
-    ]);
+    // The halving snapshot is seeded by the root loader (live tip height).
+    await Promise.allSettled([context.queryClient.ensureQueryData(simulatorQuery)]);
   },
   head: () =>
     generatePageHead({
@@ -215,7 +207,7 @@ function HalvingDates() {
                       <td className="py-3 font-semibold">
                         {returnIsRealized && cycle?.returnPercent != null ? (
                           <span
-                            className={cycle.returnPercent > 0 ? "text-green-500" : "text-red-500"}
+                            className={cycle.returnPercent > 0 ? "text-success" : "text-destructive"}
                           >
                             {cycle.returnPercent > 0 ? "+" : ""}
                             {cycle.returnPercent.toFixed(0)}%

@@ -27,7 +27,7 @@ export const Route = createFileRoute("/embed")({
     ],
   }),
   loader: ({ context }) => {
-    context.queryClient.ensureQueryData(halvingQuery);
+    // halvingQuery is seeded by the root loader before SSR.
     context.queryClient.ensureQueryData(btcPriceQuery);
     context.queryClient.prefetchQuery(cycleScoreQuery);
   },

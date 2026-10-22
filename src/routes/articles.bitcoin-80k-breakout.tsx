@@ -72,13 +72,9 @@ export const Route = createFileRoute("/articles/bitcoin-80k-breakout")({
     const head = generateArticleHead(getArticleBySlug("bitcoin-80k-breakout")!);
     return {
       ...head,
-      scripts: [
-        ...(head.scripts ?? []),
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(faqSchema),
-        },
-      ],
+      // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
+      // not render head().scripts, so this article FAQ markup was previously lost.
+      meta: [...head.meta, { "script:ld+json": faqSchema }],
     };
   },
   component: Bitcoin80KBreakoutPage,

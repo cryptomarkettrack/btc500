@@ -94,10 +94,6 @@ function AboutPage() {
           <Link to="/timeline" className="text-primary">
             cycle timeline
           </Link>
-          ,{" "}
-          <Link to="/bear-market" className="text-primary">
-            bear-market indicators
-          </Link>
           , liquidations,{" "}
           <Link to="/bitcoin-etf" className="text-primary">
             Bitcoin ETF absorption

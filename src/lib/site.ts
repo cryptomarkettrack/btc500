@@ -13,7 +13,7 @@ export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Stra
  * Last time homepage footer copy was reviewed. Page-specific — not a global
  * "today" stamp and not a default for other pages' dateModified.
  */
-export const HOME_LAST_REVIEWED = "2026-08-15";
+export const HOME_LAST_REVIEWED = "2026-10-21";
 /** @deprecated Use page-specific dates. Kept so existing homepage imports compile. */
 export const SITE_DATE_MODIFIED = HOME_LAST_REVIEWED;
 export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
@@ -176,7 +176,7 @@ export function generatePageHead({
   const resolvedTwitterDescription = twitterDescription ?? resolvedOgDescription;
 
   // Keep titles under ~60 chars for SERP display when possible; never truncate forced titles.
-  const meta: Array<Record<string, string>> = [
+  const meta: Array<Record<string, unknown>> = [
     { title },
     { name: "description", content: description },
   ];
@@ -237,17 +237,18 @@ export function generatePageHead({
   }
 
   const schemas = schema == null ? [] : Array.isArray(schema) ? schema : [schema];
-  const scripts = schemas.length
-    ? schemas.map((s) => ({
-        type: "application/ld+json",
-        content: JSON.stringify(s),
-      }))
-    : undefined;
+
+  // IMPORTANT: TanStack Router drops `head().scripts` in this version. The only
+  // JSON-LD path it renders is a meta entry keyed `"script:ld+json"` (see the
+  // `"script:ld+json" in m` branch in @tanstack/react-router headContentUtils).
+  // Using `scripts:` here silently produced zero structured data on every page.
+  for (const s of schemas) {
+    meta.push({ "script:ld+json": s });
+  }
 
   return {
     meta,
     links,
-    ...(scripts ? { scripts } : {}),
   };
 }
 
@@ -331,10 +332,10 @@ const PAGE_LABELS: Record<string, string> = {
   "/": "Home",
   "/bitcoin-500-day-cycle": "Bitcoin 500-Day Cycle",
   "/halving-dates": "Halving Dates",
+  "/when-to-sell-bitcoin-after-halving": "When to Sell Bitcoin",
   "/simulator": "Simulator",
   "/dca": "DCA vs Lump Sum",
   "/timeline": "Time Machine",
-  "/bear-market": "Bear Market Meter",
   "/liquidation": "Liquidation",
   "/insider-trading": "Insider Trading",
   "/bitcoin-etf": "Bitcoin ETF Absorption",

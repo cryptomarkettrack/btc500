@@ -499,7 +499,15 @@ function SellSection({ cycleSellDate }: { cycleSellDate: Date }) {
           Nothing on this site is financial advice.
         </p>
       </div>
-      <div className="mt-6">
+      <div className="mt-6 flex flex-wrap gap-5">
+        <Link
+          to="/when-to-sell-bitcoin-after-halving"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"
+        >
+          <CalendarDays className="h-4 w-4" />
+          Every historical sell date, explained
+          <ArrowRight className="h-4 w-4" />
+        </Link>
         <Link
           to="/halving-dates"
           className="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:underline"

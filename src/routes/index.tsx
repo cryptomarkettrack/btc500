@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Skeleton } from "@/components/ui/skeleton";
-import { halvingQuery } from "@/lib/queries";
-import { estimateHalvingInfo } from "@/lib/btc.functions";
 import {
   generateFaqSchema,
   generateHowToSchema,
@@ -47,16 +45,11 @@ export const Route = createFileRoute("/")({
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
       schema: homePageSchema,
     }),
-  loader: async ({ context }) => {
-    // Seed the countdown with a deterministic estimate (from the known 2024 halving anchor)
-    // so the hero above-the-fold content paints instantly instead of waiting on external
-    // block-height APIs, which previously blocked the whole HTML stream (FCP/LCP ~4-6s).
-    // The live height is fetched client-side after mount and refines these values.
-    // NOTE: cycle score + simulator preview are NOT prefetched here — doing so would
-    // resolve after the HTML is rendered and break hydration (server showed a skeleton,
-    // client hydrated with data). Their client-side useQuery() fills them in after mount.
-    context.queryClient.setQueryData(halvingQuery.queryKey, estimateHalvingInfo());
-  },
+  // The halving countdown is seeded globally by the root loader from one cached
+  // tip-height call (see src/lib/seed-halving.ts), so HTML and hydration agree.
+  // NOTE: cycle score + simulator preview are NOT prefetched here — doing so would
+  // resolve after the HTML is rendered and break hydration (server showed a skeleton,
+  // client hydrated with data). Their client-side useQuery() fills them in after mount.
   component: HomePage,
   pendingComponent: Pending,
   errorComponent: ({ error }) => <RouteDataError error={error} />,

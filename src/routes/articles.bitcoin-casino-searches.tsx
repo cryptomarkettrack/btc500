@@ -10,18 +10,18 @@ const faqSchema = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Why did \"bitcoin casino\" searches surge in August 2026?",
+      name: 'Why did "bitcoin casino" searches surge in August 2026?',
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Google Trends data for the week of August 9–16, 2026 shows \"bitcoin casino\" search interest jumped about 500% and \"bitcoin casinos\" rose about 350%, riding a wave of new retail interest in fast Bitcoin exposure during the halving cycle.",
+        text: 'Google Trends data for the week of August 9–16, 2026 shows "bitcoin casino" search interest jumped about 500% and "bitcoin casinos" rose about 350%, riding a wave of new retail interest in fast Bitcoin exposure during the halving cycle.',
       },
     },
     {
       "@type": "Question",
-      name: "Is \"bitcoin casino\" a high-volume keyword?",
+      name: 'Is "bitcoin casino" a high-volume keyword?',
       acceptedAnswer: {
         "@type": "Answer",
-        text: "It is a fast-growing breakout, not the biggest query: \"bitcoin price\" remained the #1 Bitcoin search by far. Breakouts are measured from a small base, so a large percentage is not the same as large absolute volume.",
+        text: 'It is a fast-growing breakout, not the biggest query: "bitcoin price" remained the #1 Bitcoin search by far. Breakouts are measured from a small base, so a large percentage is not the same as large absolute volume.',
       },
     },
     {
@@ -64,13 +64,9 @@ export const Route = createFileRoute("/articles/bitcoin-casino-searches")({
     const head = generateArticleHead(getArticleBySlug("bitcoin-casino-searches")!);
     return {
       ...head,
-      scripts: [
-        ...(head.scripts ?? []),
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(faqSchema),
-        },
-      ],
+      // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
+      // not render head().scripts, so this article FAQ markup was previously lost.
+      meta: [...head.meta, { "script:ld+json": faqSchema }],
     };
   },
   component: BitcoinCasinoSearchPage,
@@ -112,9 +108,7 @@ function BitcoinCasinoSearchPage() {
           className="mt-16 rounded-[24px] border border-border/60 bg-card p-8"
         >
           <div className="text-center">
-            <h2 className="text-xl font-semibold">
-              Bitcoin is attention-driven — be rules-driven
-            </h2>
+            <h2 className="text-xl font-semibold">Bitcoin is attention-driven — be rules-driven</h2>
             <p className="mt-3 text-muted-foreground">
               Search trends come and go. The halving schedule does not. Read more about the BTC500
               strategy and Bitcoin investment insights.
@@ -128,8 +122,8 @@ function BitcoinCasinoSearchPage() {
             </Link>
           </div>
         </motion.div>
-</main>
-<style>{`
+      </main>
+      <style>{`
         .prose h2 {
           font-size: 2rem;
           font-weight: 700;

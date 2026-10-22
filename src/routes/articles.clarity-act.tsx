@@ -97,13 +97,9 @@ export const Route = createFileRoute("/articles/clarity-act")({
     const head = generateArticleHead(getArticleBySlug("clarity-act")!);
     return {
       ...head,
-      scripts: [
-        ...(head.scripts ?? []),
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(faqSchema),
-        },
-      ],
+      // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
+      // not render head().scripts, so this article FAQ markup was previously lost.
+      meta: [...head.meta, { "script:ld+json": faqSchema }],
     };
   },
   component: ClarityActPage,

@@ -29,6 +29,25 @@ export interface ArticleMeta {
 
 export const articles: ArticleMeta[] = [
   {
+    id: "doctor-profit-bitcoin-october-2026",
+    slug: "doctor-profit-bitcoin-october-2026",
+    title: "Doctor Profit's $94K Call: The October 2026 Bitcoin Flip",
+    description:
+      "Doctor Profit shorted Bitcoin at $86,200, closed near $80,600, then flipped long at $81,000 with a $94,000 target. A close read of his last ten public posts — the levels, the invalidation, and what the feed leaves out.",
+    keywords:
+      "Doctor Profit, DrProfitCrypto, Doctor Profit Bitcoin, Doctor Profit $94k target, Doctor Profit short $86k, Bitcoin October 2026, Bitcoin 82k resistance, Bitcoin 94k target, Bitcoin bearish divergence, Bitcoin MA50, Monero open interest, crypto influencer analysis, BTC500",
+    date: "October 21, 2026",
+    dateISO: "2026-10-21",
+    dateModified: "October 21, 2026",
+    dateModifiedISO: "2026-10-21",
+    readTime: "9 min read",
+    wordCount: 2100,
+    ogImage: `${SITE_URL}/articles/doctor-profit-bitcoin-october-2026/og-doctor-profit-bitcoin-october-2026.png`,
+    articleSection: "Bitcoin Market Analysis",
+    schemaKeywords:
+      "Doctor Profit, DrProfitCrypto, Doctor Profit Bitcoin calls, Bitcoin 94k target, Bitcoin 86k short, Bitcoin 82k resistance, Bitcoin bearish divergence, Monero open interest, BTC500 strategy",
+  },
+  {
     id: "bitcoin-80k-breakout",
     slug: "bitcoin-80k-breakout",
     title: "Bitcoin Crosses $80,000: Breakout or Bull Trap? (27 Aug 2026)",

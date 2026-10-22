@@ -32,9 +32,9 @@ export const halvingQuery = queryOptions({
   staleTime: NETWORK_REFRESH_MS,
   refetchInterval: NETWORK_REFRESH_MS,
   refetchOnMount: true,
-  // Deterministic estimate so the hero renders instantly on both the SSR server
-  // and the client with the same seeded snapshot. Marked stale so the live
-  // height/interval fetch runs after mount instead of waiting a full hour.
+  // Last-resort seed for renders that never ran the root loader (tests, error
+  // boundaries). Routes are normally seeded from a live tip-height snapshot in
+  // src/lib/seed-halving.ts so the SSR HTML and hydrated client match.
   initialData: (): HalvingInfo => estimateHalvingInfo(),
   initialDataUpdatedAt: 0,
 });

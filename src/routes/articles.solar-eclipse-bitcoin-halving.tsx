@@ -56,13 +56,9 @@ export const Route = createFileRoute("/articles/solar-eclipse-bitcoin-halving")(
     const head = generateArticleHead(getArticleBySlug("solar-eclipse-bitcoin-halving")!);
     return {
       ...head,
-      scripts: [
-        ...(head.scripts ?? []),
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(faqSchema),
-        },
-      ],
+      // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
+      // not render head().scripts, so this article FAQ markup was previously lost.
+      meta: [...head.meta, { "script:ld+json": faqSchema }],
     };
   },
   component: SolarEclipseHalvingPage,
@@ -105,8 +101,7 @@ function SolarEclipseHalvingPage() {
           <div className="text-center">
             <h3 className="text-xl font-semibold">Continue Reading</h3>
             <p className="mt-2 text-muted-foreground">
-              Explore more articles about Bitcoin strategy, on-chain analysis, and crypto
-              education.
+              Explore more articles about Bitcoin strategy, on-chain analysis, and crypto education.
             </p>
             <Link
               to="/articles"

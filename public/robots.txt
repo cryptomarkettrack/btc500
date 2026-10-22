@@ -12,5 +12,29 @@ Disallow: /api/
 Disallow: /embed/
 Disallow: /embed$
 
+# Explicitly welcome answer-engine and AI crawlers. These are already covered by
+# the wildcard group, but named groups make the site's intent unambiguous for
+# operators that only honour their own user-agent. Keep the same exclusions.
+User-agent: GPTBot
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: ClaudeBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: anthropic-ai
+User-agent: PerplexityBot
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: CCBot
+Allow: /
+Disallow: /api/
+Disallow: /embed/
+Disallow: /embed$
+
 # Primary XML sitemap
 Sitemap: https://btc500.net/sitemap.xml
+
+# Machine-readable, LLM-oriented index of the site (plain markdown):
+# https://btc500.net/llms.txt
+# Full knowledge base:
+# https://btc500.net/llms-full.txt

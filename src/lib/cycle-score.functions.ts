@@ -35,7 +35,7 @@ async function fetchBitviewCurrent(apiName: string): Promise<number | null> {
   }
 }
 
-/** Full bear-market composite (same 15 indicators / 30 pts as /bear-market). */
+/** Full bear-market composite (15 indicators / 30 pts). */
 async function fetchBearMarketComposite(): Promise<BearCompositeResult | null> {
   try {
     const values = await Promise.all(INDICATORS.map((i) => fetchBitviewCurrent(i.apiName)));

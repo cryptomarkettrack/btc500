@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WhenToSellBitcoinAfterHalvingRouteImport } from './routes/when-to-sell-bitcoin-after-halving'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SimulatorRouteImport } from './routes/simulator'
@@ -22,7 +23,6 @@ import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as DcaRouteImport } from './routes/dca'
 import { Route as BitcoinEtfRouteImport } from './routes/bitcoin-etf'
 import { Route as Bitcoin500DayCycleRouteImport } from './routes/bitcoin-500-day-cycle'
-import { Route as BearMarketRouteImport } from './routes/bear-market'
 import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -35,6 +35,7 @@ import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesIsTheBottomInRouteImport } from './routes/articles.is-the-bottom-in'
 import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
+import { Route as ArticlesDoctorProfitBitcoinOctober2026RouteImport } from './routes/articles.doctor-profit-bitcoin-october-2026'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
@@ -45,6 +46,12 @@ import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/article
 import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 
+const WhenToSellBitcoinAfterHalvingRoute =
+  WhenToSellBitcoinAfterHalvingRouteImport.update({
+    id: '/when-to-sell-bitcoin-after-halving',
+    path: '/when-to-sell-bitcoin-after-halving',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const TimelineRoute = TimelineRouteImport.update({
   id: '/timeline',
   path: '/timeline',
@@ -108,11 +115,6 @@ const BitcoinEtfRoute = BitcoinEtfRouteImport.update({
 const Bitcoin500DayCycleRoute = Bitcoin500DayCycleRouteImport.update({
   id: '/bitcoin-500-day-cycle',
   path: '/bitcoin-500-day-cycle',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BearMarketRoute = BearMarketRouteImport.update({
-  id: '/bear-market',
-  path: '/bear-market',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ArticlesRoute = ArticlesRouteImport.update({
@@ -180,6 +182,12 @@ const ArticlesGoldmanVsBlackrockRoute =
     path: '/goldman-vs-blackrock',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesDoctorProfitBitcoinOctober2026Route =
+  ArticlesDoctorProfitBitcoinOctober2026RouteImport.update({
+    id: '/doctor-profit-bitcoin-october-2026',
+    path: '/doctor-profit-bitcoin-october-2026',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
 const ArticlesClarityActRoute = ArticlesClarityActRouteImport.update({
   id: '/clarity-act',
   path: '/clarity-act',
@@ -236,7 +244,6 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
-  '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
@@ -250,6 +257,7 @@ export interface FileRoutesByFullPath {
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
+  '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -259,6 +267,7 @@ export interface FileRoutesByFullPath {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -273,7 +282,6 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
-  '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
@@ -287,6 +295,7 @@ export interface FileRoutesByTo {
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
+  '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -296,6 +305,7 @@ export interface FileRoutesByTo {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -311,7 +321,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/articles': typeof ArticlesRouteWithChildren
-  '/bear-market': typeof BearMarketRoute
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/dca': typeof DcaRoute
@@ -325,6 +334,7 @@ export interface FileRoutesById {
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
+  '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -334,6 +344,7 @@ export interface FileRoutesById {
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
+  '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
   '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
@@ -350,7 +361,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/articles'
-    | '/bear-market'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/dca'
@@ -364,6 +374,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/terms'
     | '/timeline'
+    | '/when-to-sell-bitcoin-after-halving'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -373,6 +384,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
@@ -387,7 +399,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/articles'
-    | '/bear-market'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/dca'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/terms'
     | '/timeline'
+    | '/when-to-sell-bitcoin-after-halving'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -410,6 +422,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
@@ -424,7 +437,6 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/articles'
-    | '/bear-market'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/dca'
@@ -438,6 +450,7 @@ export interface FileRouteTypes {
     | '/simulator'
     | '/terms'
     | '/timeline'
+    | '/when-to-sell-bitcoin-after-halving'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -447,6 +460,7 @@ export interface FileRouteTypes {
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
+    | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
     | '/articles/ondo-finance-tokenization'
@@ -462,7 +476,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   ArticlesRoute: typeof ArticlesRouteWithChildren
-  BearMarketRoute: typeof BearMarketRoute
   Bitcoin500DayCycleRoute: typeof Bitcoin500DayCycleRoute
   BitcoinEtfRoute: typeof BitcoinEtfRoute
   DcaRoute: typeof DcaRoute
@@ -476,10 +489,18 @@ export interface RootRouteChildren {
   SimulatorRoute: typeof SimulatorRoute
   TermsRoute: typeof TermsRoute
   TimelineRoute: typeof TimelineRoute
+  WhenToSellBitcoinAfterHalvingRoute: typeof WhenToSellBitcoinAfterHalvingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/when-to-sell-bitcoin-after-halving': {
+      id: '/when-to-sell-bitcoin-after-halving'
+      path: '/when-to-sell-bitcoin-after-halving'
+      fullPath: '/when-to-sell-bitcoin-after-halving'
+      preLoaderRoute: typeof WhenToSellBitcoinAfterHalvingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/timeline': {
       id: '/timeline'
       path: '/timeline'
@@ -571,13 +592,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Bitcoin500DayCycleRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/bear-market': {
-      id: '/bear-market'
-      path: '/bear-market'
-      fullPath: '/bear-market'
-      preLoaderRoute: typeof BearMarketRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/articles': {
       id: '/articles'
       path: '/articles'
@@ -662,6 +676,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesGoldmanVsBlackrockRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/articles/doctor-profit-bitcoin-october-2026': {
+      id: '/articles/doctor-profit-bitcoin-october-2026'
+      path: '/doctor-profit-bitcoin-october-2026'
+      fullPath: '/articles/doctor-profit-bitcoin-october-2026'
+      preLoaderRoute: typeof ArticlesDoctorProfitBitcoinOctober2026RouteImport
+      parentRoute: typeof ArticlesRoute
+    }
     '/articles/clarity-act': {
       id: '/articles/clarity-act'
       path: '/clarity-act'
@@ -738,6 +759,7 @@ interface ArticlesRouteChildren {
   ArticlesBitcoinWeekAheadRoute: typeof ArticlesBitcoinWeekAheadRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
+  ArticlesDoctorProfitBitcoinOctober2026Route: typeof ArticlesDoctorProfitBitcoinOctober2026Route
   ArticlesGoldmanVsBlackrockRoute: typeof ArticlesGoldmanVsBlackrockRoute
   ArticlesIsTheBottomInRoute: typeof ArticlesIsTheBottomInRoute
   ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
@@ -760,6 +782,8 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBitcoinWeekAheadRoute: ArticlesBitcoinWeekAheadRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
+  ArticlesDoctorProfitBitcoinOctober2026Route:
+    ArticlesDoctorProfitBitcoinOctober2026Route,
   ArticlesGoldmanVsBlackrockRoute: ArticlesGoldmanVsBlackrockRoute,
   ArticlesIsTheBottomInRoute: ArticlesIsTheBottomInRoute,
   ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
@@ -781,7 +805,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   ArticlesRoute: ArticlesRouteWithChildren,
-  BearMarketRoute: BearMarketRoute,
   Bitcoin500DayCycleRoute: Bitcoin500DayCycleRoute,
   BitcoinEtfRoute: BitcoinEtfRoute,
   DcaRoute: DcaRoute,
@@ -795,6 +818,7 @@ const rootRouteChildren: RootRouteChildren = {
   SimulatorRoute: SimulatorRoute,
   TermsRoute: TermsRoute,
   TimelineRoute: TimelineRoute,
+  WhenToSellBitcoinAfterHalvingRoute: WhenToSellBitcoinAfterHalvingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

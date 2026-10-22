@@ -1,4 +1,3 @@
-import { motion } from "framer-motion";
 import {
   Calendar,
   Clock,
@@ -98,12 +97,7 @@ export function CommandCenter({
 
   return (
     <TooltipProvider delayDuration={200}>
-      <motion.section
-        initial={{ y: 12, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.55, ease: [0.16, 1, 0.3, 1] }}
-        className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_60px_-20px_rgba(0,0,0,0.08)]"
-      >
+      <section className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_60px_-20px_rgba(0,0,0,0.08)]">
         <div className="pointer-events-none absolute -right-20 -top-20 opacity-[0.05]">
           <BtcLogo size={360} />
         </div>
@@ -183,16 +177,12 @@ export function CommandCenter({
             </div>
 
             <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-muted">
-              <motion.div
-                className="h-full rounded-full"
+              <div
+                className="h-full rounded-full transition-[width] duration-1000 ease-out"
                 style={{
                   background: isSellActive ? "var(--success)" : "var(--primary)",
-                }}
-                initial={{ width: 0 }}
-                animate={{
                   width: `${(cycle.phase === "wait-sell" ? cycle.sellProgress : buyProgress) * 100}%`,
                 }}
-                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
               />
             </div>
 
@@ -332,13 +322,6 @@ export function CommandCenter({
 
             <div className="mt-auto flex flex-wrap gap-2 pt-6">
               <Link
-                to="/bear-market"
-                className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
-              >
-                Bear meter
-                <ArrowRight className="h-3 w-3" />
-              </Link>
-              <Link
                 to="/liquidation"
                 className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
               >
@@ -362,7 +345,7 @@ export function CommandCenter({
             </div>
           </div>
         </div>
-      </motion.section>
+      </section>
     </TooltipProvider>
   );
 }

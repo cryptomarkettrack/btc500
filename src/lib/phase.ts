@@ -41,11 +41,13 @@ export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): C
   else phase = "done";
 
   const buyWindowStart = addDays(buyDate, -WINDOW_DAYS); // pre-buy 500-day track
-  const buyElapsed = (now.getTime() - buyWindowStart.getTime()) / DAY;
-  const buyProgress = Math.max(0, Math.min(1, buyElapsed / WINDOW_DAYS));
 
-  const sellElapsed = (now.getTime() - nextHalving.getTime()) / DAY;
-  const sellProgress = Math.max(0, Math.min(1, sellElapsed / WINDOW_DAYS));
+  // Whole UTC days, not milliseconds: the server and the browser render these
+  // progress values at slightly different instants, and a ms-precision width
+  // (e.g. 92.3375213611111%) differs on every load, which breaks hydration.
+  // Day precision makes both renders identical and still moves once a day.
+  const buyProgress = Math.max(0, Math.min(1, daysBetween(buyWindowStart, now) / WINDOW_DAYS));
+  const sellProgress = Math.max(0, Math.min(1, daysBetween(nextHalving, now) / WINDOW_DAYS));
 
   return {
     now,

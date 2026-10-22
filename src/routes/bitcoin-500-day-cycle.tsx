@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Bitcoin500DayCyclePage } from "@/components/cycle/Bitcoin500DayCyclePage";
 import { CYCLE_FAQ } from "@/lib/cycle-faq";
-import { btcPriceQuery, halvingQuery, simulatorQuery } from "@/lib/queries";
+import { btcPriceQuery, simulatorQuery } from "@/lib/queries";
 import {
   generateFaqSchema,
   generatePageHead,
@@ -50,7 +50,6 @@ export const Route = createFileRoute("/bitcoin-500-day-cycle")({
     }),
   loader: async ({ context }) => {
     await Promise.allSettled([
-      context.queryClient.ensureQueryData(halvingQuery),
       context.queryClient.ensureQueryData(simulatorQuery),
       context.queryClient.ensureQueryData(btcPriceQuery),
     ]);

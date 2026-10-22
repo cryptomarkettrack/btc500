@@ -248,6 +248,39 @@ export const getHalvingInfo = createServerFn({ method: "GET" }).handler(async ()
   return resolveHalvingInfo();
 });
 
+interface BlockHeightSnapshot {
+  height: number;
+  observedAt: number;
+}
+
+/**
+ * Height-only halving snapshot used to seed the countdown before SSR.
+ *
+ * `buildHalvingEstimate` projects the next halving from the current tip at the
+ * protocol 10-minute target, so the observed-interval request (the second,
+ * slower call inside `fetchNetworkState`) is not needed to render the date.
+ * One cached height call keeps first paint fast while making the HTML and the
+ * hydrated client agree. The previous deterministic estimate could be days off
+ * the live tip, so the countdown visibly jumped (e.g. 44 → 38 days) on hydration.
+ */
+export async function resolveHalvingSnapshot(): Promise<HalvingInfo> {
+  try {
+    const snapshot = await fetchWithCache<BlockHeightSnapshot>(
+      CacheKeys.blockHeightSnapshot(),
+      async () => ({ height: await fetchBlockHeight(), observedAt: Date.now() }),
+      { ttl: TTL.NETWORK_STATE, staleWhileRevalidate: true },
+    );
+    return deriveHalvingInfo(snapshot.height, snapshot.observedAt, fallbackInterval(), "live");
+  } catch (err) {
+    console.error("[halving] height snapshot unavailable, using labelled fallback estimate:", err);
+    return estimateHalvingInfo();
+  }
+}
+
+export const getHalvingSnapshot = createServerFn({ method: "GET" }).handler(async () => {
+  return resolveHalvingSnapshot();
+});
+
 /**
  * Internal function that actually fetches BTC price from external providers.
  * Tries Binance → CoinGecko → Coinbase → Kraken in order.

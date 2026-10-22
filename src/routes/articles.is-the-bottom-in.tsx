@@ -72,13 +72,9 @@ export const Route = createFileRoute("/articles/is-the-bottom-in")({
     const head = generateArticleHead(getArticleBySlug("is-the-bottom-in")!);
     return {
       ...head,
-      scripts: [
-        ...(head.scripts ?? []),
-        {
-          type: "application/ld+json",
-          content: JSON.stringify(faqSchema),
-        },
-      ],
+      // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
+      // not render head().scripts, so this article FAQ markup was previously lost.
+      meta: [...head.meta, { "script:ld+json": faqSchema }],
     };
   },
   component: IsTheBottomInPage,
@@ -123,10 +119,10 @@ function IsTheBottomInPage() {
               still buys on 30 November.
             </p>
             <Link
-              to="/bear-market"
+              to="/bitcoin-500-day-cycle"
               className="mt-6 inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90"
             >
-              Open the bottom dashboard
+              See the 500-day cycle
             </Link>
           </div>
         </motion.div>

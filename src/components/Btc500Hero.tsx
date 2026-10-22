@@ -12,6 +12,11 @@ interface Btc500HeroProps {
   srTitle?: string;
   /** Replaces the default buy/sell tagline under the H1. */
   tagline?: ReactNode;
+  /**
+   * Primary answer (days to the next dated action + date), rendered directly
+   * under the H1 and above the illustration so it is visible above the fold.
+   */
+  countdown?: ReactNode;
 }
 
 /** Match styles.css hero labels — inline so share-card Inter root cannot override. */
@@ -57,6 +62,7 @@ export function Btc500Hero({
   title,
   srTitle,
   tagline,
+  countdown,
 }: Btc500HeroProps) {
   const reactId = useId();
   const fadeGradId = `fadeGrad-${reactId.replace(/:/g, "")}`;
@@ -121,7 +127,7 @@ export function Btc500Hero({
     <div className="flex flex-col items-center">
       {/* Badge — hide in compact share-card embeds so the chart stays the focus */}
       {!compact && (
-        <div className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-1.5">
+        <div className="order-1 inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-1.5">
           <span className="block h-1.5 w-1.5 rounded-[1px] bg-primary" />
           <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
             One rule · every halving cycle
@@ -130,7 +136,11 @@ export function Btc500Hero({
       )}
 
       {/* Chart */}
-      <div className={`relative w-full max-w-[900px] ${compact ? "px-0" : "px-4 sm:px-0"}`}>
+      {/* Illustration sits after the answer + CTAs in visual order (flex `order`)
+          so the countdown and H1 are the first things painted above the fold. */}
+      <div
+        className={`relative order-last mt-6 w-full max-w-[780px] ${compact ? "mt-0 px-0" : "px-4 sm:px-0"}`}
+      >
         <svg viewBox="0 0 900 460" className="w-full" preserveAspectRatio="xMidYMid meet">
           <defs>
             <linearGradient id={fadeGradId} x1="0" y1="0" x2="0" y2="1">
@@ -327,7 +337,7 @@ export function Btc500Hero({
       {!compact &&
         (title ? (
           <h1
-            className="mt-6 text-center text-4xl font-bold tracking-tight sm:text-6xl"
+            className="order-2 mt-6 text-center text-4xl font-bold tracking-tight sm:text-6xl"
             dangerouslySetInnerHTML={{ __html: title }}
           />
         ) : (
@@ -342,7 +352,7 @@ export function Btc500Hero({
       {!compact && (
         <p
           id="hero-tagline"
-          className="mt-4 max-w-xl text-center text-sm leading-relaxed text-muted-foreground"
+          className="order-3 mt-4 max-w-xl text-center text-sm leading-relaxed text-muted-foreground"
           style={{ fontFamily: FONT_MONO }}
         >
           {tagline ?? (
@@ -357,9 +367,12 @@ export function Btc500Hero({
         </p>
       )}
 
+      {/* Primary answer: the number the visitor came for, above the illustration */}
+      {!compact && countdown && <div className="order-4 mt-5 w-full">{countdown}</div>}
+
       {/* Price */}
       {!compact && price && (
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full bg-muted/80 px-4 py-1.5">
+        <div className="order-5 mt-4 inline-flex items-center gap-2 rounded-full bg-muted/80 px-4 py-1.5">
           <span className="text-xs text-muted-foreground">BTC</span>
           <span className="text-sm font-bold">{formatUsd(price)}</span>
         </div>

@@ -63,32 +63,10 @@ export default defineConfig({
       // Emit source maps so large first-party bundles satisfy Lighthouse's
       // "valid source maps" best-practice and debugging is possible in production.
       sourcemap: true,
-      rollupOptions: {
-        output: {
-          // Split large chunks to avoid mobile browser memory limits
-          manualChunks: (id) => {
-            if (id.includes("node_modules")) {
-              if (id.includes("react") || id.includes("react-dom")) {
-                return "vendor-react";
-              }
-              if (id.includes("@tanstack/react-router") || id.includes("@tanstack/react-query")) {
-                return "vendor-router";
-              }
-              if (id.includes("recharts")) {
-                return "vendor-charts";
-              }
-              if (id.includes("framer-motion")) {
-                return "vendor-animation";
-              }
-              if (id.includes("@radix-ui")) {
-                return "vendor-ui";
-              }
-            }
-            return undefined;
-          },
-        },
-      },
-      // Increase chunk size warning limit since we're intentionally splitting
+      // NOTE: no `output.manualChunks` here. Vite 8 (rolldown) ignores it because
+      // the Lovable/TanStack preset already defines `codeSplitting`; keeping a
+      // dead copy only produced a build warning. Route-level splitting is handled
+      // by the TanStack Start plugin.
       chunkSizeWarningLimit: 1000,
     },
   },

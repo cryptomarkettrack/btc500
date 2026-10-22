@@ -11,7 +11,15 @@ export function formatUsd(n: number): string {
 }
 
 export function formatDate(d: Date): string {
-  return d.toLocaleDateString("en-US", { day: "2-digit", month: "short", year: "numeric" });
+  // Always UTC: the server runs in UTC while the browser uses the visitor's
+  // timezone, and a local-time date one day apart would break hydration (and
+  // disagree with the canonical UTC dates used everywhere else on the site).
+  return d.toLocaleDateString("en-US", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
 }
 
 export function formatUtc(d: Date): string {

@@ -64,6 +64,7 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
         month: "short",
         day: "numeric",
         year: "numeric",
+        timeZone: "UTC",
       })
     : "";
 

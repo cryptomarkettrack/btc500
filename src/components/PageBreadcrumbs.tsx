@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { getArticleBySlug } from "@/lib/articles";
 import { crumbsForPath } from "@/lib/site";
 import {
@@ -25,16 +26,18 @@ export function PageBreadcrumbs({ pathname }: { pathname: string }) {
             {crumbs.map((crumb, index) => {
               const isLast = index === crumbs.length - 1;
               return (
-                <BreadcrumbItem key={crumb.path}>
+                <Fragment key={crumb.path}>
                   {index > 0 && <BreadcrumbSeparator />}
-                  {isLast ? (
-                    <BreadcrumbPage className="line-clamp-1 max-w-[18rem] sm:max-w-md">
-                      {crumb.name}
-                    </BreadcrumbPage>
-                  ) : (
-                    <BreadcrumbLink href={crumb.path}>{crumb.name}</BreadcrumbLink>
-                  )}
-                </BreadcrumbItem>
+                  <BreadcrumbItem>
+                    {isLast ? (
+                      <BreadcrumbPage className="line-clamp-1 max-w-[18rem] sm:max-w-md">
+                        {crumb.name}
+                      </BreadcrumbPage>
+                    ) : (
+                      <BreadcrumbLink href={crumb.path}>{crumb.name}</BreadcrumbLink>
+                    )}
+                  </BreadcrumbItem>
+                </Fragment>
               );
             })}
           </BreadcrumbList>

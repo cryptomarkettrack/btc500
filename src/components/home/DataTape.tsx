@@ -16,7 +16,10 @@ interface DataTapeProps {
 function TapeStat({ label, value }: { label: string; value: string }) {
   return (
     <span className="inline-flex shrink-0 items-center gap-1.5">
-      {label} <b className="font-semibold text-primary">{value}</b>
+      {label}{" "}
+      {/* The tape is a dark strip in both themes, so the light-mode primary
+          (#bc4200) fails contrast here. Use a light orange scoped to the strip. */}
+      <b className="font-semibold text-[oklch(0.82_0.15_65)]">{value}</b>
     </span>
   );
 }

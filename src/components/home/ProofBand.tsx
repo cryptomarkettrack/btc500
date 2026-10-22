@@ -16,7 +16,7 @@ export function ProofBand({ totalCompleted, profitable, avgReturn, bestReturn }:
     <div className="relative overflow-hidden rounded-[32px] bg-foreground px-6 py-12 text-background sm:px-10">
       <div className="grid gap-10 lg:grid-cols-[1.1fr_1fr] lg:gap-14">
         <div>
-          <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+          <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-[oklch(0.82_0.15_65)]">
             02 / The record
           </p>
           <h2
@@ -32,7 +32,7 @@ export function ProofBand({ totalCompleted, profitable, avgReturn, bestReturn }:
         </div>
         <div className="grid content-center gap-6 sm:grid-cols-3 lg:gap-4">
           <div>
-            <div className="text-3xl font-bold text-primary sm:text-4xl">
+            <div className="text-3xl font-bold text-[oklch(0.82_0.15_65)] sm:text-4xl">
               {totalCompleted > 0 ? `${profitable}/${totalCompleted}` : "—"}
             </div>
             <div className="font-data mt-1.5 text-[10px] font-medium uppercase tracking-[0.14em] text-background/60">
@@ -40,7 +40,7 @@ export function ProofBand({ totalCompleted, profitable, avgReturn, bestReturn }:
             </div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-primary sm:text-4xl">
+            <div className="text-3xl font-bold text-[oklch(0.82_0.15_65)] sm:text-4xl">
               {avgReturn !== null ? `${avgReturn > 0 ? "+" : ""}${avgReturn.toFixed(0)}%` : "—"}
             </div>
             <div className="font-data mt-1.5 text-[10px] font-medium uppercase tracking-[0.14em] text-background/60">
@@ -48,7 +48,7 @@ export function ProofBand({ totalCompleted, profitable, avgReturn, bestReturn }:
             </div>
           </div>
           <div>
-            <div className="text-3xl font-bold text-primary sm:text-4xl">
+            <div className="text-3xl font-bold text-[oklch(0.82_0.15_65)] sm:text-4xl">
               {bestReturn !== null ? `${bestReturn > 0 ? "+" : ""}${bestReturn.toFixed(0)}%` : "—"}
             </div>
             <div className="font-data mt-1.5 text-[10px] font-medium uppercase tracking-[0.14em] text-background/60">
