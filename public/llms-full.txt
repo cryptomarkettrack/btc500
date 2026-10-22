@@ -62,9 +62,9 @@ Canonical page: https://btc500.net/bitcoin-500-day-cycle
 | 2016 | 2015-02-25 | 2017-11-21 |
 | 2020 | 2018-12-28 | 2021-09-23 |
 | 2024 | 2022-12-07 | 2025-09-02 |
-| Next (~April 13, 2028) | 2026-11-30 (published projection) | 2029-08-26 (published projection) |
+| Next (~April 11, 2028 estimate) | 2026-11-28 (current estimate) | 2029-08-24 (current estimate) |
 
-Both next-cycle dates derive from block 1,050,000, so the live block-height estimate can differ by a day or two. The live projected dates are published at https://btc500.net/halving-dates and https://btc500.net/when-to-sell-bitcoin-after-halving.
+Both next-cycle dates derive from block 1,050,000, so they move with block times. The consensus projection (April 13, 2028 halving) gives 2026-11-30 and 2029-08-26. The live dates are published at https://btc500.net/halving-dates and https://btc500.net/when-to-sell-bitcoin-after-halving, and the same dates are available as a calendar file at https://btc500.net/bitcoin-halving-calendar.ics.
 
 Canonical sell-date reference: https://btc500.net/when-to-sell-bitcoin-after-halving
 
@@ -81,10 +81,10 @@ The BTC500 strategy is a simple Bitcoin investment approach: buy exactly 500 day
 The next Bitcoin halving is projected for around April 2028, when block height reaches 1,050,000. The exact date depends on Bitcoin's average block time. BTC500 tracks live block height and estimates the countdown automatically.
 
 ### When is 500 days before the next Bitcoin halving?
-The BTC500 buy date is 500 calendar days before the next estimated halving. The published projection for the April 13, 2028 halving is November 30, 2026. Because the event is triggered at block 1,050,000, both the halving and the buy date move if blocks arrive faster or slower than ten minutes; the live block-height estimate can differ by a day or two. The live date is on https://btc500.net/ and https://btc500.net/halving-dates.
+The BTC500 buy date is 500 calendar days before the next estimated halving. The current block-height estimate is November 28, 2026 for an April 11, 2028 halving; the consensus April 13, 2028 projection gives November 30, 2026. Because the event is triggered at block 1,050,000, both the halving and the buy date move if blocks arrive faster or slower than ten minutes. The live date is on https://btc500.net/ and https://btc500.net/halving-dates; the calendar file is https://btc500.net/bitcoin-halving-calendar.ics.
 
 ### When do you sell Bitcoin after a halving?
-Exactly 500 calendar days after the halving (T+500). The 2024 halving on April 20, 2024 had a BTC500 sell date of September 2, 2025. The published projection for the next sell date is August 26, 2029, 500 days after the projected April 13, 2028 halving; the live block-height estimate can differ by a day or two. Full reference: https://btc500.net/when-to-sell-bitcoin-after-halving
+Exactly 500 calendar days after the halving (T+500). The 2024 halving on April 20, 2024 had a BTC500 sell date of September 2, 2025. The current block-height estimate for the next sell date is August 24, 2029 (August 26, 2029 on the consensus April 13, 2028 projection). Full reference: https://btc500.net/when-to-sell-bitcoin-after-halving
 
 ### Should you sell Bitcoin before the halving?
 The BTC500 rule does not sell before the halving. It buys at T−500, holds through the event, and sells at T+500. Selling early would break the fixed window and the historical comparison. Whether an earlier exit is appropriate depends on the individual; BTC500 is not financial advice.
@@ -201,6 +201,7 @@ Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC
 | --- | --- | --- |
 | Home / Halving Countdown | https://btc500.net/ | Live countdown, Cycle Command Center, cycle score |
 | Halving Dates | https://btc500.net/halving-dates | Full 2012–2028 schedule with buy/sell windows |
+| Calendar feed (.ics) | https://btc500.net/bitcoin-halving-calendar.ics | Next buy, halving and sell dates as all-day calendar events |
 | When to Sell Bitcoin | https://btc500.net/when-to-sell-bitcoin-after-halving | Every T+500 sell date, the 2024 exit, and the next estimated sell date |
 | Investment Simulator | https://btc500.net/simulator | Backtest BTC500 across all completed cycles; reinvest or repeat a stake; compare vs buy-and-hold |
 | DCA vs Lump Sum | https://btc500.net/dca | Compare DCA vs lump-sum around buy/sell dates |

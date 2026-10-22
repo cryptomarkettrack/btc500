@@ -2,11 +2,20 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
 import type { ReactNode } from "react";
-import { CalendarDays, Calculator, Clock, ArrowRight, BookOpen, Landmark } from "lucide-react";
+import {
+  CalendarDays,
+  CalendarPlus,
+  Calculator,
+  Clock,
+  ArrowRight,
+  BookOpen,
+  Landmark,
+} from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
 import { buildHalvingCycles } from "@/lib/halvings";
+import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { estimateFromHalvingInfo, estimateHalvingInfo } from "@/lib/btc.functions";
 import { halvingQuery, simulatorQuery } from "@/lib/queries";
 
@@ -23,7 +32,7 @@ const FAQ: { q: string; a: string }[] = [
   },
   {
     q: "When is 500 days before the next Bitcoin halving?",
-    a: "The BTC500 buy date is 500 calendar days before the estimated halving. That date moves whenever the halving estimate moves, so it is tracked live rather than published as a fixed calendar day. The current buy and sell windows are shown in the schedule table on this page.",
+    a: "The BTC500 buy date is 500 calendar days before the estimated halving. That date moves whenever the halving estimate moves, so it is recomputed from live block height rather than fixed in advance. The buy and sell windows for every cycle are in the schedule table on this page, and the current pair can be downloaded as a calendar file.",
   },
   {
     q: "What are all the Bitcoin halving dates?",
@@ -97,7 +106,10 @@ export const Route = createFileRoute("/halving-dates")({
       schema: [
         halvingDatesSchema,
         faqSchema,
-        generateSpeakableSchema({ path: PATH, cssSelectors: ["#next-halving-answer"] }),
+        generateSpeakableSchema({
+          path: PATH,
+          cssSelectors: ["#next-halving-answer", "#buy-date-answer"],
+        }),
       ],
       publishedTime: "2026-08-15",
       modifiedTime: "2026-10-22",
@@ -193,7 +205,7 @@ function HalvingDates() {
             speakable/answer-engine extractors can target it. */}
         <p
           id="next-halving-answer"
-          className="mx-auto mb-8 max-w-3xl text-center text-base leading-relaxed text-muted-foreground"
+          className="mx-auto mb-4 max-w-3xl text-center text-base leading-relaxed text-muted-foreground"
         >
           The next Bitcoin halving is estimated for{" "}
           <strong className="text-foreground">{formatDate(nextHalvingDate)}</strong>, at block
@@ -202,6 +214,27 @@ function HalvingDates() {
           <strong className="text-foreground">{daysToNextHalving.toLocaleString()} days</strong>{" "}
           from today. Bitcoin has halved four times: 28 November 2012, 9 July 2016, 11 May 2020 and
           20 April 2024. Each event cuts the block reward in half.
+        </p>
+
+        {/* Direct answer to the site's highest-intent non-brand query
+            ("when is 500 days before the next bitcoin halving"), which ranks on
+            page 1 but previously had no date in the snippet. */}
+        <p
+          id="buy-date-answer"
+          className="mx-auto mb-8 max-w-3xl text-center text-base leading-relaxed text-muted-foreground"
+        >
+          500 days before the next Bitcoin halving is{" "}
+          <strong className="text-foreground">{formatDate(nextCycle.tMinus500)}</strong> — the BTC
+          <span className="text-primary">500</span> buy date for this cycle. The matching sell date
+          is <strong className="text-foreground">{formatDate(nextCycle.tPlus500)}</strong>.{" "}
+          <a
+            href={CALENDAR_PATH}
+            download
+            className="font-semibold text-primary underline decoration-primary/40 underline-offset-2 hover:decoration-primary"
+          >
+            Add both dates to your calendar
+          </a>
+          .
         </p>
 
         {/* Next halving highlight */}
@@ -223,6 +256,14 @@ function HalvingDates() {
                 <Badge variant="outline" className="border-primary/40 text-primary">
                   Sell window: {formatDate(nextCycle.tPlus500)}
                 </Badge>
+                <a
+                  href={CALENDAR_PATH}
+                  download
+                  className="mt-1 inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-2 text-xs font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+                >
+                  <CalendarPlus className="h-3.5 w-3.5" />
+                  Add to calendar (.ics)
+                </a>
               </div>
             </div>
           </CardContent>
@@ -484,12 +525,23 @@ function HalvingDates() {
             </SectionHeading>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
-            {FAQ.map((item) => (
-              <div key={item.q}>
-                <h3 className="font-semibold text-foreground">{item.q}</h3>
-                <p className="mt-1 text-muted-foreground">{item.a}</p>
-              </div>
-            ))}
+            {FAQ.map((item) => {
+              const liveNote =
+                item.q === "When is 500 days before the next Bitcoin halving?"
+                  ? `Right now that is ${formatDate(nextCycle.tMinus500)} (estimated), 500 days before the estimated halving on ${formatDate(nextCycle.date)}. The matching sell date is ${formatDate(nextCycle.tPlus500)}.`
+                  : item.q === "When is the next Bitcoin halving?"
+                    ? `The current estimate is ${formatDate(nextCycle.date)} at block ${nextCycle.block.toLocaleString()}.`
+                    : null;
+              return (
+                <div key={item.q}>
+                  <h3 className="font-semibold text-foreground">{item.q}</h3>
+                  <p className="mt-1 text-muted-foreground">
+                    {item.a}
+                    {liveNote ? ` ${liveNote}` : ""}
+                  </p>
+                </div>
+              );
+            })}
           </CardContent>
         </Card>
 

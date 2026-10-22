@@ -118,7 +118,7 @@ export function estimateHalvingInfo(now: number = Date.now()): HalvingInfo {
   return deriveHalvingInfo(estimateCurrentBlockHeight(now), now, fallbackInterval(), "estimated");
 }
 
-async function fetchBlockHeight(): Promise<number> {
+export async function fetchBlockHeight(): Promise<number> {
   const sources = [
     "https://mempool.space/api/blocks/tip/height",
     "https://blockchain.info/q/getblockcount",

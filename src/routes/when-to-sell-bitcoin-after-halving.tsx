@@ -5,12 +5,14 @@ import {
   Calculator,
   CalendarClock,
   CalendarDays,
+  CalendarPlus,
   CheckCircle2,
   MinusCircle,
   TrendingUp,
 } from "lucide-react";
 import { estimateFromHalvingInfo, estimateHalvingInfo } from "@/lib/btc.functions";
 import { buildHalvingCycles, cycleDisplayLabel } from "@/lib/halvings";
+import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { halvingQuery, simulatorQuery } from "@/lib/queries";
 import {
   generateFaqSchema,
@@ -420,6 +422,14 @@ function WhenToSellPage() {
               <CalendarDays className="h-4 w-4" />
               Full halving schedule
             </Link>
+            <a
+              href={CALENDAR_PATH}
+              download
+              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+            >
+              <CalendarPlus className="h-4 w-4" />
+              Add the dates to your calendar
+            </a>
           </div>
         </section>
 

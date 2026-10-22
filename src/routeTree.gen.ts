@@ -9,117 +9,47 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WhenToSellBitcoinAfterHalvingRouteImport } from './routes/when-to-sell-bitcoin-after-halving'
-import { Route as TimelineRouteImport } from './routes/timeline'
-import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SimulatorRouteImport } from './routes/simulator'
-import { Route as PrivacyRouteImport } from './routes/privacy'
-import { Route as NewsRouteImport } from './routes/news'
-import { Route as LiquidationRouteImport } from './routes/liquidation'
-import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
-import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
-import { Route as EmbedKitRouteImport } from './routes/embed-kit'
-import { Route as EmbedRouteImport } from './routes/embed'
-import { Route as DcaRouteImport } from './routes/dca'
-import { Route as BitcoinEtfRouteImport } from './routes/bitcoin-etf'
-import { Route as Bitcoin500DayCycleRouteImport } from './routes/bitcoin-500-day-cycle'
-import { Route as ArticlesRouteImport } from './routes/articles'
-import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
-import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.why-bitcoin-pumped'
-import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
-import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes/articles.solar-eclipse-bitcoin-halving'
-import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
-import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
-import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
-import { Route as ArticlesIsTheBottomInRouteImport } from './routes/articles.is-the-bottom-in'
-import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
-import { Route as ArticlesDoctorProfitBitcoinOctober2026RouteImport } from './routes/articles.doctor-profit-bitcoin-october-2026'
-import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
-import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
-import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
-import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
-import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
-import { Route as ArticlesBitcoinCasinoSearchesRouteImport } from './routes/articles.bitcoin-casino-searches'
-import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/articles.bitcoin-80k-breakout'
-import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as ArticlesRouteImport } from './routes/articles'
+import { Route as Bitcoin500DayCycleRouteImport } from './routes/bitcoin-500-day-cycle'
+import { Route as BitcoinEtfRouteImport } from './routes/bitcoin-etf'
+import { Route as BitcoinHalvingCalendarDoticsRouteImport } from './routes/bitcoin-halving-calendar[.]ics'
+import { Route as DcaRouteImport } from './routes/dca'
+import { Route as EmbedRouteImport } from './routes/embed'
+import { Route as EmbedKitRouteImport } from './routes/embed-kit'
+import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
+import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
+import { Route as LiquidationRouteImport } from './routes/liquidation'
+import { Route as NewsRouteImport } from './routes/news'
+import { Route as PrivacyRouteImport } from './routes/privacy'
+import { Route as SimulatorRouteImport } from './routes/simulator'
+import { Route as TermsRouteImport } from './routes/terms'
+import { Route as TimelineRouteImport } from './routes/timeline'
+import { Route as WhenToSellBitcoinAfterHalvingRouteImport } from './routes/when-to-sell-bitcoin-after-halving'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
+import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
+import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/articles.bitcoin-80k-breakout'
+import { Route as ArticlesBitcoinCasinoSearchesRouteImport } from './routes/articles.bitcoin-casino-searches'
+import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
+import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
+import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
+import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
+import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
+import { Route as ArticlesDoctorProfitBitcoinOctober2026RouteImport } from './routes/articles.doctor-profit-bitcoin-october-2026'
+import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
+import { Route as ArticlesIsTheBottomInRouteImport } from './routes/articles.is-the-bottom-in'
+import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
+import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
+import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
+import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes/articles.solar-eclipse-bitcoin-halving'
+import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
+import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.why-bitcoin-pumped'
+import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 
-const WhenToSellBitcoinAfterHalvingRoute =
-  WhenToSellBitcoinAfterHalvingRouteImport.update({
-    id: '/when-to-sell-bitcoin-after-halving',
-    path: '/when-to-sell-bitcoin-after-halving',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const TimelineRoute = TimelineRouteImport.update({
-  id: '/timeline',
-  path: '/timeline',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TermsRoute = TermsRouteImport.update({
-  id: '/terms',
-  path: '/terms',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SimulatorRoute = SimulatorRouteImport.update({
-  id: '/simulator',
-  path: '/simulator',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyRoute = PrivacyRouteImport.update({
-  id: '/privacy',
-  path: '/privacy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewsRoute = NewsRouteImport.update({
-  id: '/news',
-  path: '/news',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LiquidationRoute = LiquidationRouteImport.update({
-  id: '/liquidation',
-  path: '/liquidation',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const InsiderTradingRoute = InsiderTradingRouteImport.update({
-  id: '/insider-trading',
-  path: '/insider-trading',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const HalvingDatesRoute = HalvingDatesRouteImport.update({
-  id: '/halving-dates',
-  path: '/halving-dates',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmbedKitRoute = EmbedKitRouteImport.update({
-  id: '/embed-kit',
-  path: '/embed-kit',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EmbedRoute = EmbedRouteImport.update({
-  id: '/embed',
-  path: '/embed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DcaRoute = DcaRouteImport.update({
-  id: '/dca',
-  path: '/dca',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BitcoinEtfRoute = BitcoinEtfRouteImport.update({
-  id: '/bitcoin-etf',
-  path: '/bitcoin-etf',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const Bitcoin500DayCycleRoute = Bitcoin500DayCycleRouteImport.update({
-  id: '/bitcoin-500-day-cycle',
-  path: '/bitcoin-500-day-cycle',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ArticlesRoute = ArticlesRouteImport.update({
-  id: '/articles',
-  path: '/articles',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -127,93 +57,103 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const ArticlesRoute = ArticlesRouteImport.update({
+  id: '/articles',
+  path: '/articles',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
-  id: '/why-btc500-exists',
-  path: '/why-btc500-exists',
+const Bitcoin500DayCycleRoute = Bitcoin500DayCycleRouteImport.update({
+  id: '/bitcoin-500-day-cycle',
+  path: '/bitcoin-500-day-cycle',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BitcoinEtfRoute = BitcoinEtfRouteImport.update({
+  id: '/bitcoin-etf',
+  path: '/bitcoin-etf',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BitcoinHalvingCalendarDoticsRoute =
+  BitcoinHalvingCalendarDoticsRouteImport.update({
+    id: '/bitcoin-halving-calendar.ics',
+    path: '/bitcoin-halving-calendar.ics',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const DcaRoute = DcaRouteImport.update({
+  id: '/dca',
+  path: '/dca',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedRoute = EmbedRouteImport.update({
+  id: '/embed',
+  path: '/embed',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmbedKitRoute = EmbedKitRouteImport.update({
+  id: '/embed-kit',
+  path: '/embed-kit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HalvingDatesRoute = HalvingDatesRouteImport.update({
+  id: '/halving-dates',
+  path: '/halving-dates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InsiderTradingRoute = InsiderTradingRouteImport.update({
+  id: '/insider-trading',
+  path: '/insider-trading',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiquidationRoute = LiquidationRouteImport.update({
+  id: '/liquidation',
+  path: '/liquidation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsRoute = NewsRouteImport.update({
+  id: '/news',
+  path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SimulatorRoute = SimulatorRouteImport.update({
+  id: '/simulator',
+  path: '/simulator',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TimelineRoute = TimelineRouteImport.update({
+  id: '/timeline',
+  path: '/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WhenToSellBitcoinAfterHalvingRoute =
+  WhenToSellBitcoinAfterHalvingRouteImport.update({
+    id: '/when-to-sell-bitcoin-after-halving',
+    path: '/when-to-sell-bitcoin-after-halving',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ArticlesBearMarketAccumulationRoute =
+  ArticlesBearMarketAccumulationRouteImport.update({
+    id: '/bear-market-accumulation',
+    path: '/bear-market-accumulation',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesBip110RejectionRoute = ArticlesBip110RejectionRouteImport.update({
+  id: '/bip-110-rejection',
+  path: '/bip-110-rejection',
   getParentRoute: () => ArticlesRoute,
 } as any)
-const ArticlesWhyBitcoinPumpedRoute =
-  ArticlesWhyBitcoinPumpedRouteImport.update({
-    id: '/why-bitcoin-pumped',
-    path: '/why-bitcoin-pumped',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
-  id: '/strongest-hands',
-  path: '/strongest-hands',
-  getParentRoute: () => ArticlesRoute,
-} as any)
-const ArticlesSolarEclipseBitcoinHalvingRoute =
-  ArticlesSolarEclipseBitcoinHalvingRouteImport.update({
-    id: '/solar-eclipse-bitcoin-halving',
-    path: '/solar-eclipse-bitcoin-halving',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesSecCancelsRegulationCryptoRoute =
-  ArticlesSecCancelsRegulationCryptoRouteImport.update({
-    id: '/sec-cancels-regulation-crypto',
-    path: '/sec-cancels-regulation-crypto',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
-  id: '/rupl',
-  path: '/rupl',
-  getParentRoute: () => ArticlesRoute,
-} as any)
-const ArticlesOndoFinanceTokenizationRoute =
-  ArticlesOndoFinanceTokenizationRouteImport.update({
-    id: '/ondo-finance-tokenization',
-    path: '/ondo-finance-tokenization',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesIsTheBottomInRoute = ArticlesIsTheBottomInRouteImport.update({
-  id: '/is-the-bottom-in',
-  path: '/is-the-bottom-in',
-  getParentRoute: () => ArticlesRoute,
-} as any)
-const ArticlesGoldmanVsBlackrockRoute =
-  ArticlesGoldmanVsBlackrockRouteImport.update({
-    id: '/goldman-vs-blackrock',
-    path: '/goldman-vs-blackrock',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesDoctorProfitBitcoinOctober2026Route =
-  ArticlesDoctorProfitBitcoinOctober2026RouteImport.update({
-    id: '/doctor-profit-bitcoin-october-2026',
-    path: '/doctor-profit-bitcoin-october-2026',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesClarityActRoute = ArticlesClarityActRouteImport.update({
-  id: '/clarity-act',
-  path: '/clarity-act',
-  getParentRoute: () => ArticlesRoute,
-} as any)
-const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
-  id: '/btc500-strategy',
-  path: '/btc500-strategy',
-  getParentRoute: () => ArticlesRoute,
-} as any)
-const ArticlesBitcoinWeekAheadRoute =
-  ArticlesBitcoinWeekAheadRouteImport.update({
-    id: '/bitcoin-week-ahead',
-    path: '/bitcoin-week-ahead',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesBitcoinVolatilityRoute =
-  ArticlesBitcoinVolatilityRouteImport.update({
-    id: '/bitcoin-volatility',
-    path: '/bitcoin-volatility',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesBitcoinInfrastructureExploitsRoute =
-  ArticlesBitcoinInfrastructureExploitsRouteImport.update({
-    id: '/bitcoin-infrastructure-exploits',
-    path: '/bitcoin-infrastructure-exploits',
+const ArticlesBitcoin80kBreakoutRoute =
+  ArticlesBitcoin80kBreakoutRouteImport.update({
+    id: '/bitcoin-80k-breakout',
+    path: '/bitcoin-80k-breakout',
     getParentRoute: () => ArticlesRoute,
   } as any)
 const ArticlesBitcoinCasinoSearchesRoute =
@@ -222,23 +162,90 @@ const ArticlesBitcoinCasinoSearchesRoute =
     path: '/bitcoin-casino-searches',
     getParentRoute: () => ArticlesRoute,
   } as any)
-const ArticlesBitcoin80kBreakoutRoute =
-  ArticlesBitcoin80kBreakoutRouteImport.update({
-    id: '/bitcoin-80k-breakout',
-    path: '/bitcoin-80k-breakout',
+const ArticlesBitcoinInfrastructureExploitsRoute =
+  ArticlesBitcoinInfrastructureExploitsRouteImport.update({
+    id: '/bitcoin-infrastructure-exploits',
+    path: '/bitcoin-infrastructure-exploits',
     getParentRoute: () => ArticlesRoute,
   } as any)
-const ArticlesBip110RejectionRoute = ArticlesBip110RejectionRouteImport.update({
-  id: '/bip-110-rejection',
-  path: '/bip-110-rejection',
+const ArticlesBitcoinVolatilityRoute =
+  ArticlesBitcoinVolatilityRouteImport.update({
+    id: '/bitcoin-volatility',
+    path: '/bitcoin-volatility',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesBitcoinWeekAheadRoute =
+  ArticlesBitcoinWeekAheadRouteImport.update({
+    id: '/bitcoin-week-ahead',
+    path: '/bitcoin-week-ahead',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesBtc500StrategyRoute = ArticlesBtc500StrategyRouteImport.update({
+  id: '/btc500-strategy',
+  path: '/btc500-strategy',
   getParentRoute: () => ArticlesRoute,
 } as any)
-const ArticlesBearMarketAccumulationRoute =
-  ArticlesBearMarketAccumulationRouteImport.update({
-    id: '/bear-market-accumulation',
-    path: '/bear-market-accumulation',
+const ArticlesClarityActRoute = ArticlesClarityActRouteImport.update({
+  id: '/clarity-act',
+  path: '/clarity-act',
+  getParentRoute: () => ArticlesRoute,
+} as any)
+const ArticlesDoctorProfitBitcoinOctober2026Route =
+  ArticlesDoctorProfitBitcoinOctober2026RouteImport.update({
+    id: '/doctor-profit-bitcoin-october-2026',
+    path: '/doctor-profit-bitcoin-october-2026',
     getParentRoute: () => ArticlesRoute,
   } as any)
+const ArticlesGoldmanVsBlackrockRoute =
+  ArticlesGoldmanVsBlackrockRouteImport.update({
+    id: '/goldman-vs-blackrock',
+    path: '/goldman-vs-blackrock',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesIsTheBottomInRoute = ArticlesIsTheBottomInRouteImport.update({
+  id: '/is-the-bottom-in',
+  path: '/is-the-bottom-in',
+  getParentRoute: () => ArticlesRoute,
+} as any)
+const ArticlesOndoFinanceTokenizationRoute =
+  ArticlesOndoFinanceTokenizationRouteImport.update({
+    id: '/ondo-finance-tokenization',
+    path: '/ondo-finance-tokenization',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
+  id: '/rupl',
+  path: '/rupl',
+  getParentRoute: () => ArticlesRoute,
+} as any)
+const ArticlesSecCancelsRegulationCryptoRoute =
+  ArticlesSecCancelsRegulationCryptoRouteImport.update({
+    id: '/sec-cancels-regulation-crypto',
+    path: '/sec-cancels-regulation-crypto',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesSolarEclipseBitcoinHalvingRoute =
+  ArticlesSolarEclipseBitcoinHalvingRouteImport.update({
+    id: '/solar-eclipse-bitcoin-halving',
+    path: '/solar-eclipse-bitcoin-halving',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesStrongestHandsRoute = ArticlesStrongestHandsRouteImport.update({
+  id: '/strongest-hands',
+  path: '/strongest-hands',
+  getParentRoute: () => ArticlesRoute,
+} as any)
+const ArticlesWhyBitcoinPumpedRoute =
+  ArticlesWhyBitcoinPumpedRouteImport.update({
+    id: '/why-bitcoin-pumped',
+    path: '/why-bitcoin-pumped',
+    getParentRoute: () => ArticlesRoute,
+  } as any)
+const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
+  id: '/why-btc500-exists',
+  path: '/why-btc500-exists',
+  getParentRoute: () => ArticlesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -246,6 +253,7 @@ export interface FileRoutesByFullPath {
   '/articles': typeof ArticlesRouteWithChildren
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
+  '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -284,6 +292,7 @@ export interface FileRoutesByTo {
   '/articles': typeof ArticlesRouteWithChildren
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
+  '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -323,6 +332,7 @@ export interface FileRoutesById {
   '/articles': typeof ArticlesRouteWithChildren
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
+  '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -363,6 +373,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
+    | '/bitcoin-halving-calendar.ics'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -401,6 +412,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
+    | '/bitcoin-halving-calendar.ics'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -439,6 +451,7 @@ export interface FileRouteTypes {
     | '/articles'
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
+    | '/bitcoin-halving-calendar.ics'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -478,6 +491,7 @@ export interface RootRouteChildren {
   ArticlesRoute: typeof ArticlesRouteWithChildren
   Bitcoin500DayCycleRoute: typeof Bitcoin500DayCycleRoute
   BitcoinEtfRoute: typeof BitcoinEtfRoute
+  BitcoinHalvingCalendarDoticsRoute: typeof BitcoinHalvingCalendarDoticsRoute
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
@@ -494,109 +508,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/when-to-sell-bitcoin-after-halving': {
-      id: '/when-to-sell-bitcoin-after-halving'
-      path: '/when-to-sell-bitcoin-after-halving'
-      fullPath: '/when-to-sell-bitcoin-after-halving'
-      preLoaderRoute: typeof WhenToSellBitcoinAfterHalvingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/timeline': {
-      id: '/timeline'
-      path: '/timeline'
-      fullPath: '/timeline'
-      preLoaderRoute: typeof TimelineRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/terms': {
-      id: '/terms'
-      path: '/terms'
-      fullPath: '/terms'
-      preLoaderRoute: typeof TermsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/simulator': {
-      id: '/simulator'
-      path: '/simulator'
-      fullPath: '/simulator'
-      preLoaderRoute: typeof SimulatorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy': {
-      id: '/privacy'
-      path: '/privacy'
-      fullPath: '/privacy'
-      preLoaderRoute: typeof PrivacyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/news': {
-      id: '/news'
-      path: '/news'
-      fullPath: '/news'
-      preLoaderRoute: typeof NewsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/liquidation': {
-      id: '/liquidation'
-      path: '/liquidation'
-      fullPath: '/liquidation'
-      preLoaderRoute: typeof LiquidationRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/insider-trading': {
-      id: '/insider-trading'
-      path: '/insider-trading'
-      fullPath: '/insider-trading'
-      preLoaderRoute: typeof InsiderTradingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/halving-dates': {
-      id: '/halving-dates'
-      path: '/halving-dates'
-      fullPath: '/halving-dates'
-      preLoaderRoute: typeof HalvingDatesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/embed-kit': {
-      id: '/embed-kit'
-      path: '/embed-kit'
-      fullPath: '/embed-kit'
-      preLoaderRoute: typeof EmbedKitRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/embed': {
-      id: '/embed'
-      path: '/embed'
-      fullPath: '/embed'
-      preLoaderRoute: typeof EmbedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dca': {
-      id: '/dca'
-      path: '/dca'
-      fullPath: '/dca'
-      preLoaderRoute: typeof DcaRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bitcoin-etf': {
-      id: '/bitcoin-etf'
-      path: '/bitcoin-etf'
-      fullPath: '/bitcoin-etf'
-      preLoaderRoute: typeof BitcoinEtfRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/bitcoin-500-day-cycle': {
-      id: '/bitcoin-500-day-cycle'
-      path: '/bitcoin-500-day-cycle'
-      fullPath: '/bitcoin-500-day-cycle'
-      preLoaderRoute: typeof Bitcoin500DayCycleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/articles': {
-      id: '/articles'
-      path: '/articles'
-      fullPath: '/articles'
-      preLoaderRoute: typeof ArticlesRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -606,130 +522,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/articles': {
+      id: '/articles'
+      path: '/articles'
+      fullPath: '/articles'
+      preLoaderRoute: typeof ArticlesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/articles/why-btc500-exists': {
-      id: '/articles/why-btc500-exists'
-      path: '/why-btc500-exists'
-      fullPath: '/articles/why-btc500-exists'
-      preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/bitcoin-500-day-cycle': {
+      id: '/bitcoin-500-day-cycle'
+      path: '/bitcoin-500-day-cycle'
+      fullPath: '/bitcoin-500-day-cycle'
+      preLoaderRoute: typeof Bitcoin500DayCycleRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/why-bitcoin-pumped': {
-      id: '/articles/why-bitcoin-pumped'
-      path: '/why-bitcoin-pumped'
-      fullPath: '/articles/why-bitcoin-pumped'
-      preLoaderRoute: typeof ArticlesWhyBitcoinPumpedRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/bitcoin-etf': {
+      id: '/bitcoin-etf'
+      path: '/bitcoin-etf'
+      fullPath: '/bitcoin-etf'
+      preLoaderRoute: typeof BitcoinEtfRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/strongest-hands': {
-      id: '/articles/strongest-hands'
-      path: '/strongest-hands'
-      fullPath: '/articles/strongest-hands'
-      preLoaderRoute: typeof ArticlesStrongestHandsRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/bitcoin-halving-calendar.ics': {
+      id: '/bitcoin-halving-calendar.ics'
+      path: '/bitcoin-halving-calendar.ics'
+      fullPath: '/bitcoin-halving-calendar.ics'
+      preLoaderRoute: typeof BitcoinHalvingCalendarDoticsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/solar-eclipse-bitcoin-halving': {
-      id: '/articles/solar-eclipse-bitcoin-halving'
-      path: '/solar-eclipse-bitcoin-halving'
-      fullPath: '/articles/solar-eclipse-bitcoin-halving'
-      preLoaderRoute: typeof ArticlesSolarEclipseBitcoinHalvingRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/dca': {
+      id: '/dca'
+      path: '/dca'
+      fullPath: '/dca'
+      preLoaderRoute: typeof DcaRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/sec-cancels-regulation-crypto': {
-      id: '/articles/sec-cancels-regulation-crypto'
-      path: '/sec-cancels-regulation-crypto'
-      fullPath: '/articles/sec-cancels-regulation-crypto'
-      preLoaderRoute: typeof ArticlesSecCancelsRegulationCryptoRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/embed': {
+      id: '/embed'
+      path: '/embed'
+      fullPath: '/embed'
+      preLoaderRoute: typeof EmbedRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/rupl': {
-      id: '/articles/rupl'
-      path: '/rupl'
-      fullPath: '/articles/rupl'
-      preLoaderRoute: typeof ArticlesRuplRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/embed-kit': {
+      id: '/embed-kit'
+      path: '/embed-kit'
+      fullPath: '/embed-kit'
+      preLoaderRoute: typeof EmbedKitRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/ondo-finance-tokenization': {
-      id: '/articles/ondo-finance-tokenization'
-      path: '/ondo-finance-tokenization'
-      fullPath: '/articles/ondo-finance-tokenization'
-      preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/halving-dates': {
+      id: '/halving-dates'
+      path: '/halving-dates'
+      fullPath: '/halving-dates'
+      preLoaderRoute: typeof HalvingDatesRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/is-the-bottom-in': {
-      id: '/articles/is-the-bottom-in'
-      path: '/is-the-bottom-in'
-      fullPath: '/articles/is-the-bottom-in'
-      preLoaderRoute: typeof ArticlesIsTheBottomInRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/insider-trading': {
+      id: '/insider-trading'
+      path: '/insider-trading'
+      fullPath: '/insider-trading'
+      preLoaderRoute: typeof InsiderTradingRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/goldman-vs-blackrock': {
-      id: '/articles/goldman-vs-blackrock'
-      path: '/goldman-vs-blackrock'
-      fullPath: '/articles/goldman-vs-blackrock'
-      preLoaderRoute: typeof ArticlesGoldmanVsBlackrockRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/liquidation': {
+      id: '/liquidation'
+      path: '/liquidation'
+      fullPath: '/liquidation'
+      preLoaderRoute: typeof LiquidationRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/doctor-profit-bitcoin-october-2026': {
-      id: '/articles/doctor-profit-bitcoin-october-2026'
-      path: '/doctor-profit-bitcoin-october-2026'
-      fullPath: '/articles/doctor-profit-bitcoin-october-2026'
-      preLoaderRoute: typeof ArticlesDoctorProfitBitcoinOctober2026RouteImport
-      parentRoute: typeof ArticlesRoute
+    '/news': {
+      id: '/news'
+      path: '/news'
+      fullPath: '/news'
+      preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/clarity-act': {
-      id: '/articles/clarity-act'
-      path: '/clarity-act'
-      fullPath: '/articles/clarity-act'
-      preLoaderRoute: typeof ArticlesClarityActRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/btc500-strategy': {
-      id: '/articles/btc500-strategy'
-      path: '/btc500-strategy'
-      fullPath: '/articles/btc500-strategy'
-      preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/simulator': {
+      id: '/simulator'
+      path: '/simulator'
+      fullPath: '/simulator'
+      preLoaderRoute: typeof SimulatorRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/bitcoin-week-ahead': {
-      id: '/articles/bitcoin-week-ahead'
-      path: '/bitcoin-week-ahead'
-      fullPath: '/articles/bitcoin-week-ahead'
-      preLoaderRoute: typeof ArticlesBitcoinWeekAheadRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/bitcoin-volatility': {
-      id: '/articles/bitcoin-volatility'
-      path: '/bitcoin-volatility'
-      fullPath: '/articles/bitcoin-volatility'
-      preLoaderRoute: typeof ArticlesBitcoinVolatilityRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/timeline': {
+      id: '/timeline'
+      path: '/timeline'
+      fullPath: '/timeline'
+      preLoaderRoute: typeof TimelineRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/bitcoin-infrastructure-exploits': {
-      id: '/articles/bitcoin-infrastructure-exploits'
-      path: '/bitcoin-infrastructure-exploits'
-      fullPath: '/articles/bitcoin-infrastructure-exploits'
-      preLoaderRoute: typeof ArticlesBitcoinInfrastructureExploitsRouteImport
-      parentRoute: typeof ArticlesRoute
+    '/when-to-sell-bitcoin-after-halving': {
+      id: '/when-to-sell-bitcoin-after-halving'
+      path: '/when-to-sell-bitcoin-after-halving'
+      fullPath: '/when-to-sell-bitcoin-after-halving'
+      preLoaderRoute: typeof WhenToSellBitcoinAfterHalvingRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/articles/bitcoin-casino-searches': {
-      id: '/articles/bitcoin-casino-searches'
-      path: '/bitcoin-casino-searches'
-      fullPath: '/articles/bitcoin-casino-searches'
-      preLoaderRoute: typeof ArticlesBitcoinCasinoSearchesRouteImport
-      parentRoute: typeof ArticlesRoute
-    }
-    '/articles/bitcoin-80k-breakout': {
-      id: '/articles/bitcoin-80k-breakout'
-      path: '/bitcoin-80k-breakout'
-      fullPath: '/articles/bitcoin-80k-breakout'
-      preLoaderRoute: typeof ArticlesBitcoin80kBreakoutRouteImport
+    '/articles/bear-market-accumulation': {
+      id: '/articles/bear-market-accumulation'
+      path: '/bear-market-accumulation'
+      fullPath: '/articles/bear-market-accumulation'
+      preLoaderRoute: typeof ArticlesBearMarketAccumulationRouteImport
       parentRoute: typeof ArticlesRoute
     }
     '/articles/bip-110-rejection': {
@@ -739,11 +648,123 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBip110RejectionRouteImport
       parentRoute: typeof ArticlesRoute
     }
-    '/articles/bear-market-accumulation': {
-      id: '/articles/bear-market-accumulation'
-      path: '/bear-market-accumulation'
-      fullPath: '/articles/bear-market-accumulation'
-      preLoaderRoute: typeof ArticlesBearMarketAccumulationRouteImport
+    '/articles/bitcoin-80k-breakout': {
+      id: '/articles/bitcoin-80k-breakout'
+      path: '/bitcoin-80k-breakout'
+      fullPath: '/articles/bitcoin-80k-breakout'
+      preLoaderRoute: typeof ArticlesBitcoin80kBreakoutRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/bitcoin-casino-searches': {
+      id: '/articles/bitcoin-casino-searches'
+      path: '/bitcoin-casino-searches'
+      fullPath: '/articles/bitcoin-casino-searches'
+      preLoaderRoute: typeof ArticlesBitcoinCasinoSearchesRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/bitcoin-infrastructure-exploits': {
+      id: '/articles/bitcoin-infrastructure-exploits'
+      path: '/bitcoin-infrastructure-exploits'
+      fullPath: '/articles/bitcoin-infrastructure-exploits'
+      preLoaderRoute: typeof ArticlesBitcoinInfrastructureExploitsRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/bitcoin-volatility': {
+      id: '/articles/bitcoin-volatility'
+      path: '/bitcoin-volatility'
+      fullPath: '/articles/bitcoin-volatility'
+      preLoaderRoute: typeof ArticlesBitcoinVolatilityRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/bitcoin-week-ahead': {
+      id: '/articles/bitcoin-week-ahead'
+      path: '/bitcoin-week-ahead'
+      fullPath: '/articles/bitcoin-week-ahead'
+      preLoaderRoute: typeof ArticlesBitcoinWeekAheadRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/btc500-strategy': {
+      id: '/articles/btc500-strategy'
+      path: '/btc500-strategy'
+      fullPath: '/articles/btc500-strategy'
+      preLoaderRoute: typeof ArticlesBtc500StrategyRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/clarity-act': {
+      id: '/articles/clarity-act'
+      path: '/clarity-act'
+      fullPath: '/articles/clarity-act'
+      preLoaderRoute: typeof ArticlesClarityActRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/doctor-profit-bitcoin-october-2026': {
+      id: '/articles/doctor-profit-bitcoin-october-2026'
+      path: '/doctor-profit-bitcoin-october-2026'
+      fullPath: '/articles/doctor-profit-bitcoin-october-2026'
+      preLoaderRoute: typeof ArticlesDoctorProfitBitcoinOctober2026RouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/goldman-vs-blackrock': {
+      id: '/articles/goldman-vs-blackrock'
+      path: '/goldman-vs-blackrock'
+      fullPath: '/articles/goldman-vs-blackrock'
+      preLoaderRoute: typeof ArticlesGoldmanVsBlackrockRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/is-the-bottom-in': {
+      id: '/articles/is-the-bottom-in'
+      path: '/is-the-bottom-in'
+      fullPath: '/articles/is-the-bottom-in'
+      preLoaderRoute: typeof ArticlesIsTheBottomInRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/ondo-finance-tokenization': {
+      id: '/articles/ondo-finance-tokenization'
+      path: '/ondo-finance-tokenization'
+      fullPath: '/articles/ondo-finance-tokenization'
+      preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/rupl': {
+      id: '/articles/rupl'
+      path: '/rupl'
+      fullPath: '/articles/rupl'
+      preLoaderRoute: typeof ArticlesRuplRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/sec-cancels-regulation-crypto': {
+      id: '/articles/sec-cancels-regulation-crypto'
+      path: '/sec-cancels-regulation-crypto'
+      fullPath: '/articles/sec-cancels-regulation-crypto'
+      preLoaderRoute: typeof ArticlesSecCancelsRegulationCryptoRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/solar-eclipse-bitcoin-halving': {
+      id: '/articles/solar-eclipse-bitcoin-halving'
+      path: '/solar-eclipse-bitcoin-halving'
+      fullPath: '/articles/solar-eclipse-bitcoin-halving'
+      preLoaderRoute: typeof ArticlesSolarEclipseBitcoinHalvingRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/strongest-hands': {
+      id: '/articles/strongest-hands'
+      path: '/strongest-hands'
+      fullPath: '/articles/strongest-hands'
+      preLoaderRoute: typeof ArticlesStrongestHandsRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/why-bitcoin-pumped': {
+      id: '/articles/why-bitcoin-pumped'
+      path: '/why-bitcoin-pumped'
+      fullPath: '/articles/why-bitcoin-pumped'
+      preLoaderRoute: typeof ArticlesWhyBitcoinPumpedRouteImport
+      parentRoute: typeof ArticlesRoute
+    }
+    '/articles/why-btc500-exists': {
+      id: '/articles/why-btc500-exists'
+      path: '/why-btc500-exists'
+      fullPath: '/articles/why-btc500-exists'
+      preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
       parentRoute: typeof ArticlesRoute
     }
   }
@@ -807,6 +828,7 @@ const rootRouteChildren: RootRouteChildren = {
   ArticlesRoute: ArticlesRouteWithChildren,
   Bitcoin500DayCycleRoute: Bitcoin500DayCycleRoute,
   BitcoinEtfRoute: BitcoinEtfRoute,
+  BitcoinHalvingCalendarDoticsRoute: BitcoinHalvingCalendarDoticsRoute,
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,

@@ -29,8 +29,9 @@ The site is free educational software with live countdowns, backtesting tools, o
 - Halving frequency: every 210,000 blocks (~4 years); the block reward paid to miners is cut in half.
 - BTC500 buy window: exactly 500 days before each halving.
 - BTC500 sell window: exactly 500 days after each halving.
-- Next BTC500 buy date: November 30, 2026 (published projection, 500 days before the ~April 13, 2028 halving).
-- Next BTC500 sell date: August 26, 2029 (published projection, 500 days after that halving). Both dates derive from block 1,050,000, so the live block-height estimate on the site can differ by a day or two.
+- Next BTC500 buy date: the current block-height estimate is November 28, 2026 (500 days before the estimated April 11, 2028 halving). The commonly cited consensus projection is November 30, 2026 for an April 13, 2028 halving. Both derive from block 1,050,000, so the exact day moves.
+- Next BTC500 sell date: August 24, 2029 on the current estimate (August 26, 2029 on the consensus projection), 500 days after the halving.
+- Calendar feed: the next buy, halving and sell dates as a downloadable .ics file at https://btc500.net/bitcoin-halving-calendar.ics
 - 2024 BTC500 sell date: September 2, 2025 (500 days after the April 20, 2024 halving).
 - The strategy finished higher at T+500 in every completed cycle (2012, 2016, 2020, 2024) based on historical Bitstamp prices. Past performance does not guarantee future results.
 
@@ -39,6 +40,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 - [Home / Halving Countdown](https://btc500.net/): Live Bitcoin 500-day cycle countdown, cycle command center, cycle score, and historical performance overview.
 - [Bitcoin 500-Day Cycle](https://btc500.net/bitcoin-500-day-cycle): Canonical explainer for T-500 and T+500 — dates, prices, and what the historical windows actually show.
 - [Halving Dates](https://btc500.net/halving-dates): Complete halving schedule 2012–2028 with block heights and BTC500 buy/sell windows.
+- [Calendar feed (.ics)](https://btc500.net/bitcoin-halving-calendar.ics): The next BTC500 buy date, halving and sell date as all-day calendar events with a 30-day reminder before the buy window opens.
 - [When to Sell Bitcoin After a Halving](https://btc500.net/when-to-sell-bitcoin-after-halving): Every historical T+500 sell date, the 2024 exit on September 2, 2025, the next estimated sell date in August 2029, and why the rule does not sell before the halving.
 - [Investment Simulator](https://btc500.net/simulator): What would $500, $1,000, or another amount have become if invested 500 days before a Bitcoin halving? Backtest the 500-day cycle across 2012, 2016, 2020, and 2024.
 - [DCA vs Lump Sum](https://btc500.net/dca): Compare dollar-cost averaging vs lump-sum entry and exit around BTC500 buy/sell dates.
@@ -81,8 +83,8 @@ The site is free educational software with live countdowns, backtesting tools, o
 
 - What is the BTC500 strategy? Buy Bitcoin exactly 500 days before each halving and sell exactly 500 days after. This rules-based method captures historically strong parts of Bitcoin's ~4-year halving cycle without day-trading.
 - When is the next Bitcoin halving? Projected for around April 2028 at block height 1,050,000. Exact date depends on average block time.
-- When is 500 days before the next Bitcoin halving? The BTC500 buy date is 500 calendar days before the next estimated halving. The published projection for the April 13, 2028 halving is November 30, 2026; the live block-height estimate can move by a day or two. The live date is on https://btc500.net/ and https://btc500.net/halving-dates.
-- When do you sell Bitcoin after a halving? Under BTC500, exactly 500 days after the halving. The 2024 halving sell date was September 2, 2025; the published projection for the next sell date is August 26, 2029, and the live block-height estimate can move by a day or two. Full table: https://btc500.net/when-to-sell-bitcoin-after-halving
+- When is 500 days before the next Bitcoin halving? The BTC500 buy date is 500 calendar days before the next estimated halving. The current block-height estimate is November 28, 2026 (the consensus April 13, 2028 projection gives November 30, 2026); it moves as block times drift. Live date: https://btc500.net/halving-dates. Calendar file: https://btc500.net/bitcoin-halving-calendar.ics
+- When do you sell Bitcoin after a halving? Under BTC500, exactly 500 days after the halving. The 2024 halving sell date was September 2, 2025. The current block-height estimate for the next sell date is August 24, 2029 (August 26, 2029 on the consensus projection), and it moves with block times. Full table: https://btc500.net/when-to-sell-bitcoin-after-halving
 - Should you sell Bitcoin before the halving? The BTC500 rule does not. It buys at T-500, holds through the halving, and sells at T+500. Selling early breaks the fixed window and the historical comparison.
 - How does the halving work? Every 210,000 blocks (~4 years) the block reward is cut in half, reducing new supply. Lower issuance has historically coincided with multi-year price cycles.
 - Has the strategy been profitable? In every completed cycle (2012, 2016, 2020, 2024) buying 500 days before and selling 500 days after finished higher. Past performance does not guarantee future results.

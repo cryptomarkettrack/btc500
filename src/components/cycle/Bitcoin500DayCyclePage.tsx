@@ -6,12 +6,14 @@ import {
   BookOpen,
   Calculator,
   CalendarDays,
+  CalendarPlus,
   ChevronDown,
   LineChart,
 } from "lucide-react";
 import { useNow } from "@/hooks/use-now";
 import { trackCta } from "@/lib/analytics";
 import { CYCLE_FAQ } from "@/lib/cycle-faq";
+import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { formatSignedPercent, observeCycles } from "@/lib/cycle-stats";
 import { formatIsoDay, formatUsd } from "@/lib/format";
 import { computeCycle } from "@/lib/phase";
@@ -461,6 +463,14 @@ function BuySection({ cycleBuyDate }: { cycleBuyDate: Date }) {
           <BookOpen className="h-4 w-4" />
           Read the strategy
         </Link>
+        <a
+          href={CALENDAR_PATH}
+          download
+          className="inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-semibold transition-all hover:border-primary/40 hover:text-primary"
+        >
+          <CalendarPlus className="h-4 w-4" />
+          Add {buyLabel} to your calendar
+        </a>
       </div>
     </motion.section>
   );
