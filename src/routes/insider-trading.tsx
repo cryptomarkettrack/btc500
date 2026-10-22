@@ -27,7 +27,7 @@ export const Route = createFileRoute("/insider-trading")({
       return null;
     }
   },
-  errorComponent: ({ error }: { error: Error }) => {
+  errorComponent: ({ error }: { error: unknown }) => {
     console.error("[insider-trading] Route error:", error);
     return (
       <div className="min-h-screen bg-background p-6">
@@ -36,7 +36,9 @@ export const Route = createFileRoute("/insider-trading")({
           <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-6 text-center">
             <p className="text-red-400 mb-2">Failed to load insider trading data</p>
             <p className="text-sm text-muted-foreground mb-4">
-              {error.message || "Please try again later"}
+              {error instanceof Error && error.message
+                ? error.message
+                : "Please try again later"}
             </p>
             <button
               onClick={() => window.location.reload()}
