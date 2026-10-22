@@ -4,6 +4,11 @@
 
 export const ETF_FAQ = [
   {
+    question: "Where can I see Bitcoin ETF flows for a specific date?",
+    answer:
+      "The flows table on this page lists every US spot Bitcoin ETF session since launch with the date, net flow in BTC, net flow in dollars, the multiple of miner issuance absorbed, the IBIT print and the cycle phase. Newest sessions appear first and older ones load on demand. Totals can revise after the US cash close as issuers finalise creations and redemptions.",
+  },
+  {
     question: "What are Bitcoin ETF inflows and outflows?",
     answer:
       "Inflows are net creations of US spot Bitcoin ETF shares. Authorized participants buy bitcoin to back those shares, so an inflow is bitcoin taken off the market. Outflows are redemptions: shares are retired and bitcoin is sold back into the market. BTC500 converts those dollar prints into BTC and compares them with miner issuance.",

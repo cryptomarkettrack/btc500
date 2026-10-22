@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight, Archive } from "lucide-react";
 import { motion } from "framer-motion";
 import { BitcoinWeekAheadArticle } from "@/components/articles/BitcoinWeekAheadArticle";
 import { getArticleBySlug, generateArticleHead } from "@/lib/articles";
@@ -91,6 +91,44 @@ function BitcoinWeekAheadPage() {
             <ArrowLeft className="h-4 w-4" />
             Back to Articles
           </Link>
+        </motion.div>
+
+        {/* Archive notice + links to the evergreen pages that now carry this
+            article's live intent (dated ETF flow queries). */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4 }}
+          className="mb-8 rounded-2xl border border-amber-500/30 bg-amber-500/5 p-5"
+        >
+          <div className="flex items-start gap-3">
+            <Archive className="mt-0.5 h-5 w-5 shrink-0 text-amber-600" />
+            <div className="text-sm">
+              <p className="font-semibold text-foreground">
+                Archived brief — published 17 August 2026
+              </p>
+              <p className="mt-1 text-muted-foreground">
+                This was a week-ahead note for 24–31 August 2026 and is kept for the record. The
+                live versions of what it covered:
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link
+                  to="/bitcoin-etf"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary/40 hover:text-primary"
+                >
+                  Bitcoin ETF flows by date
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+                <Link
+                  to="/halving-dates"
+                  className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-card px-3 py-1.5 text-xs font-semibold text-foreground hover:border-primary/40 hover:text-primary"
+                >
+                  Halving dates
+                  <ArrowRight className="h-3 w-3" />
+                </Link>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         {/* Article content */}

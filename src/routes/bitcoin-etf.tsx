@@ -12,9 +12,9 @@ import {
 } from "@/lib/site";
 
 const PATH = "/bitcoin-etf";
-const TITLE = "Bitcoin ETF Inflows & Outflows — Absorption vs Miner Issuance";
+const TITLE = "Bitcoin ETF Flows — Daily Inflows & Outflows by Date";
 const DESCRIPTION =
-  "Track US spot Bitcoin ETF inflows and outflows in BTC, compared with daily miner issuance and the 500-day cycle. See whether ETFs absorbed more coins than miners created.";
+  "Daily net inflows and outflows for US spot Bitcoin ETFs by date, converted into BTC and compared with miner issuance and the 500-day halving cycle.";
 
 const pageSchema = generateWebPageSchema({
   path: PATH,
@@ -25,7 +25,7 @@ const pageSchema = generateWebPageSchema({
     { name: "Bitcoin ETF Absorption", path: PATH },
   ],
   datePublished: "2026-08-21",
-  dateModified: "2026-08-21",
+  dateModified: "2026-10-22",
 });
 
 const datasetSchema = {
@@ -64,7 +64,7 @@ export const Route = createFileRoute("/bitcoin-etf")({
       title: `${TITLE} | BTC500`,
       description: DESCRIPTION,
       keywords:
-        "bitcoin etf inflows, bitcoin etf outflows, bitcoin etf flows, spot bitcoin etf, IBIT inflows, bitcoin etf absorption, miner issuance vs etf, US bitcoin ETF, GBTC flows, Fidelity FBTC",
+        "bitcoin etf flows, bitcoin etf flows today, bitcoin etf flows by date, daily bitcoin etf flows, bitcoin etf inflows, bitcoin etf outflows, bitcoin etf inflows today, spot bitcoin etf, IBIT inflows, bitcoin etf absorption, miner issuance vs etf, US bitcoin ETF, GBTC flows, Fidelity FBTC",
       ogTitle: "Did Bitcoin ETFs eat today's new coins? | BTC500",
       ogDescription: DESCRIPTION,
       ogImageAlt: "Bitcoin ETF absorption board — inflows versus miner issuance",
@@ -81,7 +81,7 @@ export const Route = createFileRoute("/bitcoin-etf")({
         datasetSchema,
       ],
       publishedTime: "2026-08-21",
-      modifiedTime: "2026-08-21",
+      modifiedTime: "2026-10-22",
     }),
 });
 

@@ -234,9 +234,13 @@ export function EtfAbsorptionDashboard({
         <section className="mt-10 rounded-2xl border border-border/60 bg-card p-4 sm:p-6">
           <div className="flex flex-wrap items-end justify-between gap-3">
             <div>
-              <h2 className="text-lg font-semibold">Session record</h2>
+              <h2 id="bitcoin-etf-flows-by-date" className="text-lg font-semibold">
+                Bitcoin ETF flows by date
+              </h2>
               <p className="mt-1 text-sm text-muted-foreground">
-                Newest first. BTC is dollars divided by that session&apos;s bitcoin close.
+                Every session since launch, newest first, through{" "}
+                {formatIsoDay(data.updatedThrough)}. BTC is dollars divided by that session&apos;s
+                bitcoin close.
               </p>
             </div>
             <RecordsStrip data={data} />

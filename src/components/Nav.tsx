@@ -76,8 +76,8 @@ const tools: NavItem[] = [
   },
   {
     to: "/bitcoin-etf",
-    label: "ETF Absorption",
-    description: "Inflows vs miner issuance",
+    label: "ETF Flows",
+    description: "Daily inflows vs issuance",
     icon: Landmark,
   },
 ];

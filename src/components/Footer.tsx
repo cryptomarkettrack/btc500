@@ -98,7 +98,7 @@ export function Footer() {
                   to="/bitcoin-etf"
                   className="text-sm text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  ETF Absorption
+                  ETF Flows
                 </Link>
               </li>
               <li>
