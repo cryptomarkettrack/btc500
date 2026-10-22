@@ -1,0 +1,123 @@
+SEARCH CONSOLE API — SETUP
+==========================
+
+These scripts pull Search Console data via the official API using a Google
+Cloud service account. One-time setup takes about five minutes.
+
+Everything below is read-only: the scope requested is
+`webmasters.readonly`, so the scripts cannot change your property settings,
+submit sitemaps, or request indexing.
+
+Files
+-----
+  client.ts                 auth + API helpers (no dependencies)
+  report.ts                 markdown/JSON output helpers
+  fetch-search-console.ts   performance report  -> `bun run search-console`
+  inspect-urls.ts           indexing status      -> `bun run search-console:inspect`
+  credentials.json          your service-account key (gitignored)
+  output/                   generated reports    (gitignored)
+
+Step 1 — Enable the API
+-----------------------
+  1. Open https://console.cloud.google.com/
+  2. Select or create a project.
+  3. APIs & Services -> Library -> search for "Google Search Console API".
+  4. Click Enable.
+
+Step 2 — Create a service account
+---------------------------------
+  1. APIs & Services -> Credentials -> Create credentials
+     -> Service account.
+  2. Give it any name (e.g. "gsc-readonly") and click Done.
+  3. Open the new service account -> Keys -> Add key
+     -> Create new key -> JSON -> Create.
+  4. A .json file downloads. Move it to:
+
+       scripts/search-console/credentials.json
+
+     Or keep it elsewhere and set GSC_CREDENTIALS to its path.
+
+Step 3 — Grant it access to the property
+----------------------------------------
+This is the step people miss. The service account is a separate identity; it
+has no access until you add it.
+
+  1. Open https://search.google.com/search-console
+  2. Select the btc500.net property.
+  3. Settings -> Users and permissions -> Add user.
+  4. Paste the service account's `client_email`
+     (looks like gsc-readonly@your-project.iam.gserviceaccount.com).
+  5. Permission: Full. (Restricted is not enough for the URL Inspection API.)
+
+Step 4 — Run
+------------
+  bun run search-console                  # 90-day performance report
+  bun run search-console -- --days=28     # last 28 days
+  bun run search-console:inspect          # inspect every sitemap URL
+
+  # Without bun:
+  node scripts/search-console/fetch-search-console.ts --days=28
+
+Output lands in scripts/search-console/output/. Each run writes a timestamped
+pair plus `performance-latest.md` / `inspection-latest.json` for convenience.
+
+Common options
+--------------
+  --days=N          window length (default 90)
+  --end=YYYY-MM-DD  last day of window (default: 3 days ago, because Search
+                    Console data lags and today's numbers are partial)
+  --site=PROPERTY   https://btc500.net/ or sc-domain:btc500.net
+  --rows=N          rows per dimension table (default 25000, the API max)
+
+  inspect-urls.ts also accepts:
+  --urls=A,B,C      inspect specific URLs instead of the sitemap
+  --limit=N         cap the number of URLs
+  --delay=MS        throttle between requests (default 150)
+
+Environment variables
+---------------------
+  GSC_SITE          default property, so you can omit --site
+  GSC_CREDENTIALS   path to the key file
+
+Both may be set in .env.local at the project root (gitignored).
+
+Property auto-detection
+-----------------------
+With no --site / GSC_SITE, the scripts call sites.list and pick the best match
+for btc500.net: the URL-prefix property first (this site verifies via
+public/googlee49c9b6e2a31e9b3.html, which is a URL-prefix method), then the
+domain property, then anything containing btc500.net. If the account can see
+several unrelated properties, set GSC_SITE explicitly.
+
+Quotas and gotchas
+------------------
+  * URL Inspection API: ~2000/day and ~600/minute per property. The default
+    --delay=150 keeps a 33-URL sitemap well inside that.
+  * Search analytics data lags 2-3 days. That is why the default window ends
+    3 days ago rather than today.
+  * Data is retained ~16 months, so --days cannot exceed that.
+  * "Token exchange failed" means the key is malformed or the service account
+    was never added as a user (Step 3).
+  * "can see no Search Console properties" means Step 3 was skipped.
+
+Reading the report
+------------------
+The useful sections, in priority order:
+
+  Quick wins         Ranking 11-20 with impressions. These are already close;
+                     a title/intro/internal-link push can reach page 1. This
+                     is normally the highest-ROI bucket on the page.
+  Snippet opps       Top 3 but under 15% CTR. Google lists you high and users
+                     skip you. Rewrite the title and meta description.
+  Zero-click         Impressions but no clicks at all: either an intent
+                     mismatch or a weak snippet.
+  Top pages          Where traffic actually comes from. Compare against the
+                     route list in src/routes/ to find pages with no traffic.
+
+Troubleshooting
+---------------
+  Verify the key file parses:
+    node -e "console.log(require('./scripts/search-console/credentials.json').client_email)"
+
+  Confirm the API is enabled and the key works:
+    node scripts/search-console/fetch-search-console.ts --days=7 --rows=10
