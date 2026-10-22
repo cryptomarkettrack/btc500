@@ -73,6 +73,11 @@ What the numbers actually mean:
   with HTTP 200.
 - Repo lint baseline is already failing (565 pre-existing prettier errors); no
   new violations were introduced in touched files.
+- Deployed as `fdad458` to `main`. Verified in production (not via the Vercel
+  dashboard — no CLI in this environment): `/bitcoin-halving-calendar.ics`
+  returns 200 `text/calendar` with the buy/halving/sell events,
+  `/halving-dates` renders the dated answer, and all three pages link the file.
+  IndexNow accepted 25 URLs (200) after the deploy.
 
 **Experiment:** does a dated answer plus a calendar file lift the 500-day
 cluster from position ~9 to page 1 and earn the first non-brand clicks?
