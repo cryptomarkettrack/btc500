@@ -113,6 +113,15 @@ that is already crawled instead of adding a 26th thin URL.
 - `npm test` 79/79, `tsc --noEmit` clean, default build clean,
   `NITRO_PRESET=node-server` build serves both pages with the table and the new
   FAQ in the SSR HTML. No new eslint/prettier problems in touched files.
+- Deployed as `c54e489` to `main`. Vercel served the new build ~60 s after the
+  push. Verified from the production HTML, not the Vercel dashboard:
+  `/bitcoin-500-day-cycle` (2,027 rendered words, canonical intact) renders the
+  section with $14.07 → $2.30, -83.7%, 491 of 501, median -11.7% and 85 days;
+  its FAQPage JSON-LD now carries 8 questions;
+  `/when-to-sell-bitcoin-after-halving` links `#risk-heading`;
+  `/sitemap.xml` shows the new lastmod; `llms-full.txt` serves the drawdown
+  bullet. `/`, `/robots.txt` and the calendar feed still 200. IndexNow returned
+  200 for 25 URLs.
 
 **Experiment:** does publishing the drawdown/underwater record change anything
 for the 500-day cluster? Success = any non-brand click or new referring domain
