@@ -25,6 +25,9 @@ dist-ssr
 scripts/search-console/credentials.json
 scripts/search-console/output/
 
+# GA4 Data API — generated reports
+scripts/analytics/output/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

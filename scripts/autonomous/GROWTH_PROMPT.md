@@ -26,28 +26,35 @@ pushing `main` triggers the Vercel deploy to https://btc500.net/.
 
 ## 2. Measure
 
-Search Console is available through the repo tooling (service account, already
-configured):
+Search Console and GA4 are available through the repo tooling (same service
+account, already configured):
 
 ```
 node scripts/search-console/fetch-search-console.ts --days=28
 node scripts/search-console/fetch-search-console.ts --days=7
 node scripts/search-console/inspect-urls.ts --limit=25
+node scripts/analytics/fetch-ga4.ts --days=28
+node scripts/analytics/fetch-ga4.ts --days=7
+node scripts/analytics/fetch-ga4.ts --realtime
 ```
 
-Reports are written to `scripts/search-console/output/` (gitignored). Data lags
-about 3 days; the scripts already offset for it.
+Reports are written to `scripts/search-console/output/` and
+`scripts/analytics/output/` (both gitignored). Search Console data lags about
+3 days; GA4 standard reports lag 24–48 hours, so a window can legitimately be
+empty right after a change — write "too early", not zero.
 
 Look for: clicks/impressions/CTR/position change vs the previous period, queries
 in positions 4–20, high-impression low-CTR pages, new queries, pages that lost
-visibility, and indexing status changes.
+visibility, and indexing status changes. GA4 adds sessions, engagement,
+landing pages, new vs returning, devices and referral sources.
 
 Rules for interpreting data:
+
 - Volume is tiny. A swing of a few impressions is noise, not a trend. Say so.
 - Never call something a win, a regression, or a cause without evidence.
 - If a previous experiment needs more time, record "too early" and move on.
-- There is no site analytics connector. Referrals, engagement and returning
-  visitors are **not measurable** here. Do not guess them.
+- GA4 and Search Console measure different things and will not match. Do not
+  reconcile them or guess the difference.
 
 ## 3. Decide
 
@@ -57,6 +64,7 @@ priority** — 6 of 25 sitemap URLs are indexed and the site has almost no
 external links. On-page tweaks cannot fix that alone.
 
 Prefer, in roughly this order:
+
 1. Original research or original data that others would cite or share.
 2. A genuinely useful tool or calculator that solves a real Bitcoin problem.
 3. A shareable asset: chart, dataset, calendar feed, embed, comparison.
@@ -107,6 +115,7 @@ npm run build
 ```
 
 Repo-specific facts:
+
 - `npm run lint` already fails with ~500 pre-existing Prettier errors. That is
   the baseline. Instead run `npx eslint <changed files>` and
   `npx prettier --check <changed files>` and make sure you add no new problems.
@@ -127,6 +136,7 @@ Commit to `main` with a message the owner can read on their phone. Subject line:
 Then `git push origin main`. That triggers Vercel.
 
 Verification is mandatory and must be honest:
+
 - Wait for the deploy to appear (poll, e.g. every 20s for up to ~6 minutes).
 - `curl -sS -o /dev/null -w '%{http_code}' https://btc500.net/` and the exact
   URLs you changed. Follow redirects where relevant.

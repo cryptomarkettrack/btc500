@@ -102,11 +102,12 @@ function base64url(value: string | Buffer): string {
     .replace(/\//gu, "_");
 }
 
-let cachedToken: { token: string; expiresAt: number } | null = null;
+const tokenCache = new Map<string, { token: string; expiresAt: number }>();
 
-async function getAccessToken(key: ServiceAccountKey): Promise<string> {
-  if (cachedToken && cachedToken.expiresAt > Date.now() + 60_000) {
-    return cachedToken.token;
+async function getAccessToken(key: ServiceAccountKey, scope: string = SCOPE): Promise<string> {
+  const cached = tokenCache.get(scope);
+  if (cached && cached.expiresAt > Date.now() + 60_000) {
+    return cached.token;
   }
 
   const issuedAt = Math.floor(Date.now() / 1000);
@@ -114,7 +115,7 @@ async function getAccessToken(key: ServiceAccountKey): Promise<string> {
   const claims = base64url(
     JSON.stringify({
       iss: key.client_email,
-      scope: SCOPE,
+      scope,
       aud: TOKEN_URL,
       iat: issuedAt,
       exp: issuedAt + 3600,
@@ -147,15 +148,24 @@ async function getAccessToken(key: ServiceAccountKey): Promise<string> {
     throw new ConfigError(
       `Token exchange failed (${response.status}): ${detail}\n` +
         "Check that the service account key is valid and that its client_email " +
-        "has been added as a user on the Search Console property.",
+        "has been granted access to the target Google property.",
     );
   }
 
-  cachedToken = {
+  const entry = {
     token: payload.access_token,
     expiresAt: Date.now() + (payload.expires_in ?? 3600) * 1000,
   };
-  return cachedToken.token;
+  tokenCache.set(scope, entry);
+  return entry.token;
+}
+
+/**
+ * Mint (or reuse) an OAuth token for any Google API scope using the same
+ * service-account key. Used by the GA4 tooling with analytics.readonly.
+ */
+export async function getAccessTokenForScope(scope: string): Promise<string> {
+  return getAccessToken(readServiceAccount(), scope);
 }
 
 type RequestInit2 = {

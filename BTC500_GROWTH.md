@@ -11,10 +11,10 @@ Source: Google Search Console API (property `https://btc500.net/`), via
 `npm run search-console` and `npm run search-console:inspect`. Report files are
 gitignored under `scripts/search-console/output/`.
 
-| Window | Clicks | Impressions | CTR | Avg position |
-| --- | --- | --- | --- | --- |
-| 90 days (2026-07-22 → 2026-10-19) | 49 | 3,370 | 1.5% | 25.8 |
-| 28 days (2026-09-22 → 2026-10-19) | 25 | 90 | 27.8% | 9.8 |
+| Window                            | Clicks | Impressions | CTR   | Avg position |
+| --------------------------------- | ------ | ----------- | ----- | ------------ |
+| 90 days (2026-07-22 → 2026-10-19) | 49     | 3,370       | 1.5%  | 25.8         |
+| 28 days (2026-09-22 → 2026-10-19) | 25     | 90          | 27.8% | 9.8          |
 
 What the numbers actually mean:
 
@@ -52,10 +52,10 @@ What the numbers actually mean:
 
 Same tooling, data state `all`, lag offset applied.
 
-| Window | Clicks | Impressions | CTR | Avg position |
-| --- | --- | --- | --- | --- |
-| 28 days (2026-09-23 → 2026-10-20) | 25 | 90 | 27.8% | 9.8 |
-| 7 days (2026-10-14 → 2026-10-20) | 10 | 37 | 27.0% | 14.1 |
+| Window                            | Clicks | Impressions | CTR   | Avg position |
+| --------------------------------- | ------ | ----------- | ----- | ------------ |
+| 28 days (2026-09-23 → 2026-10-20) | 25     | 90          | 27.8% | 9.8          |
+| 7 days (2026-10-14 → 2026-10-20)  | 10     | 37          | 27.0% | 14.1         |
 
 - The 28-day totals are identical to the 2026-09-22→10-19 window recorded on
   2026-10-22 (25/90). One day rolled off, one day rolled on, both empty. That is
@@ -92,12 +92,12 @@ summary, so no figure can go stale.
 Real numbers from the current archive (verified against an independent Python
 pass over `public/btc-usd-max.csv`):
 
-| Cycle | T-500 entry | Low close | vs entry | Days to low | Below entry pre-halving |
-| --- | --- | --- | --- | --- | --- |
-| 2012 | $14.07 | $2.30 (2011-11-22) | -83.7% | 128 | 491 / 501 |
-| 2016 | $237 | $210 (2015-08-24) | -11.5% | 180 | 92 / 501 |
-| 2020 | $3,854 | $3,394 (2019-02-07) | -11.9% | 41 | 56 / 501 |
-| 2024 | $16,851 | $16,423 (2022-12-19) | -2.5% | 12 | 18 / 501 |
+| Cycle | T-500 entry | Low close            | vs entry | Days to low | Below entry pre-halving |
+| ----- | ----------- | -------------------- | -------- | ----------- | ----------------------- |
+| 2012  | $14.07      | $2.30 (2011-11-22)   | -83.7%   | 128         | 491 / 501               |
+| 2016  | $237        | $210 (2015-08-24)    | -11.5%   | 180         | 92 / 501                |
+| 2020  | $3,854      | $3,394 (2019-02-07)  | -11.9%   | 41          | 56 / 501                |
+| 2024  | $16,851     | $16,423 (2022-12-19) | -2.5%    | 12          | 18 / 501                |
 
 Median lowest close -11.7% vs entry, median 85 days to the low. Why this is the
 right asset rather than another article: it answers the strongest objection to
@@ -135,9 +135,14 @@ by 2026-11-20. Inconclusive if impressions stay under 20.
 - It runs inline in `<head>` rather than from an effect, so the first pageview
   is captured before hydration; GA4 enhanced measurement covers client-side
   route changes. Vercel Analytics stays in place as a second, cookieless view.
-- Not connected to the GA4 Data API yet. The daily agent still measures only
-  Search Console; referrals, engagement and returning visitors need a service
-  account with Viewer access to the property.
+- Connected to the GA4 Data API on 2026-10-23: property `560440382`, the
+  service account added as Viewer, Data + Admin APIs enabled. The API returns
+  200; realtime showed an active user on the homepage. Standard reports are
+  still empty because the tag is hours old and GA4 processing lags 24–48 h.
+- `scripts/analytics/fetch-ga4.ts` mirrors the Search Console tooling: totals
+  with previous-period deltas, channels, landing pages, new vs returning,
+  devices, referral sources, and `--realtime`. Reports go to the gitignored
+  `scripts/analytics/output/`.
 - Verified in production 2026-10-23: the tag renders exactly once inside
   `<head>`; headless Chrome requested `gtag/js?id=G-GM4WBKY74P` and sent a
   `/g/collect` hit with `tid=G-GM4WBKY74P` for `https://btc500.net/`.
@@ -204,8 +209,6 @@ by 2026-11-20. Inconclusive if impressions stay under 20.
   internal traffic; treat country splits as noise until volume is larger.
 - `/bear-market` still earns impressions while 301-redirecting to
   `/bitcoin-500-day-cycle`; harmless, but Google has not consolidated the old URL.
-- GA4 is installed (`G-GM4WBKY74P`) but not connected to the API, so the daily
-  agent can still only read Search Console. Engagement, referral traffic and
-  returning visitors need a GA4 Data API service account. Cookie consent for
-  EU visitors is also not implemented.
-
+- GA4 is connected, but its standard reports are empty until processing catches
+  up (installed 2026-10-23; expect usable daily numbers from 2026-10-25).
+  EU cookie consent is still missing.

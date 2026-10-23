@@ -15,7 +15,9 @@
     "format": "prettier --write .",
     "indexnow": "node scripts/indexnow.mjs",
     "search-console": "node scripts/search-console/fetch-search-console.ts",
-    "search-console:inspect": "node scripts/search-console/inspect-urls.ts"
+    "search-console:inspect": "node scripts/search-console/inspect-urls.ts",
+    "analytics": "node scripts/analytics/fetch-ga4.ts",
+    "analytics:realtime": "node scripts/analytics/fetch-ga4.ts --realtime"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
