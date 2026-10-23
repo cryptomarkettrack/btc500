@@ -138,6 +138,9 @@ by 2026-11-20. Inconclusive if impressions stay under 20.
 - Not connected to the GA4 Data API yet. The daily agent still measures only
   Search Console; referrals, engagement and returning visitors need a service
   account with Viewer access to the property.
+- Verified in production 2026-10-23: the tag renders exactly once inside
+  `<head>`; headless Chrome requested `gtag/js?id=G-GM4WBKY74P` and sent a
+  `/g/collect` hit with `tid=G-GM4WBKY74P` for `https://btc500.net/`.
 
 ### 2026-10-22 — Daily autonomous cycle at 06:00
 
