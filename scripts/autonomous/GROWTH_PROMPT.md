@@ -73,6 +73,21 @@ Prefer, in roughly this order:
    internal links, intent match).
 6. Distribution and legitimate link-earning groundwork.
 
+Before committing to a direction, research it. You have live web access:
+
+- `websearch` for the query you are targeting, the topic, and who already ranks
+  for it.
+- `webfetch` (or `curl` through shell) to read the top results, two or three
+  competitor pages, their sitemaps, `llms.txt`, pricing and data pages.
+- Compare what they cover, what they miss, and what would make BTC500 the better
+  answer. Record the gap you are exploiting in the commit and in
+  `BTC500_GROWTH.md`.
+
+Limits: public pages only. No logins, paywalls, account creation, bulk crawling
+or posting. Respect robots.txt and rate limits: a handful of pages per session,
+not a scrape. Read for facts and structure; never copy prose, code or data
+without checking its licence.
+
 Do **not** default to publishing another article. Do not make cosmetic changes
 to appear productive. One solid change beats five shallow ones.
 
