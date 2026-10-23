@@ -51,6 +51,7 @@ Canonical page: https://btc500.net/bitcoin-500-day-cycle
 
 - T-500 is the BTC500 buy date. T+500 is the BTC500 sell date.
 - Cycles are compared by lining those two dates up across 2012, 2016, 2020, and 2024 using the same daily price archive as the simulator.
+- The same page publishes the inside-the-window drawdown: in the completed windows Bitcoin closed below its T-500 entry price at least once before the halving, and the deepest was the 2012 window (T-500 entry $14.07 on 2011-07-17, low close $2.30 on 2011-11-22). Drawdowns are measured on daily closes, so intraday lows were deeper. Table: https://btc500.net/bitcoin-500-day-cycle#risk-heading
 - Historical performance is not a guarantee of future results. Four halvings is a small sample.
 - Related pages: https://btc500.net/simulator · https://btc500.net/timeline · https://btc500.net/articles/btc500-strategy · https://btc500.net/articles/bitcoin-week-ahead
 

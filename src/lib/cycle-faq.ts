@@ -35,6 +35,11 @@ export const CYCLE_FAQ = [
       "BTC500’s historical exit is T+500. That is one rules-based date, not a forecast of the cycle top. Some completed windows were still rising at that point; others had already cooled. Compare the dates on the timeline rather than treating T+500 as a guaranteed peak.",
   },
   {
+    question: "Did Bitcoin fall below the T-500 price before earlier halvings?",
+    answer:
+      "In BTC500’s daily-close archive it did, in every completed window. The drawdown table on this page lists each cycle’s T-500 entry, the lowest close that followed, how long the low took to arrive, and how many pre-halving closes were below entry. The 2012 window is the extreme case. These are daily closes, so intraday lows were deeper than the table shows, and a historical drawdown is not a forecast of the next window.",
+  },
+  {
     question: "How has Bitcoin performed 500 days before previous halvings?",
     answer:
       "The table on this page lists the T-500, halving, and T+500 prices from BTC500’s historical archive for the 2012, 2016, 2020, and 2024 cycles. Completed T-500 to T+500 windows in that dataset finished higher than they started. Later windows started at a higher Bitcoin price and produced smaller multiples than the earliest ones. Past performance does not guarantee future results.",

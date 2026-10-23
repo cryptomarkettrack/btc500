@@ -15,6 +15,7 @@ import { trackCta } from "@/lib/analytics";
 import { CYCLE_FAQ } from "@/lib/cycle-faq";
 import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { formatSignedPercent, observeCycles } from "@/lib/cycle-stats";
+import { type CycleRisk, summarizeRisk } from "@/lib/cycle-risk";
 import { formatIsoDay, formatUsd } from "@/lib/format";
 import { computeCycle } from "@/lib/phase";
 import { btcPriceQuery, halvingQuery, simulatorQuery } from "@/lib/queries";
@@ -86,6 +87,7 @@ export function Bitcoin500DayCyclePage() {
         <WhatIsSection />
         <HistoricalSection cycles={simulator.cycles} />
         <ObservationsSection cycles={simulator.cycles} stats={stats} />
+        <RiskSection risk={simulator.risk} />
         <BuySection cycleBuyDate={cycle.buyDate} />
         <SellSection cycleSellDate={cycle.sellDate} />
         <FaqSection />
@@ -335,8 +337,8 @@ function ObservationsSection({
         ) : (
           <>
             <p>
-              {stats.completedCount} completed{" "}
-              {stats.completedCount === 1 ? "window" : "windows"} in this archive
+              {stats.completedCount} completed {stats.completedCount === 1 ? "window" : "windows"}{" "}
+              in this archive
               {stats.allCompletedPositive
                 ? " finished higher at T+500 than at T-500"
                 : " have a recorded T-500 and T+500 price"}
@@ -357,8 +359,8 @@ function ObservationsSection({
                 {formatSignedPercent(stats.largest.returnPercent)}). The smallest was the{" "}
                 <strong className="text-foreground">{stats.smallest.label}</strong> (
                 {formatSignedPercent(stats.smallest.returnPercent)}). After the earliest windows,
-                later cycles started at a higher Bitcoin price and the same rule produced a
-                smaller multiple.
+                later cycles started at a higher Bitcoin price and the same rule produced a smaller
+                multiple.
               </p>
             )}
             <p>
@@ -411,6 +413,211 @@ function StatTile({ label, value, hint }: { label: string; value: string; hint: 
       {hint && <div className="mt-1 text-xs text-muted-foreground">{hint}</div>}
     </div>
   );
+}
+
+function RiskSection({ risk }: { risk: CycleRisk[] }) {
+  const summary = summarizeRisk(risk);
+  const worst = summary.worst;
+  const rows = risk.filter((row) => row.buyPrice != null && row.lowPrice != null);
+
+  return (
+    <motion.section
+      initial={{ y: 12, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, ease: EASE }}
+      className="mt-20"
+      aria-labelledby="risk-heading"
+    >
+      <h2 id="risk-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+        How deep did Bitcoin draw down inside the window?
+      </h2>
+      <div className="mt-5 max-w-3xl space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+        {summary.analyzedCount === 0 || rows.length === 0 ? (
+          <p>
+            The price archive does not have enough daily closes yet to measure drawdowns inside the
+            window. Nothing is estimated here.
+          </p>
+        ) : (
+          <>
+            <p>
+              {summary.allBelowEntry ? (
+                <>
+                  In all {summary.analyzedCount} windows with a T-500 print in the archive, Bitcoin
+                  closed below the entry price at least one day before the halving.
+                </>
+              ) : (
+                <>
+                  In {summary.belowEntryCount} of the {summary.analyzedCount} windows with a T-500
+                  print in the archive, Bitcoin closed below the entry price at least one day before
+                  the halving.
+                </>
+              )}{" "}
+              {worst &&
+                worst.buyPrice != null &&
+                worst.lowPrice != null &&
+                worst.lowDate != null &&
+                worst.lowVsEntryPercent != null && (
+                  <>
+                    The deepest was the <strong className="text-foreground">{worst.label}</strong>:{" "}
+                    {formatRiskPrice(worst.buyPrice)} at T-500, then a low close of{" "}
+                    {formatRiskPrice(worst.lowPrice)} on {formatIsoDay(worst.lowDate)} —{" "}
+                    {formatSignedPercent(worst.lowVsEntryPercent, 1)} from entry,{" "}
+                    {formatDays(worst.daysEntryToLow)} later.
+                  </>
+                )}
+            </p>
+            <p>
+              Across those windows the median lowest close was{" "}
+              <strong className="text-foreground">
+                {formatSignedPercent(summary.medianLowVsEntryPercent, 1)}
+              </strong>{" "}
+              below the T-500 price, and it arrived {formatDays(summary.medianDaysToLow)} after the
+              buy. Before the halving, a holder sat below the entry price on a median of{" "}
+              {formatDayCount(summary.medianDaysBelowEntryBeforeHalving)} daily closes — the 2012
+              window is the extreme case, with almost the whole pre-halving stretch underwater.
+            </p>
+            <p>
+              These are daily closes, so intraday lows were deeper than any number here. Where a
+              window would start before the price archive does, the first available close is used as
+              its entry. Four cycles is a small sample: the next window can trade below entry for
+              longer, or not at all. A drawdown table is a description of the past, not a forecast
+              and not advice.
+            </p>
+          </>
+        )}
+      </div>
+
+      {rows.length > 0 && (
+        <div className="mt-8 overflow-hidden rounded-[24px] border border-border/60 bg-card">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[52rem] text-left text-sm">
+              <caption className="sr-only">
+                Lowest daily close after each T-500 entry, how long it took to arrive, and the worst
+                close-to-close drawdown inside each BTC500 window
+              </caption>
+              <thead className="border-b border-border/60 bg-muted/40 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                <tr>
+                  <th className="px-5 py-3">Cycle</th>
+                  <th className="px-5 py-3">T-500 entry</th>
+                  <th className="px-5 py-3">Lowest close</th>
+                  <th className="px-5 py-3">vs entry</th>
+                  <th className="px-5 py-3">Days to low</th>
+                  <th className="px-5 py-3">Closes below entry before halving</th>
+                  <th className="px-5 py-3">Worst peak-to-trough close</th>
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+                  <tr key={row.halvingDate} className="border-b border-border/40 last:border-0">
+                    <th scope="row" className="px-5 py-3.5 font-semibold text-foreground">
+                      {row.label}
+                    </th>
+                    <td className="px-5 py-3.5 font-semibold">
+                      {formatRiskPrice(row.buyPrice)}
+                      <span className="ml-2 font-normal text-muted-foreground">
+                        {formatIsoDay(row.buyDate)}
+                      </span>
+                    </td>
+                    <td className="px-5 py-3.5 font-semibold">
+                      {formatRiskPrice(row.lowPrice)}
+                      {row.lowDate && (
+                        <span className="ml-2 font-normal text-muted-foreground">
+                          {formatIsoDay(row.lowDate)}
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-5 py-3.5 font-semibold">
+                      <SignedPercent value={row.lowVsEntryPercent} digits={1} />
+                    </td>
+                    <td className="px-5 py-3.5 text-muted-foreground">
+                      {formatDays(row.daysEntryToLow)}
+                    </td>
+                    <td className="px-5 py-3.5 text-muted-foreground">
+                      {row.daysBelowEntryBeforeHalving == null
+                        ? "—"
+                        : `${row.daysBelowEntryBeforeHalving} of ${row.observedDaysBeforeHalving}`}
+                    </td>
+                    <td className="px-5 py-3.5 text-muted-foreground">
+                      {formatSignedPercent(row.maxDrawdownPercent, 1)}
+                      {row.maxDrawdownDate && (
+                        <span className="ml-1 text-xs">({formatIsoDay(row.maxDrawdownDate)})</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {rows.length > 0 && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-3">
+          <StatTile
+            label="Median lowest close"
+            value={formatSignedPercent(summary.medianLowVsEntryPercent, 1)}
+            hint="vs the T-500 entry price"
+          />
+          <StatTile
+            label="Deepest close below entry"
+            value={worst ? formatSignedPercent(worst.lowVsEntryPercent, 0) : "—"}
+            hint={worst?.label ?? ""}
+          />
+          <StatTile
+            label="Median days to the low"
+            value={formatDays(summary.medianDaysToLow)}
+            hint="After the T-500 buy"
+          />
+        </div>
+      )}
+
+      <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+        Worst peak-to-trough close is the largest fall from a running high inside the window — what
+        a holder who did not sell the high actually sat through. Compare the same dates with a
+        different entry on the{" "}
+        <Link to="/simulator" className="font-semibold text-primary hover:underline">
+          simulator
+        </Link>
+        , or read{" "}
+        <Link
+          to="/when-to-sell-bitcoin-after-halving"
+          className="font-semibold text-primary hover:underline"
+        >
+          what happened at each T+500 sell date
+        </Link>
+        .
+      </p>
+    </motion.section>
+  );
+}
+
+function formatRiskPrice(value: number | null): string {
+  if (value == null) return "—";
+  const digits = Math.abs(value) < 100 ? 2 : 0;
+  return value.toLocaleString("en-US", {
+    style: "currency",
+    currency: "USD",
+    minimumFractionDigits: digits,
+    maximumFractionDigits: digits,
+  });
+}
+
+function formatDays(value: number | null): string {
+  if (value == null) return "—";
+  const rounded = Math.round(value);
+  return `${rounded} ${rounded === 1 ? "day" : "days"}`;
+}
+
+function formatDayCount(value: number | null): string {
+  if (value == null) return "—";
+  return `${Math.round(value)}`;
+}
+
+function SignedPercent({ value, digits = 0 }: { value: number | null; digits?: number }) {
+  if (value == null) return <span className="text-muted-foreground">—</span>;
+  const color = value > 0 ? "var(--success)" : value < 0 ? "var(--destructive)" : undefined;
+  return <span style={{ color }}>{formatSignedPercent(value, digits)}</span>;
 }
 
 function BuySection({ cycleBuyDate }: { cycleBuyDate: Date }) {

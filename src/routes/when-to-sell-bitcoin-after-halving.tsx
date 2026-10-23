@@ -326,6 +326,18 @@ function WhenToSellPage() {
             need the money sooner, or your risk tolerance is different, the calendar should not
             override that. Nothing on this page is financial advice.
           </p>
+          <p className="mt-3 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Holding through the halving also means sitting through the drawdown. Before treating the
+            hold as easy, see{" "}
+            <Link
+              to="/bitcoin-500-day-cycle"
+              hash="risk-heading"
+              className="font-semibold text-primary hover:underline"
+            >
+              how far below the T-500 entry price each completed window traded
+            </Link>
+            .
+          </p>
         </section>
 
         <section className="mt-16" aria-labelledby="record-heading">
