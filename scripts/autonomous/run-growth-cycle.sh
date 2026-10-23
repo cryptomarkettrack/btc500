@@ -41,6 +41,13 @@ MODELS=(
 ATTEMPT_TIMEOUT="${BTC500_GROWTH_ATTEMPT_TIMEOUT:-5400}"
 CYCLE_DEADLINE="${BTC500_GROWTH_DEADLINE:-10800}"
 
+# The OpenCode CLI can exit while the server-side session is still working
+# (observed 2026-10-23: exit 130, commit landed two minutes later). After a
+# non-zero exit, wait at least SETTLE_MIN seconds; keep waiting while the tree
+# is dirty up to SETTLE_MAX.
+SETTLE_MIN="${BTC500_GROWTH_SETTLE_MIN:-120}"
+SETTLE_MAX="${BTC500_GROWTH_SETTLE_MAX:-900}"
+
 TODAY="$(date +%F)"
 NOW="$(date '+%Y-%m-%d %H:%M:%S %Z')"
 LOG_FILE="$STATE_DIR/$TODAY.log"
@@ -197,6 +204,26 @@ for model in "${MODELS[@]}"; do
     log "Attempt exited with code $RC"
   fi
 
+  if [[ "$AFTER_HEAD" == "$BEFORE_HEAD" ]]; then
+    # The CLI exiting does not mean the session stopped. Wait for it to settle
+    # before calling the attempt a failure and moving to the next model.
+    SETTLE_START="$(date +%s)"
+    log "No commit yet; waiting up to ${SETTLE_MAX}s for the session to settle"
+    while [[ $(( $(date +%s) - SETTLE_START )) -lt "$SETTLE_MAX" ]]; do
+      sleep 15
+      AFTER_HEAD="$(git rev-parse HEAD)"
+      if [[ "$AFTER_HEAD" != "$BEFORE_HEAD" ]]; then
+        log "HEAD advanced during the settle window after $(( $(date +%s) - SETTLE_START ))s"
+        break
+      fi
+      if [[ $(( $(date +%s) - SETTLE_START )) -ge "$SETTLE_MIN" \
+            && -z "$(git status --porcelain 2>/dev/null)" ]]; then
+        log "Tree is clean and no commit landed; treating the attempt as idle"
+        break
+      fi
+    done
+  fi
+
   if [[ "$AFTER_HEAD" != "$BEFORE_HEAD" ]]; then
     log "HEAD advanced: ${BEFORE_HEAD:0:7} -> ${AFTER_HEAD:0:7}"
     SUCCESS_MODEL="$model"
@@ -205,7 +232,7 @@ for model in "${MODELS[@]}"; do
   fi
 
   if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    log "Attempt left uncommitted changes; not retrying on a dirty tree"
+    log "Attempt left uncommitted changes after the settle window; not retrying on a dirty tree"
     finish 1 dirty-tree "$model" "$AFTER_HEAD"
   fi
 

@@ -144,6 +144,14 @@ by 2026-11-20. Inconclusive if impressions stay under 20.
 - **Note for future sessions:** the scheduler is that runner script — do not add
   a second cron. If a run fails, read the day's log first; the commit message of
   the day is the report.
+- **2026-10-23, first scheduled run:** launchd fired at 06:00:00 and DeepSeek
+  shipped the drawdown study (`c54e489`) plus a verification commit (`545ab8b`).
+  The CLI exited 130 at 06:10:36 while the server-side session kept working, so
+  the runner recorded `dirty-tree` even though the work landed at 06:12 and
+  06:15. Fixed: after a non-zero exit the runner now waits for the session to
+  settle (2–15 min) and accepts a late commit as success. Verified with a
+  synthetic late-commit test (exit 130, commit 15 s later → `status=shipped`)
+  and a clean-idle test (`status=no-commit`, no hang).
 
 ### 2026-10-22 — T-500 answer + downloadable halving calendar
 
