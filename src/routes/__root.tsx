@@ -15,6 +15,7 @@ import spaceGroteskUrl from "@/assets/fonts/space-grotesk-latin.woff2?url";
 import ibmPlexMono500Url from "@/assets/fonts/ibm-plex-mono-500-latin.woff2?url";
 import ibmPlexMono600Url from "@/assets/fonts/ibm-plex-mono-600-latin.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { GoogleAnalytics } from "../components/GoogleAnalytics";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { PageBreadcrumbs } from "../components/PageBreadcrumbs";
@@ -312,6 +313,7 @@ function RootShell({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <head>
+        <GoogleAnalytics />
         <HeadContent />
       </head>
       <body>

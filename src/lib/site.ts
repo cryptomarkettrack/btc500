@@ -5,6 +5,8 @@
 
 export const SITE_URL = "https://btc500.net";
 export const SITE_NAME = "BTC500";
+/** GA4 web stream. Loaded only on the production host; see GoogleAnalytics. */
+export const GA_MEASUREMENT_ID = "G-GM4WBKY74P";
 export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";
 export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;

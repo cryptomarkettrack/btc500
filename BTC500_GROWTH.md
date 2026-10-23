@@ -127,6 +127,18 @@ that is already crawled instead of adding a 26th thin URL.
 for the 500-day cluster? Success = any non-brand click or new referring domain
 by 2026-11-20. Inconclusive if impressions stay under 20.
 
+### 2026-10-23 — Google Analytics 4
+
+- Installed GA4 (`G-GM4WBKY74P`) in the root document head. The bootstrap only
+  runs on `btc500.net` / `www.btc500.net`, so local dev and Vercel previews
+  never pollute the property.
+- It runs inline in `<head>` rather than from an effect, so the first pageview
+  is captured before hydration; GA4 enhanced measurement covers client-side
+  route changes. Vercel Analytics stays in place as a second, cookieless view.
+- Not connected to the GA4 Data API yet. The daily agent still measures only
+  Search Console; referrals, engagement and returning visitors need a service
+  account with Viewer access to the property.
+
 ### 2026-10-22 — Daily autonomous cycle at 06:00
 
 - `scripts/autonomous/run-growth-cycle.sh` runs the `growth-cycle` OpenCode agent
@@ -189,6 +201,8 @@ by 2026-11-20. Inconclusive if impressions stay under 20.
   internal traffic; treat country splits as noise until volume is larger.
 - `/bear-market` still earns impressions while 301-redirecting to
   `/bitcoin-500-day-cycle`; harmless, but Google has not consolidated the old URL.
-- No site analytics connected, so engagement and returning visitors are
-  unmeasured. Referral traffic cannot be measured here at all.
+- GA4 is installed (`G-GM4WBKY74P`) but not connected to the API, so the daily
+  agent can still only read Search Console. Engagement, referral traffic and
+  returning visitors need a GA4 Data API service account. Cookie consent for
+  EU visitors is also not implemented.
 
