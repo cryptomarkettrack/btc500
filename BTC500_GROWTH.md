@@ -107,6 +107,10 @@ new eslint/prettier problems in touched files. Dev SSR check: `/` renders
 "Cycle command center" and no score; `/embed-kit` 200; `/embed?widget=score`
 redirects to the full countdown.
 
+Deployed as `910fb27` to `main`. Production check after the Vercel build: `/` 200
+with no score copy, `/embed?widget=score` 307s to `widget=full`, `/embed-kit`
+serves "Countdown Widgets", and `llms.txt` / `manifest.json` carry no score.
+
 ### 2026-10-23 — Inside-the-window drawdown study on the pillar page
 
 The pillar published what each window paid but never what it cost to hold.
