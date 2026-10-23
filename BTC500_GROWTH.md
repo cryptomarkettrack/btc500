@@ -79,6 +79,34 @@ Same tooling, data state `all`, lag offset applied.
 
 ## Completed work
 
+### 2026-10-23 — Removed the cycle score
+
+Owner decision: the score was built to locate a bear-market position, and the
+site is treating the current period as a bull market. Keeping a "where are we in
+the bear cycle" gauge on the homepage worked against the product's own thesis
+and added a second, competing hero number next to the countdown.
+
+Removed end-to-end:
+
+- Scoring logic and server assembly (`src/lib/cycle-score.ts`,
+  `src/lib/cycle-score.functions.ts`), the `cycleScoreQuery`, and its cache key /
+  TTL. The BitView fetch path that only fed the score goes with it.
+- Homepage surfaces: Command Center right panel, hero data tape, sticky mobile
+  CTA, and the hard-coded score demo inside the "after the buy window" preview
+  modal. The Command Center now shows the countdown plus dates and block
+  progress; phase drives the accent colour.
+- Embeds: the `score` widget and score chips are gone. Legacy
+  `/embed?widget=score` URLs normalise to the full countdown (verified 307 →
+  `widget=full`), so existing iframes still render.
+- SEO/meta copy in `__root`, `/`, `/about`, `/embed-kit`, `manifest.json`,
+  `llms.txt`, `llms-full.txt`, and the OG SVG pill. The article cross-reference
+  now points to the 500-day explainer and the bear-market article.
+
+Validation: `npm test` 79/79, `tsc --noEmit` clean, production build clean, no
+new eslint/prettier problems in touched files. Dev SSR check: `/` renders
+"Cycle command center" and no score; `/embed-kit` 200; `/embed?widget=score`
+redirects to the full countdown.
+
 ### 2026-10-23 — Inside-the-window drawdown study on the pillar page
 
 The pillar published what each window paid but never what it cost to hold.

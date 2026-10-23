@@ -1,5 +1,5 @@
 /**
- * Historical BTC prices for simulator / DCA / timeline / cycle-score.
+ * Historical BTC prices for simulator / DCA / timeline.
  * Bundled CSV first. Exchange APIs only for dates after the last CSV print.
  *
  * Range lookups return completeness metadata so partial archives cannot be

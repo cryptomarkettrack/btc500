@@ -16,7 +16,7 @@ const homePageSchema = [
     path: "/",
     name: "Bitcoin 500-Day Cycle | BTC500",
     description:
-      "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, cycle score, the full record, and a free simulator.",
+      "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
     breadcrumbs: [{ name: "Home", path: "/" }],
   }),
   generateSpeakableSchema({
@@ -33,7 +33,7 @@ export const Route = createFileRoute("/")({
       path: "/",
       title: "BTC500 — Trade the calendar, not the noise | Bitcoin 500-Day Cycle",
       description:
-        "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, cycle score, the full record, and a free simulator.",
+        "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
       keywords:
         "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving",
       ogTitle: "BTC500 — Trade the calendar, not the noise",
@@ -47,9 +47,9 @@ export const Route = createFileRoute("/")({
     }),
   // The halving countdown is seeded globally by the root loader from one cached
   // tip-height call (see src/lib/seed-halving.ts), so HTML and hydration agree.
-  // NOTE: cycle score + simulator preview are NOT prefetched here — doing so would
+  // NOTE: simulator preview is NOT prefetched here — doing so would
   // resolve after the HTML is rendered and break hydration (server showed a skeleton,
-  // client hydrated with data). Their client-side useQuery() fills them in after mount.
+  // client hydrated with data). Its client-side useQuery() fills it in after mount.
   component: HomePage,
   pendingComponent: Pending,
   errorComponent: ({ error }) => <RouteDataError error={error} />,

@@ -222,9 +222,6 @@ export const CacheKeys = {
   /** Tip height + observation time only (fast SSR countdown seed) */
   blockHeightSnapshot: () => "btc:block-height-snapshot:v1",
 
-  /** Cycle score / script integrity */
-  cycleScore: () => "btc:cycle-score",
-
   /** Bear market bottom indicator snapshot */
   bearMarket: () => "btc:bear-market",
 
@@ -258,9 +255,6 @@ export const TTL = {
 
   /** Timeline data: 1 hour — current cycle prices update, but historical is static */
   TIMELINE: 60 * 60_000,
-
-  /** Cycle score: 15 minutes — path + on-chain refresh without thrashing APIs */
-  CYCLE_SCORE: 15 * 60_000,
 
   /** Bear market indicators: 15 minutes — on-chain metrics don't change sub-minute */
   BEAR_MARKET: 15 * 60_000,

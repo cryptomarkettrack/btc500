@@ -26,7 +26,7 @@ import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
 import { HOME_LAST_REVIEWED } from "@/lib/site";
-import { halvingQuery, btcPriceQuery, simulatorPreviewQuery, cycleScoreQuery } from "@/lib/queries";
+import { halvingQuery, btcPriceQuery, simulatorPreviewQuery } from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
 import { DataTape } from "@/components/home/DataTape";
@@ -46,7 +46,6 @@ export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(btcPriceQuery);
   const simulatorRes = useQuery(simulatorPreviewQuery);
-  const cycleScoreRes = useQuery(cycleScoreQuery);
   const now = useNow(60_000);
   const heroRef = useRef<HTMLDivElement>(null);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
@@ -203,7 +202,6 @@ export function HomePage() {
           <DataTape
             price={priceRes.data?.price ?? null}
             nextHalving={cycle.nextHalving}
-            score={cycleScoreRes.data?.score ?? null}
             height={halving.height}
             buyDays={buyDays}
             sellDays={sellDays}
@@ -277,8 +275,6 @@ export function HomePage() {
 
           <CommandCenter
             cycle={cycle}
-            score={cycleScoreRes.data ?? null}
-            scoreLoading={cycleScoreRes.isLoading || cycleScoreRes.isFetching}
             price={priceRes.data?.price ?? null}
             height={halving.height}
             nextHalvingBlock={halving.nextHalvingBlock}
@@ -313,7 +309,7 @@ export function HomePage() {
               className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition hover:text-primary"
             >
               <LayoutTemplate className="h-3.5 w-3.5" />
-              Open Embed Kit — badges, score widgets & themes
+              Open Embed Kit — badges, countdown widgets & themes
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>
@@ -635,7 +631,7 @@ export function HomePage() {
               to="/embed-kit"
               icon={LayoutTemplate}
               title="Embed Kit"
-              description="Drop live countdown badges and cycle score widgets on blogs, newsletters, and dashboards."
+              description="Drop live countdown badges and full widgets on blogs, newsletters, and dashboards."
               accent="var(--info)"
               accentSoft="oklch(0.95 0.04 240)"
             />
@@ -785,7 +781,7 @@ export function HomePage() {
         </Suspense>
       )}
 
-      {/* Mobile sticky CTA — live countdown + score, always one tap from the simulator */}
+      {/* Mobile sticky CTA — live countdown, always one tap from the simulator */}
       <StickyCta
         label={
           isBuyActive
@@ -796,7 +792,6 @@ export function HomePage() {
                 ? `${sellDays}d to sell`
                 : `${buyDays}d to buy`
         }
-        score={cycleScoreRes.data?.score ?? null}
       />
     </div>
   );

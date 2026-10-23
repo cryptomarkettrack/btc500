@@ -45,7 +45,7 @@ const websiteSchema = {
   ],
   url: `${SITE_URL}/`,
   description:
-    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, cycle score, block progress, historical returns & investment simulator.",
+    "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, block progress, historical returns & investment simulator.",
   inLanguage: "en-US",
   publisher: { "@id": `${SITE_URL}/#organization` },
 };
@@ -101,7 +101,7 @@ const webAppSchema = {
   },
   featureList: [
     "Live Bitcoin halving countdown",
-    "Cycle Command Center & cycle score",
+    "Cycle Command Center countdown",
     "Block height progress tracking",
     "Investment simulator with historical data",
     "DCA vs lump sum comparison",
@@ -200,12 +200,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         name: "description",
         content:
-          "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, cycle score, historical returns & investment simulator.",
+          "Track the Bitcoin 500 strategy: buy exactly 500 days before each halving and sell exactly 500 days after. Live countdowns, historical returns & investment simulator.",
       },
       {
         name: "keywords",
         content:
-          "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, buy Bitcoin, crypto halving, Bitcoin investment strategy, halving countdown, Bitcoin trading strategy, cycle score, Bitcoin simulator",
+          "Bitcoin halving, BTC500, Bitcoin strategy, Bitcoin countdown, buy Bitcoin, crypto halving, Bitcoin investment strategy, halving countdown, Bitcoin trading strategy, Bitcoin simulator",
       },
       { name: "author", content: SITE_NAME },
       { name: "creator", content: SITE_NAME },
@@ -230,7 +230,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         property: "og:description",
         content:
-          "Buy 500 days before halving. Sell 500 days after. Live cycle score, countdowns, and historical performance data.",
+          "Buy 500 days before halving. Sell 500 days after. Live countdowns and historical performance data.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: `${SITE_URL}/` },

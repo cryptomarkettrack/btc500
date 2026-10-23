@@ -4,7 +4,7 @@
 
 import { SITE_URL } from "./site";
 
-export type EmbedWidget = "full" | "countdown" | "badge" | "score";
+export type EmbedWidget = "full" | "countdown" | "badge";
 export type EmbedTheme = "light" | "dark" | "orange";
 
 export const EMBED_WIDGETS: { id: EmbedWidget; label: string; description: string }[] = [
@@ -23,11 +23,6 @@ export const EMBED_WIDGETS: { id: EmbedWidget; label: string; description: strin
     label: "Pill badge",
     description: "Tiny status chip — perfect for headers and footers.",
   },
-  {
-    id: "score",
-    label: "Cycle score",
-    description: "Script-integrity score card for dashboards and blogs.",
-  },
 ];
 
 export const EMBED_THEMES: { id: EmbedTheme; label: string }[] = [
@@ -37,7 +32,7 @@ export const EMBED_THEMES: { id: EmbedTheme; label: string }[] = [
 ];
 
 export function parseEmbedWidget(value: unknown): EmbedWidget {
-  if (value === "countdown" || value === "badge" || value === "score" || value === "full") {
+  if (value === "countdown" || value === "badge" || value === "full") {
     return value;
   }
   return "full";
@@ -76,7 +71,6 @@ export function iframeSnippet(opts: {
     full: { width: 600, height: 720 },
     countdown: { width: 360, height: 280 },
     badge: { width: 320, height: 72 },
-    score: { width: 400, height: 320 },
   };
 
   const d = defaults[widget];

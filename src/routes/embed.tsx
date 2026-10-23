@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useSuspenseQuery, useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { computeCycle, formatDate, formatUsd, formatUtc } from "@/lib/phase";
 import { BtcLogo } from "@/components/BtcLogo";
 import { SITE_URL } from "@/lib/site";
-import { halvingQuery, btcPriceQuery, cycleScoreQuery } from "@/lib/queries";
+import { halvingQuery, btcPriceQuery } from "@/lib/queries";
 import {
   parseEmbedTheme,
   parseEmbedWidget,
@@ -11,7 +11,6 @@ import {
   type EmbedTheme,
   type EmbedWidget,
 } from "@/lib/embed";
-import type { CycleScoreResult } from "@/lib/cycle-score";
 import type { CycleInfo } from "@/lib/phase";
 
 export const Route = createFileRoute("/embed")({
@@ -29,7 +28,6 @@ export const Route = createFileRoute("/embed")({
   loader: ({ context }) => {
     // halvingQuery is seeded by the root loader before SSR.
     context.queryClient.ensureQueryData(btcPriceQuery);
-    context.queryClient.prefetchQuery(cycleScoreQuery);
   },
   component: Embed,
 });
@@ -38,7 +36,6 @@ function Embed() {
   const { widget, theme } = Route.useSearch();
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useSuspenseQuery(btcPriceQuery);
-  const scoreRes = useQuery(cycleScoreQuery);
   const now = new Date();
 
   const cycle = computeCycle(
@@ -48,7 +45,6 @@ function Embed() {
   );
 
   const price = priceRes.data?.price ?? null;
-  const score = scoreRes.data ?? null;
   const tokens = themeTokens(theme);
 
   return (
@@ -60,25 +56,14 @@ function Embed() {
         fontFamily: "'Inter', system-ui, sans-serif",
       }}
     >
-      {widget === "badge" && <BadgeWidget cycle={cycle} theme={theme} score={score} />}
+      {widget === "badge" && <BadgeWidget cycle={cycle} theme={theme} />}
       {widget === "countdown" && <CountdownWidget cycle={cycle} theme={theme} price={price} />}
-      {widget === "score" && (
-        <ScoreWidget cycle={cycle} theme={theme} score={score} price={price} />
-      )}
-      {widget === "full" && <FullWidget cycle={cycle} theme={theme} price={price} score={score} />}
+      {widget === "full" && <FullWidget cycle={cycle} theme={theme} price={price} />}
     </div>
   );
 }
 
-function BadgeWidget({
-  cycle,
-  theme,
-  score,
-}: {
-  cycle: CycleInfo;
-  theme: EmbedTheme;
-  score: CycleScoreResult | null;
-}) {
+function BadgeWidget({ cycle, theme }: { cycle: CycleInfo; theme: EmbedTheme }) {
   const t = themeTokens(theme);
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
@@ -119,12 +104,6 @@ function BadgeWidget({
       <span style={{ fontSize: 13, fontWeight: 700, color: accent }}>
         {days}d {label}
       </span>
-      {score && (
-        <>
-          <span style={{ width: 1, height: 16, background: t.border }} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: t.muted }}>score {score.score}</span>
-        </>
-      )}
     </a>
   );
 }
@@ -250,148 +229,14 @@ function CountdownWidget({
   );
 }
 
-function ScoreWidget({
-  cycle,
-  theme,
-  score,
-  price,
-}: {
-  cycle: CycleInfo;
-  theme: EmbedTheme;
-  score: CycleScoreResult | null;
-  price: number | null;
-}) {
-  const t = themeTokens(theme);
-  const buy = cycle.phase === "wait-buy";
-  const sell = cycle.phase === "wait-sell";
-  const accent = buy ? t.primary : sell ? t.success : "#2563eb";
-  const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
-  const statusColor =
-    score?.status === "script_intact"
-      ? t.success
-      : score?.status === "late_cycle_heat"
-        ? t.primary
-        : score?.status === "capitulation_zone"
-          ? "#dc2626"
-          : accent;
-
-  return (
-    <div
-      style={{
-        width: "100%",
-        maxWidth: 400,
-        margin: "0 auto",
-        background: t.card,
-        border: `1px solid ${t.border}`,
-        borderRadius: 20,
-        padding: 22,
-        boxSizing: "border-box",
-        color: t.text,
-      }}
-    >
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <BtcLogo size={24} color={t.primary} />
-          <span style={{ fontWeight: 800, fontSize: 15 }}>
-            BTC<span style={{ color: t.primary }}>500</span>
-          </span>
-        </div>
-        <span
-          style={{
-            fontSize: 10,
-            fontWeight: 800,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: statusColor,
-            background: t.soft,
-            padding: "4px 10px",
-            borderRadius: 999,
-          }}
-        >
-          {score?.headline ?? "Loading"}
-        </span>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "flex-end", gap: 16, marginTop: 18 }}>
-        <div>
-          <div
-            style={{
-              fontSize: 10,
-              fontWeight: 700,
-              letterSpacing: "0.16em",
-              color: t.muted,
-              textTransform: "uppercase",
-            }}
-          >
-            Cycle score
-          </div>
-          <div
-            style={{
-              fontSize: 64,
-              fontWeight: 800,
-              lineHeight: 0.95,
-              letterSpacing: "-0.05em",
-              color: statusColor,
-            }}
-          >
-            {score?.score ?? "—"}
-          </div>
-        </div>
-        <div style={{ paddingBottom: 8, flex: 1 }}>
-          <div style={{ fontSize: 16, fontWeight: 700 }}>{score?.punchline ?? "…"}</div>
-          <div style={{ fontSize: 12, color: t.muted, marginTop: 4 }}>
-            {days}d {buy ? "to buy" : sell ? "to sell" : "done"}
-            {price != null ? ` · ${formatUsd(price)}` : ""}
-          </div>
-        </div>
-      </div>
-
-      {score && (
-        <div style={{ marginTop: 16, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-          {score.components.slice(0, 4).map((c) => (
-            <div
-              key={c.id}
-              style={{
-                background: theme === "dark" ? "#0b0f14" : t.soft,
-                borderRadius: 12,
-                padding: "8px 10px",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 10,
-                  fontWeight: 700,
-                  color: t.muted,
-                  textTransform: "uppercase",
-                }}
-              >
-                {c.label}
-              </div>
-              <div style={{ fontSize: 18, fontWeight: 800, marginTop: 2 }}>
-                {Math.round(c.score)}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      <div style={{ marginTop: 14, textAlign: "center", fontSize: 11, color: t.muted }}>
-        {SITE_URL.replace("https://", "")}
-      </div>
-    </div>
-  );
-}
-
 function FullWidget({
   cycle,
   theme,
   price,
-  score,
 }: {
   cycle: CycleInfo;
   theme: EmbedTheme;
   price: number | null;
-  score: CycleScoreResult | null;
 }) {
   const t = themeTokens(theme);
   const buy = cycle.phase === "wait-buy";
@@ -440,23 +285,6 @@ function FullWidget({
           </div>
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-          {score && (
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 6,
-                padding: "6px 12px",
-                borderRadius: 100,
-                background: accentSoft,
-                fontSize: 12,
-                fontWeight: 700,
-                color: accent,
-              }}
-            >
-              Score {score.score} · {score.punchline}
-            </div>
-          )}
           <div
             style={{
               display: "inline-flex",
@@ -542,34 +370,6 @@ function FullWidget({
             <span style={{ fontWeight: 600 }}>{totalDays} days total</span>
           </div>
         </div>
-
-        {score && (
-          <div
-            style={{
-              marginTop: 22,
-              textAlign: "left",
-              background: theme === "dark" ? "#0b0f14" : t.soft,
-              borderRadius: 16,
-              padding: "14px 16px",
-              border: `1px solid ${t.border}`,
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                fontWeight: 700,
-                letterSpacing: "0.14em",
-                textTransform: "uppercase",
-                color: t.muted,
-              }}
-            >
-              Next action
-            </div>
-            <div style={{ marginTop: 4, fontSize: 14, fontWeight: 600, lineHeight: 1.4 }}>
-              {score.action}
-            </div>
-          </div>
-        )}
       </div>
 
       <div

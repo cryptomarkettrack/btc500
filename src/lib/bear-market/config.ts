@@ -304,7 +304,7 @@ export function formatValueBps(v: number | null): string {
 
 /**
  * Single source of truth: is this indicator in "bottom zone" for the composite score?
- * Used by Bear Market dashboard AND Cycle Score on-chain component.
+ * Used by the bear-market bottom composite.
  */
 export function isIndicatorTriggered(name: string, value: number | null | undefined): boolean {
   if (value === null || value === undefined || Number.isNaN(value)) return false;

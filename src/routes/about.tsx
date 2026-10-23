@@ -128,7 +128,6 @@ function AboutPage() {
           <li>Historical BTC/USD prices: Bitstamp</li>
           <li>Live price: Binance, CoinGecko, Coinbase, and Kraken</li>
           <li>Block height: public Bitcoin blockchain APIs</li>
-          <li>On-chain bottom indicators: public on-chain series used in the cycle score</li>
           <li>Insider filings: public SEC Form 4 data</li>
           <li>
             Bitcoin ETF flows: TFTC open series (SoSoValue aggregates and Farside issuer tables)

@@ -3,7 +3,6 @@ import { formatUsd } from "@/lib/format";
 interface DataTapeProps {
   price: number | null;
   nextHalving: Date;
-  score: number | null;
   height: number;
   buyDays: number;
   sellDays: number;
@@ -31,7 +30,6 @@ function TapeStat({ label, value }: { label: string; value: string }) {
 export function DataTape({
   price,
   nextHalving,
-  score,
   height,
   buyDays,
   sellDays,
@@ -61,7 +59,6 @@ export function DataTape({
       <div className="font-data mx-auto flex max-w-6xl items-center gap-8 overflow-x-auto px-6 py-2.5 text-[10px] font-medium uppercase tracking-[0.14em] whitespace-nowrap">
         <TapeStat label="BTC / USD" value={price !== null ? formatUsd(price) : "—"} />
         <TapeStat label="Next halving" value={halvingLabel} />
-        <TapeStat label="Cycle score" value={score !== null ? `${Math.round(score)}/100` : "—"} />
         <TapeStat label="Block height" value={height.toLocaleString("en-US")} />
         <TapeStat label="Countdown" value={countdown} />
         <span className="inline-flex shrink-0 items-center gap-1.5">

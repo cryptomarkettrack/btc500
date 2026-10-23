@@ -375,9 +375,12 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
             already printed inside that window&apos;s left edge.
           </p>
           <p>
-            The BTC500{" "}
-            <Link to="/" className="font-semibold text-primary underline">
-              cycle score
+            The{" "}
+            <Link
+              to="/articles/bear-market-accumulation"
+              className="font-semibold text-primary underline"
+            >
+              on-chain backdrop
             </Link>{" "}
             still does not look like 2018 or 2022. Mid-August snapshot: MVRV 1.22 (historical
             bottoms were under 1.0), NUPL still positive, Puell 0.74 (not miner capitulation),
@@ -451,11 +454,11 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
               simulator
             </Link>{" "}
             runs the windows against real prices. The{" "}
-            <Link to="/" className="font-semibold text-primary underline">
-              homepage
+            <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              500-day cycle explainer
             </Link>{" "}
-            cycle score rolls price path, drawdown, phase, and on-chain heat into one number so
-            you do not have to relitigate every candle.
+            lays out the rule and every historical window, so you do not have to relitigate every
+            candle.
           </p>
 
           <h2>What to watch next</h2>

@@ -15,14 +15,12 @@ import {
   type HalvingInfo,
 } from "@/lib/btc.functions";
 import { emptyDcaCycles, getDcaData } from "@/lib/dca.functions";
-import { getCycleScore } from "@/lib/cycle-score.functions";
 import { unavailableSimulatorResult, getSimulatorData } from "@/lib/simulator.functions";
 import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
 
 const MINUTE = 60_000;
 const NETWORK_REFRESH_MS = 10 * 60_000;
 const HOUR = 60 * 60_000;
-const QUARTER_HOUR = 15 * 60_000;
 
 export const NETWORK_STALE_MS = NETWORK_REFRESH_MS;
 
@@ -111,11 +109,3 @@ export const dcaQuery = (dcaBuyDays: number, dcaSellDays: number) =>
     staleTime: HOUR,
     refetchInterval: HOUR,
   });
-
-export const cycleScoreQuery = queryOptions({
-  queryKey: ["cycle-score"],
-  queryFn: getCycleScore,
-  staleTime: QUARTER_HOUR,
-  refetchInterval: QUARTER_HOUR,
-  retry: 1,
-});

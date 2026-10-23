@@ -14,9 +14,9 @@ import { SITE_URL, generatePageHead, generateWebPageSchema } from "@/lib/site";
 
 const schema = generateWebPageSchema({
   path: "/embed-kit",
-  name: "BTC500 Embed Kit — Countdown & Cycle Score Widgets",
+  name: "BTC500 Embed Kit — Countdown Widgets",
   description:
-    "Embed BTC500 countdown badges, cycle score cards, and full widgets on your blog, newsletter, or dashboard. Free iframe embeds with light, dark, and orange themes.",
+    "Embed BTC500 countdown badges, compact countdowns, and full widgets on your blog, newsletter, or dashboard. Free iframe embeds with light, dark, and orange themes.",
   breadcrumbs: [
     { name: "Home", path: "/" },
     { name: "Embed Kit", path: "/embed-kit" },
@@ -27,13 +27,12 @@ export const Route = createFileRoute("/embed-kit")({
   head: () =>
     generatePageHead({
       path: "/embed-kit",
-      title: "BTC500 Embed Kit — Free Bitcoin Countdown & Cycle Score Widgets",
+      title: "BTC500 Embed Kit — Free Bitcoin Countdown Widgets",
       description:
-        "Embed live BTC500 countdown badges, cycle score cards, and full halving widgets. Copy iframe code for blogs, newsletters, and dashboards.",
-      keywords:
-        "Bitcoin embed widget, halving countdown embed, BTC500 widget, crypto iframe, Bitcoin cycle score widget",
+        "Embed live BTC500 countdown badges, compact countdowns, and full halving widgets. Copy iframe code for blogs, newsletters, and dashboards.",
+      keywords: "Bitcoin embed widget, halving countdown embed, BTC500 widget, crypto iframe",
       ogTitle: "BTC500 Embed Kit — Free Countdown Widgets",
-      ogDescription: "Drop a live BTC500 countdown or cycle score on your site in one iframe.",
+      ogDescription: "Drop a live BTC500 countdown on your site in one iframe.",
       ogImageAlt: "BTC500 Embed Kit",
       schema,
     }),
@@ -53,8 +52,7 @@ function EmbedKitPage() {
   const src = embedUrl({ widget, theme, base: origin });
   const code = iframeSnippet({ widget, theme, base: origin });
 
-  const previewHeight =
-    widget === "badge" ? 96 : widget === "countdown" ? 300 : widget === "score" ? 340 : 720;
+  const previewHeight = widget === "badge" ? 96 : widget === "countdown" ? 300 : 720;
 
   const copy = async () => {
     try {
@@ -76,8 +74,8 @@ function EmbedKitPage() {
           </div>
           <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">Embed Kit</h1>
           <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
-            Drop a live BTC<span className="text-primary">500</span> countdown or cycle score on
-            blogs, newsletters, and dashboards. Free, no API key.
+            Drop a live BTC<span className="text-primary">500</span> countdown on blogs,
+            newsletters, and dashboards. Free, no API key.
           </p>
         </header>
 
@@ -224,7 +222,7 @@ function EmbedKitPage() {
               <p className="font-semibold text-foreground">Distribution tips</p>
               <ul className="mt-2 list-disc space-y-1 pl-5">
                 <li>Use the badge in headers and newsletters.</li>
-                <li>Use cycle score on research blogs and dashboards.</li>
+                <li>Use the compact countdown in sidebars and email digests.</li>
                 <li>Full countdown works great as a standalone section.</li>
                 <li>Prefer dark theme on dark sites — tokens are baked into the embed.</li>
               </ul>

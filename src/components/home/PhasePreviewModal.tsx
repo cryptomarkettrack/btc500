@@ -276,7 +276,7 @@ export function PhasePreviewModal({
                   </div>
                 </div>
 
-                {/* Right: P&L or score */}
+                {/* Right: P&L or pre-buy explainer */}
                 <div className="p-5 sm:p-6">
                   {isAfter ? (
                     <PnlPanel
@@ -295,7 +295,7 @@ export function PhasePreviewModal({
                       accentSoft={accentSoft}
                     />
                   ) : (
-                    <TodayPanel accent="var(--primary)" accentSoft="var(--primary-soft)" />
+                    <BeforePanel accent="var(--primary)" accentSoft="var(--primary-soft)" />
                   )}
                 </div>
               </div>
@@ -353,7 +353,7 @@ export function PhasePreviewModal({
 /* ============ helpers ============ */
 
 function statusPill(isAfter: boolean): string {
-  return isAfter ? "Script intact" : "Waiting to buy";
+  return isAfter ? "Hold → sell window" : "Waiting to buy";
 }
 
 function TabButton({
@@ -590,7 +590,7 @@ function PnlPanel({
   );
 }
 
-function TodayPanel({ accent, accentSoft }: { accent: string; accentSoft: string }) {
+function BeforePanel({ accent, accentSoft }: { accent: string; accentSoft: string }) {
   return (
     <div>
       <div className="mb-3 flex items-center gap-2">
@@ -605,33 +605,24 @@ function TodayPanel({ accent, accentSoft }: { accent: string; accentSoft: string
             className="text-[10px] font-bold uppercase tracking-[0.16em]"
             style={{ color: accent }}
           >
-            Cycle score
+            Before the buy window
           </div>
-          <div className="text-[11px] text-muted-foreground">How the score looks today</div>
-        </div>
-      </div>
-
-      <div className="flex items-end gap-3">
-        <div className="text-5xl font-bold tracking-tighter" style={{ color: accent }}>
-          78
-        </div>
-        <div className="pb-1">
-          <div className="text-[10px] text-muted-foreground">/ 100</div>
-          <div className="text-sm font-semibold" style={{ color: accent }}>
-            Script intact
+          <div className="text-[11px] text-muted-foreground">
+            How the command center looks today
           </div>
         </div>
       </div>
-      <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
-        Price and phase are tracking the historical playbook. The countdown keeps you patient until
-        the buy signal fires.
-      </p>
 
-      <div className="mt-3 grid grid-cols-2 gap-1.5">
-        <ScoreMeter label="Price path" value={82} color="var(--primary)" />
-        <ScoreMeter label="Drawdown" value={74} color="var(--info)" />
-        <ScoreMeter label="Phase" value={88} color="var(--success)" />
-        <ScoreMeter label="On-chain" value={68} color="var(--muted-foreground)" />
+      <div className="rounded-2xl border border-border/40 bg-background/60 px-4 py-3">
+        <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+          Position
+        </div>
+        <div className="mt-1 text-2xl font-bold tracking-tight" style={{ color: accent }}>
+          100% cash
+        </div>
+        <p className="mt-1 text-[11px] leading-relaxed text-muted-foreground">
+          No entry until the buy date. No P&amp;L and no position value yet.
+        </p>
       </div>
 
       <div className="mt-3 rounded-xl border border-border/40 bg-background/60 px-3 py-2">
@@ -648,27 +639,9 @@ function TodayPanel({ accent, accentSoft }: { accent: string; accentSoft: string
           <Info className="mt-0.5 h-3 w-3 shrink-0" />
           <span>
             Today everything is <span style={{ color: accent, fontWeight: 700 }}>orange</span> — the
-            pre-halving waiting color. No P&L shown because you haven't bought yet.
+            pre-halving waiting color. The countdown is the only signal that matters.
           </span>
         </p>
-      </div>
-    </div>
-  );
-}
-
-function ScoreMeter({ label, value, color }: { label: string; value: number; color: string }) {
-  return (
-    <div className="rounded-xl border border-border/40 bg-background/60 px-2.5 py-2">
-      <div className="flex items-center justify-between gap-1">
-        <span className="text-[9px] font-semibold uppercase tracking-wider text-muted-foreground">
-          {label}
-        </span>
-        <span className="text-[10px] font-bold" style={{ color }}>
-          {value}
-        </span>
-      </div>
-      <div className="mt-1 h-1 overflow-hidden rounded-full bg-muted">
-        <div className="h-full rounded-full" style={{ width: `${value}%`, background: color }} />
       </div>
     </div>
   );
