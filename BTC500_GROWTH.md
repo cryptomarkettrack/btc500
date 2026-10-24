@@ -129,6 +129,19 @@ Validation: `npm test` 90/90, `tsc --noEmit` clean, default and
 touched files. Local SSR check: the section, median row, all 4 cycle rows and
 9 FAQ questions render in HTML; `/about` carries both fixes.
 
+Deployed as `46b092d`. Production verified after the Vercel build:
+`/bitcoin-500-day-cycle` renders the timing section (2,800 words), the median
+row and 9 FAQ questions, canonical intact; `/about` no longer carries either
+stale claim and links the section; `/sitemap.xml` shows `2026-10-24` for both
+URLs; `llms-full.txt` carries the timing bullet with the `#timing-heading`
+link; `/`, `/robots.txt` and the calendar feed still 200. IndexNow returned 200
+for 25 URLs.
+
+**Operational note:** the daily runner's safety net pushed `46b092d` while this
+session was still working, so the local commit was ahead-of/behind origin. Do
+not amend a commit during a scheduled run — the runner may publish it first
+and the amend then becomes a history rewrite. Add a follow-up commit instead.
+
 **Experiment:** does a published robustness test move anything for the 500-day
 cluster? Success = any non-brand click or new referring domain by 2026-11-20.
 Inconclusive if impressions stay under 20. Next reading 2026-11-19, together
@@ -194,5 +207,5 @@ with the T-500/calendar experiment.
   `/bitcoin-500-day-cycle`; harmless, but Google has not consolidated the old URL.
 - EU cookie consent is still missing while GA4 is installed.
 - The shipped `public/btc-usd-max.csv` ends 2026-07-11. Completed windows are
-  unaffected, but anything that treats the CSV's last row as "today" would be
-  wrong by ~3.5 months. Live prices come from the separate price providers.
+  unaffected, but anything treating its last row as "today" would be ~3.5
+  months wrong.
