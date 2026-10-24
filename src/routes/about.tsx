@@ -80,8 +80,8 @@ function AboutPage() {
       <section>
         <h2>What the site does</h2>
         <p>
-          The homepage tracks live block height and shows the next buy date, sell date, and cycle
-          score. The{" "}
+          The homepage tracks live block height and shows the next buy date, sell date, and block
+          progress. The{" "}
           <Link to="/simulator" className="text-primary">
             simulator
           </Link>{" "}
@@ -117,8 +117,17 @@ function AboutPage() {
         </p>
         <p>
           Historical returns use Bitstamp daily closes. Completed cycles in the simulator are 2012,
-          2016, and 2020. The 2024 cycle is still open until its sell date. Past performance does
+          2016, 2020, and 2024; the 2024 window closed on 2 September 2025. Past performance does
           not guarantee future results.
+        </p>
+        <p>
+          The{" "}
+          <Link to="/bitcoin-500-day-cycle" className="text-primary">
+            500-day cycle explainer
+          </Link>{" "}
+          also publishes what each window cost to hold and how much the exact T-500 entry date
+          mattered: every completed window is re-run with the entry moved from 120 days earlier to
+          120 days later, keeping the T+500 exit fixed.
         </p>
       </section>
 

@@ -9,6 +9,7 @@ import {
   userSafeDataError,
 } from "./data-status.ts";
 import { computeCycleRisks, emptyCycleRisk, type CycleRisk } from "./cycle-risk.ts";
+import { computeCycleTimings, emptyCycleTiming, type CycleTiming } from "./cycle-timing.ts";
 import { HALVINGS, WINDOW_DAYS, addDays, type HalvingEvent } from "./halvings.ts";
 
 export interface CycleResult {
@@ -32,6 +33,8 @@ export interface SimulatorResult {
   cycles: CycleResult[];
   /** Inside-the-window risk profile per cycle, from the same daily closes. */
   risk: CycleRisk[];
+  /** Entry-date sensitivity per cycle: what changes if T-500 is missed. */
+  timing: CycleTiming[];
   status: DataLoadStatus;
   completeness: Completeness;
   source: string;
@@ -76,6 +79,7 @@ export function unavailableSimulatorResult(
   return {
     cycles: emptySimulatorCycles(),
     risk: HALVINGS.map(emptyCycleRisk),
+    timing: HALVINGS.map(emptyCycleTiming),
     status: code === "unavailable" ? "unavailable" : "error",
     completeness: "empty",
     source,
@@ -114,6 +118,7 @@ export function assembleSimulatorResult(
   return {
     cycles,
     risk: computeCycleRisks(HALVINGS, lookup),
+    timing: computeCycleTimings(HALVINGS, lookup),
     status: completeness === "complete" ? "ok" : "partial",
     completeness,
     source,

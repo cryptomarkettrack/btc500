@@ -16,6 +16,12 @@ import { CYCLE_FAQ } from "@/lib/cycle-faq";
 import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { formatSignedPercent, observeCycles } from "@/lib/cycle-stats";
 import { type CycleRisk, summarizeRisk } from "@/lib/cycle-risk";
+import {
+  TIMING_OFFSET_DAYS,
+  describeOffset,
+  summarizeTiming,
+  type CycleTiming,
+} from "@/lib/cycle-timing";
 import { formatIsoDay, formatUsd } from "@/lib/format";
 import { computeCycle } from "@/lib/phase";
 import { btcPriceQuery, halvingQuery, simulatorQuery } from "@/lib/queries";
@@ -88,6 +94,7 @@ export function Bitcoin500DayCyclePage() {
         <HistoricalSection cycles={simulator.cycles} />
         <ObservationsSection cycles={simulator.cycles} stats={stats} />
         <RiskSection risk={simulator.risk} />
+        <TimingSection timing={simulator.timing} />
         <BuySection cycleBuyDate={cycle.buyDate} />
         <SellSection cycleSellDate={cycle.sellDate} />
         <FaqSection />
@@ -592,6 +599,193 @@ function RiskSection({ risk }: { risk: CycleRisk[] }) {
   );
 }
 
+function TimingSection({ timing }: { timing: CycleTiming[] }) {
+  const summary = summarizeTiming(timing);
+  const rows = timing.filter((row) => row.baselineMultiple != null);
+  const earlier = summary.earlier;
+  const later = summary.later;
+  const thirtyEarlier = summary.offsets.find((row) => row.offsetDays === -30) ?? null;
+  const thirtyLater = summary.offsets.find((row) => row.offsetDays === 30) ?? null;
+  const hasComparison =
+    rows.length > 0 &&
+    earlier != null &&
+    later != null &&
+    thirtyEarlier != null &&
+    thirtyLater != null &&
+    earlier.cycleCount > 0;
+
+  return (
+    <motion.section
+      initial={{ y: 12, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, ease: EASE }}
+      className="mt-20"
+      aria-labelledby="timing-heading"
+    >
+      <h2 id="timing-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+        Does the exact buy date matter?
+      </h2>
+      <div className="mt-5 max-w-3xl space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
+        {!hasComparison ? (
+          <p>
+            The price archive does not cover enough days around T-500 to test alternative entry
+            dates. Nothing is estimated here.
+          </p>
+        ) : (
+          <>
+            <p>
+              The rule fixes one entry date, so the fair challenge is whether that date carries the
+              result. This test keeps the T+500 exit where the rule puts it and moves only the entry
+              — from 120 days earlier to 120 days later — then compares each completed-window
+              multiple with the multiple from entering on T-500 itself.
+            </p>
+            <p>
+              Every earlier entry in this archive did worse. In the {earlier.cycleCount} windows
+              where the archive reaches back 120 days before T-500, a T-620 entry (120 days early)
+              produced a smaller multiple in all {earlier.cycleCount} — median{" "}
+              <strong className="text-foreground">
+                {formatSignedPercent(earlier.medianVsT500Percent, 1)}
+              </strong>
+              , worst {formatSignedPercent(earlier.worstVsT500Percent, 1)} in the{" "}
+              {earlier.worstLabel}. Thirty days early pointed the same way:{" "}
+              {thirtyEarlier.worsenedCount} of {thirtyEarlier.cycleCount} windows lower, median{" "}
+              {formatSignedPercent(thirtyEarlier.medianVsT500Percent, 1)}.
+            </p>
+            <p>
+              Entering late was close to a coin flip for the first two months. A T-530 entry (30
+              days after the signal) changed the multiple by{" "}
+              {formatSignedPercent(thirtyLater.worstVsT500Percent, 1)} to{" "}
+              {formatSignedPercent(thirtyLater.bestVsT500Percent, 1)} — higher in{" "}
+              {thirtyLater.improvedCount} of {thirtyLater.cycleCount} windows, median{" "}
+              <strong className="text-foreground">
+                {formatSignedPercent(thirtyLater.medianVsT500Percent, 1)}
+              </strong>
+              . By 120 days late the median was {formatSignedPercent(later.medianVsT500Percent, 1)},
+              lower in {later.worsenedCount} of {later.cycleCount}. Part of that is arithmetic: the
+              exit stays fixed, so a later entry holds Bitcoin for fewer days.
+            </p>
+            <p>
+              The exception is the 2012 window, where entering 120 days late would have produced{" "}
+              {formatSignedPercent(later.bestVsT500Percent, 1)} more than the exact date. The
+              archive begins on that window&apos;s T-500 itself (17 July 2011), so there is no
+              earlier print to test, and the months after that entry included a fall from $14.07 to
+              $2.30. That is the honest shape of this test: the date is not a knife-edge, but
+              whether a nearby date beat it depended on what price did next — which no calendar
+              could know in advance.
+            </p>
+            <p>
+              This test covers {summary.cycleCount} completed windows, uses daily closes only, and
+              ignores fees and taxes. A different four years could invert the pattern. It is a
+              description of the past, not a forecast and not advice.
+            </p>
+          </>
+        )}
+      </div>
+
+      {hasComparison && (
+        <>
+          <div className="mt-8 overflow-hidden rounded-[24px] border border-border/60 bg-card">
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[64rem] text-left text-sm">
+                <caption className="sr-only">
+                  Change in the completed-window multiple for each cycle when the BTC500 entry moves
+                  from 120 days before T-500 to 120 days after it, with the T+500 exit fixed
+                </caption>
+                <thead className="border-b border-border/60 bg-muted/40 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+                  <tr>
+                    <th className="px-4 py-3">Cycle</th>
+                    {TIMING_OFFSET_DAYS.map((offset) => (
+                      <th key={offset} className="px-3 py-3 text-right">
+                        {offset === 0 ? "T-500" : formatOffsetHeader(offset)}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr key={row.halvingDate} className="border-b border-border/40 last:border-0">
+                      <th scope="row" className="px-4 py-3.5 font-semibold text-foreground">
+                        {row.label}
+                      </th>
+                      {TIMING_OFFSET_DAYS.map((offset) => {
+                        const entry = row.entries.find((item) => item.offsetDays === offset);
+                        return (
+                          <td key={offset} className="px-3 py-3.5 text-right font-semibold">
+                            {offset === 0 ? (
+                              <span className="font-normal text-muted-foreground">base</span>
+                            ) : entry?.vsT500Percent == null ? (
+                              <span className="font-normal text-muted-foreground">—</span>
+                            ) : (
+                              <SignedPercent value={entry.vsT500Percent} digits={1} />
+                            )}
+                          </td>
+                        );
+                      })}
+                    </tr>
+                  ))}
+                  <tr className="bg-muted/20">
+                    <th scope="row" className="px-4 py-3.5 font-semibold text-foreground">
+                      Median
+                    </th>
+                    {summary.offsets.map((row) => (
+                      <td
+                        key={row.offsetDays}
+                        className="px-3 py-3.5 text-right font-semibold text-muted-foreground"
+                      >
+                        {formatSignedPercent(row.medianVsT500Percent, 1)}
+                      </td>
+                    ))}
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            <StatTile
+              label="120 days early"
+              value={formatSignedPercent(earlier.medianVsT500Percent, 1)}
+              hint={`Median vs T-500 · ${earlier.worsenedCount} of ${earlier.cycleCount} worse`}
+            />
+            <StatTile
+              label="30 days late"
+              value={formatSignedPercent(thirtyLater.medianVsT500Percent, 1)}
+              hint="Median vs T-500 · roughly a coin flip"
+            />
+            <StatTile
+              label="120 days late"
+              value={formatSignedPercent(later.medianVsT500Percent, 1)}
+              hint={`Median vs T-500 · ${later.worsenedCount} of ${later.cycleCount} worse`}
+            />
+          </div>
+
+          <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+            Each column is an offset from T-500 in calendar days — for example {describeOffset(-60)}{" "}
+            means entering at T-560. “Base” is the exact T-500 entry the rule publishes; “—” means
+            the archive has no print for that day. Compare any two dates yourself in the{" "}
+            <Link to="/simulator" className="font-semibold text-primary hover:underline">
+              simulator
+            </Link>
+            , or see what each window cost to hold in the{" "}
+            <Link
+              to="/when-to-sell-bitcoin-after-halving"
+              className="font-semibold text-primary hover:underline"
+            >
+              sell-date record
+            </Link>
+            .
+          </p>
+        </>
+      )}
+    </motion.section>
+  );
+}
+
+function formatOffsetHeader(offset: number): string {
+  return offset < 0 ? `−${Math.abs(offset)}` : `+${offset}`;
+}
+
 function formatRiskPrice(value: number | null): string {
   if (value == null) return "—";
   const digits = Math.abs(value) < 100 ? 2 : 0;
@@ -648,9 +842,13 @@ function BuySection({ cycleBuyDate }: { cycleBuyDate: Date }) {
         </p>
         <p>
           That date is a rule, not a claim that it is the best day, the cheapest day, or the right
-          day for a given person. Some investors buy earlier. Some wait until after the event. The
-          point of publishing T-500 is that it can be backtested. Open the simulator on a $500 or
-          $1,000 starting amount to see what that rule did in previous windows.
+          day for a given person. Some investors buy earlier. Some wait until after the event.{" "}
+          <a href="#timing-heading" className="font-semibold text-primary hover:underline">
+            The timing test above
+          </a>{" "}
+          shows what missing T-500 by up to four months did in each completed window. The point of
+          publishing T-500 is that it can be backtested — open the simulator on a $500 or $1,000
+          starting amount to see what that rule did.
         </p>
       </div>
       <div className="mt-6 flex flex-wrap gap-3">

@@ -38,7 +38,7 @@ The site is free educational software with live countdowns, backtesting tools, o
 ## Primary pages
 
 - [Home / Halving Countdown](https://btc500.net/): Live Bitcoin 500-day cycle countdown, cycle command center, and historical performance overview.
-- [Bitcoin 500-Day Cycle](https://btc500.net/bitcoin-500-day-cycle): Canonical explainer for T-500 and T+500 — dates, prices, what the historical windows actually show, and how deep each window traded below its entry price before the halving.
+- [Bitcoin 500-Day Cycle](https://btc500.net/bitcoin-500-day-cycle): Canonical explainer for T-500 and T+500 — dates, prices, what the historical windows actually show, how deep each window traded below its entry price before the halving, and a test of whether the exact buy date matters (entry moved ±120 days, exit fixed).
 - [Halving Dates](https://btc500.net/halving-dates): Complete halving schedule 2012–2028 with block heights and BTC500 buy/sell windows.
 - [Calendar feed (.ics)](https://btc500.net/bitcoin-halving-calendar.ics): The next BTC500 buy date, halving and sell date as all-day calendar events with a 30-day reminder before the buy window opens.
 - [When to Sell Bitcoin After a Halving](https://btc500.net/when-to-sell-bitcoin-after-halving): Every historical T+500 sell date, the 2024 exit on September 2, 2025, the next estimated sell date in August 2029, and why the rule does not sell before the halving.
