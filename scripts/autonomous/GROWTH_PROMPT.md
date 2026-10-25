@@ -33,6 +33,11 @@ Read it first. It contains:
   archive are wrong whether or not they say so.
 - `experiments`: how many are open, which readings are **due today**, and whether
   a new experiment may be opened.
+- `review`: the verdict of the results reviewer — `improving`, `stagnant` or
+  `failing` — plus its **mandates**: the actions ordered because a measured
+  signal stopped moving. Mandates outrank this prompt's backlog (see the order
+  of work below). `streak` counts consecutive non-improving reviews; past two,
+  the reviewer is telling you that publishing more of the same is not working.
 - `lastRun` and `site`: what happened last cycle and what production returns now.
 - `notes`: anything the runner wants you to handle first.
 
@@ -88,6 +93,8 @@ A cycle counts as progress only if it does at least one of these:
 - publishes an original number, chart, dataset or tool nobody else has,
 - fixes a defect that measurably hurts us (indexation, contradiction between
   pages, consent, data freshness, performance, a broken claim),
+- executes a mandate from the results review (each one exists because a
+  measured signal is stalled — read the `because` before you start),
 - moves a page that already has impressions closer to the click,
 - creates an asset a stranger could link to, embed or quote,
 - reads and closes an experiment whose reading date has passed.
@@ -98,12 +105,16 @@ progress. One large, verified change beats five shallow ones.
 ### Order of work — never skip ahead
 
 1. `preflight.json` notes (site down, stale archive, overdue last run).
-2. Known defects in `BTC500_GROWTH.md` → Open issues. They are already diagnosed
+2. **Mandates from the last results review** (`preflight.review.mandates`).
+   They come from `scripts/autonomous/review-latest.json`, where the reviewer
+   has already tied each one to a stalled signal. Do them before the backlog;
+   skipping a mandate is how a failed review gets to repeat itself.
+3. Known defects in `BTC500_GROWTH.md` → Open issues. They are already diagnosed
    and cheap; the EU consent banner while GA4 runs and the two thin URLs have
    been sitting there while new sections shipped.
-3. Due experiment readings: read, verdict, record, free a slot.
-4. The highest-value bet from the backlog below.
-5. Small polish only when it blocks something measurable.
+4. Due experiment readings: read, verdict, record, free a slot.
+5. The highest-value bet from the backlog below.
+6. Small polish only when it blocks something measurable.
 
 ### Experiments discipline
 
@@ -341,6 +352,10 @@ ACTIONS
 
 EXPERIMENTS
 - <readings taken today, verdicts written to the ledger, or "none due">
+
+MANDATES
+- <id>: executed | skipped — <one line, with the evidence; skipping without a
+  reason is how a failed review gets to repeat itself>
 
 DEPLOYMENT
 - Commit: <sha>

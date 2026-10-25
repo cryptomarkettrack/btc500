@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "generated": "",
+  "mode": null,
+  "window": null,
+  "verdict": null,
+  "signals": [],
+  "why": [],
+  "questions": [],
+  "mandates": [],
+  "targets": [],
+  "self_changes": [],
+  "next_review_focus": null,
+  "_seed": "Seeded so the schema is discoverable and preflight can read it safely. run-review-cycle.sh rejects anything that was not regenerated today by the reviewer."
+}

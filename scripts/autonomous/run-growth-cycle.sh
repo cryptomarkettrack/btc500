@@ -87,9 +87,10 @@ ARCHIVE_CSV="public/btc-usd-max.csv"
 
 mkdir -p "$STATE_DIR" "$ATTEMPT_DIR"
 
-log() {
-  printf '%s  %s\n' "$(date '+%H:%M:%S')" "$*"
-}
+# Shared: log, notify, acquire_lock, wait_for_stability, btc_validate,
+# btc_vercel_wait, btc_repo_slug, btc_append_history. See lib.sh for the
+# globals each one expects.
+source "$SCRIPT_DIR/lib.sh"
 
 # Result of the current run; every finish() path reports these.
 SUCCESS_MODEL=""
@@ -101,16 +102,6 @@ ARCHIVE_STATE="unknown"
 ARCHIVE_LIVE="n/a"
 SITE_CODE="000"
 STATUS_NOTE=""
-
-notify() {
-  # Best effort; harmless when unavailable.
-  local title="$1" message="$2"
-  /usr/bin/osascript -e "display notification \"${message//\"/\'}\" with title \"${title//\"/\'}\"" \
-    >/dev/null 2>&1 || true
-  if [[ -n "$NOTIFY_URL" ]]; then
-    curl -fsS -m 10 -H "title: $title" -d "$message" "$NOTIFY_URL" >/dev/null 2>&1 || true
-  fi
-}
 
 status_message() {
   local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}"
@@ -154,29 +145,9 @@ finish() {
   exit "$code"
 }
 
-acquire_lock() {
-  if mkdir "$LOCK_DIR" 2>/dev/null; then
-    printf '%s\n' "$$" > "$LOCK_DIR/pid"
-    return 0
-  fi
-  local pid=""
-  [[ -f "$LOCK_DIR/pid" ]] && pid="$(cat "$LOCK_DIR/pid" 2>/dev/null || true)"
-  if [[ -n "$pid" ]] && kill -0 "$pid" 2>/dev/null; then
-    # A recycled PID must not block the schedule forever.
-    if ! find "$LOCK_DIR" -maxdepth 0 -mmin +360 2>/dev/null | grep -q .; then
-      return 1
-    fi
-    log "Lock is older than 6 hours; treating it as stale despite live pid $pid"
-  else
-    log "Removing stale lock (pid ${pid:-unknown} is gone)"
-  fi
-  rm -rf "$LOCK_DIR"
-  mkdir "$LOCK_DIR" && printf '%s\n' "$$" > "$LOCK_DIR/pid"
-}
-
 # ---------------------------------------------------------------- preflight ---
 
-if ! acquire_lock; then
+if ! acquire_lock "$LOCK_DIR"; then
   echo "Another growth cycle is already running ($LOCK_DIR); exiting." >&2
   exit 2
 fi
@@ -279,55 +250,6 @@ PROMPT="$(cat "$PROMPT_FILE")"
 
 # ------------------------------------------------------------------- runner ---
 
-# The CLI exit code is not a verdict: watch the repository instead.
-#
-#   - Any commit or dirty file resets the quiet counter.
-#   - Until HANDOFF_GRACE has elapsed with no commit, we keep watching: the
-#     session may still be working (observed commits 136-269s after exit), and
-#     starting the next model on top of it would put two sessions in one tree.
-#   - Once a commit has appeared — or the grace period has run out — the state
-#     must stay quiet for STABLE_CHECKS checks before we proceed.
-#
-# Returns 0 when quiet, 1 if SETTLE_MAX passes first (caller decides).
-wait_for_stability() {
-  local before_head="$1"
-  local last_head="$before_head"
-  local started checks=0 seen_change=0 head dirty elapsed
-  started="$(date +%s)"
-  while true; do
-    elapsed=$(( $(date +%s) - started ))
-    if (( elapsed >= SETTLE_MAX )); then
-      log "Stability window expired after ${elapsed}s at ${last_head:0:7}"
-      return 1
-    fi
-    sleep "$STABLE_INTERVAL"
-    head="$(git rev-parse HEAD)"
-    dirty="$(git status --porcelain 2>/dev/null | head -1)"
-
-    if [[ "$head" != "$last_head" || -n "$dirty" ]]; then
-      checks=0
-      if [[ "$head" != "$before_head" ]]; then
-        seen_change=1
-        log "HEAD advanced to ${head:0:7}; starting the stability count"
-      else
-        log "Tree changed (dirty: ${dirty:-none}); restarting the stability count"
-      fi
-      last_head="$head"
-      continue
-    fi
-
-    if (( ! seen_change && elapsed < HANDOFF_GRACE )); then
-      log "Quiet ${elapsed}s/${HANDOFF_GRACE}s with no commit yet; still watching"
-      continue
-    fi
-
-    checks=$((checks + 1))
-    log "Stable $checks/$STABLE_CHECKS at ${head:0:7}, tree clean"
-    if (( checks >= STABLE_CHECKS )); then
-      return 0
-    fi
-  done
-}
 
 SUCCESS_MODEL=""
 LAST_MODEL=""
@@ -408,24 +330,7 @@ fi
 # commit would skip the gate) or leftover commits we are about to push.
 if [[ ( "$(git rev-parse HEAD)" != "$BASE_HEAD" || $UNPUSHED -eq 1 ) \
       && "${BTC500_GROWTH_SKIP_VALIDATE:-0}" != "1" ]]; then
-  log "--- Validation gate: npm test ---"
-  if npm test; then
-    log "--- Validation gate: tsc --noEmit ---"
-    if npx tsc --noEmit; then
-      if [[ -z "$(git status --porcelain 2>/dev/null)" ]]; then
-        TEST_STATE="pass"
-      else
-        TEST_STATE="dirty"
-        log "VALIDATION FAILED: the tree changed while checks were running"
-      fi
-    else
-      TEST_STATE="tsc-failed"
-      log "VALIDATION FAILED: tsc --noEmit"
-    fi
-  else
-    TEST_STATE="test-failed"
-    log "VALIDATION FAILED: npm test"
-  fi
+  btc_validate
 fi
 
 # -------------------------------------------------------------------- push ----
@@ -458,26 +363,11 @@ FINAL_HEAD="$(git rev-parse HEAD)"
 
 # --------------------------------------------------------------- deployment ---
 
-REPO_SLUG="$(git remote get-url origin 2>/dev/null | sed -E 's#^git@github\.com:##; s#^https://github\.com/##; s#\.git$##')"
-if [[ -n "$REPO_SLUG" && "$(git rev-list --count "origin/$DEPLOY_BRANCH..HEAD" 2>/dev/null || echo 1)" == "0" ]]; then
-  log "--- Waiting for the Vercel commit status on ${FINAL_HEAD:0:7} (pushed=$PUSHED) ---"
-  DEPLOY_START="$(date +%s)"
-  while true; do
-    VERCEL_STATE="$(curl -fsS -m 20 -H 'Accept: application/vnd.github+json' \
-      "https://api.github.com/repos/$REPO_SLUG/commits/$FINAL_HEAD/status" 2>/dev/null \
-      | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const j=JSON.parse(s);const v=(j.statuses||[]).find(x=>/vercel/i.test(x.context||""));console.log(v?v.state:(j.statuses||[]).length?(j.state||"none"):"none")}catch{console.log("unknown")}})')"
-    VERCEL_STATE="${VERCEL_STATE:-unknown}"
-    log "Vercel status: $VERCEL_STATE"
-    [[ "$VERCEL_STATE" == "success" || "$VERCEL_STATE" == "failure" || "$VERCEL_STATE" == "error" ]] && break
-    if (( $(date +%s) - DEPLOY_START >= DEPLOY_TIMEOUT )); then
-      VERCEL_STATE="timeout"
-      log "No terminal Vercel status within ${DEPLOY_TIMEOUT}s"
-      break
-    fi
-    sleep "$DEPLOY_POLL"
-  done
+REPO_SLUG="$(btc_repo_slug)"
+if [[ "$(git rev-list --count "origin/$DEPLOY_BRANCH..HEAD" 2>/dev/null || echo 1)" == "0" ]]; then
+  btc_vercel_wait "$FINAL_HEAD" "$REPO_SLUG"
 else
-  log "Skipping the Vercel status wait (pushed=$PUSHED, slug=${REPO_SLUG:-none})"
+  log "Skipping the Vercel status wait (pushed=$PUSHED, local commits remain)"
   VERCEL_STATE="skipped"
 fi
 

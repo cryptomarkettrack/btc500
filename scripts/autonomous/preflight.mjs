@@ -63,6 +63,61 @@ function readLastRun(stateDir) {
   return record;
 }
 
+/**
+ * The last results review, so the cycle starts with its verdict instead of
+ * rediscovering that a signal is stalled. Mandates from the review outrank the
+ * backlog: they are the answer to "why are we not gaining results".
+ */
+function readReview(stateDir, today) {
+  const file = join(REPO_ROOT, "scripts", "autonomous", "review-latest.json");
+  const json = readJson(file, null);
+  const historyFile = join(stateDir, "review-history.csv");
+  let streak = 0;
+  if (existsSync(historyFile)) {
+    const verdicts = readFileSync(historyFile, "utf8")
+      .split("\n")
+      .slice(1)
+      .map((line) => (line.split(",")[3] ?? "").trim())
+      .filter(Boolean);
+    for (let i = verdicts.length - 1; i >= 0; i--) {
+      if (verdicts[i] === "improving") break;
+      streak += 1;
+    }
+  }
+  const base = {
+    file,
+    present: false,
+    fresh: false,
+    verdict: null,
+    mode: null,
+    generated: null,
+    mandates: [],
+    overdue: [],
+    targets: [],
+    streak,
+  };
+  if (!json || !json.generated) return base;
+  const mandates = (Array.isArray(json.mandates) ? json.mandates : []).map((m) => ({
+    id: m?.id ?? "?",
+    action: m?.action ?? "",
+    because: m?.because ?? "",
+    due: m?.due ?? null,
+    overdue: Boolean(m?.due && m.due < today),
+  }));
+  return {
+    ...base,
+    present: true,
+    fresh: json.generated === today,
+    generated: json.generated,
+    verdict: json.verdict ?? null,
+    mode: json.mode ?? null,
+    mandates,
+    overdue: mandates.filter((m) => m.overdue),
+    targets: Array.isArray(json.targets) ? json.targets : [],
+    selfChanges: Array.isArray(json.self_changes) ? json.self_changes : [],
+  };
+}
+
 function readExperiments(today) {
   const file = join(REPO_ROOT, "scripts", "autonomous", "experiments.json");
   const ledger = readJson(file, null);
@@ -142,6 +197,7 @@ async function main(argv) {
   }
 
   const experiments = readExperiments(today);
+  const review = readReview(stateDir, today);
   const lastRun = readLastRun(stateDir);
   const site = offline
     ? {}
@@ -165,6 +221,7 @@ async function main(argv) {
       written: archive.written ?? [],
     },
     experiments,
+    review,
     lastRun,
     site,
     notes: [],
@@ -185,6 +242,24 @@ async function main(argv) {
   if (experiments.max && experiments.open >= experiments.max) {
     preflight.notes.push(
       `${experiments.open}/${experiments.max} experiments are open. Close, merge or read one before opening another.`,
+    );
+  }
+  const dueMandates = review.mandates.filter((m) => m.due && m.due <= today);
+  if (dueMandates.length) {
+    preflight.notes.push(
+      `${dueMandates.length} mandate(s) from the ${review.verdict ?? "last"} review (${review.generated}) are due: ` +
+        `${dueMandates.map((m) => `${m.id}${m.overdue ? " OVERDUE" : ""}`).join(", ")}. ` +
+        "Do these before the backlog: each exists because a measured signal is stalled, and skipping it is how a failed review repeats itself.",
+    );
+  }
+  if (review.present && !review.fresh && review.generated) {
+    preflight.notes.push(
+      `The last review is from ${review.generated}, not today (${today}). If the review ran, check ~/.local/state/btc500-growth/last-review.txt.`,
+    );
+  }
+  if (review.streak >= 2) {
+    preflight.notes.push(
+      `${review.streak} consecutive non-improving reviews. Publishing more of the same is not the answer — read why[] in scripts/autonomous/review-latest.json before choosing today's work.`,
     );
   }
   if (lastRun?.ageHours != null && lastRun.ageHours > 26) {
@@ -213,6 +288,10 @@ async function main(argv) {
       (experiments.due?.length
         ? ` ids=${experiments.due.map((e) => `${e.id}@${e.next_reading}(+${e.overdue_days}d)`).join(" ")}`
         : ""),
+  );
+  console.log(
+    `review=${review.present ? (review.verdict ?? "?") : "none"} generated=${review.generated ?? "-"} ` +
+      `fresh=${review.fresh} mandates=${review.mandates.length} due=${dueMandates.length} streak=${review.streak}`,
   );
   if (lastRun?.timestamp)
     console.log(
@@ -248,4 +327,4 @@ if (isEntryPoint()) {
     });
 }
 
-export { isoToday, readExperiments, daysBetween };
+export { isoToday, readExperiments, daysBetween, readReview };

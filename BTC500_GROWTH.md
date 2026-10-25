@@ -237,6 +237,40 @@ order to attack it.
   the same commit) matches the live HTML. A homepage 200 right after a push is
   the previous build — that is what used to be recorded as "verified".
 - Every run appends to `~/.local/state/btc500-growth/status-history.csv`.
+- Shared helpers (`log`, `notify`, `acquire_lock`, `wait_for_stability`,
+  `btc_validate`, `btc_vercel_wait`, `btc_repo_slug`, `btc_append_history`)
+  live in `scripts/autonomous/lib.sh` and are sourced by both runners.
+
+## Results review (installed 2026-10-25)
+
+Activity is not a result, so a second job judges it. `net.btc500.review` runs
+`run-review-cycle.sh` at **09:30 daily** (deep mode on Sundays) and exits
+**non-zero whenever the site is not gaining**.
+
+- `collect-results.mjs` reads the Search Console / inspection / GA4 reports,
+  backfills `results-history.csv` from the dated reports on disk, and reduces
+  everything to signals: indexation, non-brand clicks, impressions, sessions,
+  referrals, plus process signals (deploy health, cycle yield, data freshness).
+  It writes `review-input.json` including **`rule.mayClaimImproving`** — false
+  unless ≥2 green outcome signals, no regressions and fresh data.
+- The `growth-review` agent (`.opencode/agents/growth-review.md`, prompt
+  `scripts/autonomous/GROWTH_REVIEW.md`) must explain every stalled signal,
+  order ≤5 mandates with evidence and dates, and set measurable targets. It may
+  edit the strategy documents; it may not edit the runners — machinery changes
+  become mandates.
+- `validate-review.mjs` enforces the verdict against the data before anything is
+  pushed: an "improving" verdict while `mayClaimImproving` is false is
+  **rejected**, committed as evidence and reported as `verdict-invalid`.
+- Verdicts: `improving` (exit 0), `stagnant` / `failing` (exit 1), plus
+  `verdict-invalid`, `no-review`, `deferred`, `validation-failed`,
+  `push-blocked`. History in `review-history.csv`, verdict in
+  `scripts/autonomous/review-latest.json`.
+- The daily cycle reads the verdict in preflight: **mandates come before the
+  backlog**, and after two non-improving reviews in a row preflight says so
+  explicitly.
+- Three consecutive non-improving reviews force `self_changes[]` in the next
+  review — repeating a failing approach is the failure mode this layer exists
+  to catch.
 
 ## Open issues
 
