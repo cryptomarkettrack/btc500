@@ -37,7 +37,7 @@ const faqSchema = {
       name: "Does this change the BTC500 buy date?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "No. The official buy date is still November 30, 2026 — 500 days before the projected April 2028 halving. A one-day squeeze does not move the cycle rule. Past performance does not guarantee future results.",
+        text: "No. The buy date is 500 days before the estimated halving, so a one-day squeeze cannot move it. At publication the April 13, 2028 projection put it on November 30, 2026; the live block-height estimate and current date are at https://btc500.net/halving-dates. Past performance does not guarantee future results.",
       },
     },
     {

@@ -37,7 +37,7 @@ const faqSchema = {
       name: "Should I buy Bitcoin before or after the halving?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The BTC500 rule says buy exactly 500 days before the halving. For the projected April 2028 halving (block 1,050,000), that date is November 30, 2026, with the sell date around August 26, 2029. Past performance does not guarantee future results.",
+        text: "The BTC500 rule says buy exactly 500 days before the halving. At publication the April 13, 2028 projection (block 1,050,000) put that date on November 30, 2026, with the sell date around August 26, 2029. The halving date is a block-height estimate, so the live dates are at https://btc500.net/halving-dates. Past performance does not guarantee future results.",
       },
     },
     {

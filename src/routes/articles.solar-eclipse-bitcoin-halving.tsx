@@ -21,7 +21,7 @@ const faqSchema = {
       name: "How does the BTC500 strategy relate to the 2026 solar eclipse?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The BTC500 strategy applies the same principle as eclipse preparation: mark the date, follow the math, ignore the noise. The next Bitcoin halving is projected for April 2028. The BTC500 buy date is November 30, 2026 — exactly 500 days before. Instead of waiting for confirmation like the crowd, BTC500 investors buy on a fixed calendar date, just as astronomers mark eclipse dates years in advance.",
+        text: "The BTC500 strategy applies the same principle as eclipse preparation: mark the date, follow the math, ignore the noise. The next Bitcoin halving is projected for April 2028. The BTC500 buy date is exactly 500 days before it — November 30, 2026 under the April 13, 2028 projection used when this was published; the live block-height estimate is at https://btc500.net/halving-dates. Instead of waiting for confirmation like the crowd, BTC500 investors buy on a fixed calendar date, just as astronomers mark eclipse dates years in advance.",
       },
     },
     {
@@ -29,7 +29,7 @@ const faqSchema = {
       name: "When is the next Bitcoin halving?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The next Bitcoin halving is projected for around April 2028 at block height 1,050,000. The exact date depends on Bitcoin's average block time. The BTC500 buy date — exactly 500 days before the halving — is November 30, 2026.",
+        text: "The next Bitcoin halving is projected for around April 2028 at block height 1,050,000. The exact date depends on Bitcoin's average block time. The BTC500 buy date is exactly 500 days before the halving — November 30, 2026 under the April 13, 2028 projection used when this was published. The live block-height estimate is at https://btc500.net/halving-dates.",
       },
     },
     {

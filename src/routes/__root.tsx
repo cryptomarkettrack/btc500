@@ -18,6 +18,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { GoogleAnalytics } from "../components/GoogleAnalytics";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
+import { ArticleDateNotice } from "../components/articles/ArticleDateNotice";
 import { PageBreadcrumbs } from "../components/PageBreadcrumbs";
 import { seedHalving } from "@/lib/seed-halving";
 import type { HalvingInfo } from "@/lib/btc.functions";
@@ -357,6 +358,7 @@ function RootComponent() {
         {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <main id="main-content" className="flex-1">
           {!isEmbed && <PageBreadcrumbs pathname={pathname} />}
+          {!isEmbed && <ArticleDateNotice pathname={pathname} />}
           <Outlet />
         </main>
         {!isEmbed && <Footer />}

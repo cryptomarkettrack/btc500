@@ -22,11 +22,10 @@ What the numbers actually mean:
   only query with meaningful volume is `btc500` (40 impressions, 4 clicks,
   position 3). Everything else is 1–3 impressions.
 - **The August spike was one dated news page.** The week of 10 Aug produced
-  2,361 impressions, 2,067 of them on `/articles/bitcoin-week-ahead` at average
-  position 6.6 — for queries like "bitcoin etf flows august 12 2026". It earned
-  1 click. Since those dated pages were moved out of the index (commit
-  `2c7f981`) the site sits at 30–50 impressions/week. The collapse is
-  intentional, not a regression.
+  2,361 impressions, 2,067 on `/articles/bitcoin-week-ahead` at average position
+  6.6 for queries like "bitcoin etf flows august 12 2026", and 1 click. After
+  those dated pages were moved out of the index (`2c7f981`) the site sits at
+  30–50 impressions/week. Intentional, not a regression.
 - **The one durable non-brand cluster is the 500-day window.** 90-day data:
   `when is 500 days before the next bitcoin halving` 12 impressions @ 8.8
   (`/halving-dates`), `what is 500 days before the next bitcoin halving` 5 @
@@ -40,142 +39,143 @@ What the numbers actually mean:
   downloaded the sitemap on 2026-10-22 with 0 errors.
 - **Diagnosis:** the pages are not thin (1,000–2,100 rendered words each with
   original tables) and there are no canonical, robots, or duplicate-title
-  problems. A three-month-old domain with no external links is simply not worth
+  problems. A three-month-old domain with no external links is not worth
   crawling. The blocker is authority and distribution, not on-page code.
-- **Limitation:** GA4 exists since 2026-10-23 but has no history before that.
-  Referral and returning-visitor data before that date do not exist.
+- **Limitation:** GA4 exists since 2026-10-23; referral and returning-visitor
+  data before that date do not exist.
 
 ---
 
-## Latest measurement — 2026-10-24
+## Latest measurement — 2026-10-25
 
-Same tooling, data state `all`, lag offset applied. GSC window ends 2026-10-21;
-GA4 window ends 2026-10-23.
+Same tooling, data state `all`. GSC window ends 2026-10-22; GA4 window ends
+2026-10-24.
 
 | Window                            | Clicks | Impressions | CTR   | Avg position |
 | --------------------------------- | ------ | ----------- | ----- | ------------ |
-| 28 days (2026-09-24 → 2026-10-21) | 25     | 92          | 27.2% | 9.7          |
-| 7 days (2026-10-15 → 2026-10-21)  | 9      | 31          | 29.0% | 14.6         |
+| 28 days (2026-09-25 → 2026-10-22) | 26     | 94          | 27.7% | 10.4         |
+| 7 days (2026-10-16 → 2026-10-22)  | 8      | 28          | 28.6% | 18.6         |
 
-- 28 days was 25 / 90 on 2026-10-23 and 25 / 92 today. Two impressions is noise.
-  7 days was 10 / 37 on 10-23. Do not read either as a trend.
-- **The 500-day query cluster no longer appears in the 28-day query table** —
-  only brand variants (`btc500` 4/41, `bitcoin 500` 0/3, `bitcoin plus 500` 0/2,
-  `btc 500` 0/1, `bit 500` 0/1). With 92 impressions total, individual queries
-  can drop below GSC's reporting threshold; this is not evidence that the pages
-  lost rankings. Note it for the 2026-11-19 reading.
-- Indexation is byte-identical to 2026-10-23: **6 of 25 URLs indexed**, 19 need
-  attention, crawl dates unchanged (`/bitcoin-500-day-cycle` last fetched
-  2026-10-22). `/about`, `/embed-kit`, `/news`, `/insider-trading`,
-  `/articles/why-btc500-exists`, `/articles/rupl` are still unknown to Google.
-- GA4 standard reports are no longer empty: 28 days = **12 sessions / 9 users /
-  22 views / 33.3% engagement**, 11 Direct + 1 Organic Search, zero referrals.
-  The 7-day window returns the same 12 sessions because the tag was installed on
-  2026-10-23, so every session is post-install. That is testing traffic, not an
-  audience. Too early and too small to judge.
-- Search demand check via Google autocomplete (public endpoint, 2026-10-24):
-  `bitcoin 500 days before halving`, `bitcoin 500 days after halving`,
-  `buy bitcoin 500 days before halving`, `sell bitcoin 500 days after halving`,
-  `bitcoin 500 days strategy` are all suggested completions. The cluster is
-  real; the site is simply not in the index for it.
+- 28 days was 25 / 92 and 7 days 9 / 31 on 2026-10-24. One click and two
+  impressions is noise, not a trend.
+- Only brand queries are reportable: `btc500` 5 clicks / 41 impressions @ 3.0.
+  No non-brand query clears GSC's reporting threshold.
+- Indexation is byte-identical: **6 of 25 indexed**, 19 need attention, crawl
+  dates unchanged (`/bitcoin-500-day-cycle` 2026-10-22, `/simulator`
+  2026-09-12, `/dca` 2026-09-06). GSC shows "no canonical" for `/liquidation`
+  and 4 article URLs, but all 25 production URLs carry a matching canonical —
+  a stale crawl record, not a live defect.
+- 92 of 94 impressions are the homepage. The other 32 page-level impressions
+  are all dated `/articles/*` URLs at average positions 2–7 with **0 clicks**.
+  Those articles are the only subpages Google currently surfaces.
+- GA4 28 days: **19 sessions / 11 users / 31 views / 42.1% engagement**, 18
+  Direct + 1 Organic, no referrals. Up from 12 / 9 / 22, but still owner and
+  testing traffic. Too small to interpret.
+- **Found:** 7 article routes' FAQPage JSON-LD, 8 article bodies, and the
+  llms.txt / llms-full.txt summaries called 30 November 2026 the "official" buy
+  date; one article said it "is not moving". The live model says 28 November 2026. Google indexes the articles and the homepage, so the site published two
+  answers to its own core question 34 days before the buy window opens.
 
 ---
 
 ## Completed work
 
+### 2026-10-25 — One live buy date on every article page
+
+Why this over new content: authority is unchanged and the pages Google actually
+indexes were contradicting the live date 34 days before the buy window. Fixing
+that protects the one claim the product depends on and aligns the indexed
+snippets, FAQ markup, feed and AI knowledge files with the homepage,
+`/halving-dates` and the .ics calendar.
+
+- New `ArticleDateNotice` (`src/components/articles/ArticleDateNotice.tsx`),
+  mounted once in `__root.tsx` for article paths only. It renders the live T-500
+  date, days until, halving date/height, and reconciles the projections: earlier
+  notes used an April 13, 2028 halving (30 November 2026), the live estimate is
+  April 11, 2028 (28 November 2026), and both derive from block 1,050,000.
+  Rendered from the root-seeded halving snapshot, so it is in the server HTML
+  Google fetches, not added after hydration.
+- Corrected 7 FAQPage answers (80k, casino, week-ahead, Goldman, SEC, solar
+  eclipse, why-pumped), the solar-eclipse "not moving" sentence, two meta
+  descriptions, two `feed.xml` descriptions, and 12 llms.txt / llms-full.txt
+  article summaries to "projected … when this was published" instead of a fixed
+  official date.
+- `public/sitemap.xml`: `lastmod` 2026-10-25 for the 11 article URLs (all gained
+  the strip).
+- `src/lib/article-path.ts` + tests for the path match that decides where the
+  strip renders.
+
+Validation: `npm test` 92/92, `tsc --noEmit` clean, default and
+`NITRO_PRESET=node-server` builds clean, no new eslint/prettier problems in
+touched files (SolarEclipseHalvingArticle keeps its 39 pre-existing ones). Local
+SSR: `/articles/solar-eclipse-bitcoin-halving` and `/articles/strongest-hands`
+contain "Live date", "November 28, 2026" and "34 days away" plus the corrected
+FAQ JSON-LD; `/`, `/articles`, `/articles/` and a 404 do not render the strip.
+
+Not a traffic experiment: success is that the article pages stop contradicting
+the live date, verified in production. The 2026-11-19 reading still covers the
+timing test and the calendar asset.
+
 ### 2026-10-24 — Entry-timing test on the pillar page
 
-Competitive check first (public pages only). Two higher-authority sites now
-publish the simple version of this rule: `charts.bitbo.io/500-day-halving-window`
-(published 2026-10-20) plots the T-500→T+500 rule, and a Dune dashboard by
-Lucas Santana (Hashdex) plots indexed T-500→T+500 performance. A third
-(`btc.aipeterlab.com`) runs a +540-day variant. **The plain 500-day chart is
-taken.** The gap is the part nobody publishes: what the rule cost to hold and
-how much the exact date matters. That is what this session added.
+Competitive check (public pages only): `charts.bitbo.io/500-day-halving-window`
+(2026-10-20) plots the T-500→T+500 rule and a Dune dashboard by Lucas Santana
+plots indexed window performance; `btc.aipeterlab.com` runs a +540-day variant.
+**The plain 500-day chart is taken.** The gap is what the rule cost to hold and
+how much the exact date matters — what this and the drawdown study publish.
 
-New `/bitcoin-500-day-cycle#timing-heading`: for every completed window, re-run
-the same T+500 exit with the entry moved from 120 days earlier to 120 days
-later (`src/lib/cycle-timing.ts`, pure, 11 new tests; `timing` added to the
-simulator payload). Table of % change vs the exact T-500 entry per cycle, a
-median row, three stat tiles, and prose generated from the computed summary so
-no figure can go stale. Same-page link from "When to buy". FAQPage grew 8 → 9
-method-based questions. `llms.txt` / `llms-full.txt` and the sitemap `lastmod`
-updated.
+New `/bitcoin-500-day-cycle#timing-heading`: for every completed window, the
+same T+500 exit with the entry moved ±120 days (`src/lib/cycle-timing.ts`, 11
+tests; `timing` in the simulator payload). Table of % change vs the exact T-500
+entry per cycle, median row, three stat tiles, prose generated from the computed
+summary. FAQPage grew 8 → 9 questions; `llms.txt` / `llms-full.txt` and the
+sitemap `lastmod` updated. `/about` no longer claims the homepage shows a cycle
+score or that the 2024 cycle is open.
 
-Findings from the shipped archive (computed, not asserted):
+| Entry vs T-500 | Cycles | Median change | Direction        |
+| -------------- | ------ | ------------- | ---------------- |
+| 120 days early | 3      | -32.5%        | worse in 3 of 3  |
+| 60 days early  | 3      | -24.5%        | worse in 3 of 3  |
+| 30 days early  | 3      | -12.5%        | worse in 3 of 3  |
+| 30 days late   | 4      | +3.9%         | higher in 2 of 4 |
+| 60 days late   | 4      | +4.9%         | higher in 3 of 4 |
+| 120 days late  | 4      | -14.4%        | lower in 3 of 4  |
 
-| Entry vs T-500 | Cycles covered | Median change | Direction        |
-| -------------- | -------------- | ------------- | ---------------- |
-| 120 days early | 3              | -32.5%        | worse in 3 of 3  |
-| 60 days early  | 3              | -24.5%        | worse in 3 of 3  |
-| 30 days early  | 3              | -12.5%        | worse in 3 of 3  |
-| 30 days late   | 4              | +3.9%         | higher in 2 of 4 |
-| 60 days late   | 4              | +4.9%         | higher in 3 of 4 |
-| 120 days late  | 4              | -14.4%        | lower in 3 of 4  |
+The 2012 window is the outlier (+356.8% for a 120-day delay) because the archive
+starts on its T-500 and price fell from $14.07 to $2.30 immediately after.
+Conclusion on the page: the date is not a knife-edge, earlier was never better
+in this sample, and the later-entry result depends on what price did next.
 
-The 2012 window is the outlier (a 120-day delay would have produced +356.8%),
-because the archive starts on its T-500 and price fell from $14.07 to $2.30
-right after. Honest conclusion recorded on the page: the date is not a
-knife-edge, earlier was never better in this sample, and the later-entry result
-depends on what price did next.
+Deployed as `46b092d`, production verified. **Operational note:** the daily
+runner pushed `46b092d` while the session was still working. Do not amend a
+commit during a scheduled run — add a follow-up commit instead.
 
-Also fixed two stale claims on `/about` found by reading the live page:
-it still said the homepage shows a "cycle score" (removed 2026-10-23) and that
-"the 2024 cycle is still open until its sell date" (it closed 2025-09-02).
-`/about` now also links the timing test.
-
-Validation: `npm test` 90/90, `tsc --noEmit` clean, default and
-`NITRO_PRESET=node-server` builds clean, no new eslint/prettier problems in
-touched files. Local SSR check: the section, median row, all 4 cycle rows and
-9 FAQ questions render in HTML; `/about` carries both fixes.
-
-Deployed as `46b092d`. Production verified after the Vercel build:
-`/bitcoin-500-day-cycle` renders the timing section (2,800 words), the median
-row and 9 FAQ questions, canonical intact; `/about` no longer carries either
-stale claim and links the section; `/sitemap.xml` shows `2026-10-24` for both
-URLs; `llms-full.txt` carries the timing bullet with the `#timing-heading`
-link; `/`, `/robots.txt` and the calendar feed still 200. IndexNow returned 200
-for 25 URLs.
-
-**Operational note:** the daily runner's safety net pushed `46b092d` while this
-session was still working, so the local commit was ahead-of/behind origin. Do
-not amend a commit during a scheduled run — the runner may publish it first
-and the amend then becomes a history rewrite. Add a follow-up commit instead.
-
-**Experiment:** does a published robustness test move anything for the 500-day
-cluster? Success = any non-brand click or new referring domain by 2026-11-20.
-Inconclusive if impressions stay under 20. Next reading 2026-11-19, together
-with the T-500/calendar experiment.
+**Experiment:** does the published robustness test move the 500-day cluster?
+Success = any non-brand click or new referring domain by 2026-11-20;
+inconclusive if impressions stay under 20. Next reading 2026-11-19.
 
 ### 2026-10-23 — Cycle score removed, drawdown study, GA4 installed
 
-- **Cycle score removed** (`910fb27`): score logic, `cycleScoreQuery`, homepage
-  Command Center gauge, data-tape chips, sticky CTA and embeds all deleted;
-  legacy `/embed?widget=score` 307s to the full countdown. Owner decision: the
-  site treats the current period as a bull market, so a "bear-market position"
-  gauge fought the product's own thesis.
-- **Drawdown study** (`c54e489`): `src/lib/cycle-risk.ts` computes, per window,
-  the lowest close after entry and the date it printed, % vs entry, days to the
-  low, pre-halving closes below entry, and the worst peak-to-trough close. The
-  pillar publishes the table; the method-based FAQ gained an entry. Median
-  lowest close -11.7% vs entry, 85 days to the low; 2012 is the extreme case
-  ($14.07 → $2.30, 491 of 501 pre-halving closes underwater).
-- **GA4** (`b5cf0ed`, `08508a0`): tag `G-GM4WBKY74P` in `<head>` on production
-  hosts only; `scripts/analytics/fetch-ga4.ts` mirrors the GSC tooling
-  (totals with previous-period deltas, channels, landing pages, devices,
-  referrals, `--realtime`). Verified in production with a headless `/g/collect`
-  hit.
+- **Cycle score removed** (`910fb27`): score logic, homepage gauge, data-tape
+  chips, sticky CTA and embeds deleted; legacy `/embed?widget=score` 307s to the
+  full countdown. Owner decision: a "bear-market position" gauge fought the
+  product's own bull-market thesis.
+- **Drawdown study** (`c54e489`): `src/lib/cycle-risk.ts` computes the lowest
+  close after entry and its date, % vs entry, days to the low, pre-halving
+  closes below entry, and worst peak-to-trough close. Median lowest close
+  -11.7% vs entry, 85 days to the low; 2012 is the extreme ($14.07 → $2.30).
+- **GA4** (`b5cf0ed`, `08508a0`): tag `G-GM4WBKY74P` on production hosts only;
+  `scripts/analytics/fetch-ga4.ts` mirrors the GSC tooling. Verified with a
+  headless `/g/collect` hit.
 
 ### Earlier history
 
-- **2026-10-22** — Autonomous daily runner: `scripts/autonomous/run-growth-cycle.sh`
-  - launchd job `net.btc500.growth` at 06:00, with lock, time-box, push and
-    production polling. After the first run exited 130 mid-work, the runner now
-    waits for the session to settle and accepts a late commit (synthetic test
-    passes). Do not add a second cron.
-- **2026-10-22** — `/halving-dates` states the live T-500 date directly;
-  `/bitcoin-halving-calendar.ics` serves buy window, halving and sell window
-  as all-day events with a 30-day reminder, generated from the live model.
+- **2026-10-22** — Autonomous daily runner
+  (`scripts/autonomous/run-growth-cycle.sh`, launchd `net.btc500.growth` at
+  06:00) with lock, time-box, push and production polling. Do not add a second
+  cron. `/halving-dates` states the live T-500 date directly and
+  `/bitcoin-halving-calendar.ics` serves buy/halving/sell events with a 30-day
+  reminder, generated from the live model.
 - **2026-10-21 and earlier** — 25-URL sitemap, llms.txt / llms-full.txt, dated
   news articles removed from the index, embed kit, simulator, timeline, DCA,
   ETF and insider dashboards.
@@ -184,28 +184,31 @@ with the T-500/calendar experiment.
 
 ## Next priorities
 
-1. **Own 2026-11-28 — the buy window opens in 35 days.** This is the one moment
-   the site's core claim becomes news rather than reference. The unblocked
-   work is already on the page (live date, calendar file, timing table); the
-   missing step is distribution: one post from the owner's X account and one
-   relevant community post pointing at `/bitcoin-500-day-cycle#timing-heading`.
-   **Blocked:** posting from an external account needs owner authorization.
+1. **Own 2026-11-28 — the buy window opens in 34 days.** The unblocked work is
+   on the site (live date, calendar file, timing table, and now one date on
+   every article page). The missing step is distribution: one post from the
+   owner's X account and one relevant community post pointing at
+   `/bitcoin-500-day-cycle#timing-heading`. **Blocked:** posting from an
+   external account needs owner authorization.
 2. **Earn external links — still the actual blocker.** 19 of 25 URLs are not
    indexed and Google fetches then declines. The drawdown and timing tables are
-   now the two most quotable things on the domain. Needs 5–10 real links from
-   Bitcoin newsletters, communities or data roundups.
-3. **Concentrate the crawlable surface.** `/embed-kit` (274 rendered words) and
-   `/about` (402) are the weakest indexable URLs and both are still unknown to
-   Google. Either deepen them with real content or drop them from the sitemap.
-   Keep internal links to the 500-day cluster exact-anchored.
+   the most quotable things on the domain. Needs 5–10 real links from Bitcoin
+   newsletters, communities or data roundups.
+3. **Concentrate the crawlable surface.** `/embed-kit` (274 words) and `/about`
+   (402) are the weakest indexable URLs and both are unknown to Google. Either
+   deepen them with real content or drop them from the sitemap. Keep internal
+   links to the 500-day cluster exact-anchored.
 
 ## Open issues
 
 - Clicks from Poland (20 of 24 impressions in 28 days) look like owner or
   internal traffic; treat country splits as noise until volume is larger.
 - `/bear-market` still earns impressions while 301-redirecting to
-  `/bitcoin-500-day-cycle`; harmless, but Google has not consolidated the old URL.
+  `/bitcoin-500-day-cycle`; Google has not consolidated the old URL.
 - EU cookie consent is still missing while GA4 is installed.
+- Dated article bodies still quote 30 November 2026 as published. That is
+  intentional — they are snapshots, and the live-date strip explains the
+  difference. Do not mass-rewrite them.
 - The shipped `public/btc-usd-max.csv` ends 2026-07-11. Completed windows are
   unaffected, but anything treating its last row as "today" would be ~3.5
   months wrong.

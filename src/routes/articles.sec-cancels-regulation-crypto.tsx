@@ -53,7 +53,7 @@ const faqSchema = {
       name: "How does this relate to the next halving and the BTC500 buy date?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "The next Bitcoin halving is projected for April 2028 at block height 1,050,000. The official BTC500 buy date is November 30, 2026 — exactly 500 days before that event. A cancelled SEC meeting does not move either date. From August 14, 2026, there are 108 days until the buy date.",
+        text: "The next Bitcoin halving is projected for April 2028 at block height 1,050,000. The BTC500 buy date is exactly 500 days before that event — November 30, 2026 under the April 13, 2028 projection used when this was published. A cancelled SEC meeting does not move the date; only a change in the block-height estimate can. The live date is at https://btc500.net/halving-dates. From August 14, 2026, there were 108 days until that projected buy date.",
       },
     },
   ],

@@ -67,7 +67,12 @@ export function SolarEclipseHalvingArticle({ title, date, readTime }: ArticlePro
             the date of each halving can be estimated years in advance with remarkable accuracy. The
             next halving is projected for around <strong>April 2028</strong> at block height
             1,050,000. The BTC500 buy date — exactly 500 days before — is{" "}
-            <strong>November 30, 2026</strong>, and it is not moving.
+            <strong>November 30, 2026</strong> under that projection. It moves only if the
+            block-height estimate moves; the live date is on{" "}
+            <a href="https://btc500.net/halving-dates" className="text-primary underline">
+              btc500.net/halving-dates
+            </a>
+            .
           </p>
 
           <div className="strategy-box">

@@ -300,7 +300,7 @@ export const articles: ArticleMeta[] = [
     slug: "bitcoin-week-ahead",
     title: "Bitcoin This Week (Aug 24–31): Jackson Hole & PCE",
     description:
-      "Week of Aug 24–31, 2026: Bitcoin near $77,000 after the 19–20 August breakout, Kansas City Fed’s Jackson Hole Economic Symposium (Aug 27–29), July Core PCE on Friday — plus the Nov 30 buy date.",
+      "Week of Aug 24–31, 2026: Bitcoin near $77,000 after the 19–20 August breakout, Kansas City Fed’s Jackson Hole Economic Symposium (Aug 27–29), July Core PCE on Friday — plus the BTC500 buy window, then projected for Nov 30.",
     keywords:
       "Bitcoin this week August 24-31 2026, Bitcoin weekly outlook, Jackson Hole Economic Symposium Bitcoin, Kansas City Fed Jackson Hole, Bitcoin Core PCE, Bitcoin inflation data, Bitcoin ETF flows, Bitcoin 77000, Bitcoin breakout August 2026, Bitcoin week ahead, BTC500 cycle, Kevin Warsh Bitcoin, Bitcoin key events",
     date: "August 17, 2026",
@@ -357,7 +357,7 @@ export const articles: ArticleMeta[] = [
     slug: "sec-cancels-regulation-crypto",
     title: "SEC Cancels Regulation Crypto Vote: What It Means",
     description:
-      "The SEC cancelled Friday's Regulation Crypto vote with no new date. Here's what the delay means for Bitcoin and the November 30, 2026 buy window.",
+      "The SEC cancelled Friday's Regulation Crypto vote with no new date. Here's what the delay means for Bitcoin and the BTC500 buy window.",
     keywords:
       "SEC Regulation Crypto, SEC cancels crypto meeting, Regulation Crypto Assets, Paul Atkins crypto rules, SEC crypto offering exemption, SEC tailored offering regime, crypto investment contract rules August 2026, CLARITY Act delay, Bitcoin regulation 2026, BTC500 strategy",
     date: "August 14, 2026",
