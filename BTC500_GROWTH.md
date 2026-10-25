@@ -116,6 +116,14 @@ Not a traffic experiment: success is that the article pages stop contradicting
 the live date, verified in production. The 2026-11-19 reading still covers the
 timing test and the calendar asset.
 
+**Deployed as `aab432e`.** Production verified after the Vercel build: all five
+indexed article URLs return 200 with one "Live date" strip, "November 28, 2026"
+and "34 days away", and no "not moving"; the corrected FAQ JSON-LD is served;
+`/articles` and `/` do not render the strip; `/`, the pillar, `/halving-dates`,
+`/robots.txt`, `/sitemap.xml`, `/feed.xml`, `/llms.txt` and the calendar feed
+all 200; sitemap carries 11 `2026-10-25` lastmods; feed lastBuildDate updated;
+IndexNow returned 200 for 25 URLs.
+
 ### 2026-10-24 — Entry-timing test on the pillar page
 
 Competitive check (public pages only): `charts.bitbo.io/500-day-halving-window`
