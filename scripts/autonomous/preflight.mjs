@@ -94,6 +94,7 @@ function readReview(stateDir, today) {
     mandates: [],
     overdue: [],
     targets: [],
+    asks: [],
     streak,
   };
   if (!json || !json.generated) return base;
@@ -103,6 +104,15 @@ function readReview(stateDir, today) {
     because: m?.because ?? "",
     due: m?.due ?? null,
     overdue: Boolean(m?.due && m.due < today),
+  }));
+  // Asks are the owner's half of the loop — the cycle cannot post, pitch or
+  // request a link. They surface here so today's work does not duplicate them.
+  const asks = (Array.isArray(json.owner_asks) ? json.owner_asks : []).map((a) => ({
+    id: a?.id ?? "?",
+    channel: a?.channel ?? "?",
+    action: a?.action ?? "",
+    by: a?.by ?? null,
+    overdue: Boolean(a?.by && a.by < today),
   }));
   return {
     ...base,
@@ -115,6 +125,7 @@ function readReview(stateDir, today) {
     overdue: mandates.filter((m) => m.overdue),
     targets: Array.isArray(json.targets) ? json.targets : [],
     selfChanges: Array.isArray(json.self_changes) ? json.self_changes : [],
+    asks,
   };
 }
 
@@ -257,6 +268,21 @@ async function main(argv) {
       `The last review is from ${review.generated}, not today (${today}). If the review ran, check ~/.local/state/btc500-growth/last-review.txt.`,
     );
   }
+  if (review.asks?.length) {
+    const overdueAsks = review.asks.filter((a) => a.overdue);
+    preflight.notes.push(
+      `${review.asks.length} ask(s) are waiting on the owner, not on you: ` +
+        `${review.asks.map((a) => `${a.channel}${a.by ? ` by ${a.by}` : ""}`).join(", ")}. ` +
+        `Full text in ${join(stateDir, "owner-asks.txt")}. Do not post anything yourself — ` +
+        "if a mandate says to prepare the asset behind an ask, prepare it; otherwise it is not your work.",
+    );
+    if (overdueAsks.length) {
+      preflight.notes.push(
+        `${overdueAsks.length} owner ask(s) are past their by date (${overdueAsks.map((a) => a.id).join(", ")}). ` +
+          "The next review must restate them narrower instead of letting them lapse.",
+      );
+    }
+  }
   if (review.streak >= 2) {
     preflight.notes.push(
       `${review.streak} consecutive non-improving reviews. Publishing more of the same is not the answer — read why[] in scripts/autonomous/review-latest.json before choosing today's work.`,
@@ -291,7 +317,8 @@ async function main(argv) {
   );
   console.log(
     `review=${review.present ? (review.verdict ?? "?") : "none"} generated=${review.generated ?? "-"} ` +
-      `fresh=${review.fresh} mandates=${review.mandates.length} due=${dueMandates.length} streak=${review.streak}`,
+      `fresh=${review.fresh} mandates=${review.mandates.length} due=${dueMandates.length} ` +
+      `asks=${review.asks?.length ?? 0} streak=${review.streak}`,
   );
   if (lastRun?.timestamp)
     console.log(

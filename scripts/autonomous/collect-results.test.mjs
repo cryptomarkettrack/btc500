@@ -7,6 +7,7 @@ import test from "node:test";
 import {
   THRESHOLDS,
   applyRule,
+  askEffectSignal,
   backfillHistory,
   comparableRow,
   computeSignals,
@@ -499,6 +500,84 @@ test("shipping four cycles with nothing moving is flagged as yield without resul
   const yieldSignal = signalById(signals, "cycle-yield");
   assert.equal(yieldSignal.state, "stalled");
   assert.match(yieldSignal.evidence, /5 cycle\(s\) shipped/);
+});
+
+test("before any ask is issued there is nothing to measure", () => {
+  assert.equal(
+    askEffectSignal({ previousReview: { asks: [] }, ga4: parseGa4(ga4Json()), today: TODAY }),
+    null,
+  );
+  assert.equal(
+    askEffectSignal({ previousReview: null, ga4: parseGa4(ga4Json()), today: TODAY }),
+    null,
+  );
+  // A review without owner_asks[] (an improving one) leaves no signal either.
+  assert.equal(
+    askEffectSignal({
+      previousReview: { generated: TODAY },
+      ga4: parseGa4(ga4Json()),
+      today: TODAY,
+    }),
+    null,
+  );
+});
+
+test("a fresh ask is waited on, not judged", () => {
+  const ask = { id: "x-post", channel: "x", referrers: ["x.com"], by: "2026-10-24" };
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-10-24", asks: [ask] },
+    ga4: parseGa4(ga4Json()),
+    today: TODAY,
+  });
+  assert.equal(signal.state, "flat");
+  assert.match(signal.evidence, /1d old/);
+  assert.match(signal.evidence, /measurable after 2026-10-31/);
+  assert.ok(THRESHOLDS.askMeasureDays >= 7);
+});
+
+test("an ask that produced a referral from its own channel is green", () => {
+  const ask = { id: "x-post", channel: "x", referrers: ["x.com"], by: "2026-10-15" };
+  const ga4 = parseGa4(
+    ga4Json({
+      tables: {
+        referrals: [
+          {
+            dimensionValues: [{ value: "x.com" }],
+            metricValues: [{ value: "3" }],
+          },
+        ],
+        channels: [],
+        landing: [],
+      },
+    }),
+  );
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-10-15", asks: [ask] },
+    ga4,
+    today: TODAY,
+  });
+  assert.equal(signal.state, "green");
+  assert.match(signal.evidence, /produced 3 session\(s\) from x\.com/);
+});
+
+test("an ask that produced nothing after a week is reported as stalled", () => {
+  const ask = { id: "x-post", channel: "x", referrers: ["x.com"], by: "2026-10-16" };
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-10-16", asks: [ask] },
+    ga4: parseGa4(ga4Json()),
+    today: TODAY,
+  });
+  assert.equal(signal.state, "stalled");
+  assert.match(signal.evidence, /0 referral sessions in 9d/);
+  assert.match(signal.evidence, /restate it narrower/);
+
+  // Missing GA4 is "unknown", never a pass or a failure.
+  const blind = askEffectSignal({
+    previousReview: { generated: "2026-10-16", asks: [ask] },
+    ga4: null,
+    today: TODAY,
+  });
+  assert.equal(blind.state, "unknown");
 });
 
 test("stale or missing reports block every claim", () => {

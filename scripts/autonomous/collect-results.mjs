@@ -48,6 +48,8 @@ const THRESHOLDS = {
   nonBrandStallDays: 21,
   referralGreenDays: 7,
   referralStallDays: 30,
+  /** An owner ask needs this long to show up as a referral session. */
+  askMeasureDays: 7,
   trendUpPct: 0.1,
   trendDownPct: 0.3,
   /** A drop only counts as a regression when the old number was big enough for
@@ -81,6 +83,18 @@ function isoToday() {
   const offset = now.getTimezoneOffset() * 60_000;
   return new Date(now.getTime() - offset).toISOString().slice(0, 10);
 }
+
+/** GA4 referrer substrings that prove each distribution channel fired. */
+const CHANNEL_REFERRERS = {
+  x: ["x.com", "twitter.com"],
+  reply: ["x.com", "twitter.com"],
+  community: ["reddit.com", "news.ycombinator.com", "bitcointalk.org", "t.me", "discord"],
+  newsletter: [],
+  email: [],
+  embed: [],
+  github: ["github.com"],
+  other: [],
+};
 
 function shiftDays(date, days) {
   const t = Date.parse(`${date}T00:00:00Z`) + days * 86_400_000;
@@ -441,7 +455,16 @@ export function daysSincePositive(rows, today, field) {
 
 // ----------------------------------------------------------------- signals ---
 
-export function computeSignals({ rows, today, perf, insp, ga4, activity, sources }) {
+export function computeSignals({
+  rows,
+  today,
+  perf,
+  insp,
+  ga4,
+  activity,
+  sources,
+  previousReview,
+}) {
   const signals = [];
   const oldest = rows.length ? rows[0] : null;
   const span = oldest ? daysBetween(oldest.date, today) : 0;
@@ -665,7 +688,77 @@ export function computeSignals({ rows, today, perf, insp, ga4, activity, sources
       : `All reports fetched within ${THRESHOLDS.staleHours}h.`,
   });
 
+  // 9. ask-effect — did the action we asked the owner to take produce anything?
+  //    Only appears once an ask exists: before that there is nothing to measure,
+  //    and "not asked yet" is a note for the reviewer, not a signal.
+  const askSignal = askEffectSignal({ previousReview, ga4, today });
+  if (askSignal) signals.push(askSignal);
+
   return signals.filter(Boolean);
+}
+
+/**
+ * The owner half of the loop: an ask was issued, so the next review must be
+ * able to say whether it worked. Referrers default per channel so a reviewer
+ * cannot "forget" the machine-readable half of the ask.
+ */
+export function askEffectSignal({ previousReview, ga4, today }) {
+  const asks = Array.isArray(previousReview?.asks) ? previousReview.asks.filter(Boolean) : [];
+  if (!asks.length) return null;
+  const ask = [...asks].sort((a, b) => String(b.by ?? "").localeCompare(String(a.by ?? "")))[0];
+  const issued = previousReview.generated || ask.by || today;
+  const channel = String(ask.channel ?? "other");
+  if (!ga4) {
+    return {
+      id: "ask-effect",
+      kind: "outcome",
+      state: "unknown",
+      evidence: `The ${channel} ask issued ${issued} cannot be measured: no GA4 report.`,
+    };
+  }
+  const needles = (
+    Array.isArray(ask.referrers) && ask.referrers.length
+      ? ask.referrers
+      : (CHANNEL_REFERRERS[channel] ?? [])
+  )
+    .map((n) => String(n).toLowerCase())
+    .filter(Boolean);
+  const hit = ga4.referrals.find(
+    (row) =>
+      needles.some((n) =>
+        String(row.source ?? "")
+          .toLowerCase()
+          .includes(n),
+      ) && row.sessions > 0,
+  );
+  const age = Math.max(0, daysBetween(issued, today));
+  if (hit) {
+    return {
+      id: "ask-effect",
+      kind: "outcome",
+      state: "green",
+      evidence: `The ${channel} ask issued ${issued} produced ${hit.sessions} session(s) from ${hit.source}.`,
+      current: hit.sessions,
+    };
+  }
+  if (age < THRESHOLDS.askMeasureDays) {
+    return {
+      id: "ask-effect",
+      kind: "outcome",
+      state: "flat",
+      evidence: `The ${channel} ask issued ${issued} is ${age}d old; measurable after ${shiftDays(issued, THRESHOLDS.askMeasureDays)}.`,
+      current: 0,
+    };
+  }
+  return {
+    id: "ask-effect",
+    kind: "outcome",
+    state: "stalled",
+    evidence:
+      `The ${channel} ask of ${issued} produced 0 referral sessions in ${age}d ` +
+      `(${needles.join(", ") || "no referrers listed"}) — restate it narrower or change channel.`,
+    current: 0,
+  };
 }
 
 function trendSignal({ id, rows, today, perf, field, label, windowField, window }) {
@@ -769,10 +862,21 @@ function pickReport(dir, prefix, preferDays) {
 function readReview(repoRoot) {
   const file = join(repoRoot, "scripts", "autonomous", "review-latest.json");
   const json = readJson(file);
-  if (!json) return { file, present: false, mandates: [], targets: [], overdue: [] };
+  if (!json) {
+    return {
+      file,
+      present: false,
+      mandates: [],
+      targets: [],
+      overdue: [],
+      asks: [],
+      asksOverdue: [],
+    };
+  }
   const today = isoToday();
   const mandates = Array.isArray(json.mandates) ? json.mandates : [];
   const targets = Array.isArray(json.targets) ? json.targets : [];
+  const asks = Array.isArray(json.owner_asks) ? json.owner_asks.filter(Boolean) : [];
   return {
     file,
     present: true,
@@ -783,6 +887,8 @@ function readReview(repoRoot) {
     targets,
     overdue: mandates.filter((m) => m.due && m.due < today),
     self_changes: Array.isArray(json.self_changes) ? json.self_changes : [],
+    asks,
+    asksOverdue: asks.filter((a) => a.by && a.by < today),
   };
 }
 
@@ -833,9 +939,18 @@ async function main(argv) {
     ? parseActivity(readFileSync(statusPath, "utf8"), today)
     : null;
 
-  const signals = computeSignals({ rows, today, perf, insp, ga4, activity, sources });
-  const rule = applyRule(signals);
   const previousReview = readReview(REPO_ROOT);
+  const signals = computeSignals({
+    rows,
+    today,
+    perf,
+    insp,
+    ga4,
+    activity,
+    sources,
+    previousReview,
+  });
+  const rule = applyRule(signals);
   const streak = reviewStreak(stateDir);
 
   const currentByMetric = {
@@ -883,6 +998,19 @@ async function main(argv) {
         previousReview.overdue.map((m) => m.id).join(", "),
     );
   }
+  if (previousReview.asksOverdue.length) {
+    input.notes.push(
+      `${previousReview.asksOverdue.length} ask(s) from ${previousReview.generated} are past their by date: ` +
+        `${previousReview.asksOverdue.map((a) => `${a.id} (${a.channel})`).join(", ")} — ` +
+        "restate them narrower instead of letting them lapse, or record what stopped them.",
+    );
+  }
+  if (previousReview.asks.length === 0) {
+    input.notes.push(
+      "No owner ask has ever been issued. While results are flat, owner_asks[] is where the " +
+        "highest-leverage work lives: the automation cannot post, pitch or earn links by itself.",
+    );
+  }
   if (streak.nonImproving >= 3) {
     input.notes.push(
       `${streak.nonImproving} consecutive non-improving reviews. Strategy, not effort, is now the question.`,
@@ -903,6 +1031,12 @@ async function main(argv) {
     `signals=green:${rule.outcomeGreen} stalled:${rule.stalled} regressed:${rule.regressed.length} ` +
       `stale:${rule.stale} may_claim_improving:${rule.mayClaimImproving}`,
   );
+  if (previousReview.asks.length) {
+    console.log(
+      `asks=${previousReview.asks.length} from ${previousReview.generated} ` +
+        `(overdue:${previousReview.asksOverdue.length})`,
+    );
+  }
   for (const signal of signals) {
     console.log(`signal ${signal.id}=${signal.state}: ${signal.evidence}`);
   }

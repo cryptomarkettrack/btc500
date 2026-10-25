@@ -17,6 +17,8 @@
 #   3. review    run the agent with GROWTH_REVIEW.md + the run context
 #   4. check     validate review-latest.json against the rule (see
 #                validate-review.mjs); an invalid verdict is a failed run
+#   4b. asks     render owner_asks[] — the actions only the owner can take —
+#                into <state>/owner-asks.txt, the notification, and the commit
 #   5. gate      `npm test` + `tsc --noEmit` before anything is pushed
 #   6. deploy    push, wait for the Vercel commit status on the pushed sha
 #   7. report    append review-history.csv, notify, update last-review.txt
@@ -43,6 +45,7 @@ REVIEW_FILE="$SCRIPT_DIR/review-latest.json"
 INPUT_FILE="$STATE_DIR/review-input.json"
 VALIDATOR="$SCRIPT_DIR/validate-review.mjs"
 COLLECTOR="$SCRIPT_DIR/collect-results.mjs"
+RENDERER="$SCRIPT_DIR/render-asks.mjs"
 AGENT="${BTC500_REVIEW_AGENT:-growth-review}"
 OPENCODE_CMD="${BTC500_REVIEW_OPENCODE:-opencode}"
 SITE="${BTC500_GROWTH_SITE:-https://btc500.net}"
@@ -94,43 +97,53 @@ VERCEL_STATE="skipped"
 RUNNER_CHECK="none"
 STATUS_NOTE=""
 COLLECTED=0
+ASK_COUNT=0
+ASK_NOTIFY=""
 
 # Shared: log, notify, acquire_lock, wait_for_stability, btc_validate,
 # btc_vercel_wait, btc_repo_slug. See lib.sh for the globals each expects.
 source "$SCRIPT_DIR/lib.sh"
 
 status_message() {
-  local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}"
+  local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}" msg
   case "$status" in
-    improving)        echo "Results improved: verdict=${VERDICT}, ${GREEN_COUNT} positive signals. ${MANDATE_COUNT} mandate(s) for the next cycle." ;;
-    stagnant)         echo "No measurable gain. Verdict=stagnant, ${GREEN_COUNT} positive signal(s), ${STALLED_COUNT} stalled. ${MANDATE_COUNT} mandate(s) issued — the next cycle must execute them." ;;
-    failing)          echo "Results are going backwards. Verdict=failing, ${GREEN_COUNT} positive signal(s). ${MANDATE_COUNT} mandate(s) issued." ;;
-    verdict-invalid)  echo "The reviewer's verdict was rejected: ${STATUS_NOTE}" ;;
-    no-review)        echo "The reviewer produced no review-latest.json. The run failed." ;;
-    deferred)         echo "The growth cycle still holds the tree after ${LOCK_WAIT}s; no review ran." ;;
-    validation-failed) echo "Local checks failed (${TEST_STATE}); the review was not pushed." ;;
-    push-blocked)     echo "The review could not be pushed (tree dirty or remote rejected). Head ${head} is local only." ;;
-    failed)           echo "Configuration or setup failure. Check the log." ;;
-    *)                echo "status=${status} verdict=${VERDICT} tests=${TEST_STATE} vercel=${VERCEL_STATE}." ;;
+    improving)        msg="Results improved: verdict=${VERDICT}, ${GREEN_COUNT} positive signals. ${MANDATE_COUNT} mandate(s) for the next cycle." ;;
+    stagnant)         msg="No measurable gain. Verdict=stagnant, ${GREEN_COUNT} positive signal(s), ${STALLED_COUNT} stalled. ${MANDATE_COUNT} mandate(s) issued — the next cycle must execute them." ;;
+    failing)          msg="Results are going backwards. Verdict=failing, ${GREEN_COUNT} positive signal(s). ${MANDATE_COUNT} mandate(s) issued." ;;
+    verdict-invalid)  msg="The reviewer's verdict was rejected: ${STATUS_NOTE}" ;;
+    no-review)        msg="The reviewer produced no review-latest.json. The run failed." ;;
+    deferred)         msg="The growth cycle still holds the tree after ${LOCK_WAIT}s; no review ran." ;;
+    validation-failed) msg="Local checks failed (${TEST_STATE}); the review was not pushed." ;;
+    push-blocked)     msg="The review could not be pushed (tree dirty or remote rejected). Head ${head} is local only." ;;
+    failed)           msg="Configuration or setup failure. Check the log." ;;
+    *)                msg="status=${status} verdict=${VERDICT} tests=${TEST_STATE} vercel=${VERCEL_STATE}." ;;
   esac
+  # The asks are the part addressed to a person, not to the pipeline — they
+  # ride in the notification because that is the only surface the owner reads.
+  if [[ -n "$ASK_NOTIFY" ]]; then
+    msg="${msg}
+
+${ASK_NOTIFY}"
+  fi
+  echo "$msg"
 }
 
 finish() {
   local code="$1" status="$2"
   local model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:-unknown}"
 
-  printf '%s status=%s model=%s head=%s verdict=%s green=%s stalled=%s mandates=%s check=%s tests=%s vercel=%s note=%s\n' \
+  printf '%s status=%s model=%s head=%s verdict=%s green=%s stalled=%s mandates=%s asks=%s check=%s tests=%s vercel=%s note=%s\n' \
     "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$head" \
-    "$VERDICT" "$GREEN_COUNT" "$STALLED_COUNT" "$MANDATE_COUNT" "$RUNNER_CHECK" \
+    "$VERDICT" "$GREEN_COUNT" "$STALLED_COUNT" "$MANDATE_COUNT" "$ASK_COUNT" "$RUNNER_CHECK" \
     "$TEST_STATE" "$VERCEL_STATE" "${STATUS_NOTE:-none}" > "$STATUS_FILE"
 
   btc_append_history "$HISTORY_FILE" \
-    "timestamp,status,model,verdict,green,stalled,mandates,runner_check,note" \
+    "timestamp,status,model,verdict,green,stalled,mandates,asks,runner_check,note" \
     "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$VERDICT" \
-    "$GREEN_COUNT" "$STALLED_COUNT" "$MANDATE_COUNT" "$RUNNER_CHECK" "${STATUS_NOTE:-none}"
+    "$GREEN_COUNT" "$STALLED_COUNT" "$MANDATE_COUNT" "$ASK_COUNT" "$RUNNER_CHECK" "${STATUS_NOTE:-none}"
 
   rm -rf "$LOCK_DIR"
-  log "Finished: status=$status model=$model head=$head verdict=$VERDICT green=$GREEN_COUNT stalled=$STALLED_COUNT mandates=$MANDATE_COUNT check=$RUNNER_CHECK tests=$TEST_STATE vercel=$VERCEL_STATE"
+  log "Finished: status=$status model=$model head=$head verdict=$VERDICT green=$GREEN_COUNT stalled=$STALLED_COUNT mandates=$MANDATE_COUNT asks=$ASK_COUNT check=$RUNNER_CHECK tests=$TEST_STATE vercel=$VERCEL_STATE"
   notify "BTC500 review: ${status}" "$(status_message "$status")"
   exit "$code"
 }
@@ -157,7 +170,7 @@ for bin in "$OPENCODE_CMD" git curl node npm; do
   fi
 done
 
-for file in "$PROMPT_FILE" "$VALIDATOR" "$COLLECTOR"; do
+for file in "$PROMPT_FILE" "$VALIDATOR" "$COLLECTOR" "$RENDERER"; do
   if [[ ! -f "$file" ]]; then
     log "FATAL: required file missing: $file"
     finish 3 failed
@@ -276,6 +289,9 @@ REVIEW FILE TO WRITE: $SCRIPT_DIR/review-latest.json   (then commit and push it)
 $RULE_LINE
 Exit codes do not reach you: the runner validates the file you leave behind.
 If may_claim_improving=false you may NOT write verdict \"improving\".
+A non-improving verdict must carry at least one owner_asks[] entry (§5b): a
+finished, copy-paste-ready action for the owner, with url on https://btc500.net.
+The runner renders those asks to owner-asks.txt, the notification and the commit.
 Write the file, commit it, push it, then print the report from §9."
 
 log "--- Runner ---"
@@ -349,17 +365,19 @@ try {
     signals.filter((s) => s.state === "green").length,
     signals.filter((s) => s.state === "stalled").length,
     Array.isArray(j.mandates) ? j.mandates.length : 0,
+    Array.isArray(j.owner_asks) ? j.owner_asks.length : 0,
   ].join(" "));
 } catch {
-  console.log("none 0 0 0");
+  console.log("none 0 0 0 0");
 }
 ' "$REVIEW_FILE" 2>&1)"
-read -r VERDICT GREEN_COUNT STALLED_COUNT MANDATE_COUNT <<< "$VERDICT_READ"
+read -r VERDICT GREEN_COUNT STALLED_COUNT MANDATE_COUNT ASK_COUNT <<< "$VERDICT_READ"
 VERDICT="${VERDICT:-none}"
 GREEN_COUNT="${GREEN_COUNT:-0}"
 STALLED_COUNT="${STALLED_COUNT:-0}"
 MANDATE_COUNT="${MANDATE_COUNT:-0}"
-log "Verdict: $VERDICT (green=$GREEN_COUNT stalled=$STALLED_COUNT mandates=$MANDATE_COUNT)"
+ASK_COUNT="${ASK_COUNT:-0}"
+log "Verdict: $VERDICT (green=$GREEN_COUNT stalled=$STALLED_COUNT mandates=$MANDATE_COUNT asks=$ASK_COUNT)"
 
 case "$VALID_RC" in
   0) RUNNER_CHECK="pass" ;;
@@ -373,6 +391,24 @@ case "$VALID_RC" in
     STATUS_NOTE="review-latest.json was not produced"
     ;;
 esac
+
+# -------------------------------------------------------------------- asks ---
+# A verdict that is missing results must also be missing nothing the owner
+# could have done: render owner_asks[] the moment the verdict is accepted, so
+# they reach the owner as a file, a notification and (below) a commit body.
+
+if [[ "$RUNNER_CHECK" == "pass" && "$ASK_COUNT" -gt 0 ]]; then
+  log "--- Rendering $ASK_COUNT owner ask(s) ---"
+  ASKS_FILE_OUT="$(node "$RENDERER" --format file --state-dir "$STATE_DIR" 2>&1)"
+  log "  ${ASKS_FILE_OUT:-rendered}"
+  ASK_NOTIFY="$(node "$RENDERER" --format notify --state-dir "$STATE_DIR" 2>/dev/null)"
+  if [[ -z "$ASK_NOTIFY" ]]; then
+    ASK_NOTIFY="$ASKS_FILE_OUT"
+  fi
+  log "  notify: $(printf '%s' "$ASK_NOTIFY" | tr '\n' ' ' | cut -c1-240)"
+else
+  ASK_NOTIFY=""
+fi
 
 # ---------------------------------------------------------------- validation ---
 
@@ -408,8 +444,14 @@ if [[ -n "$DIRTY" ]]; then
     log "Committed the rejected verdict as evidence (check=$RUNNER_CHECK)"
   else
     git add -A
-    git commit -q -m "review: ${VERDICT} — collected by the runner (agent exited without committing)" \
-      || log "WARN: could not commit the review"
+    ASK_BODY="$(node "$RENDERER" --format commit --state-dir "$STATE_DIR" 2>/dev/null)"
+    if [[ -n "$ASK_BODY" ]]; then
+      git commit -q -m "review: ${VERDICT} — collected by the runner (agent exited without committing)" \
+        -m "$ASK_BODY" || log "WARN: could not commit the review"
+    else
+      git commit -q -m "review: ${VERDICT} — collected by the runner (agent exited without committing)" \
+        || log "WARN: could not commit the review"
+    fi
     COLLECTED=1
     STATUS_NOTE="collected-uncommitted"
     log "Collected the reviewer's uncommitted work into a commit"

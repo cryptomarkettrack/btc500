@@ -71,9 +71,12 @@ Verdicts:
 5. **Verdict** per the hard rule.
 6. **Mandates** (§5): one concrete action per stalled signal, for the next
    cycle to execute. This is how your review changes tomorrow.
-7. **Targets** (§6): what must be true by when. You own these numbers.
-8. **Improve the machine** (§7) when the machine is the problem.
-9. **Write the file** (§9), commit it, print your report.
+7. **Asks** (§5b): when results are flat, one finished action only the owner
+   can take — an X post written out in full, a pitch, a link request. This is
+   how your review changes the outside world, which the cycle cannot touch.
+8. **Targets** (§6): what must be true by when. You own these numbers.
+9. **Improve the machine** (§7) when the machine is the problem.
+10. **Write the file** (§9), commit it, print your report.
 
 ## 3. What counts as a result
 
@@ -126,6 +129,63 @@ the cycle must work them before its backlog).
 - If a mandate cannot be finished in one cycle, split it.
 - Overdue mandates from the previous review must be re-stated or explicitly
   dropped with a reason — never silently forgotten.
+
+## 5b. Asks — when there are no results, order what only the owner can do
+
+We ship code and copy from inside this repository. We cannot post from an
+account, get into a newsletter, or ask a stranger for a link. When the verdict
+is not `improving`, distribution is the bottleneck, and your highest-leverage
+output is an **ask**: one finished action the owner can take in five minutes,
+already written. The runner rejects a non-improving review without one.
+
+```json
+{
+  "id": "x-cycle-window-post",
+  "channel": "x",
+  "action": "Post this from @btc500halving today between 15:00 and 17:00 UTC",
+  "content": "The 500-day window opens 28 Nov 2026. Where does this cycle sit against 2016/2020/2024? Updated daily: https://btc500.net/bitcoin-500-day-cycle",
+  "url": "https://btc500.net/bitcoin-500-day-cycle",
+  "because": "0 non-brand clicks in 24d, 6/25 URLs indexed — the site has no external signal at all",
+  "measure": "GA4 referral sessions from x.com/twitter.com within 7 days",
+  "referrers": ["x.com", "twitter.com"],
+  "by": "2026-10-27"
+}
+```
+
+The runner enforces:
+
+- Non-improving verdict → `owner_asks[]` has at least one entry (cap 5).
+- `content` is **verbatim** — the exact post, comment, subject line or email
+  body. No placeholders, no "write something about…". The owner copies it as it
+  is; that is the entire point.
+- `channel` is one of `x`, `reply`, `community`, `newsletter`, `email`,
+  `embed`, `github`, `other`.
+- For `x`/`reply`, `content` is ≤ 280 characters including the link.
+- `url` starts with `https://btc500.net`. An ask that does not send people
+  here is advice, not an ask.
+- `measure` names a signal the collector reads; `referrers` are the GA4 source
+  substrings it matches (`x` → `x.com`, `twitter.com`).
+- `by` is today..today+14. A lapsed ask must be restated narrower next review,
+  never silently dropped.
+
+Aim by evidence, not habit:
+
+| evidence says…                          | ask for…                                                                                                                                         |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| not indexed, no referrals               | a link: awesome-list/`github` PR, a community post carrying the data table, a pitch to a newsletter or roundup                                   |
+| indexed but nobody clicks               | an audience that already reads this: X post from [@btc500halving](https://x.com/btc500halving), a reply under a large Bitcoin account, Reddit/HN |
+| we have traffic, but only our own name  | `embed`/`email`: offer the cycle table to a writer already covering the halving                                                                  |
+| an experiment died for lack of exposure | the cheapest channel that reaches the people the experiment assumed                                                                              |
+
+The loop closes: next review, the `ask-effect` signal measures whether the
+`referrers` you named produced sessions. Nothing after 7 days is reported as
+`stalled` — so make each ask small enough to be done today and specific enough
+to be measurable (`one account, one time, one link`), and restate it narrower
+rather than swapping in a fresh idea unless the channel itself is wrong.
+
+The runner renders the asks into `<state>/owner-asks.txt`, into the owner
+notification, and into the commit body — so write them as if the owner will
+read nothing else.
 
 ## 6. Targets
 
@@ -216,6 +276,19 @@ Write `scripts/autonomous/review-latest.json`:
       "status": "miss-so-far"
     }
   ],
+  "owner_asks": [
+    {
+      "id": "x-cycle-window-post",
+      "channel": "x",
+      "action": "Post this from @btc500halving today between 15:00 and 17:00 UTC",
+      "content": "The 500-day window opens 28 Nov 2026. Where does this cycle sit against 2016/2020/2024? Updated daily: https://btc500.net/bitcoin-500-day-cycle",
+      "url": "https://btc500.net/bitcoin-500-day-cycle",
+      "because": "0 non-brand clicks in 24d, 6/25 URLs indexed — no external signal at all",
+      "measure": "GA4 referral sessions from x.com/twitter.com within 7 days",
+      "referrers": ["x.com", "twitter.com"],
+      "by": "2026-10-27"
+    }
+  ],
   "self_changes": ["Dropped the 3 lowest-value backlog items from GROWTH_PROMPT.md §Backlog"],
   "next_review_focus": "Whether indexation moved after the merges"
 }
@@ -227,6 +300,10 @@ Requirements the runner validates (a violation fails the run):
 - If `rule.mayClaimImproving` is false → verdict is not `improving`.
 - Non-improving verdict → at least one mandate, each with `due` within 14 days,
   and at least one entry in `why[]`.
+- Non-improving verdict → at least one `owner_asks[]` entry (§5b), each with
+  `channel`, `action`, `content`, `url` starting `https://btc500.net`,
+  `because`, `measure` and `by` within 14 days; `content` ≤ 280 chars for
+  `x`/`reply`.
 - At least three entries in `signals[]`, each with an `id` and a `note`.
 - At least one target with `metric`, `current`, `target`, `by`.
 - Third consecutive non-improving review → at least one `self_changes[]`.
@@ -237,6 +314,16 @@ Commit with:
 review: <verdict> — <one line about the result, with the number>
 ```
 
+and, when you issued asks, a line carrying them — the owner reads commits, so
+the ask has to travel in one:
+
+```
+ASKS: <channel> by <date> — <the action in one line>
+```
+
+(repeat one `ASKS:` line per ask; put the verbatim text in the commit body if
+it fits — it is always in `owner-asks.txt`).
+
 Then print the report (the runner keeps it in the log):
 
 ```
@@ -244,6 +331,7 @@ REVIEW <verdict> (<mode>, <date>)
 RESULT <the one number that moved, or "no measurable result">
 WHY    <root cause, one line>
 MANDATES <id>: <action> [due <date>]   (one per line)
+ASKS   <channel>: <action> [by <date>] (one per line; the text is in owner_asks[].content)
 TARGETS <metric>: <current> -> <target> by <date>
 CHANGED <self_changes, or "none">
 ```

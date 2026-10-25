@@ -54,6 +54,20 @@ function reviewFixture(overrides = {}) {
         status: "miss-so-far",
       },
     ],
+    owner_asks: [
+      {
+        id: "x-cycle-window-post",
+        channel: "x",
+        action: "Post this from @btc500halving today between 15:00 and 17:00 UTC",
+        content:
+          "The 500-day window opens 28 Nov 2026. Where does this cycle sit against 2016/2020/2024? Updated daily: https://btc500.net/bitcoin-500-day-cycle",
+        url: "https://btc500.net/bitcoin-500-day-cycle",
+        because: "0 non-brand clicks in 24d, 6/25 URLs indexed",
+        measure: "GA4 referral sessions from x.com/twitter.com within 7 days",
+        referrers: ["x.com", "twitter.com"],
+        by: "2026-10-27",
+      },
+    ],
     self_changes: [],
     next_review_focus: "indexation after the merge",
     ...overrides,
@@ -200,6 +214,79 @@ test("targets must exist and name a metric, a current value and a date", () => {
       .errors,
     /targets\[0\] is missing by/,
   );
+});
+
+test("a verdict with no results must also order something for the owner", () => {
+  const noAsks = reviewFixture({ owner_asks: [] });
+  assert.match(errorsOf(noAsks).errors, /owner_asks\[\] must hold at least one/);
+  assert.match(errorsOf(noAsks).errors, /something new has to happen outside this repository/);
+
+  // An improving verdict may issue none — the rule above is about flat weeks.
+  const input = inputFixture({
+    rule: {
+      mayClaimImproving: true,
+      outcomeGreen: 2,
+      stalled: 0,
+      regressed: [],
+      stale: false,
+      blockedBecause: [],
+    },
+  });
+  const improving = reviewFixture({
+    verdict: "improving",
+    why: ["Indexation rose 6 -> 9 and non-brand clicks appeared."],
+    owner_asks: [],
+  });
+  assert.equal(errorsOf(improving, input).ok, true);
+});
+
+test("an ask must be copy-paste ready and point at the site", () => {
+  const ask = (over = {}) => ({
+    id: "x-post",
+    channel: "x",
+    action: "Post from @btc500halving",
+    content: "Live: https://btc500.net/bitcoin-500-day-cycle",
+    url: "https://btc500.net/bitcoin-500-day-cycle",
+    because: "no links at all",
+    measure: "referral sessions from x.com",
+    by: "2026-10-27",
+    ...over,
+  });
+
+  const long = reviewFixture();
+  long.owner_asks = [ask({ content: "x".repeat(300) })];
+  assert.match(errorsOf(long).errors, /content is 300 characters; X allows 280/);
+
+  const offsite = reviewFixture();
+  offsite.owner_asks = [ask({ url: "https://example.com/bitcoin" })];
+  assert.match(errorsOf(offsite).errors, /url must start with https:\/\/btc500\.net/);
+
+  const unwritten = reviewFixture();
+  unwritten.owner_asks = [ask({ content: "" })];
+  assert.match(errorsOf(unwritten).errors, /missing content — the verbatim text/);
+
+  const vague = reviewFixture();
+  vague.owner_asks = [ask({ action: "" })];
+  assert.match(errorsOf(vague).errors, /missing an action/);
+
+  const unprovable = reviewFixture();
+  unprovable.owner_asks = [ask({ measure: "" })];
+  assert.match(errorsOf(unprovable).errors, /missing measure/);
+
+  const wrongChannel = reviewFixture();
+  wrongChannel.owner_asks = [ask({ channel: "tiktok" })];
+  assert.match(errorsOf(wrongChannel).errors, /is not one of x\/reply\/community/);
+
+  const lapsed = reviewFixture();
+  lapsed.owner_asks = [ask({ by: "2026-10-20" })];
+  assert.match(errorsOf(lapsed).errors, /restate it narrower instead of letting it lapse/);
+
+  const tooMany = reviewFixture();
+  tooMany.owner_asks = Array.from({ length: 6 }, (_, i) => ask({ id: `a${i}` }));
+  assert.match(errorsOf(tooMany).errors, /cap is 5/);
+
+  const clean = reviewFixture();
+  assert.equal(errorsOf(clean).ok, true);
 });
 
 test("three non-improving reviews in a row force a change to the machine", () => {

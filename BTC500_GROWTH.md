@@ -196,8 +196,9 @@ inconclusive if impressions stay under 20. Next reading 2026-11-19.
    on the site (live date, calendar file, timing table, and now one date on
    every article page). The missing step is distribution: one post from the
    owner's X account and one relevant community post pointing at
-   `/bitcoin-500-day-cycle#timing-heading`. **Blocked:** posting from an
-   external account needs owner authorization.
+   `/bitcoin-500-day-cycle#timing-heading`. The reviewer now writes those posts
+   out in full as **asks** (`owner_asks[]` → `~/.local/state/btc500-growth/owner-asks.txt`
+   and the notification), so the remaining step is a copy-paste by the owner.
 2. **Earn external links — still the actual blocker.** 19 of 25 URLs are not
    indexed and Google fetches then declines. The drawdown and timing tables are
    the most quotable things on the domain. Needs 5–10 real links from Bitcoin
@@ -271,6 +272,18 @@ Activity is not a result, so a second job judges it. `net.btc500.review` runs
 - Three consecutive non-improving reviews force `self_changes[]` in the next
   review — repeating a failing approach is the failure mode this layer exists
   to catch.
+- **Asks — the human half of the loop.** A non-improving verdict must order at
+  least one action **only the owner can take**, written out verbatim: an X post
+  for [@btc500halving](https://x.com/btc500halving), a community comment, a
+  newsletter pitch — `content` to copy-paste as-is (≤280 chars for X), a `url`
+  on `https://btc500.net`, the evidence, and the metric that proves it worked.
+  The validator rejects a stagnant/failing review without one (cap 5). The
+  runner renders `owner_asks[]` into `~/.local/state/btc500-growth/owner-asks.txt`,
+  into the notification, and into the commit body — the ask has to reach the
+  owner on a phone, not sit in a JSON file. Next review, the `ask-effect`
+  signal checks whether the ask's `referrers` produced sessions; nothing after
+  7 days is reported `stalled` and must be restated narrower, never dropped.
+  The daily cycle sees the asks for context only and must not act on them.
 
 ## Open issues
 

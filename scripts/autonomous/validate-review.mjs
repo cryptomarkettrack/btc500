@@ -29,8 +29,13 @@ const DEFAULT_STATE_DIR =
 
 const VERDICTS = ["improving", "stagnant", "failing"];
 const SIGNAL_STATES = ["green", "flat", "stalled", "regressed", "stale", "unknown"];
+const CHANNELS = ["x", "reply", "community", "newsletter", "email", "embed", "github", "other"];
+const SITE_URL = "https://btc500.net";
+/** X counts a link as 23 characters; keep the whole post inside 280 anyway. */
+const X_CONTENT_MAX = 280;
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 const MANDATE_MAX_AGE_DAYS = 14;
+const ASK_MAX = 5;
 
 function shiftDays(date, days) {
   const t = Date.parse(`${date}T00:00:00Z`) + days * 86_400_000;
@@ -67,6 +72,7 @@ export function validateReview(review, input, { today, mode }) {
         mandates: 0,
         targets: 0,
         selfChanges: 0,
+        ownerAsks: 0,
         mayClaimImproving: rule.mayClaimImproving ?? null,
         streak,
       },
@@ -156,7 +162,60 @@ export function validateReview(review, input, { today, mode }) {
     }
   });
 
-  // 6. Three consecutive non-improving reviews means the approach is wrong:
+  // 6. Owner asks: when the site is not gaining, the reviewer must order an
+  //    action only the owner can take — a finished artifact, not an idea.
+  //    The automation cannot post, pitch or build links by itself.
+  const asks = Array.isArray(review.owner_asks) ? review.owner_asks : [];
+  if (!improving && asks.length === 0) {
+    errors.push(
+      "owner_asks[] must hold at least one concrete action for the owner " +
+        "(a post to publish, a link to earn, a pitch to send) — no results means " +
+        "something new has to happen outside this repository",
+    );
+  }
+  if (asks.length > ASK_MAX) {
+    errors.push(`owner_asks has ${asks.length} entries, the cap is ${ASK_MAX}`);
+  }
+  asks.forEach((ask, i) => {
+    const who = `owner_asks[${i}] (${ask?.id ?? "?"})`;
+    if (!isFilled(ask?.id)) errors.push(`owner_asks[${i}] is missing an id`);
+    if (!CHANNELS.includes(ask?.channel)) {
+      errors.push(
+        `${who} channel ${JSON.stringify(ask?.channel)} is not one of ${CHANNELS.join("/")}`,
+      );
+    }
+    if (!isFilled(ask?.action))
+      errors.push(`${who} is missing an action (what exactly to do, where, when)`);
+    if (!isFilled(ask?.content)) {
+      errors.push(`${who} is missing content — the verbatim text the owner copies and pastes`);
+    } else if (
+      (ask.channel === "x" || ask.channel === "reply") &&
+      ask.content.length > X_CONTENT_MAX
+    ) {
+      errors.push(`${who} content is ${ask.content.length} characters; X allows ${X_CONTENT_MAX}`);
+    }
+    if (!isFilled(ask?.url)) {
+      errors.push(
+        `${who} is missing a url — an ask that does not point at the site cannot grow it`,
+      );
+    } else if (!ask.url.startsWith(SITE_URL)) {
+      errors.push(`${who} url must start with ${SITE_URL} (got ${ask.url})`);
+    }
+    if (!isFilled(ask?.because)) errors.push(`${who} is missing the evidence (because)`);
+    if (!isFilled(ask?.measure))
+      errors.push(`${who} is missing measure — how the next review proves it worked`);
+    if (!DATE_RE.test(ask?.by ?? "")) {
+      errors.push(`${who} by ${JSON.stringify(ask?.by)} is not a date`);
+    } else if (ask.by < today) {
+      errors.push(
+        `${who} is due ${ask.by}, which is already past — restate it narrower instead of letting it lapse`,
+      );
+    } else if (ask.by > shiftDays(today, MANDATE_MAX_AGE_DAYS)) {
+      errors.push(`${who} is due ${ask.by}, more than ${MANDATE_MAX_AGE_DAYS} days out`);
+    }
+  });
+
+  // 7. Three consecutive non-improving reviews means the approach is wrong:
   //    the reviewer must have changed the machine, not repeated itself.
   const selfChanges = Array.isArray(review.self_changes)
     ? review.self_changes.filter(isFilled)
@@ -177,6 +236,7 @@ export function validateReview(review, input, { today, mode }) {
       mandates: mandates.length,
       targets: targets.length,
       selfChanges: selfChanges.length,
+      ownerAsks: asks.length,
       mayClaimImproving: rule.mayClaimImproving ?? null,
       streak,
     },
@@ -233,6 +293,7 @@ async function main(argv) {
   console.log(
     `check: verdict=${summary.verdict} mode=${summary.mode} signals=${summary.signals} ` +
       `mandates=${summary.mandates} targets=${summary.targets} self_changes=${summary.selfChanges} ` +
+      `asks=${summary.ownerAsks} ` +
       `rule.may_claim_improving=${summary.mayClaimImproving} streak=${summary.streak}`,
   );
   if (absent) {

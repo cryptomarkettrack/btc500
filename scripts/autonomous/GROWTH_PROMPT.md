@@ -38,6 +38,9 @@ Read it first. It contains:
   signal stopped moving. Mandates outrank this prompt's backlog (see the order
   of work below). `streak` counts consecutive non-improving reviews; past two,
   the reviewer is telling you that publishing more of the same is not working.
+  `asks` are actions for the **owner** (a post to publish, a link to request),
+  rendered to `owner-asks.txt` and sent in the notification — never execute
+  them yourself; prepare the asset instead if a mandate says so.
 - `lastRun` and `site`: what happened last cycle and what production returns now.
 - `notes`: anything the runner wants you to handle first.
 
@@ -109,6 +112,9 @@ progress. One large, verified change beats five shallow ones.
    They come from `scripts/autonomous/review-latest.json`, where the reviewer
    has already tied each one to a stalled signal. Do them before the backlog;
    skipping a mandate is how a failed review gets to repeat itself.
+   `preflight.review.asks` are **not** yours — those are actions for the owner
+   (publish a post, request a link). You touch them only when a mandate says to
+   prepare the asset behind one: the chart, the draft, the outreach pack.
 3. Known defects in `BTC500_GROWTH.md` → Open issues. They are already diagnosed
    and cheap; the EU consent banner while GA4 runs and the two thin URLs have
    been sitting there while new sections shipped.

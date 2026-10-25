@@ -248,6 +248,22 @@ log "Baseline head: ${BASE_HEAD:0:7} (agent starts at ${START_HEAD:0:7})"
 
 PROMPT="$(cat "$PROMPT_FILE")"
 
+# The reviewer's asks belong to the owner, but the cycle must see them: it
+# should not duplicate work somebody was already asked to do, and a mandate may
+# be exactly "prepare the asset the owner will post" (the chart, the draft).
+ASKS_FOR_CYCLE="$(node "$SCRIPT_DIR/render-asks.mjs" --format commit --state-dir "$STATE_DIR" 2>/dev/null)"
+if [[ -n "$ASKS_FOR_CYCLE" ]]; then
+  log "Carrying $(printf '%s' "$ASKS_FOR_CYCLE" | grep -c '^\[' || true) ask(s) into the cycle prompt"
+  PROMPT="${PROMPT}
+
+--- ASKS ALREADY ISSUED TO THE OWNER (context, not your job) ---
+${ASKS_FOR_CYCLE}
+
+These are the owner's actions — do not post, pitch or send anything yourself.
+Do your own work first (preflight notes, then review mandates); if a mandate
+says to prepare the asset behind an ask, prepare it and commit it."
+fi
+
 # ------------------------------------------------------------------- runner ---
 
 
