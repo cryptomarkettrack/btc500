@@ -78,6 +78,65 @@ Same tooling, data state `all`. GSC window ends 2026-10-22; GA4 window ends
 
 ---
 
+## Results review — 2026-10-25 (deep, verdict: stagnant)
+
+First run of the results reviewer. Verdict is forced by the data:
+`rule.mayClaimImproving=false` — 0 positive outcome signals, need 2. Nothing
+regressed, so `stagnant`, not `failing`.
+
+| Signal | Reading | Verdict |
+| --- | --- | --- |
+| Indexed | 6/25, identical on 2026-10-22 and 2026-10-25 | stalled |
+| Non-brand clicks | 0 on 719 attributed non-brand impressions (90d) | stalled |
+| Impressions (7d) | 28, was 45 on 10-22 — under 100, noise | flat |
+| Sessions / referrals | 19 sessions, 18 Direct + 1 Organic, 0 referral | stalled |
+| Owner asks ever issued | 0; `outreach/` holds only `README.txt` | stalled |
+
+What the 6 indexed URLs are: the homepage plus 5 August-dated news articles
+(crawled 2026-08-08 → 08-17). The four pages the product depends on —
+`/bitcoin-500-day-cycle`, `/halving-dates`, `/simulator`,
+`/when-to-sell-bitcoin-after-halving` — are all "Crawled – currently not
+indexed". Every article already carries 4 internal links to the pillar; the
+canonical matches on all 25 URLs. **Internal linking and on-page quality are not
+the missing piece; external authority is.** 0 referring domains, 0 referral
+sessions, 0 posts.
+
+Input vs output: 28 commits since 2026-10-19 (12 on 10-22, 9 on 10-23, 2 on
+10-24, 5 on 10-25). Four substantive product changes — drawdown study, timing
+test, live-date strip, cycle-score removal — and the output is 0 new indexed
+URLs, 0 non-brand clicks, 0 referring domains. The work was competent; it was
+aimed at a URL Google had already declined on 2026-10-22.
+
+Two measurement caveats, recorded so the next review does not over-read this one:
+
+- `results-history.csv` starts 2026-10-22 and `status-history.csv` did not exist
+  at collection time, so "stalled 3d" understates a stall the 90-day report puts
+  at ≥90 days.
+- GSC names a query for only 5 of 26 clicks in 28 days (17 of 49 in 90 days).
+  "0 non-brand clicks" is a floor over 81% of clicks, not a measured zero.
+
+Actions taken by this review: indexation freeze added to
+`GROWTH_PROMPT.md`; the drawdown and timing experiments merged into one
+`distribution-test`; backlog rescored below; `/halving-dates` flagged for a
+merge into the pillar once indexation moves. Owner asks are in
+`~/.local/state/btc500-growth/owner-asks.txt`.
+
+### Competitive benchmark (fetched 2026-10-25)
+
+- **Bitbo, 500-Day Halving Window** — live chart updated every 4 hours, buy/sell
+  markers, per-window return including the open window, methodology published.
+- **bitcoin-daily.com, "The Satoshi Clock"** — live cycle-clock and power-law
+  spiral, predictions "stated before the outcome exists", an arXiv/SSRN paper and
+  open replication code.
+- **btc.aipeterlab.com** — live current-status dashboard: next buy date,
+  countdown, decision path, signal history, +540-day variant.
+
+What we have that they do not: the per-cycle drawdown survival table and the
+entry-timing sensitivity test. What we lack: a live view, a citation block, a
+machine-readable endpoint, and any link. The gap is distribution, not data.
+
+---
+
 ## Completed work
 
 ### 2026-10-25 — One live buy date on every article page
@@ -192,37 +251,36 @@ inconclusive if impressions stay under 20. Next reading 2026-11-19.
 
 ## Next priorities
 
-1. **Own 2026-11-28 — the buy window opens in 34 days.** The unblocked work is
-   on the site (live date, calendar file, timing table, and now one date on
-   every article page). The missing step is distribution: one post from the
-   owner's X account and one relevant community post pointing at
-   `/bitcoin-500-day-cycle#timing-heading`. The reviewer now writes those posts
-   out in full as **asks** (`owner_asks[]` → `~/.local/state/btc500-growth/owner-asks.txt`
-   and the notification), so the remaining step is a copy-paste by the owner.
-2. **Earn external links — still the actual blocker.** 19 of 25 URLs are not
-   indexed and Google fetches then declines. The drawdown and timing tables are
-   the most quotable things on the domain. Needs 5–10 real links from Bitcoin
-   newsletters, communities or data roundups.
-3. **Concentrate the crawlable surface.** `/embed-kit` (274 words) and `/about`
-   (402) are the weakest indexable URLs and both are unknown to Google. Either
-   deepen them with real content or drop them from the sitemap. Keep internal
-   links to the 500-day cluster exact-anchored.
+1. **Distribution, with a citation surface.** The buy window opens in 34 days
+   (2026-11-28) and the site has no external signal: 0 referring domains, 0
+   referral sessions, 19 of 25 URLs unindexed. The cycle's job is the asset — a
+   citation block + `/data/500-day-cycles.json` + 3 send-ready pitches. The
+   owner's job is to publish the asks. Nothing else moves indexation.
+2. **Own 2026-11-28 — the buy window opens in 34 days.** The on-site work is
+   done (live date, calendar file, timing table, drawdown record, one date on
+   every article page). Stop adding to it.
+3. **Indexation is the gate, and it is an authority problem.** 6/25 indexed; the
+   5 subpages Google indexes are August news articles. The pillar was crawled on
+   2026-10-22 and declined. Do not deepen unindexed pages further until a
+   referring domain exists. After that: merge `/halving-dates` into
+   `/bitcoin-500-day-cycle` (one intent, two crawled-not-indexed URLs) and drop
+   `/embed-kit` (274 words) and `/about` (402) from the sitemap.
 
 ## Ranked backlog
 
-Scored 1–10 on impact × confidence ÷ effort (rough, but comparable). The idea
-menu in `scripts/autonomous/GROWTH_PROMPT.md` §3 is the source; this is the
-order to attack it.
+Rescored 2026-10-25 by the review, against the signals that are actually stalled.
+Scored 1–10 on impact × confidence ÷ effort. **Items that add a URL are frozen
+until indexed ≥ 8/25.**
 
-| #   | Bet                         | Why it can move the needle                               | I   | E   |
-| --- | --------------------------- | -------------------------------------------------------- | --- | --- |
-| 1   | Owner-ready outreach pack   | Links are the gate; nothing else moves indexation        | 9   | 2   |
-| 2   | Cycle-vs-cycle live tracker | Nobody plots "where this cycle sits vs 2016/20/24" daily | 8   | 6   |
-| 3   | Machine-readable data + RSS | Citeable endpoints turn one finding into many links      | 8   | 4   |
-| 4   | Cost-of-waiting calculator  | Answers the real question behind the timing table        | 7   | 5   |
-| 5   | Consent banner (defect)     | GA4 is live without it — legal + data-quality risk       | 6   | 2   |
-| 6   | `/cycle/2012…2024` pages    | Per-window stats no competitor publishes                 | 7   | 6   |
-| 7   | Deepen or drop thin URLs    | Two unknown-to-Google URLs diluting the crawl surface    | 5   | 2   |
+| #   | Bet                                          | Why it can move the needle                                                  | I   | E   |
+| --- | -------------------------------------------- | --------------------------------------------------------------------------- | --- | --- |
+| 1   | Outreach pack (3 send-ready pitches)         | Links are the gate; 0 referring domains, 19/25 unindexed                     | 10  | 3   |
+| 2   | Citation block + `/data/500-day-cycles.json` | A writer needs a number, a method and a machine-readable source to cite      | 8   | 2   |
+| 3   | Date-first title/meta on the pillar          | 61 impressions / 0 clicks on the exact cluster, best position 9.1            | 7   | 1   |
+| 4   | Consent banner (defect)                      | GA4 runs without it — legal + data-quality risk, still unfixed               | 6   | 2   |
+| 5   | Merge `/halving-dates` into the pillar       | One intent split across two crawled-not-indexed URLs; 0 impressions in 28d   | 6   | 3   |
+| 6   | Cycle-vs-cycle live tracker                  | Bitbo and bitcoin-daily already own the live view; only pays once indexed    | 4   | 6   |
+| 7   | `/cycle/*` pages, cost-of-waiting calculator | New URLs for a site with 19/25 unindexed — blocked by the freeze             | 3   | 6   |
 
 ## Automation pipeline (installed 2026-10-25)
 
@@ -287,6 +345,14 @@ Activity is not a result, so a second job judges it. `net.btc500.review` runs
 
 ## Open issues
 
+- **GSC query attribution is incomplete: "0 non-brand" is a floor.** The query
+  dimension names only 5 of 26 clicks in 28 days and 17 of 49 in 90 days. Any
+  brand/non-brand split built on it is a lower bound until the collector records
+  unattributed clicks next to attributed ones. Do not report it as an exact
+  count.
+- **Run history started 2026-10-25.** `status-history.csv` did not exist before
+  the 2026-10-25 runner upgrade, so the first review had no activity data and
+  `results-history.csv` holds 4 days. "Stalled 3d" understates older stalls.
 - Clicks from Poland (20 of 24 impressions in 28 days) look like owner or
   internal traffic; treat country splits as noise until volume is larger.
 - `/bear-market` still earns impressions while 301-redirecting to

@@ -100,10 +100,26 @@ A cycle counts as progress only if it does at least one of these:
   measured signal is stalled — read the `because` before you start),
 - moves a page that already has impressions closer to the click,
 - creates an asset a stranger could link to, embed or quote,
+- earns an external link or makes an existing page more citable (a citation
+  block, a data endpoint, a pitch) — while indexation is the gate this counts
+  before new content does,
 - reads and closes an experiment whose reading date has passed.
 
 Rewording, reordering or restyling a page without a measured problem is not
 progress. One large, verified change beats five shallow ones.
+
+### Indexation freeze — set by the 2026-10-25 results review
+
+While fewer than 8 of the 25 sitemap URLs are indexed, **do not add a new page,
+article, route or section.** Indexation, distribution and defects outrank the
+idea menu. A cycle that can find neither should strengthen a page Google already
+indexes rather than publish a new URL. State `indexed X/25` in the commit's
+PERFORMANCE section so the next review can see whether the gate moved. Lifting
+this freeze is the reviewer's call, not the cycle's.
+
+Reason: 5 cycles and 4 shipped features produced 0 new indexed URLs, 0 non-brand
+clicks and 0 referring domains. Every feature landed on a URL Google had already
+crawled and declined. New sections on an unindexed page cannot produce a result.
 
 ### Order of work — never skip ahead
 

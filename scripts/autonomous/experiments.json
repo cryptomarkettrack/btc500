@@ -22,8 +22,8 @@
       "success": "A new referring domain, a mention in a newsletter or data roundup, or a non-brand click on #risk-heading.",
       "inconclusive": "Zero referring domains and under 20 impressions on the section.",
       "next_reading": "2026-11-06",
-      "status": "open",
-      "verdict": null
+      "status": "closed",
+      "verdict": "Merged into distribution-test on 2026-10-25. Its success condition (a referring domain or non-brand click) cannot resolve without distribution, and the site has issued no posts and has no referring domains. The drawdown numbers are now the payload of the owner asks."
     },
     {
       "id": "entry-timing-test",
@@ -33,6 +33,17 @@
       "success": "Any non-brand click or new referring domain by 2026-11-20.",
       "inconclusive": "Impressions stay under 20.",
       "next_reading": "2026-11-19",
+      "status": "closed",
+      "verdict": "Merged into distribution-test on 2026-10-25 for the same reason as drawdown-study: it measures the effect of a page that is not indexed and has never been linked. Its table is the payload of the community ask."
+    },
+    {
+      "id": "distribution-test",
+      "opened": "2026-10-25",
+      "what": "One X post from @btc500halving carrying the drawdown number, one community comment carrying the entry-timing table (both pointing at /bitcoin-500-day-cycle), and 3 send-ready pitches in scripts/autonomous/outreach/.",
+      "hypothesis": "The first external mention is what turns 6/25 indexed into a crawled site. One real referral is evidence the page is worth linking; zero referrals after a finished post means the channel or the audience is wrong.",
+      "success": "At least 1 GA4 referral session from x.com, twitter.com or reddit.com, or 1 new indexed URL, by 2026-11-08.",
+      "inconclusive": "No ask was published by 2026-11-01. Then the test measured the owner's availability, not the channel, and is void.",
+      "next_reading": "2026-11-08",
       "status": "open",
       "verdict": null
     }
