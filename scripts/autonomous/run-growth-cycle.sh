@@ -7,11 +7,24 @@
 # The script is deliberately defensive: it locks against overlapping runs, never
 # force-pushes, never rewrites history, and reports what it actually verified.
 #
+# Pipeline — every stage is logged and recorded in last-status.txt:
+#   1. preflight  refresh the price archive, list due experiments, health check
+#   2. attempt    run the agent, then wait out the handoff: the CLI can exit
+#                 while the session keeps working (exit 130 on every run), so a
+#                 commit landing minutes later counts — not the exit code
+#   3. gate       `npm test` + `tsc --noEmit` before anything is pushed
+#   4. deploy     push, wait for the Vercel commit status on the pushed sha,
+#                 then verify the agent's last-deploy.json manifest against the
+#                 live HTML — a homepage 200 right after a push only proves the
+#                 *previous* deployment is still up
+#   5. report     append status-history.csv, notify, update last-status.txt
+#
 # Usage:
 #   scripts/autonomous/run-growth-cycle.sh            # normal run, logs to state dir
 #   BTC500_GROWTH_DRY_RUN=1 scripts/autonomous/run-growth-cycle.sh
 #
-# Exit codes: 0 shipped/verified, 1 failed, 2 already running, 3 misconfigured.
+# Exit codes: 0 shipped and verified, 1 failed or unverified, 2 already
+# running, 3 misconfigured.
 
 set -uo pipefail
 umask 022
@@ -24,6 +37,8 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/../.." && pwd)"
 STATE_DIR="${BTC500_GROWTH_STATE_DIR:-$HOME/.local/state/btc500-growth}"
 PROMPT_FILE="$SCRIPT_DIR/GROWTH_PROMPT.md"
 AGENT="${BTC500_GROWTH_AGENT:-growth-cycle}"
+# Overridable so the pipeline can be exercised with a fake agent (tests).
+OPENCODE_CMD="${BTC500_GROWTH_OPENCODE:-opencode}"
 SITE="${BTC500_GROWTH_SITE:-https://btc500.net}"
 DEPLOY_BRANCH="${BTC500_GROWTH_BRANCH:-main}"
 
@@ -42,11 +57,23 @@ ATTEMPT_TIMEOUT="${BTC500_GROWTH_ATTEMPT_TIMEOUT:-5400}"
 CYCLE_DEADLINE="${BTC500_GROWTH_DEADLINE:-10800}"
 
 # The OpenCode CLI can exit while the server-side session is still working
-# (observed 2026-10-23: exit 130, commit landed two minutes later). After a
-# non-zero exit, wait at least SETTLE_MIN seconds; keep waiting while the tree
-# is dirty up to SETTLE_MAX.
-SETTLE_MIN="${BTC500_GROWTH_SETTLE_MIN:-120}"
-SETTLE_MAX="${BTC500_GROWTH_SETTLE_MAX:-900}"
+# (observed every run: exit 130 after 10-17 minutes, the first commit landing
+# 136-269s after that exit). The exit code is therefore ignored: after an
+# attempt we observe the repository, then require HEAD and the tree to be
+# unchanged for STABLE_CHECKS checks STABLE_INTERVAL seconds apart.
+# HANDOFF_GRACE is how long we keep watching before concluding "no commit is
+# coming", so a second model is never started on top of a live session.
+SETTLE_MAX="${BTC500_GROWTH_SETTLE_MAX:-1200}"
+HANDOFF_GRACE="${BTC500_GROWTH_HANDOFF_GRACE:-300}"
+STABLE_CHECKS="${BTC500_GROWTH_STABLE_CHECKS:-3}"
+STABLE_INTERVAL="${BTC500_GROWTH_STABLE_INTERVAL:-45}"
+
+# Deploy verification: poll the GitHub commit status (Vercel) for this long.
+DEPLOY_TIMEOUT="${BTC500_GROWTH_DEPLOY_TIMEOUT:-480}"
+DEPLOY_POLL="${BTC500_GROWTH_DEPLOY_POLL:-20}"
+
+# Optional ntfy/Bark/webhook endpoint; osascript is used either way.
+NOTIFY_URL="${BTC500_GROWTH_NOTIFY_URL:-}"
 
 TODAY="$(date +%F)"
 NOW="$(date '+%Y-%m-%d %H:%M:%S %Z')"
@@ -54,6 +81,9 @@ LOG_FILE="$STATE_DIR/$TODAY.log"
 ATTEMPT_DIR="$STATE_DIR/attempts"
 LOCK_DIR="$STATE_DIR/run.lock"
 STATUS_FILE="$STATE_DIR/last-status.txt"
+HISTORY_FILE="$STATE_DIR/status-history.csv"
+PREFLIGHT_FILE="$STATE_DIR/preflight.json"
+ARCHIVE_CSV="public/btc-usd-max.csv"
 
 mkdir -p "$STATE_DIR" "$ATTEMPT_DIR"
 
@@ -61,26 +91,66 @@ log() {
   printf '%s  %s\n' "$(date '+%H:%M:%S')" "$*"
 }
 
+# Result of the current run; every finish() path reports these.
+SUCCESS_MODEL=""
+FINAL_HEAD=""
+TEST_STATE="skipped"
+VERCEL_STATE="skipped"
+MANIFEST_STATE="skipped"
+ARCHIVE_STATE="unknown"
+ARCHIVE_LIVE="n/a"
+SITE_CODE="000"
+STATUS_NOTE=""
+
 notify() {
-  # Best effort macOS notification; harmless when unavailable.
+  # Best effort; harmless when unavailable.
   local title="$1" message="$2"
   /usr/bin/osascript -e "display notification \"${message//\"/\'}\" with title \"${title//\"/\'}\"" \
     >/dev/null 2>&1 || true
+  if [[ -n "$NOTIFY_URL" ]]; then
+    curl -fsS -m 10 -H "title: $title" -d "$message" "$NOTIFY_URL" >/dev/null 2>&1 || true
+  fi
+}
+
+status_message() {
+  local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}"
+  case "$status" in
+    shipped)             echo "Model ${model##*/} shipped ${head} and production serves it (vercel=${VERCEL_STATE}, manifest=${MANIFEST_STATE})." ;;
+    archive-only)        echo "Price archive refreshed to ${ARCHIVE_LAST_ROW:-today} and verified live. The agent produced no commit." ;;
+    archive-unverified)  echo "Price archive was refreshed but production does not serve the new rows yet. Check the log." ;;
+    shipped-unverified)  echo "Model ${model##*/} shipped ${head} but production was not proven: vercel=${VERCEL_STATE}, manifest=${MANIFEST_STATE}. Check the log." ;;
+    deploy-failed)       echo "Vercel reported ${VERCEL_STATE} for ${head}. btc500.net may be serving the previous build." ;;
+    validation-failed)   echo "Local checks failed (${TEST_STATE}); nothing was pushed. Head ${head} is still local." ;;
+    push-blocked)        echo "Commits could not be pushed (tree dirty or remote rejected). Head ${head} is local only." ;;
+    no-commit)           echo "Model ${model##*/} finished without a commit. Archive ${ARCHIVE_STATE}." ;;
+    dirty-tree)          echo "Working tree was left dirty at ${head}. Check the log." ;;
+    site-down)           echo "Production homepage returned ${SITE_CODE}. Check btc500.net now." ;;
+    failed)              echo "Configuration or setup failure. Check the log." ;;
+    *)                   echo "status=${status} vercel=${VERCEL_STATE} manifest=${MANIFEST_STATE}." ;;
+  esac
 }
 
 finish() {
-  local code="$1" status="$2" model="${3:-none}" head="${4:-none}" site="${5:-unknown}"
-  printf '%s status=%s model=%s head=%s site=%s\n' \
-    "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$head" "$site" > "$STATUS_FILE"
+  local code="$1" status="$2"
+  local model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:-unknown}"
+
+  printf '%s status=%s model=%s head=%s tests=%s vercel=%s manifest=%s site=%s archive=%s note=%s\n' \
+    "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$head" \
+    "$TEST_STATE" "$VERCEL_STATE" "$MANIFEST_STATE" "$SITE_CODE" "$ARCHIVE_STATE" \
+    "${STATUS_NOTE:-none}" > "$STATUS_FILE"
+
+  # Append-only history: last-status.txt is overwritten every run, this is not.
+  if [[ ! -f "$HISTORY_FILE" ]]; then
+    printf 'timestamp,status,model,head,tests,vercel,manifest,site,archive,note\n' > "$HISTORY_FILE"
+  fi
+  printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
+    "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$head" \
+    "$TEST_STATE" "$VERCEL_STATE" "$MANIFEST_STATE" "$SITE_CODE" "$ARCHIVE_STATE" \
+    "$(printf '%s' "${STATUS_NOTE:-}" | tr -d ',')" >> "$HISTORY_FILE"
+
   rm -rf "$LOCK_DIR"
-  log "Finished: status=$status model=$model head=$head site=$site"
-  case "$status" in
-    shipped) notify "BTC500 growth: shipped" "Model ${model##*/} pushed ${head:0:7}. Site ${site}." ;;
-    no-commit) notify "BTC500 growth: nothing shipped" "Model ${model##*/} finished without a commit. Check the log." ;;
-    dirty-tree) notify "BTC500 growth: stopped" "Working tree was left dirty. Check the log." ;;
-    failed) notify "BTC500 growth: failed" "All free models failed or timed out. Site ${site}." ;;
-    site-down) notify "BTC500 growth: SITE DOWN" "Production check returned ${site}. Check btc500.net now." ;;
-  esac
+  log "Finished: status=$status model=$model head=$head tests=$TEST_STATE vercel=$VERCEL_STATE manifest=$MANIFEST_STATE site=$SITE_CODE archive=$ARCHIVE_STATE"
+  notify "BTC500 growth: ${status}" "$(status_message "$status")"
   exit "$code"
 }
 
@@ -121,7 +191,7 @@ log "Repo: $REPO_ROOT"
 find "$STATE_DIR" -maxdepth 1 -name '*.log' -mtime +60 -delete 2>/dev/null || true
 find "$ATTEMPT_DIR" -maxdepth 1 -name '*.log' -mtime +30 -delete 2>/dev/null || true
 
-for bin in opencode git curl perl; do
+for bin in "$OPENCODE_CMD" git curl perl node npm; do
   if ! command -v "$bin" >/dev/null 2>&1; then
     log "FATAL: required command not found: $bin"
     finish 3 failed
@@ -151,25 +221,119 @@ else
   fi
 fi
 
-START_HEAD="$(git rev-parse HEAD)"
-START_EPOCH="$(date +%s)"
-
 if [[ "${BTC500_GROWTH_DRY_RUN:-0}" == "1" ]]; then
   log "DRY RUN: prompt is $(wc -c < "$PROMPT_FILE" | tr -d ' ') bytes; models: ${MODELS[*]}"
-  log "DRY RUN: HEAD is $START_HEAD"
+  log "DRY RUN: HEAD is $(git rev-parse HEAD); preflight skipped"
   echo "dry-run ok"
   exit 0
 fi
+
+# Deterministic work the agent should not have to spend a cycle on: refresh the
+# on-site price archive and list what preflight found. The runner writes the
+# summary to $PREFLIGHT_FILE for the agent to read before it decides.
+log "--- Preflight ---"
+PREFLIGHT_OUT="$(node "$SCRIPT_DIR/preflight.mjs" --state-dir "$STATE_DIR" 2>&1)"
+PREFLIGHT_RC=$?
+while IFS= read -r line; do
+  [[ -n "$line" ]] && log "  $line"
+done <<< "$PREFLIGHT_OUT"
+ARCHIVE_STATE="$(printf '%s\n' "$PREFLIGHT_OUT" | sed -n 's/^archive=\([a-z-]*\).*/\1/p' | head -1)"
+ARCHIVE_STATE="${ARCHIVE_STATE:-unknown}"
+ARCHIVE_LAST_ROW="$(printf '%s\n' "$PREFLIGHT_OUT" | sed -n 's/^archive=[a-z-]* last=\([^ ]*\).*/\1/p' | head -1)"
+DUE_EXPERIMENTS="$(printf '%s\n' "$PREFLIGHT_OUT" | sed -n 's/^experiments=open:[0-9]* max:[0-9?]* due:\([0-9]*\).*/\1/p' | head -1)"
+DUE_EXPERIMENTS="${DUE_EXPERIMENTS:-0}"
+if [[ $PREFLIGHT_RC -ne 0 ]]; then
+  log "WARN: preflight exited $PREFLIGHT_RC"
+  STATUS_NOTE="preflight-exit-$PREFLIGHT_RC"
+fi
+
+BASE_HEAD="$(git rev-parse HEAD)"
+
+# The refreshed archive is committed by the runner, not the agent: it is
+# mechanical, and it must not depend on the model having a good day.
+PREFLIGHT_COMMITTED=0
+if [[ -n "$(git status --porcelain -- "$ARCHIVE_CSV" btc-usd-max.csv 2>/dev/null)" ]]; then
+  log "Committing refreshed archive (last row $ARCHIVE_LAST_ROW)"
+  if git add -- "$ARCHIVE_CSV" btc-usd-max.csv \
+    && git commit --quiet -m "growth: refresh the daily price archive" \
+      -m "Preflight appended rows through ${ARCHIVE_LAST_ROW:-today} in $ARCHIVE_CSV and the root copy." \
+      -m "Automated by scripts/autonomous/refresh-archive.mjs (overlap-validated against the existing rows)."; then
+    PREFLIGHT_COMMITTED=1
+    ARCHIVE_STATE="refreshed-committed"
+    log "Archive commit: $(git rev-parse --short HEAD)"
+  else
+    log "WARN: could not commit the refreshed archive"
+    git reset --quiet -- "$ARCHIVE_CSV" btc-usd-max.csv 2>/dev/null || true
+    git checkout -- "$ARCHIVE_CSV" btc-usd-max.csv 2>/dev/null || true
+    ARCHIVE_STATE="commit-failed"
+  fi
+fi
+
+log "Due experiment readings: $DUE_EXPERIMENTS"
+
+START_HEAD="$(git rev-parse HEAD)"
+START_EPOCH="$(date +%s)"
+log "Baseline head: ${BASE_HEAD:0:7} (agent starts at ${START_HEAD:0:7})"
 
 PROMPT="$(cat "$PROMPT_FILE")"
 
 # ------------------------------------------------------------------- runner ---
 
+# The CLI exit code is not a verdict: watch the repository instead.
+#
+#   - Any commit or dirty file resets the quiet counter.
+#   - Until HANDOFF_GRACE has elapsed with no commit, we keep watching: the
+#     session may still be working (observed commits 136-269s after exit), and
+#     starting the next model on top of it would put two sessions in one tree.
+#   - Once a commit has appeared — or the grace period has run out — the state
+#     must stay quiet for STABLE_CHECKS checks before we proceed.
+#
+# Returns 0 when quiet, 1 if SETTLE_MAX passes first (caller decides).
+wait_for_stability() {
+  local before_head="$1"
+  local last_head="$before_head"
+  local started checks=0 seen_change=0 head dirty elapsed
+  started="$(date +%s)"
+  while true; do
+    elapsed=$(( $(date +%s) - started ))
+    if (( elapsed >= SETTLE_MAX )); then
+      log "Stability window expired after ${elapsed}s at ${last_head:0:7}"
+      return 1
+    fi
+    sleep "$STABLE_INTERVAL"
+    head="$(git rev-parse HEAD)"
+    dirty="$(git status --porcelain 2>/dev/null | head -1)"
+
+    if [[ "$head" != "$last_head" || -n "$dirty" ]]; then
+      checks=0
+      if [[ "$head" != "$before_head" ]]; then
+        seen_change=1
+        log "HEAD advanced to ${head:0:7}; starting the stability count"
+      else
+        log "Tree changed (dirty: ${dirty:-none}); restarting the stability count"
+      fi
+      last_head="$head"
+      continue
+    fi
+
+    if (( ! seen_change && elapsed < HANDOFF_GRACE )); then
+      log "Quiet ${elapsed}s/${HANDOFF_GRACE}s with no commit yet; still watching"
+      continue
+    fi
+
+    checks=$((checks + 1))
+    log "Stable $checks/$STABLE_CHECKS at ${head:0:7}, tree clean"
+    if (( checks >= STABLE_CHECKS )); then
+      return 0
+    fi
+  done
+}
+
 SUCCESS_MODEL=""
-SUCCESS_HEAD=""
 LAST_MODEL=""
 LAST_HEAD="$START_HEAD"
 LAST_RC=1
+AGENT_COMMIT=0
 
 for model in "${MODELS[@]}"; do
   if [[ $(( $(date +%s) - START_EPOCH )) -ge "$CYCLE_DEADLINE" ]]; then
@@ -185,7 +349,7 @@ for model in "${MODELS[@]}"; do
   log "Attempt log: $ATTEMPT_LOG"
 
   perl -e 'alarm shift; exec @ARGV' "$ATTEMPT_TIMEOUT" \
-    opencode run \
+    "$OPENCODE_CMD" run \
       --agent "$AGENT" \
       --model "$model" \
       --title "BTC500 daily growth $TODAY" \
@@ -193,97 +357,207 @@ for model in "${MODELS[@]}"; do
       "$PROMPT" 2>&1 | tee -a "$ATTEMPT_LOG"
 
   RC="${PIPESTATUS[0]}"
-  AFTER_HEAD="$(git rev-parse HEAD)"
   LAST_MODEL="$model"
-  LAST_HEAD="$AFTER_HEAD"
   LAST_RC="$RC"
 
-  if [[ "$RC" -eq 124 || "$RC" -eq 142 ]]; then
-    log "Attempt timed out after ${ATTEMPT_TIMEOUT}s"
-  elif [[ "$RC" -ne 0 ]]; then
-    log "Attempt exited with code $RC"
+  case "$RC" in
+    0)   log "CLI exited 0; the session may still be working — waiting for stability" ;;
+    124|142) log "Attempt timed out after ${ATTEMPT_TIMEOUT}s; waiting for stability" ;;
+    130) log "CLI exited 130 (observed on every run so far); exit code ignored, waiting for stability" ;;
+    *)   log "Attempt exited with code $RC; exit code ignored, waiting for stability" ;;
+  esac
+
+  if wait_for_stability "$BEFORE_HEAD"; then
+    AFTER_HEAD="$(git rev-parse HEAD)"
+  else
+    AFTER_HEAD="$(git rev-parse HEAD)"
+    log "No stable state within ${SETTLE_MAX}s"
   fi
 
-  if [[ "$AFTER_HEAD" == "$BEFORE_HEAD" ]]; then
-    # The CLI exiting does not mean the session stopped. Wait for it to settle
-    # before calling the attempt a failure and moving to the next model.
-    SETTLE_START="$(date +%s)"
-    log "No commit yet; waiting up to ${SETTLE_MAX}s for the session to settle"
-    while [[ $(( $(date +%s) - SETTLE_START )) -lt "$SETTLE_MAX" ]]; do
-      sleep 15
-      AFTER_HEAD="$(git rev-parse HEAD)"
-      if [[ "$AFTER_HEAD" != "$BEFORE_HEAD" ]]; then
-        log "HEAD advanced during the settle window after $(( $(date +%s) - SETTLE_START ))s"
-        break
-      fi
-      if [[ $(( $(date +%s) - SETTLE_START )) -ge "$SETTLE_MIN" \
-            && -z "$(git status --porcelain 2>/dev/null)" ]]; then
-        log "Tree is clean and no commit landed; treating the attempt as idle"
-        break
-      fi
-    done
-  fi
+  LAST_HEAD="$AFTER_HEAD"
 
   if [[ "$AFTER_HEAD" != "$BEFORE_HEAD" ]]; then
     log "HEAD advanced: ${BEFORE_HEAD:0:7} -> ${AFTER_HEAD:0:7}"
     SUCCESS_MODEL="$model"
-    SUCCESS_HEAD="$AFTER_HEAD"
+    AGENT_COMMIT=1
     break
   fi
 
   if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    log "Attempt left uncommitted changes after the settle window; not retrying on a dirty tree"
-    finish 1 dirty-tree "$model" "$AFTER_HEAD"
+    log "Attempt left uncommitted changes and never settled; not retrying on a dirty tree"
+    FINAL_HEAD="$AFTER_HEAD"
+    finish 1 dirty-tree
   fi
 
   log "Attempt produced no commit; trying the next free model"
 done
 
-# --------------------------------------------------------------- post-flight ---
+FINAL_HEAD="$(git rev-parse HEAD)"
 
-if [[ -z "$SUCCESS_MODEL" ]]; then
-  log "No model produced a commit"
-  SITE_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/" 2>/dev/null || echo 000)"
-  log "Production homepage: $SITE_CODE"
-  finish 1 no-commit "$LAST_MODEL" "$LAST_HEAD" "$SITE_CODE"
-fi
+# --------------------------------------------------------------- validation ---
 
-log "Attempt succeeded with $SUCCESS_MODEL at $SUCCESS_HEAD"
-
+UNPUSHED=0
 git fetch --quiet origin "$DEPLOY_BRANCH" 2>/dev/null || true
 AHEAD="$(git rev-list --count "origin/$DEPLOY_BRANCH..HEAD" 2>/dev/null || echo 0)"
-PUSHED="no"
 if [[ "$AHEAD" =~ ^[0-9]+$ ]] && [[ "$AHEAD" -gt 0 ]]; then
-  if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    log "WARN: $AHEAD unpushed commit(s) but the tree is dirty; not auto-pushing"
+  UNPUSHED=1
+fi
+
+# Validate whenever there is something new to vouch for: either today's commits
+# (the agent usually pushes from inside its session, so waiting for an unpushed
+# commit would skip the gate) or leftover commits we are about to push.
+if [[ ( "$(git rev-parse HEAD)" != "$BASE_HEAD" || $UNPUSHED -eq 1 ) \
+      && "${BTC500_GROWTH_SKIP_VALIDATE:-0}" != "1" ]]; then
+  log "--- Validation gate: npm test ---"
+  if npm test; then
+    log "--- Validation gate: tsc --noEmit ---"
+    if npx tsc --noEmit; then
+      if [[ -z "$(git status --porcelain 2>/dev/null)" ]]; then
+        TEST_STATE="pass"
+      else
+        TEST_STATE="dirty"
+        log "VALIDATION FAILED: the tree changed while checks were running"
+      fi
+    else
+      TEST_STATE="tsc-failed"
+      log "VALIDATION FAILED: tsc --noEmit"
+    fi
   else
-    log "Safety net: pushing $AHEAD unpushed commit(s) to origin/$DEPLOY_BRANCH"
+    TEST_STATE="test-failed"
+    log "VALIDATION FAILED: npm test"
+  fi
+fi
+
+# -------------------------------------------------------------------- push ----
+
+PUSHED="no"
+if [[ $UNPUSHED -eq 1 ]]; then
+  if [[ "$TEST_STATE" != "pass" ]]; then
+    STATUS_NOTE="local-checks-${TEST_STATE}"
+    log "Not pushing: local checks are ${TEST_STATE}. Commits stay local for review."
+    finish 1 validation-failed
+  elif [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
+    STATUS_NOTE="dirty-tree-blocked-push"
+    log "WARN: $AHEAD unpushed commit(s) but the tree is dirty; not auto-pushing"
+    finish 1 push-blocked
+  else
+    log "Pushing $AHEAD commit(s) to origin/$DEPLOY_BRANCH"
     if git push origin "$DEPLOY_BRANCH"; then
       PUSHED="yes"
     else
-      log "ERROR: safety-net push failed"
+      STATUS_NOTE="push-rejected"
+      log "ERROR: push failed"
+      finish 1 push-blocked
     fi
   fi
 else
   PUSHED="already-up-to-date"
 fi
 
-# Give Vercel time to build, then verify production. Never claim more than seen.
-SITE_CODE="000"
-for i in $(seq 1 12); do
-  SITE_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/" 2>/dev/null || echo 000)"
-  log "Health check $i/12: $SITE -> $SITE_CODE"
-  [[ "$SITE_CODE" == "200" ]] && break
-  sleep 20
-done
+FINAL_HEAD="$(git rev-parse HEAD)"
 
+# --------------------------------------------------------------- deployment ---
+
+REPO_SLUG="$(git remote get-url origin 2>/dev/null | sed -E 's#^git@github\.com:##; s#^https://github\.com/##; s#\.git$##')"
+if [[ -n "$REPO_SLUG" && "$(git rev-list --count "origin/$DEPLOY_BRANCH..HEAD" 2>/dev/null || echo 1)" == "0" ]]; then
+  log "--- Waiting for the Vercel commit status on ${FINAL_HEAD:0:7} (pushed=$PUSHED) ---"
+  DEPLOY_START="$(date +%s)"
+  while true; do
+    VERCEL_STATE="$(curl -fsS -m 20 -H 'Accept: application/vnd.github+json' \
+      "https://api.github.com/repos/$REPO_SLUG/commits/$FINAL_HEAD/status" 2>/dev/null \
+      | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{const j=JSON.parse(s);const v=(j.statuses||[]).find(x=>/vercel/i.test(x.context||""));console.log(v?v.state:(j.statuses||[]).length?(j.state||"none"):"none")}catch{console.log("unknown")}})')"
+    VERCEL_STATE="${VERCEL_STATE:-unknown}"
+    log "Vercel status: $VERCEL_STATE"
+    [[ "$VERCEL_STATE" == "success" || "$VERCEL_STATE" == "failure" || "$VERCEL_STATE" == "error" ]] && break
+    if (( $(date +%s) - DEPLOY_START >= DEPLOY_TIMEOUT )); then
+      VERCEL_STATE="timeout"
+      log "No terminal Vercel status within ${DEPLOY_TIMEOUT}s"
+      break
+    fi
+    sleep "$DEPLOY_POLL"
+  done
+else
+  log "Skipping the Vercel status wait (pushed=$PUSHED, slug=${REPO_SLUG:-none})"
+  VERCEL_STATE="skipped"
+fi
+
+# Content check: the agent's manifest is the evidence that today's change is
+# what production serves. It is only meaningful once the deploy has finished.
+if [[ "$VERCEL_STATE" == "success" || "$VERCEL_STATE" == "timeout" ]]; then
+  MANIFEST_OUT="$(node "$SCRIPT_DIR/verify-deploy.mjs" --site "$SITE" --today "$TODAY" 2>&1)"
+  MANIFEST_RC=$?
+  while IFS= read -r line; do
+    [[ -n "$line" ]] && log "  manifest: $line"
+  done <<< "$MANIFEST_OUT"
+  case "$MANIFEST_RC" in
+    0) MANIFEST_STATE="pass" ;;
+    1) MANIFEST_STATE="fail" ;;
+    *) MANIFEST_STATE="$(printf '%s\n' "$MANIFEST_OUT" | sed -n 's/^state=//p' | head -1)"
+       MANIFEST_STATE="${MANIFEST_STATE:-absent}" ;;
+  esac
+else
+  MANIFEST_STATE="skipped"
+  log "Skipping the manifest check because the deploy is ${VERCEL_STATE}"
+fi
+
+# The refreshed archive must be served too, not just committed.
+if [[ "$ARCHIVE_STATE" == "refreshed-committed" && -n "$ARCHIVE_LAST_ROW" && "$ARCHIVE_LAST_ROW" != "?" ]]; then
+  if curl -fsS -m 20 "$SITE/btc-usd-max.csv" 2>/dev/null | grep -q "^$ARCHIVE_LAST_ROW"; then
+    ARCHIVE_LIVE="yes"
+  else
+    ARCHIVE_LIVE="no"
+  fi
+  log "Archive live check ($ARCHIVE_LAST_ROW in /btc-usd-max.csv): $ARCHIVE_LIVE"
+fi
+
+# ------------------------------------------------------------------- health ---
+
+SITE_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/" 2>/dev/null || echo 000)"
+log "Health check: $SITE/ -> $SITE_CODE"
 SITEMAP_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/sitemap.xml" 2>/dev/null || echo 000)"
 log "Health check: $SITE/sitemap.xml -> $SITEMAP_CODE"
 
+# ------------------------------------------------------------------ report ----
+
 if [[ "$SITE_CODE" != "200" ]]; then
+  STATUS_NOTE="homepage-${SITE_CODE}"
   log "CRITICAL: production homepage is not 200 ($SITE_CODE)"
-  finish 1 site-down "$SUCCESS_MODEL" "$SUCCESS_HEAD" "$SITE_CODE"
+  finish 1 site-down
 fi
 
-log "=== BTC500 growth cycle complete: shipped $SUCCESS_HEAD (push=$PUSHED) ==="
-finish 0 shipped "$SUCCESS_MODEL" "$SUCCESS_HEAD" "$SITE_CODE"
+if [[ "$TEST_STATE" != "pass" && "$TEST_STATE" != "skipped" ]]; then
+  STATUS_NOTE="local-checks-${TEST_STATE}"
+  finish 1 validation-failed
+fi
+
+if [[ "$VERCEL_STATE" == "failure" || "$VERCEL_STATE" == "error" ]]; then
+  STATUS_NOTE="vercel-${VERCEL_STATE}"
+  log "CRITICAL: Vercel reported ${VERCEL_STATE} for ${FINAL_HEAD:0:7}"
+  finish 1 deploy-failed
+fi
+
+if [[ $AGENT_COMMIT -eq 1 ]]; then
+  if [[ "$MANIFEST_STATE" == "pass" ]]; then
+    log "=== BTC500 growth cycle complete: shipped $FINAL_HEAD (push=$PUSHED, vercel=$VERCEL_STATE, manifest=pass) ==="
+    STATUS_NOTE="push-$PUSHED"
+    finish 0 shipped
+  fi
+  STATUS_NOTE="vercel-${VERCEL_STATE}-manifest-${MANIFEST_STATE}"
+  log "=== Shipped $FINAL_HEAD but production was not proven: vercel=$VERCEL_STATE manifest=$MANIFEST_STATE ==="
+  finish 1 shipped-unverified
+fi
+
+if [[ $PREFLIGHT_COMMITTED -eq 1 ]]; then
+  if [[ "$ARCHIVE_LIVE" == "yes" ]]; then
+    STATUS_NOTE="archive-only"
+    log "=== Archive-only cycle: refreshed to $ARCHIVE_LAST_ROW and verified live ==="
+    finish 0 archive-only
+  fi
+  STATUS_NOTE="archive-not-live"
+  log "=== Archive was refreshed but /btc-usd-max.csv does not serve $ARCHIVE_LAST_ROW yet ==="
+  finish 1 archive-unverified
+fi
+
+STATUS_NOTE="no-agent-commit"
+log "=== No model produced a commit (archive=$ARCHIVE_STATE, vercel=$VERCEL_STATE) ==="
+finish 1 no-commit

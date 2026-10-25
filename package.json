@@ -11,13 +11,17 @@
     "lighthouse": "lighthouse https://btc500.net --preset=desktop --quiet",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts src/lib/halvings.test.ts src/lib/btc-providers.test.ts src/lib/simulator-result.test.ts src/lib/timeline-build.test.ts src/lib/etf-analysis.test.ts src/lib/articles.test.ts src/lib/cycle-calendar.test.ts src/lib/cycle-risk.test.ts src/lib/cycle-timing.test.ts src/lib/article-path.test.ts && node scripts/verify-historical-csv.mjs",
+    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts src/lib/halvings.test.ts src/lib/btc-providers.test.ts src/lib/simulator-result.test.ts src/lib/timeline-build.test.ts src/lib/etf-analysis.test.ts src/lib/articles.test.ts src/lib/cycle-calendar.test.ts src/lib/cycle-risk.test.ts src/lib/cycle-timing.test.ts src/lib/article-path.test.ts scripts/autonomous/refresh-archive.test.mjs && node scripts/verify-historical-csv.mjs",
     "format": "prettier --write .",
     "indexnow": "node scripts/indexnow.mjs",
     "search-console": "node scripts/search-console/fetch-search-console.ts",
     "search-console:inspect": "node scripts/search-console/inspect-urls.ts",
     "analytics": "node scripts/analytics/fetch-ga4.ts",
-    "analytics:realtime": "node scripts/analytics/fetch-ga4.ts --realtime"
+    "analytics:realtime": "node scripts/analytics/fetch-ga4.ts --realtime",
+    "archive:refresh": "node scripts/autonomous/refresh-archive.mjs",
+    "archive:check": "node scripts/autonomous/refresh-archive.mjs --check",
+    "preflight": "node scripts/autonomous/preflight.mjs",
+    "verify-deploy": "node scripts/autonomous/verify-deploy.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

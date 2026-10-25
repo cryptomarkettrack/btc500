@@ -148,10 +148,13 @@ describe("bundled btc-usd-max.csv", () => {
   });
 
   it("does not invent prices for dates before or after the archive", () => {
+    // The archive grows daily (`npm run archive:refresh`), so the "after"
+    // boundary is derived from the last bundled print instead of a fixed date.
+    const dayAfterEnd = addDays(dataset.lastDate ?? "2026-07-11", 1);
     assert.equal(lookupHistoricalPrice(dataset, "2010-01-01"), null);
-    assert.equal(lookupHistoricalPrice(dataset, "2026-08-15"), null);
+    assert.equal(lookupHistoricalPrice(dataset, dayAfterEnd), null);
     assert.equal(needsExternalFallback("2010-01-01", dataset.lastDate), false);
-    assert.equal(needsExternalFallback("2026-08-15", dataset.lastDate), true);
+    assert.equal(needsExternalFallback(dayAfterEnd, dataset.lastDate), true);
   });
 
   it("returns a dense range for the 2024 cycle without holes large enough to drop the window", () => {

@@ -1,0 +1,6 @@
+{
+  "generated": "",
+  "summary": "",
+  "note": "Written by the growth agent in the SAME commit as the change it verifies, then checked against production by scripts/autonomous/verify-deploy.mjs after the Vercel status turns green. `generated` must be today's date and every check must contain a short exact string that only appears once the change is live. See GROWTH_PROMPT.md section 6. An empty manifest means the runner reports `manifest=absent` and the run is recorded as unverified.",
+  "checks": []
+}

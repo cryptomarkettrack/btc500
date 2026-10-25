@@ -207,6 +207,37 @@ inconclusive if impressions stay under 20. Next reading 2026-11-19.
    deepen them with real content or drop them from the sitemap. Keep internal
    links to the 500-day cluster exact-anchored.
 
+## Ranked backlog
+
+Scored 1–10 on impact × confidence ÷ effort (rough, but comparable). The idea
+menu in `scripts/autonomous/GROWTH_PROMPT.md` §3 is the source; this is the
+order to attack it.
+
+| #   | Bet                         | Why it can move the needle                               | I   | E   |
+| --- | --------------------------- | -------------------------------------------------------- | --- | --- |
+| 1   | Owner-ready outreach pack   | Links are the gate; nothing else moves indexation        | 9   | 2   |
+| 2   | Cycle-vs-cycle live tracker | Nobody plots "where this cycle sits vs 2016/20/24" daily | 8   | 6   |
+| 3   | Machine-readable data + RSS | Citeable endpoints turn one finding into many links      | 8   | 4   |
+| 4   | Cost-of-waiting calculator  | Answers the real question behind the timing table        | 7   | 5   |
+| 5   | Consent banner (defect)     | GA4 is live without it — legal + data-quality risk       | 6   | 2   |
+| 6   | `/cycle/2012…2024` pages    | Per-window stats no competitor publishes                 | 7   | 6   |
+| 7   | Deepen or drop thin URLs    | Two unknown-to-Google URLs diluting the crawl surface    | 5   | 2   |
+
+## Automation pipeline (installed 2026-10-25)
+
+- `run-growth-cycle.sh` runs **preflight → attempt → gate → deploy check →
+  report**. Preflight (`scripts/autonomous/preflight.mjs`) refreshes
+  `public/btc-usd-max.csv`, lists due experiment readings and health-checks the
+  site into `~/.local/state/btc500-growth/preflight.json`.
+- The runner waits for the repository to be **stable** (HEAD unchanged and tree
+  clean 3×45s) instead of trusting the CLI exit code, then runs `npm test` and
+  `tsc --noEmit` as a gate before any push.
+- Production is only called verified when the **Vercel commit status** on the
+  pushed sha is green **and** `scripts/autonomous/last-deploy.json` (written in
+  the same commit) matches the live HTML. A homepage 200 right after a push is
+  the previous build — that is what used to be recorded as "verified".
+- Every run appends to `~/.local/state/btc500-growth/status-history.csv`.
+
 ## Open issues
 
 - Clicks from Poland (20 of 24 impressions in 28 days) look like owner or
@@ -217,6 +248,7 @@ inconclusive if impressions stay under 20. Next reading 2026-11-19.
 - Dated article bodies still quote 30 November 2026 as published. That is
   intentional — they are snapshots, and the live-date strip explains the
   difference. Do not mass-rewrite them.
-- The shipped `public/btc-usd-max.csv` ends 2026-07-11. Completed windows are
-  unaffected, but anything treating its last row as "today" would be ~3.5
-  months wrong.
+- ~~The shipped `public/btc-usd-max.csv` ends 2026-07-11~~ — fixed 2026-10-25:
+  the runner now appends validated daily rows in preflight (last row
+  2026-10-24, gap repaired, source overlap median 0.008%). If preflight ever
+  reports `archive=stale`, treat it as a defect, not a footnote.

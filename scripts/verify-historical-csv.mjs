@@ -58,13 +58,41 @@ for (const h of halvings) {
   }
 }
 
-const outside = ["2010-01-01", "2026-08-15"];
-for (const date of outside) {
-  checks.push({ label: `${date} (outside)`, price: prices.get(date) ?? null, ok: !prices.has(date) });
-}
+// Before the archive starts. The old second entry ("2026-08-15") was a day the
+// archive had not reached yet; the daily refresh closes that gap, so the guard
+// is now "no row is dated in the future" plus a staleness report below.
+checks.push({
+  label: "2010-01-01 (before archive start)",
+  price: prices.get("2010-01-01") ?? null,
+  ok: !prices.has("2010-01-01"),
+});
+
+const dates = [...prices.keys()].sort();
+const lastDate = dates[dates.length - 1] ?? null;
+const today = new Date().toISOString().slice(0, 10);
+checks.push({
+  label: `no future-dated rows (newest ${lastDate ?? "none"})`,
+  price: null,
+  ok: dates.every((date) => date <= today),
+});
 
 const failed = checks.filter((c) => !c.ok);
-console.log(`Archive days: ${prices.size}`);
+console.log(`Archive days: ${prices.size}  newest ${lastDate ?? "none"}`);
+
+// Staleness is reported loudly but does not fail the build: the refresh needs
+// network access (`npm run archive:refresh`), which the daily runner performs
+// in preflight. Failing here would trap any offline run.
+if (lastDate) {
+  const staleDays = Math.round(
+    (Date.parse(`${today}T00:00:00Z`) - Date.parse(`${lastDate}T00:00:00Z`)) / 86_400_000,
+  );
+  console.log(
+    staleDays <= 2
+      ? `OK  archive freshness ${staleDays}d behind`
+      : `WARN  archive is ${staleDays}d behind (run \`npm run archive:refresh\`)`,
+  );
+}
+
 for (const c of checks) {
   console.log(`${c.ok ? "OK" : "FAIL"}  ${c.label}${c.price != null ? `  $${c.price}` : ""}`);
 }
@@ -98,7 +126,11 @@ const bundled = serverFiles.some((file) => {
   }
 });
 if (serverFiles.length) {
-  console.log(bundled ? "OK  bundled CSV text found in server JS" : "WARN  bundled CSV text not found in server JS");
+  console.log(
+    bundled
+      ? "OK  bundled CSV text found in server JS"
+      : "WARN  bundled CSV text not found in server JS",
+  );
 }
 
 if (failed.length) {

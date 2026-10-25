@@ -1,0 +1,40 @@
+{
+  "schema": 1,
+  "max_open": 3,
+  "rule": "Read every experiment whose next_reading has passed before starting new work, then record the verdict here and in BTC500_GROWTH.md. Do not open a new experiment while `open` equals `max_open`: close, merge or read one first. Preflight reports due readings in preflight.json.",
+  "experiments": [
+    {
+      "id": "t500-date-calendar",
+      "opened": "2026-10-22",
+      "what": "Publish the live T-500 buy date on /halving-dates plus a 30-day-reminder .ics calendar feed.",
+      "hypothesis": "An exact, calendar-ready buy date is the answer people search for around the window; owning it earns the click.",
+      "success": "Any non-brand click, or a new referring domain, before the buy window opens.",
+      "inconclusive": "Impressions stay under 20 for the 28-day window.",
+      "next_reading": "2026-11-19",
+      "status": "open",
+      "verdict": null
+    },
+    {
+      "id": "drawdown-study",
+      "opened": "2026-10-23",
+      "what": "Publish the drawdown record behind the 500-day rule at /bitcoin-500-day-cycle#risk-heading (median -11.7%, worst -84%, 85 days to the low).",
+      "hypothesis": "The one number nobody else publishes (-84% inside a rule people call safe) is the quotable asset that earns links.",
+      "success": "A new referring domain, a mention in a newsletter or data roundup, or a non-brand click on #risk-heading.",
+      "inconclusive": "Zero referring domains and under 20 impressions on the section.",
+      "next_reading": "2026-11-06",
+      "status": "open",
+      "verdict": null
+    },
+    {
+      "id": "entry-timing-test",
+      "opened": "2026-10-24",
+      "what": "Publish the entry-timing test at /bitcoin-500-day-cycle#timing-heading: every completed window re-run with the entry moved +/-120 days at a fixed T+500 exit.",
+      "hypothesis": "Publishing what a wrong entry date costs answers the real question behind 'when should I buy' better than a chart of the rule itself.",
+      "success": "Any non-brand click or new referring domain by 2026-11-20.",
+      "inconclusive": "Impressions stay under 20.",
+      "next_reading": "2026-11-19",
+      "status": "open",
+      "verdict": null
+    }
+  ]
+}
