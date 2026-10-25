@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>btc500.net automation — who does what, when, and what you must do</title>
+    <style>
+      :root {
+        --ink: #14202e;
+        --muted: #5b6b7f;
+        --line: #d9e0ea;
+        --bg: #f6f8fb;
+        --card: #ffffff;
+        --job-bg: #eef2f7;
+        --job-line: #5b6b7f;
+        --agent-bg: #e6f6ec;
+        --agent-line: #21893d;
+        --gate-bg: #fdecea;
+        --gate-line: #c0392b;
+        --data-bg: #e7f1ff;
+        --data-line: #3b6fd4;
+        --owner-bg: #fff3cd;
+        --owner-line: #e0a800;
+        --ok: #21893d;
+        --warn: #b8860b;
+        --bad: #c0392b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font:
+          15px/1.55 -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 32px 20px 64px;
+      }
+
+      header h1 {
+        margin: 0 0 6px;
+        font-size: 27px;
+        letter-spacing: -0.02em;
+      }
+
+      header p.sub {
+        margin: 0 0 20px;
+        color: var(--muted);
+        max-width: 70ch;
+      }
+
+      code {
+        background: #eef1f6;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 1px 5px;
+        font:
+          12.5px/1.4 ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+      }
+
+      h2 {
+        font-size: 19px;
+        margin: 40px 0 14px;
+        padding-bottom: 7px;
+        border-bottom: 2px solid var(--line);
+        letter-spacing: -0.01em;
+      }
+
+      h3 {
+        font-size: 15px;
+        margin: 0;
+      }
+
+      /* ---------------------------------------------------------- the loop --- */
+      .loop {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 10px;
+        margin: 0 0 8px;
+      }
+
+      .loop .node {
+        flex: 1 1 240px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        background: var(--card);
+        padding: 11px 13px;
+      }
+
+      .loop .node b {
+        display: block;
+        font-size: 13.5px;
+      }
+
+      .loop .node span {
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+
+      .loop .node.you {
+        background: var(--owner-bg);
+        border-color: var(--owner-line);
+      }
+
+      .loop .arrow {
+        align-self: center;
+        color: var(--muted);
+        font-size: 19px;
+        padding: 0 2px;
+      }
+
+      .caption {
+        color: var(--muted);
+        font-size: 13px;
+        margin: 4px 0 0;
+      }
+
+      /* ------------------------------------------------------------- lanes --- */
+      .lanes {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+      }
+
+      .lane {
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .lane > header {
+        padding: 12px 14px;
+        border-bottom: 1px solid var(--line);
+        background: #fbfcfe;
+      }
+
+      .lane > header .when {
+        display: inline-block;
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        background: var(--ink);
+        color: #fff;
+        border-radius: 999px;
+        padding: 3px 9px;
+        margin-bottom: 7px;
+      }
+
+      .lane.you > header .when {
+        background: var(--owner-line);
+        color: #3d2c00;
+      }
+
+      .lane > header .job {
+        color: var(--muted);
+        font-size: 12px;
+        word-break: break-all;
+      }
+
+      .steps {
+        list-style: none;
+        margin: 0;
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .step {
+        position: relative;
+        border: 1px solid var(--line);
+        border-left-width: 5px;
+        border-radius: 8px;
+        padding: 9px 11px;
+        background: #fff;
+        font-size: 13px;
+      }
+
+      .step + .step {
+        margin-top: 22px;
+      }
+
+      .step + .step::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -22px;
+        width: 2px;
+        height: 22px;
+        background: var(--line);
+        transform: translateX(-50%);
+      }
+
+      .step + .step::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -8px;
+        width: 7px;
+        height: 7px;
+        border-right: 2px solid var(--muted);
+        border-bottom: 2px solid var(--muted);
+        transform: translateX(-50%) rotate(45deg);
+      }
+
+      .step .tag {
+        display: block;
+        font-size: 10.5px;
+        font-weight: 700;
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 3px;
+      }
+
+      .step .body {
+        display: block;
+      }
+
+      .step .body em {
+        font-style: normal;
+        color: var(--muted);
+      }
+
+      .step.job {
+        border-left-color: var(--job-line);
+        background: var(--job-bg);
+      }
+
+      .step.agent {
+        border-left-color: var(--agent-line);
+        background: var(--agent-bg);
+      }
+
+      .step.gate {
+        border-left-color: var(--gate-line);
+        background: var(--gate-bg);
+        border-style: dashed;
+      }
+
+      .step.data {
+        border-left-color: var(--data-line);
+        background: var(--data-bg);
+      }
+
+      .step.owner {
+        border-left-color: var(--owner-line);
+        background: var(--owner-bg);
+      }
+
+      .branch {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        margin-top: 22px;
+        position: relative;
+      }
+
+      .branch::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: -22px;
+        width: 2px;
+        height: 22px;
+        background: var(--line);
+        transform: translateX(-50%);
+      }
+
+      .branch .step {
+        margin-top: 0;
+      }
+
+      .branch .step + .step {
+        margin-top: 0;
+      }
+
+      .branch .step + .step::before,
+      .branch .step + .step::after {
+        display: none;
+      }
+
+      .outcome {
+        margin-top: auto;
+        padding: 12px 14px;
+        border-top: 1px dashed var(--line);
+        font-size: 12.5px;
+        background: #fbfcfe;
+      }
+
+      .outcome dl {
+        margin: 0;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 4px 9px;
+      }
+
+      .outcome dt {
+        font-weight: 700;
+        font-size: 11px;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding-top: 1px;
+      }
+
+      .outcome dd {
+        margin: 0;
+      }
+
+      /* -------------------------------------------------------- hand-offs --- */
+      .handoff {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+
+      .handoff .flow {
+        border: 1px dashed var(--line);
+        border-radius: 10px;
+        padding: 11px 13px;
+        background: var(--card);
+        font-size: 13px;
+      }
+
+      .handoff .flow b {
+        display: block;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+
+      /* ------------------------------------------------------------ tables --- */
+      .tablewrap {
+        overflow-x: auto;
+        border-radius: 10px;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      table {
+        width: 100%;
+        min-width: 540px;
+        border-collapse: collapse;
+        background: var(--card);
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+        font-size: 13.5px;
+      }
+
+      th,
+      td {
+        text-align: left;
+        padding: 9px 12px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+
+      th {
+        background: #eef2f7;
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        color: var(--muted);
+      }
+
+      tr:last-child td {
+        border-bottom: 0;
+      }
+
+      td code {
+        white-space: nowrap;
+      }
+
+      /* ------------------------------------------------------------- asks --- */
+      .asks {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .ask {
+        background: var(--owner-bg);
+        border: 1px solid var(--owner-line);
+        border-radius: 10px;
+        padding: 13px 15px;
+        font-size: 13.5px;
+      }
+
+      .ask b {
+        display: block;
+        margin-bottom: 4px;
+      }
+
+      .ask .where {
+        display: block;
+        margin-top: 6px;
+        font-size: 12.5px;
+        color: #6b5200;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .chip {
+        font-size: 12.5px;
+        border-radius: 999px;
+        padding: 4px 11px;
+        border: 1px solid var(--line);
+        background: var(--card);
+      }
+
+      .chip.ok {
+        background: #e6f6ec;
+        border-color: var(--ok);
+        color: #0f3d1d;
+      }
+
+      .chip.warn {
+        background: #fff7e0;
+        border-color: var(--warn);
+        color: #6b4a00;
+      }
+
+      .chip.bad {
+        background: var(--gate-bg);
+        border-color: var(--bad);
+        color: #611a15;
+      }
+
+      footer {
+        margin-top: 34px;
+        padding-top: 14px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 12.5px;
+      }
+
+      @media (max-width: 900px) {
+        .lanes,
+        .handoff,
+        .asks {
+          grid-template-columns: 1fr;
+        }
+
+        .loop .arrow {
+          display: none;
+        }
+      }
+
+      @media print {
+        body {
+          background: #fff;
+        }
+
+        .wrap {
+          max-width: none;
+          padding: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <h1>btc500.net automation — who does what, when, and what you must do</h1>
+        <p class="sub">
+          Two OpenCode agents on two launchd jobs, one shared git checkout, deterministic Node
+          scripts that grade the agents so a model can never approve its own verdict, and one human
+          action that only you can take.
+        </p>
+      </header>
+
+      <div class="loop">
+        <div class="node">
+          <b>06:00 · growth-cycle</b>
+          <span>preflight → ship → gate → prove production serves it</span>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node">
+          <b>09:30 · growth-review</b>
+          <span>measure → verdict → mandates for tomorrow → asks for you</span>
+        </div>
+        <div class="arrow">→</div>
+        <div class="node you">
+          <b>You · when results are flat</b>
+          <span>copy-paste the post → GA4 records the referral → scored next review</span>
+        </div>
+        <div class="arrow">↺</div>
+      </div>
+      <p class="caption">
+        Nothing waits on a human to keep the machine running — your input only changes the
+        <em>results</em>.
+      </p>
+
+      <h2>1 · The three actors</h2>
+
+      <div class="lanes">
+        <!-- ------------------------------------------------------- lane 1 --- -->
+        <section class="lane">
+          <header>
+            <span class="when">① 06:00 every day</span>
+            <h3>growth-cycle</h3>
+            <div class="job">
+              <code>net.btc500.growth</code> → <code>scripts/autonomous/run-growth-cycle.sh</code>
+            </div>
+          </header>
+
+          <ol class="steps">
+            <li class="step job">
+              <span class="tag">script</span>
+              <span class="body"
+                ><b>preflight.mjs</b> — refresh the price archive, health-check the site, list due
+                experiment readings, read the last review</span
+              >
+            </li>
+            <li class="step data">
+              <span class="tag">output</span>
+              <span class="body"
+                ><b>preflight.json</b> — the order of work: notes → mandates → backlog</span
+              >
+            </li>
+            <li class="step agent">
+              <span class="tag">agent</span>
+              <span class="body"
+                ><b>growth-cycle</b> · <code>GROWTH_PROMPT.md</code> — 5 free models in order, each
+                time-boxed; ships content, tools and fixes as commits</span
+              >
+            </li>
+            <li class="step gate">
+              <span class="tag">gate</span>
+              <span class="body"
+                ><b>npm test + tsc --noEmit</b> — nothing is pushed without it</span
+              >
+            </li>
+            <li class="step job">
+              <span class="tag">verify</span>
+              <span class="body"
+                >push → wait for the <b>Vercel status on that exact sha</b> → check
+                <code>last-deploy.json</code> against the live HTML → homepage + sitemap 200</span
+              >
+            </li>
+            <li class="step data">
+              <span class="tag">record</span>
+              <span class="body"
+                ><code>status-history.csv</code> · <code>last-status.txt</code> · the day's log ·
+                notification</span
+              >
+            </li>
+          </ol>
+
+          <div class="outcome">
+            <dl>
+              <dt>Outcome</dt>
+              <dd>a commit proven to be what production serves — or an honest failure status.</dd>
+              <dt>Check</dt>
+              <dd>
+                <code>last-status.txt</code>, <code>YYYY-MM-DD.log</code>, <code>git log</code>
+              </dd>
+              <dt>You</dt>
+              <dd>only on a red status, or a mandate that says “prepare the asset”.</dd>
+            </dl>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------------- lane 2 --- -->
+        <section class="lane">
+          <header>
+            <span class="when">② 09:30 every day</span>
+            <h3>growth-review</h3>
+            <div class="job">
+              <code>net.btc500.review</code> → <code>scripts/autonomous/run-review-cycle.sh</code> ·
+              deep mode on Sundays
+            </div>
+          </header>
+
+          <ol class="steps">
+            <li class="step job">
+              <span class="tag">sync</span>
+              <span class="body">wait for the growth cycle's lock — defer rather than collide</span>
+            </li>
+            <li class="step job">
+              <span class="tag">measure</span>
+              <span class="body">fetch Search Console · GA4 · URL inspection</span>
+            </li>
+            <li class="step job">
+              <span class="tag">script</span>
+              <span class="body"
+                ><b>collect-results.mjs</b> — signals + <code>rule.mayClaimImproving</code> +
+                <code>ask-effect</code></span
+              >
+            </li>
+            <li class="step agent">
+              <span class="tag">agent</span>
+              <span class="body"
+                ><b>growth-review</b> · <code>GROWTH_REVIEW.md</code> — verdict, why, mandates,
+                targets, <b>owner_asks</b>, self_changes</span
+              >
+            </li>
+            <li class="step gate">
+              <span class="tag">gate</span>
+              <span class="body"
+                ><b>validate-review.mjs</b> — does the verdict obey the data? are the asks written
+                when results are flat?</span
+              >
+            </li>
+            <li class="step job">
+              <span class="tag">hand over</span>
+              <span class="body"
+                ><b>render-asks.mjs</b> — <code>owner-asks.txt</code> + notification body + commit
+                body</span
+              >
+            </li>
+            <li class="branch">
+              <div class="step data">
+                <span class="tag">valid</span>
+                <span class="body"
+                  ><code>review-history.csv</code> · <code>last-review.txt</code> · review log ·
+                  notification</span
+                >
+              </div>
+              <div class="step gate">
+                <span class="tag">invalid / absent</span>
+                <span class="body">rejected verdict committed as evidence</span>
+              </div>
+            </li>
+          </ol>
+
+          <div class="outcome">
+            <dl>
+              <dt>Outcome</dt>
+              <dd>
+                a verdict you can trust (<code>improving</code>, <code>stagnant</code> or
+                <code>failing</code>), work ordered for tomorrow, one action ordered for you.
+              </dd>
+              <dt>Check</dt>
+              <dd><code>last-review.txt</code>, <code>review-latest.json</code>, the review log</dd>
+              <dt>You</dt>
+              <dd>read the verdict, then do the ask.</dd>
+            </dl>
+          </div>
+        </section>
+
+        <!-- ------------------------------------------------------- lane 3 --- -->
+        <section class="lane you">
+          <header>
+            <span class="when">③ Whenever results are flat</span>
+            <h3>You — the only actor who can distribute</h3>
+            <div class="job">the agents are denied posting, pitching and linking by policy</div>
+          </header>
+
+          <ol class="steps">
+            <li class="step owner">
+              <span class="tag">read</span>
+              <span class="body"
+                >the ask: notification · <code>ASKS:</code> line in the commit ·
+                <code>state/owner-asks.txt</code></span
+              >
+            </li>
+            <li class="step owner">
+              <span class="tag">publish</span>
+              <span class="body"
+                >copy-paste and post — X <b>@btc500halving</b>, a community comment, a newsletter
+                pitch, an awesome-list PR, an embed offer</span
+              >
+            </li>
+            <li class="step data">
+              <span class="tag">measured</span>
+              <span class="body"
+                >GA4 records the referral (x.com, github.com, the newsletter) → next 09:30 scores it
+                in <code>ask-effect</code></span
+              >
+            </li>
+            <li class="step gate">
+              <span class="tag">otherwise</span>
+              <span class="body">step in on a red status: nothing mechanical can clear those</span>
+            </li>
+          </ol>
+
+          <div class="outcome">
+            <dl>
+              <dt>Outcome</dt>
+              <dd>referral sessions, indexation movement, non-brand clicks.</dd>
+              <dt>Check</dt>
+              <dd><code>owner-asks.txt</code>, GA4 referrals, next review's verdict</dd>
+              <dt>You</dt>
+              <dd>five minutes per ask — it is the highest-leverage input in the system.</dd>
+            </dl>
+          </div>
+        </section>
+      </div>
+
+      <div class="handoff">
+        <div class="flow">
+          <b>Hand-off ② → ①</b>
+          <code>review-latest.json</code> mandates are injected into tomorrow's
+          <code>preflight.json</code> and outrank the backlog.
+        </div>
+        <div class="flow">
+          <b>Hand-off ② → ③</b>
+          <code>owner_asks[]</code> becomes <code>owner-asks.txt</code>, the notification and the
+          commit's <code>ASKS:</code> lines.
+        </div>
+        <div class="flow">
+          <b>Hand-off ③ → ②</b>
+          Your post becomes a referral session; the next review scores it green, flat (&lt;7 days)
+          or stalled.
+        </div>
+      </div>
+
+      <h2>2 · The schedule</h2>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>When</th>
+              <th>launchd job</th>
+              <th>Runner</th>
+              <th>Agent</th>
+              <th>Deep mode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><b>06:00</b> daily</td>
+              <td><code>net.btc500.growth</code></td>
+              <td><code>run-growth-cycle.sh</code></td>
+              <td><code>growth-cycle</code></td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td><b>09:30</b> daily</td>
+              <td><code>net.btc500.review</code></td>
+              <td><code>run-review-cycle.sh</code></td>
+              <td><code>growth-review</code></td>
+              <td>Sundays, or <code>BTC500_REVIEW_DEEP=1</code></td>
+            </tr>
+            <tr>
+              <td>on demand</td>
+              <td colspan="3">
+                <code>scripts/autonomous/install-schedule.sh --run-now growth|review</code>
+              </td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="caption">
+        One working tree, two jobs: the second one to start waits for the other's lock (review waits
+        up to 90 minutes, then reports <code>deferred</code> instead of interleaving).
+      </p>
+
+      <h2>3 · Where to check the results</h2>
+      <div class="tablewrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Question</th>
+              <th>Where</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Did this morning's run ship?</td>
+              <td>
+                <code>~/.local/state/btc500-growth/last-status.txt</code> ·
+                <code>status-history.csv</code> · the notification
+              </td>
+            </tr>
+            <tr>
+              <td>What did it actually do?</td>
+              <td>
+                <code>…/btc500-growth/YYYY-MM-DD.log</code> · <code>attempts/*.log</code> ·
+                <code>git log</code>
+              </td>
+            </tr>
+            <tr>
+              <td>What did the reviewer conclude?</td>
+              <td>
+                <code>last-review.txt</code> · <code>review-history.csv</code> ·
+                <code>review-YYYY-MM-DD.log</code> ·
+                <code>scripts/autonomous/review-latest.json</code>
+              </td>
+            </tr>
+            <tr>
+              <td><b>What am I supposed to do?</b></td>
+              <td>
+                <code>~/.local/state/btc500-growth/owner-asks.txt</code> · the notification ·
+                <code>ASKS:</code> lines in the commit
+              </td>
+            </tr>
+            <tr>
+              <td>Are the numbers moving?</td>
+              <td>
+                <code>results-history.csv</code> · <code>review-input.json</code> · Search Console +
+                GA4 (<code>npm run search-console</code>, <code>npm run analytics</code>)
+              </td>
+            </tr>
+            <tr>
+              <td>Is the site / deploy real?</td>
+              <td>
+                btc500.net · <code>/sitemap.xml</code> · <code>/btc-usd-max.csv</code> · GitHub
+                commit status (Vercel) vs <code>scripts/autonomous/last-deploy.json</code>
+              </td>
+            </tr>
+            <tr>
+              <td>Why did we choose this work?</td>
+              <td>
+                <code>BTC500_GROWTH.md</code> · <code>experiments.json</code> ·
+                <code>GROWTH_PROMPT.md</code> · <code>GROWTH_REVIEW.md</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="chips">
+        <span class="chip ok">growth ✅ shipped · archive-only</span>
+        <span class="chip warn"
+          >⚠️ shipped-unverified · push-blocked · validation-failed · no-commit · dirty-tree</span
+        >
+        <span class="chip bad">🚨 deploy-failed · site-down</span>
+      </div>
+      <div class="chips">
+        <span class="chip ok">review ✅ improving</span>
+        <span class="chip warn">⚠️ stagnant · no-review · deferred · validation-failed</span>
+        <span class="chip bad"
+          >🚨 failing · verdict-invalid (the reviewer broke its own rules)</span
+        >
+      </div>
+
+      <h2>4 · Where the automation needs you</h2>
+      <div class="asks">
+        <div class="ask">
+          <b>Every stagnant / failing verdict</b>
+          An ask in <code>owner-asks.txt</code>: the post written out in full (≤280 chars + link),
+          the account, the best time, and the metric that proves it worked. Due within 14 days —
+          after 7 days with no referral it comes back as <code>stalled</code> and is restated
+          narrower.
+          <span class="where"
+            >→ highest leverage: this is the only channel that brings strangers in</span
+          >
+        </div>
+        <div class="ask">
+          <b>Any red status in the notification</b>
+          <code>validation-failed</code> · <code>push-blocked</code> · <code>site-down</code> ·
+          <code>deploy-failed</code> · <code>no-commit</code> (all 5 models exhausted) ·
+          <code>dirty-tree</code>.
+          <span class="where"
+            >→ nothing mechanical can clear these; the run stops and waits for you</span
+          >
+        </div>
+        <div class="ask">
+          <b>Anything outside the repository</b>
+          Accounts, submissions, permissions, newsletters, communities — the agents are denied them
+          by policy (no <code>gh</code>, no publishing, no force-push, secrets unread).
+          <span class="where"
+            >→ the reviewer turns these into mandates marked <code>owner</code></span
+          >
+        </div>
+        <div class="ask">
+          <b>ask-effect stalled twice</b>
+          Two reviews in a row with no session from the channel you were asked to work means the
+          channel itself is wrong — pick a different audience.
+          <span class="where"
+            >→ the reviewer will say so explicitly and re-ask with a narrower action</span
+          >
+        </div>
+      </div>
+
+      <footer>
+        Source: <code>scripts/autonomous/ARCHITECTURE.md</code> · runners, prompts and validators in
+        <code>scripts/autonomous/</code> · state in <code>~/.local/state/btc500-growth/</code> ·
+        generated 2026-10-25.
+      </footer>
+    </div>
+  </body>
+</html>

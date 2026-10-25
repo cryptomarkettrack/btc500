@@ -1,5 +1,5 @@
 ---
-description: Results reviewer for btc500.net. Judges whether the daily growth work gains visitors, indexed pages and links; fails the run when it does not.
+description: Results reviewer for btc500.net. Judges whether the daily growth work gains visitors, indexed pages and links; fails the run when it does not, and writes the owner copy-paste actions that could gain them.
 mode: primary
 model: opencode/deepseek-v4.1-flash-free
 permissions:

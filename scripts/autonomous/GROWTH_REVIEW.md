@@ -90,7 +90,10 @@ In rough order of importance for a site this new:
 3. **Impressions** — are we being shown at all, and for what.
 4. **Positions 4–20** — the queries within reach of a title/snippet change.
 5. **Referral sessions / links** — evidence somebody else routed traffic here.
-6. **Sessions, engagement, returning users** — the traffic we keep.
+6. **An owner ask that fired** (`ask-effect`) — the sessions came from the
+   channel we asked the owner to work. Proof the outside world moves when
+   somebody acts on our behalf, not just when we ship.
+7. **Sessions, engagement, returning users** — the traffic we keep.
 
 ## 4. The "why" playbook
 

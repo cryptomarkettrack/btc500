@@ -84,13 +84,13 @@ First run of the results reviewer. Verdict is forced by the data:
 `rule.mayClaimImproving=false` — 0 positive outcome signals, need 2. Nothing
 regressed, so `stagnant`, not `failing`.
 
-| Signal | Reading | Verdict |
-| --- | --- | --- |
-| Indexed | 6/25, identical on 2026-10-22 and 2026-10-25 | stalled |
-| Non-brand clicks | 0 on 719 attributed non-brand impressions (90d) | stalled |
-| Impressions (7d) | 28, was 45 on 10-22 — under 100, noise | flat |
-| Sessions / referrals | 19 sessions, 18 Direct + 1 Organic, 0 referral | stalled |
-| Owner asks ever issued | 0; `outreach/` holds only `README.txt` | stalled |
+| Signal                 | Reading                                         | Verdict |
+| ---------------------- | ----------------------------------------------- | ------- |
+| Indexed                | 6/25, identical on 2026-10-22 and 2026-10-25    | stalled |
+| Non-brand clicks       | 0 on 719 attributed non-brand impressions (90d) | stalled |
+| Impressions (7d)       | 28, was 45 on 10-22 — under 100, noise          | flat    |
+| Sessions / referrals   | 19 sessions, 18 Direct + 1 Organic, 0 referral  | stalled |
+| Owner asks ever issued | 0; `outreach/` holds only `README.txt`          | stalled |
 
 What the 6 indexed URLs are: the homepage plus 5 August-dated news articles
 (crawled 2026-08-08 → 08-17). The four pages the product depends on —
@@ -272,15 +272,15 @@ Rescored 2026-10-25 by the review, against the signals that are actually stalled
 Scored 1–10 on impact × confidence ÷ effort. **Items that add a URL are frozen
 until indexed ≥ 8/25.**
 
-| #   | Bet                                          | Why it can move the needle                                                  | I   | E   |
-| --- | -------------------------------------------- | --------------------------------------------------------------------------- | --- | --- |
-| 1   | Outreach pack (3 send-ready pitches)         | Links are the gate; 0 referring domains, 19/25 unindexed                     | 10  | 3   |
-| 2   | Citation block + `/data/500-day-cycles.json` | A writer needs a number, a method and a machine-readable source to cite      | 8   | 2   |
-| 3   | Date-first title/meta on the pillar          | 61 impressions / 0 clicks on the exact cluster, best position 9.1            | 7   | 1   |
-| 4   | Consent banner (defect)                      | GA4 runs without it — legal + data-quality risk, still unfixed               | 6   | 2   |
-| 5   | Merge `/halving-dates` into the pillar       | One intent split across two crawled-not-indexed URLs; 0 impressions in 28d   | 6   | 3   |
-| 6   | Cycle-vs-cycle live tracker                  | Bitbo and bitcoin-daily already own the live view; only pays once indexed    | 4   | 6   |
-| 7   | `/cycle/*` pages, cost-of-waiting calculator | New URLs for a site with 19/25 unindexed — blocked by the freeze             | 3   | 6   |
+| #   | Bet                                          | Why it can move the needle                                                 | I   | E   |
+| --- | -------------------------------------------- | -------------------------------------------------------------------------- | --- | --- |
+| 1   | Outreach pack (3 send-ready pitches)         | Links are the gate; 0 referring domains, 19/25 unindexed                   | 10  | 3   |
+| 2   | Citation block + `/data/500-day-cycles.json` | A writer needs a number, a method and a machine-readable source to cite    | 8   | 2   |
+| 3   | Date-first title/meta on the pillar          | 61 impressions / 0 clicks on the exact cluster, best position 9.1          | 7   | 1   |
+| 4   | Consent banner (defect)                      | GA4 runs without it — legal + data-quality risk, still unfixed             | 6   | 2   |
+| 5   | Merge `/halving-dates` into the pillar       | One intent split across two crawled-not-indexed URLs; 0 impressions in 28d | 6   | 3   |
+| 6   | Cycle-vs-cycle live tracker                  | Bitbo and bitcoin-daily already own the live view; only pays once indexed  | 4   | 6   |
+| 7   | `/cycle/*` pages, cost-of-waiting calculator | New URLs for a site with 19/25 unindexed — blocked by the freeze           | 3   | 6   |
 
 ## Automation pipeline (installed 2026-10-25)
 
@@ -299,6 +299,9 @@ until indexed ≥ 8/25.**
 - Shared helpers (`log`, `notify`, `acquire_lock`, `wait_for_stability`,
   `btc_validate`, `btc_vercel_wait`, `btc_repo_slug`, `btc_append_history`)
   live in `scripts/autonomous/lib.sh` and are sourced by both runners.
+- **Map of the whole system** — agents, schedule, outcomes, where to read the
+  results and where the owner is needed: `scripts/autonomous/ARCHITECTURE.md`
+  (Mermaid) and `scripts/autonomous/architecture.html` (standalone page).
 
 ## Results review (installed 2026-10-25)
 
