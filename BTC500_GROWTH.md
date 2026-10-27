@@ -75,6 +75,53 @@ GSC window ends 2026-10-24; GA4 window ends 2026-10-26. Archive fresh to
 
 ---
 
+## Results review — 2026-10-27 (daily, verdict: FAILING)
+
+Third consecutive non-improving review (`reviewStreak.nonImproving = 2` before
+this one; the 2026-10-26 run wrote no verdict at all — `review-history.csv`:
+`verdict-invalid`, file dated 2026-10-25, mode `deep`). `rule.mayClaimImproving
+= false`: 1 positive outcome signal (referral sessions, 3, all `github.com`).
+
+- **Indexation: 6/25 on all six daily readings 2026-10-22 → 2026-10-27.** 13
+  `Crawled - currently not indexed`, 6 `URL is unknown to Google` — all 25 are in
+  `sitemap.xml`, and 5 of the 6 unknown URLs are linked from the homepage HTML.
+  The pillar's last crawl is still 2026-10-22, five days and three deploys
+  (drawdown, timing, citation + snippet) after it was first declined.
+- **Non-brand clicks: 0 in the 7-day window** (0 non-brand impressions there).
+  The 90-day table to 2026-10-24 has **1 click on 723 non-brand impressions**
+  (`500 btc`, 2 impressions, position 26). The previous review said "0 on 719" —
+  1/723 is the corrected figure, and it is still not a result.
+- **Positions 4–20: 0 in the 7-day report** (only one query is named at all).
+  Over 90 days there are 136 queries at 4–20 with ≥1 impression, but the largest
+  carries 15 impressions and the three cluster queries (9.07 / 11.0 / 15.29) took
+  0 clicks on 27 impressions.
+- **Traffic:** 46 sessions / 23 users / 109 views / 45.7%, of which 39 Direct,
+  3 Referral (github.com), 2 AI Assistant, 1 Organic, 2 Unassigned. Landing:
+  `/` 34, pillar 5. Nothing here is acquisition.
+- **Input vs output:** 2 cycles recorded, 1 shipped (2026-10-27: citation block,
+  `/data/500-day-cycles.json`, date-first snippet, 3 pitches). Output: 0 new
+  indexed URLs, 0 non-brand clicks, 0 referral sessions from any ask channel.
+  All four 2026-10-25 mandates were executed — the first cycle that can say that
+  — and the result column is still empty. That is the finding: repo-executable
+  work is exhausted, not the backlog.
+- **Measurement caveats found:**
+  - The 7-day page table sums to 40 impressions against a 21-impression total in
+    the same report (28-day: 133 vs 94; 90-day: 3,485 vs 3,378). Page shares
+    ("the homepage owns all impressions") are therefore not exact — quote totals.
+  - 5 of 7 clicks in the 7-day window have no query row (`btc500` is the only
+    named query, 2 clicks), so non-brand is a floor.
+  - One plain GET of the pillar at 09:34 returned the null-date fallback title
+    (`500 Days Before the Next Bitcoin Halving | BTC500`); 8 of 8 cache-busted
+    GETs returned the dated title. The change is live, but at least one edge
+    served the old HTML — re-verify before drawing conclusions from a single fetch.
+
+Mandates issued: consolidate the five August-crawled URLs; site-wide exact-anchor
+path to the pillar and report its crawl date; an ask ledger so "did the owner
+post?" stops being unmeasured; and — for the owner — make the review runner fail
+loudly when the file is not rewritten.
+
+---
+
 ## Results review — 2026-10-25 (deep, verdict: stagnant)
 
 0 positive outcome signals (`rule.mayClaimImproving=false`), nothing regressed
@@ -190,11 +237,19 @@ working — add a follow-up commit instead of amending.
 
 ## Next priorities
 
+0. **Shrink the declined surface before touching anything else.** Five URLs last
+   crawled 2026-08-09 → 2026-08-22 have never been re-crawled: `/articles`
+   (08-14), `/articles/bitcoin-volatility` (08-09),
+   `/articles/bitcoin-infrastructure-exploits` (08-16), `/liquidation` (08-15),
+   `/articles/ondo-finance-tokenization` (08-22). Merge into at most two pages,
+   301 the rest, drop them from the sitemap. Reading 2026-11-10: indexation must
+   move to 8/25 or every in-repo indexation action stops.
 1. **Make the citation surface visible to someone.** The data endpoint and the
    citation block are done; they earn nothing until a writer, directory or
    community post points at them. The three pitches in
    `scripts/autonomous/outreach/` (Bitcoin Magazine, bitcoin-only.com,
-   BitcoinTalk) are the owner's to send. Nothing else moves 6/25 indexed.
+   BitcoinTalk) are the owner's to send — all three still say `Status: not sent`
+   on 2026-10-27. Track them in `outreach/STATUS.md` so the loop is measurable.
 2. **Own 2026-11-28 — the buy window opens in 32 days.** The on-site work is
    done (live date, calendar file, timing table, drawdown record, citation
    block, JSON endpoint). Stop extending the pillar; if anything, make the
@@ -205,28 +260,37 @@ working — add a follow-up commit instead of amending.
 
 ## Ranked backlog
 
-Rescored 2026-10-25 by the review, against the signals that are actually
-stalled. Scored 1–10 on impact × confidence ÷ effort. **Items that add a URL are
-frozen until indexed ≥ 8/25.**
+Rescored 2026-10-27 by the failing review, against the signals that are
+actually stalled. Scored 1–10 on impact × confidence ÷ effort. **Items that add
+a URL or a section are frozen until indexed ≥ 8/25** (`GROWTH_PROMPT.md` →
+URL contraction). While the gate is shut, only rows 0, 1 and 4 can be worked.
 
 | #   | Bet                                          | Why it can move the needle                                                 | I   | E   |
 | --- | -------------------------------------------- | -------------------------------------------------------------------------- | --- | --- |
-| 1   | Send the 3 outreach pitches                  | Links are the gate; 0 referring domains, 19/25 unindexed                   | 10  | 1   |
+| 0   | Merge/301 the 5 August-crawled URLs          | 13 declined + 6 never fetched; those five have not been re-crawled in 66–79 days | 8   | 3   |
+| 1   | Send the 3 outreach pitches                  | Links are the gate; 0 referring domains, 19/25 unindexed, all 3 unsent     | 10  | 1   |
 | 2   | ~~Citation block + `/data/…json`~~           | Shipped 2026-10-27 (mandate)                                               | —   | —   |
-| 3   | ~~Date-first title/meta on the pillar~~      | Shipped 2026-10-27 (mandate); reading 2026-11-05                           | —   | —   |
+| 3   | ~~Date-first title/meta on the pillar~~      | Shipped 2026-10-27 (mandate); reading 2026-11-19                            | —   | —   |
 | 4   | Consent banner (defect)                      | GA4 runs without it — legal + data-quality risk, still unfixed             | 6   | 2   |
-| 5   | Merge `/halving-dates` into the pillar       | One intent split across two crawled-not-indexed URLs; 0 impressions in 28d | 6   | 3   |
-| 6   | Cycle-vs-cycle live tracker                  | Bitbo and bitcoin-daily already own the live view; only pays once indexed  | 4   | 6   |
-| 7   | `/cycle/*` pages, cost-of-waiting calculator | New URLs for a site with 19/25 unindexed — blocked by the freeze           | 3   | 6   |
+| 5   | Exact-anchor path to the pillar from the 6 indexed URLs | Pillar crawl frozen at 2026-10-22 through 3 deploys; internal anchors are the only in-repo lever | 5 | 2 |
+| 6   | Merge `/halving-dates` into the pillar       | One intent split across two crawled-not-indexed URLs; 0 impressions in 28d | 6   | 3   |
+| 7   | Cycle-vs-cycle live tracker                  | Bitbo and bitcoin-daily already own the live view; only pays once indexed  | 4   | 6   |
+| 8   | `/cycle/*` pages, cost-of-waiting calculator | New URLs for a site with 19/25 unindexed — blocked by the freeze           | 3   | 6   |
 
 ## Open issues
 
-- **GSC query attribution is incomplete: "0 non-brand" is a floor** (5 of 26
-  clicks in 28 days have a named query, 17 of 49 in 90 days).
+- **GSC query attribution is incomplete: "0 non-brand" is a floor** (5 of 7
+  clicks in the 7-day window have no named query; 5 of 26 in 28 days; 17 of 49
+  in 90 days). The 90-day table to 2026-10-24 shows **1** non-brand click
+  (`500 btc`, position 26) on 723 non-brand impressions — not zero.
+- **The GSC page table does not sum to the total** (7-day: 40 impressions across
+  10 page rows vs a 21-impression total; 28-day: 133 vs 94; 90-day: 3,485 vs
+  3,378). Quote totals; never report a page's share of impressions as exact
+  until this is explained.
 - **The review job produced `verdict-invalid` on 2026-10-26** (file dated
-  2026-10-25, mode `deep` on a daily run). Two days running it has not
-  delivered a fresh verdict; the next review needs the full history to judge
-  today's changes.
+  2026-10-25, mode `deep` on a daily run), so one of three scheduled review days
+  produced no verdict. `GROWTH_REVIEW.md` now says a review must write a fresh
+  file every run; the runner-side guard is an owner mandate.
 - **EU cookie consent is still missing while GA4 is installed.** Legal risk, and
   it pollutes engagement numbers (46 sessions in 4 days is not traffic).
 - `/bear-market` still earns impressions while 301-redirecting to the pillar.

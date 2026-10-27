@@ -108,18 +108,23 @@ A cycle counts as progress only if it does at least one of these:
 Rewording, reordering or restyling a page without a measured problem is not
 progress. One large, verified change beats five shallow ones.
 
-### Indexation freeze — set by the 2026-10-25 results review
+### URL contraction — set by the 2026-10-27 results review
 
 While fewer than 8 of the 25 sitemap URLs are indexed, **do not add a new page,
-article, route or section.** Indexation, distribution and defects outrank the
-idea menu. A cycle that can find neither should strengthen a page Google already
-indexes rather than publish a new URL. State `indexed X/25` in the commit's
-PERFORMANCE section so the next review can see whether the gate moved. Lifting
-this freeze is the reviewer's call, not the cycle's.
+article, route or section, and do not extend an unindexed page further.** Every
+cycle must instead *reduce or strengthen* the declined surface: merge two
+`Crawled - currently not indexed` URLs into one, or 301 an August-crawled URL
+into a page Google already indexes. State `indexed X/25, sitemap N` in the
+commit's PERFORMANCE section so the next review can see whether the gate moved.
+Lifting this freeze is the reviewer's call, not the cycle's.
 
-Reason: 5 cycles and 4 shipped features produced 0 new indexed URLs, 0 non-brand
-clicks and 0 referring domains. Every feature landed on a URL Google had already
-crawled and declined. New sections on an unindexed page cannot produce a result.
+Reason: 6/25 indexed on all six daily readings 2026-10-22 → 2026-10-27; 13
+`Crawled - currently not indexed` and 6 URLs Google has never fetched although
+they are in `sitemap.xml` and linked from the homepage. Three deploys on the
+pillar (2026-10-23 drawdown, 10-24 timing, 10-27 citation + snippet) did not
+advance its crawl date past 2026-10-22. Adding surface to a domain with 0
+referring domains is negative work: it splits an already-starved crawl budget
+across more URLs to decline.
 
 ### Order of work — never skip ahead
 
@@ -152,6 +157,13 @@ due and whether you may open another.
   and into `BTC500_GROWTH.md`, then stop tracking it.
 
 ### The idea menu
+
+**Frozen 2026-10-27:** every item in A–D below produces a new URL or a new
+section on an unindexed page, so all of them are blocked by the URL-contraction
+rule above until `indexed ≥ 8/25`. While the gate is shut the menu is: merge or
+301 a declined URL, add an internal exact-anchor path to the pillar, prepare a
+send-ready pitch or listing, or fix a defect. Choosing E or F over A–D is
+following this prompt, not ignoring it.
 
 Pick the biggest swing you can build and verify inside one cycle.
 

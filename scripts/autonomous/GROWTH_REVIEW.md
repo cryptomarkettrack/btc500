@@ -27,6 +27,14 @@ The runner has already collected the numbers and written them for you:
 Never invent a number. Every claim in the output must be traceable to a file
 you were given or a command you ran, and you quote the figure.
 
+**Every run writes a new file.** `generated` is the run date and `mode` is the
+run mode from RUN CONTEXT — never copy yesterday's file and edit the verdict.
+On 2026-10-26 a run exited leaving `generated: 2026-10-25, mode: deep`, was
+recorded `verdict-invalid`, and the site went a day without a verdict while the
+mandates aged. If you cannot produce a valid review, write nothing and say so in
+the report; a stale file is worse than an absent one because the next cycle reads
+it as current.
+
 ## 1. The hard rule — the runner enforces it, you cannot argue with it
 
 `rule.mayClaimImproving` is computed from the data, not from your opinion:

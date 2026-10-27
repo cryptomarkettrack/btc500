@@ -11,8 +11,8 @@
       "success": "Any non-brand click, or a new referring domain, before the buy window opens.",
       "inconclusive": "Impressions stay under 20 for the 28-day window.",
       "next_reading": "2026-11-19",
-      "status": "open",
-      "verdict": null
+      "status": "closed",
+      "verdict": "Closed 2026-10-27 by the third failing review. /halving-dates is 'Crawled - currently not indexed' (last crawl 2026-10-22) and has 0 impressions in 28 days, so the calendar feed cannot be tested at all: the success condition needs a served page. Read as a distribution failure, not a feature failure. Replace with sitemap-contraction."
     },
     {
       "id": "drawdown-study",
@@ -52,9 +52,20 @@
       "opened": "2026-10-27",
       "what": "Rewrote the title, meta description and first sentence of /bitcoin-500-day-cycle so they lead with the live T-500 date ('November 28, 2026: 500 Days Before the Next Bitcoin Halving') instead of 'Bitcoin 500-Day Cycle | BTC500', and published /data/500-day-cycles.json plus a citation block on the same page.",
       "hypothesis": "The two exact-intent queries already put the site at 9.07 and 11.0 with 0 clicks out of 20 impressions, and the old title answered neither query. A snippet that states the answer should earn the click once the URL is served, and the citation surface gives a writer something to quote instead of paraphrase.",
-      "success": "A click on any of the 3 cluster queries ('when is / what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle') in the 28 days after the change, or their average position improving to 8 or better.",
-      "inconclusive": "Cluster impressions stay under 20 in the reading window — then the sample cannot separate the snippet from noise.",
-      "next_reading": "2026-11-05",
+      "success": "The pillar is indexed on 2026-11-19, or a click lands on any of the 3 cluster queries ('when is / what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle') in the 28 days after the change.",
+      "inconclusive": "Pillar still 'Crawled - currently not indexed' on 2026-11-19 — then the snippet was never served and the test measured indexation, not the snippet; close it as unreadable rather than extending it.",
+      "next_reading": "2026-11-19",
+      "status": "open",
+      "verdict": null
+    },
+    {
+      "id": "sitemap-contraction",
+      "opened": "2026-10-27",
+      "what": "Merge or 301 the five URLs last crawled 2026-08-09 → 2026-08-22 (/articles, /articles/bitcoin-volatility, /articles/bitcoin-infrastructure-exploits, /articles/ondo-finance-tokenization, /liquidation) into at most two pages, and drop them from sitemap.xml.",
+      "hypothesis": "A four-month-old domain with 0 referring domains has a crawl budget set by authority, not by URL count. 25 URLs, 13 declined and 6 never fetched, means Google spends its visits re-declining the same inventory. Removing dead weight should let the remaining 20 URLs be crawled and indexed at a higher rate, and the indexed count is the only signal that can move first.",
+      "success": "Indexed count rises from 6/25 to 8/25, or any of the five merged source URLs' targets is indexed by 2026-11-10.",
+      "inconclusive": "Indexed stays at 6 and sitemap shrinks to 20 or fewer by 2026-11-10 — then crawl budget was not the limit and only external links can move it; stop all in-repo indexation work and spend every cycle on distribution only.",
+      "next_reading": "2026-11-10",
       "status": "open",
       "verdict": null
     }
