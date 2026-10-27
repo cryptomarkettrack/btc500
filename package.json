@@ -11,7 +11,7 @@
     "lighthouse": "lighthouse https://btc500.net --preset=desktop --quiet",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
-    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts src/lib/halvings.test.ts src/lib/btc-providers.test.ts src/lib/simulator-result.test.ts src/lib/timeline-build.test.ts src/lib/etf-analysis.test.ts src/lib/articles.test.ts src/lib/cycle-calendar.test.ts src/lib/cycle-risk.test.ts src/lib/cycle-timing.test.ts src/lib/article-path.test.ts scripts/autonomous/refresh-archive.test.mjs scripts/autonomous/collect-results.test.mjs scripts/autonomous/validate-review.test.mjs scripts/autonomous/render-asks.test.mjs && node scripts/verify-historical-csv.mjs",
+    "test": "node --experimental-strip-types --test src/lib/historical-csv.test.ts src/lib/halvings.test.ts src/lib/btc-providers.test.ts src/lib/simulator-result.test.ts src/lib/timeline-build.test.ts src/lib/etf-analysis.test.ts src/lib/articles.test.ts src/lib/cycle-calendar.test.ts src/lib/cycle-risk.test.ts src/lib/cycle-timing.test.ts src/lib/cycle-dataset.test.ts src/lib/pillar-snippet.test.ts src/lib/article-path.test.ts scripts/autonomous/refresh-archive.test.mjs scripts/autonomous/collect-results.test.mjs scripts/autonomous/validate-review.test.mjs scripts/autonomous/render-asks.test.mjs && node scripts/verify-historical-csv.mjs",
     "format": "prettier --write .",
     "indexnow": "node scripts/indexnow.mjs",
     "search-console": "node scripts/search-console/fetch-search-console.ts",

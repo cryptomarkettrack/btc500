@@ -6,10 +6,10 @@ import {
   emptySimulatorCycles,
   unavailableSimulatorResult,
   type CycleResult,
+  type SimulatorArchiveRange,
   type SimulatorResult,
 } from "./simulator-result";
-
-export type { CycleResult, SimulatorResult };
+export type { CycleResult, SimulatorArchiveRange, SimulatorResult };
 export { emptySimulatorCycles, unavailableSimulatorResult };
 
 export const getSimulatorData = createServerFn({ method: "GET" }).handler(
@@ -27,6 +27,7 @@ export const getSimulatorData = createServerFn({ method: "GET" }).handler(
             (date) => lookupHistoricalPrice(dataset, date),
             dataset.source,
             dataset.size,
+            { firstDate: dataset.firstDate, lastDate: dataset.lastDate, rows: dataset.size },
           );
         },
         { ttl: TTL.SIMULATOR, staleWhileRevalidate: false },

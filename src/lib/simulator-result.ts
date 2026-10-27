@@ -29,12 +29,20 @@ export interface CycleResult {
   profit: number | null;
 }
 
+export interface SimulatorArchiveRange {
+  firstDate: string | null;
+  lastDate: string | null;
+  rows: number;
+}
+
 export interface SimulatorResult {
   cycles: CycleResult[];
   /** Inside-the-window risk profile per cycle, from the same daily closes. */
   risk: CycleRisk[];
   /** Entry-date sensitivity per cycle: what changes if T-500 is missed. */
   timing: CycleTiming[];
+  /** Range of the daily-close archive this payload was built from. */
+  archive?: SimulatorArchiveRange;
   status: DataLoadStatus;
   completeness: Completeness;
   source: string;
@@ -92,6 +100,7 @@ export function assembleSimulatorResult(
   lookup: (date: string) => number | null,
   source: string,
   datasetSize: number,
+  archive?: SimulatorArchiveRange,
 ): SimulatorResult {
   if (datasetSize <= 0) {
     return unavailableSimulatorResult(
@@ -119,6 +128,7 @@ export function assembleSimulatorResult(
     cycles,
     risk: computeCycleRisks(HALVINGS, lookup),
     timing: computeCycleTimings(HALVINGS, lookup),
+    ...(archive ? { archive } : {}),
     status: completeness === "complete" ? "ok" : "partial",
     completeness,
     source,

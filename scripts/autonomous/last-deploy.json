@@ -1,6 +1,33 @@
 {
-  "generated": "",
-  "summary": "",
-  "note": "Written by the growth agent in the SAME commit as the change it verifies, then checked against production by scripts/autonomous/verify-deploy.mjs after the Vercel status turns green. `generated` must be today's date and every check must contain a short exact string that only appears once the change is live. See GROWTH_PROMPT.md section 6. An empty manifest means the runner reports `manifest=absent` and the run is recorded as unverified.",
-  "checks": []
+  "generated": "2026-10-27",
+  "summary": "citation block + /data/500-day-cycles.json + date-first snippet on the pillar",
+  "checks": [
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "500 Days Before the Next Bitcoin Halving",
+      "status": 200
+    },
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "Method, data and how to cite this page",
+      "status": 200
+    },
+    { "path": "/bitcoin-500-day-cycle", "contains": "Cite this as", "status": 200 },
+    { "path": "/bitcoin-500-day-cycle", "contains": "data/500-day-cycles.json", "status": 200 },
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "In all 4 completed BTC500 windows",
+      "status": 200
+    },
+    {
+      "path": "/data/500-day-cycles.json",
+      "contains": "\"schema\": \"btc500/500-day-cycles@1\"",
+      "status": 200
+    },
+    {
+      "path": "/data/500-day-cycles.json",
+      "contains": "\"medianLowVsEntryPercent\": -11.72",
+      "status": 200
+    }
+  ]
 }

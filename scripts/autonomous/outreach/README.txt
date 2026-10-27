@@ -26,3 +26,14 @@ Rules:
 
 Start with the assets that already exist: /bitcoin-500-day-cycle#risk-heading
 (the drawdown record) and #timing-heading (what a wrong entry date costs).
+The machine-readable copy of every number is /data/500-day-cycles.json (shipped
+2026-10-27, CORS open, rebuilt daily).
+
+Prepared and unsent (2026-10-27)
+--------------------------------
+  2026-10-27-bitcoinmagazine-data-newsletter.txt  Bitcoin Magazine newsroom form   -11.7%
+  2026-10-27-bitcoin-only-listing.txt             bitcoin-only.com GitHub issue    four
+  2026-10-27-bitcointalk-timing-test.txt          BitcoinTalk board 1              -32.5%
+
+One per channel, one number each, one link each. Sending all three is the
+owner's job; nothing in this folder is sent by the automation.

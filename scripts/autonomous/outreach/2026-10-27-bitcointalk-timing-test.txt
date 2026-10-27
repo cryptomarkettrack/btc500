@@ -1,0 +1,46 @@
+BTC500 outreach — community post
+================================
+Recipient : BitcoinTalk — Bitcoin Discussion board (board 1)
+Channel   : new topic at https://bitcointalk.org/index.php?board=1.0
+Send from : owner's BitcoinTalk account
+Prepared  : 2026-10-27
+Number quoted (one): -32.5%
+Link (one): https://btc500.net/bitcoin-500-day-cycle
+Status    : not sent
+
+WHY THEM
+Bitcoin Discussion is where halving-cycle threads already live; the finding here
+is a timing result, not a price call, and it contradicts the usual "buy as early
+as possible before the halving" instinct with a measured number.
+
+THE PITCH
+Topic title: I tested the 500-day halving rule with the entry moved 120 days earlier. It was worse every time.
+
+Post body:
+
+I keep a daily-close archive back to July 2011 and use it to test one fixed
+rule: buy 500 days before the halving, sell 500 days after.
+
+The obvious objection is that 500 is an arbitrary round number, so I re-ran
+every completed window with the exit fixed at the same 500-days-after date and
+the entry moved from 120 days earlier to 120 days later.
+
+Moving the entry 120 days earlier made the exit multiple worse in 3 of 3
+windows where the archive covers the earlier date, median -32.5%. Moving it
+later was mixed: small gains in some windows, worse in others, and the 2012
+window distorts any average because the archive begins exactly at its entry.
+
+The full table (per window, per offset), the drawdown record and the method are
+here: https://btc500.net/bitcoin-500-day-cycle
+
+Caveat worth stating in the thread: this is four completed windows of daily
+closes, so it is a description of the past, not a forecast, and intraday lows
+were deeper than the close data shows.
+
+THE LINK
+https://btc500.net/bitcoin-500-day-cycle
+Suggested anchor text: "the full entry-timing table".
+
+SEND CHECK
+After posting, watch GA4 acquisition → Referral for bitcointalk.org over the next
+7 days, and check whether the thread gets replies. One referral session counts.

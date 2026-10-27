@@ -46,6 +46,7 @@ import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes
 import { Route as ArticlesStrongestHandsRouteImport } from './routes/articles.strongest-hands'
 import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.why-bitcoin-pumped'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
+import { Route as Data500DayCyclesDotjsonRouteImport } from './routes/data.500-day-cycles[.]json'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -246,6 +247,11 @@ const ArticlesWhyBtc500ExistsRoute = ArticlesWhyBtc500ExistsRouteImport.update({
   path: '/why-btc500-exists',
   getParentRoute: () => ArticlesRoute,
 } as any)
+const Data500DayCyclesDotjsonRoute = Data500DayCyclesDotjsonRouteImport.update({
+  id: '/data/500-day-cycles.json',
+  path: '/data/500-day-cycles.json',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -285,6 +291,7 @@ export interface FileRoutesByFullPath {
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
+  '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -324,6 +331,7 @@ export interface FileRoutesByTo {
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
+  '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -364,6 +372,7 @@ export interface FileRoutesById {
   '/articles/strongest-hands': typeof ArticlesStrongestHandsRoute
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
+  '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -405,6 +414,7 @@ export interface FileRouteTypes {
     | '/articles/strongest-hands'
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
+    | '/data/500-day-cycles.json'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -444,6 +454,7 @@ export interface FileRouteTypes {
     | '/articles/strongest-hands'
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
+    | '/data/500-day-cycles.json'
   id:
     | '__root__'
     | '/'
@@ -483,6 +494,7 @@ export interface FileRouteTypes {
     | '/articles/strongest-hands'
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
+    | '/data/500-day-cycles.json'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -504,6 +516,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TimelineRoute: typeof TimelineRoute
   WhenToSellBitcoinAfterHalvingRoute: typeof WhenToSellBitcoinAfterHalvingRoute
+  Data500DayCyclesDotjsonRoute: typeof Data500DayCyclesDotjsonRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -767,6 +780,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesWhyBtc500ExistsRouteImport
       parentRoute: typeof ArticlesRoute
     }
+    '/data/500-day-cycles.json': {
+      id: '/data/500-day-cycles.json'
+      path: '/data/500-day-cycles.json'
+      fullPath: '/data/500-day-cycles.json'
+      preLoaderRoute: typeof Data500DayCyclesDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -841,6 +861,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TimelineRoute: TimelineRoute,
   WhenToSellBitcoinAfterHalvingRoute: WhenToSellBitcoinAfterHalvingRoute,
+  Data500DayCyclesDotjsonRoute: Data500DayCyclesDotjsonRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

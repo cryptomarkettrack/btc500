@@ -15,7 +15,7 @@ import { trackCta } from "@/lib/analytics";
 import { CYCLE_FAQ } from "@/lib/cycle-faq";
 import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { formatSignedPercent, observeCycles } from "@/lib/cycle-stats";
-import { type CycleRisk, summarizeRisk } from "@/lib/cycle-risk";
+import { type CycleRisk, type RiskSummary, summarizeRisk } from "@/lib/cycle-risk";
 import {
   TIMING_OFFSET_DAYS,
   describeOffset,
@@ -27,7 +27,9 @@ import { computeCycle } from "@/lib/phase";
 import { btcPriceQuery, halvingQuery, simulatorQuery } from "@/lib/queries";
 import { isCycleComplete } from "@/lib/simulator-math";
 import { CurrentCycleState } from "@/components/cycle/CurrentCycleState";
-import type { CycleResult } from "@/lib/simulator.functions";
+import { CYCLE_DATASET_PATH } from "@/lib/cycle-dataset";
+import { buildPillarSnippet } from "@/lib/pillar-snippet";
+import type { CycleResult, SimulatorArchiveRange } from "@/lib/simulator.functions";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -43,6 +45,13 @@ export function Bitcoin500DayCyclePage() {
     new Date(halving.lastHalvingDate),
   );
   const stats = observeCycles(simulator.cycles);
+  const riskSummary = summarizeRisk(simulator.risk);
+  // Same function the route head uses, so the title, description and first
+  // sentence of the page cannot say different things about the date.
+  const snippet = buildPillarSnippet({
+    buyDateISO: cycle.buyDate.toISOString(),
+    nowISO: now.toISOString(),
+  });
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -58,8 +67,7 @@ export function Bitcoin500DayCyclePage() {
             Bitcoin <span className="text-primary">500-Day</span> Cycle
           </h1>
           <p className="lead mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
-            BTC500 tracks Bitcoin&apos;s historical performance from 500 days before each halving
-            through 500 days after it.
+            {snippet.lead}
           </p>
         </header>
 
@@ -97,6 +105,7 @@ export function Bitcoin500DayCyclePage() {
         <TimingSection timing={simulator.timing} />
         <BuySection cycleBuyDate={cycle.buyDate} />
         <SellSection cycleSellDate={cycle.sellDate} />
+        <CitationSection archive={simulator.archive} riskSummary={riskSummary} />
         <FaqSection />
         <FinalCta />
 
@@ -931,6 +940,114 @@ function SellSection({ cycleSellDate }: { cycleSellDate: Date }) {
           See every buy, halving, and sell date
           <ArrowRight className="h-4 w-4" />
         </Link>
+      </div>
+    </motion.section>
+  );
+}
+
+function CitationSection({
+  archive,
+  riskSummary,
+}: {
+  archive?: SimulatorArchiveRange;
+  riskSummary: RiskSummary;
+}) {
+  const range =
+    archive?.firstDate && archive.lastDate ? `${archive.firstDate} to ${archive.lastDate}` : null;
+  const rows = archive?.rows ? archive.rows.toLocaleString("en-US") : null;
+  const year = archive?.lastDate?.slice(0, 4) ?? "2026";
+  const median = riskSummary.medianLowVsEntryPercent;
+  const quotable =
+    riskSummary.allBelowEntry && median != null
+      ? `In all ${riskSummary.analyzedCount} completed BTC500 windows, Bitcoin closed below its T-500 entry price at some point; the median lowest close was ${Math.abs(median).toFixed(1)}% below entry.`
+      : null;
+
+  return (
+    <motion.section
+      initial={{ y: 12, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, ease: EASE }}
+      className="mt-20"
+      aria-labelledby="method-heading"
+    >
+      <h2 id="method-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+        Method, data and how to cite this page
+      </h2>
+      <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+        Every figure above is computed from the same daily-close archive that powers the simulator.
+        Nothing is hand-entered, and a day with no print is left out rather than interpolated.
+      </p>
+
+      <div className="mt-8 rounded-3xl border border-border/60 bg-card p-6 sm:p-8">
+        <dl className="grid gap-6 sm:grid-cols-2">
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Data source
+            </dt>
+            <dd className="mt-1 text-sm leading-relaxed text-foreground">
+              BTC500&apos;s own Bitcoin daily-close archive
+              {rows ? ` — ${rows} daily closes` : ""}
+              {range ? `, ${range}` : ""}, in USD.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Windows
+            </dt>
+            <dd className="mt-1 text-sm leading-relaxed text-foreground">
+              T-500 and T+500 are 500 calendar days before and after each halving date, taken from
+              the protocol block heights (210,000 / 420,000 / 630,000 / 840,000).
+            </dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Drawdowns
+            </dt>
+            <dd className="mt-1 text-sm leading-relaxed text-foreground">
+              The lowest close inside the window against the T-500 close. Only daily closes are
+              available, so intraday lows were deeper than shown — every drawdown here is a lower
+              bound.
+            </dd>
+          </div>
+          <div>
+            <dt className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              Timing test
+            </dt>
+            <dd className="mt-1 text-sm leading-relaxed text-foreground">
+              The T+500 exit stays fixed and the entry moves ±120 days. Each row is the change in
+              the T+500 multiple against the exact T-500 entry.
+            </dd>
+          </div>
+        </dl>
+
+        {quotable ? (
+          <div className="mt-6 rounded-2xl border border-primary/30 bg-primary/5 p-4">
+            <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+              The finding in one sentence
+            </p>
+            <p className="mt-1 text-sm leading-relaxed text-foreground">{quotable}</p>
+          </div>
+        ) : null}
+
+        <div className="mt-6">
+          <p className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
+            Cite this as
+          </p>
+          <code className="mt-2 block rounded-xl bg-muted/40 p-4 font-mono text-xs leading-relaxed text-foreground">
+            BTC500 ({year}). “Bitcoin 500-Day Cycle: T-500 to T+500 record, 2011–{year}”.
+            https://btc500.net/bitcoin-500-day-cycle
+          </code>
+        </div>
+
+        <p className="mt-4 text-sm leading-relaxed text-muted-foreground">
+          Machine-readable copy, updated daily and open to any origin:{" "}
+          <a href={CYCLE_DATASET_PATH} className="font-semibold text-primary hover:underline">
+            /data/500-day-cycles.json
+          </a>{" "}
+          — entry, halving and exit closes, per-window drawdowns, the timing deltas and the method
+          above. Historical observations only; past performance does not guarantee future results.
+        </p>
       </div>
     </motion.section>
   );

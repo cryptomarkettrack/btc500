@@ -1,0 +1,40 @@
+BTC500 outreach — directory / roundup listing
+==============================================
+Recipient : bitcoin-only.com — "Explorers & Dashboards" list
+Channel   : GitHub issue via https://github.com/bitcoin-only/bitcoin-only/issues/new/choose
+            ("Content Suggestion — Get Started"; the route their listing page names)
+Send from : owner's GitHub account (the issue is public)
+Prepared  : 2026-10-27
+Number quoted (one): four
+Link (one): https://btc500.net/bitcoin-500-day-cycle
+Status    : not sent
+
+WHY THEM
+bitcoin-only.com lists Bitcoin-only dashboards and data tools. BTC500 is a
+Bitcoin-only research site with its own daily-close archive, no altcoins, no ads
+and no sign-up, which fits their two stated listing requirements.
+
+THE PITCH
+Issue title: Add BTC500 — Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)
+
+Body:
+
+Suggestion: BTC500 (https://btc500.net) for Explorers & Dashboards.
+
+What it is: a Bitcoin-only research site built on one fixed rule — buy 500 days
+before each halving, sell 500 days after — with four completed halving windows
+laid out from a daily-close archive back to 2011. Each window shows the entry,
+halving and exit close, the lowest close inside the window and the date it
+happened, and a test of what missing the exact entry date by 30, 60 or 120 days
+cost at the same exit.
+
+No altcoins, no accounts, no ads, and the underlying numbers are also served as
+JSON for anyone who wants to chart them.
+
+THE LINK
+https://btc500.net/bitcoin-500-day-cycle
+
+SEND CHECK
+After the issue is opened, watch GA4 acquisition → Referral for
+bitcoin-only.com over the next 14 days, and check whether the listing appears on
+https://bitcoin-only.com/explorers-dashboards.

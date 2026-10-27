@@ -1,0 +1,37 @@
+BTC500 outreach — data newsletter pitch
+=======================================
+Recipient : Bitcoin Magazine — newsroom / Daily Recap editors
+Channel   : contact form at https://bitcoinmagazine.com/contact
+Send from : btc500halving@gmail.com (the address on https://btc500.net/about)
+Prepared  : 2026-10-27
+Number quoted (one): -11.7%
+Link (one): https://btc500.net/bitcoin-500-day-cycle
+Status    : not sent
+
+WHY THEM
+Bitcoin Magazine publishes halving-cycle data pieces and runs a daily data item;
+this is a number taken from a daily-close archive rather than a chart
+screenshot, and it is short enough for a recap to print in one sentence.
+
+THE PITCH
+Subject: In every completed 500-day window, Bitcoin closed below the entry price
+
+One number from a daily-close archive that starts in July 2011: across every
+completed 500-day window around a Bitcoin halving, price closed a median 11.7%
+below the 500-days-before entry at some point before the halving itself. The
+2012 window is the outlier on the deep side, and the page publishes each
+window's lowest close and the date it happened, plus a test of what moving the
+entry date 30, 60 and 120 days earlier or later did to the exit multiple.
+Everything is computed from the same archive, daily closes only, and it is free
+to cite.
+
+The table and the method are here:
+https://btc500.net/bitcoin-500-day-cycle
+
+THE LINK
+https://btc500.net/bitcoin-500-day-cycle
+Suggested anchor text: "the 500-day window drawdown record".
+
+SEND CHECK
+After sending, watch GA4 acquisition → Referral for bitcoinmagazine.com over the
+next 7 days. One referral session counts.
