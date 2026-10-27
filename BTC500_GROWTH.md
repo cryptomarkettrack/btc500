@@ -147,6 +147,15 @@ server HTML; `/data/500-day-cycles.json` returns 200 with `medianLowVsEntryPerce
 
 **Experiment:** `pillar-date-first-snippet`, reading 2026-11-05.
 
+**Deployed as `f925e32`.** Production verified after the Vercel build: title
+"November 28, 2026: 500 Days Before the Next Bitcoin Halving", the date in the
+meta description and first paragraph, the citation block, the quotable line, the
+JSON link, 7 valid ld+json blocks, canonical intact, sitemap `lastmod`
+2026-10-27, `/data/500-day-cycles.json` 200 with `access-control-allow-origin: *`
+and `medianLowVsEntryPercent: -11.72`, homepage and robots 200. IndexNow 200 for
+25 URLs. Vercel serves the endpoint with `cache-control: public, max-age=0`
+(it drops `s-maxage`); harmless, noted so nobody chases it.
+
 ### 2026-10-25 — One live buy date on every article page
 
 7 article FAQ answers, 8 article bodies, 2 meta descriptions, 2 feed entries and
