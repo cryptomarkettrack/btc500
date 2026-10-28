@@ -152,6 +152,14 @@ Not done, deliberately: `/articles/strongest-hands` fell out of the index today
 and is a candidate for the _next_ contraction, but a 24-hour decline is not yet
 evidence.
 
+**Deployed `afc4772`** — GitHub commit status `Vercel: success`. Production read
+at 06:17Z: sitemap 22 URLs, `/` and the four indexed articles 200 with the anchor
+link, the three contracted URLs permanently redirect to `/articles` and land 200,
+`/robots.txt` 200, manifest 8/8 checks (`verify-deploy.mjs`), `npm run indexnow`
+200 for 22 URLs. Vercel emits **308** for `permanent: true`, not 301; Google
+documents 308 as equivalent for indexing and signal consolidation, so the intent
+of the mandate is met — but do not grep for `301` when checking this.
+
 ### 2026-10-27 — Citation surface and date-first snippet
 
 `/data/500-day-cycles.json` (server route, `src/lib/cycle-dataset.ts`) publishes
@@ -234,6 +242,9 @@ review). While the gate is shut only rows 0, 1 and 3–4 can be worked.
 - `/bear-market` earns impressions while 301-redirecting to the pillar. Dated
   article bodies still quote 30 November 2026 as published — intentional
   snapshots, explained by the live-date strip. Do not mass-rewrite them.
+- **Vercel serves `permanent: true` redirects as 308, not 301** (`/bear-market`
+  and the three 2026-10-28 contractions alike). Equivalent for Google; a plain
+  `curl` check must accept 308.
 - Archive: the runner appends validated daily rows in preflight. `archive=stale`
   is a defect, not a footnote.
 
