@@ -108,23 +108,39 @@ A cycle counts as progress only if it does at least one of these:
 Rewording, reordering or restyling a page without a measured problem is not
 progress. One large, verified change beats five shallow ones.
 
-### URL contraction — set by the 2026-10-27 results review
+**Set by the 2026-10-28 review — work on a declined URL no longer counts as a
+ship.** A cycle whose only deliverable is copy, markup, titles or sections on a
+URL Google has already crawled and declined must record itself `archive-only`,
+not `shipped`. Evidence: the pillar `/bitcoin-500-day-cycle` was changed on
+2026-10-23, 10-24, 10-27 and linked from five pages on 10-28 and its lastCrawl
+is still 2026-10-22; over the same four cycles indexed went 6 → 5 and non-brand
+clicks stayed at 0. What still counts as a ship while the gate is shut:
+removing or merging a URL, adding an internal link from an *indexed* page to a
+declined one, fixing a measurement or legal defect, and preparing one owner ask.
+What does not: a fifth rewrite of a page Google has declined four times.
 
-While fewer than 8 of the 25 sitemap URLs are indexed, **do not add a new page,
-article, route or section, and do not extend an unindexed page further.** Every
-cycle must instead *reduce or strengthen* the declined surface: merge two
-`Crawled - currently not indexed` URLs into one, or 301 an August-crawled URL
-into a page Google already indexes. State `indexed X/25, sitemap N` in the
-commit's PERFORMANCE section so the next review can see whether the gate moved.
-Lifting this freeze is the reviewer's call, not the cycle's.
+### URL contraction — set by the 2026-10-27 review, re-based 2026-10-28
 
-Reason: 6/25 indexed on all six daily readings 2026-10-22 → 2026-10-27; 13
+While fewer than 8 of the **22** sitemap URLs are indexed (5 on 2026-10-28),
+**do not add a new page, article, route or section, and do not extend an
+unindexed page further.** Every cycle must instead *reduce or strengthen* the
+declined surface: merge two `Crawled - currently not indexed` URLs into one, or
+301 an August-crawled URL into a page Google already indexes. State
+`indexed X/22, sitemap N` in the commit's PERFORMANCE section so the next review
+can see whether the gate moved. The reading is **2026-11-10**: if indexed is
+still 5 of 22 that day, the `sitemap-contraction` experiment closes failed and
+every in-repo indexation action stops for good — from then on a cycle may only
+prepare an owner ask or fix a defect. Lifting this freeze is the reviewer's
+call, not the cycle's.
+
+Reason: 5 of 22 indexed on 2026-10-28 — 6 on every reading 2026-10-22 → 10-27
+until `/articles/strongest-hands` (last crawl 2026-08-17) lost its index. 11
 `Crawled - currently not indexed` and 6 URLs Google has never fetched although
-they are in `sitemap.xml` and linked from the homepage. Three deploys on the
-pillar (2026-10-23 drawdown, 10-24 timing, 10-27 citation + snippet) did not
-advance its crawl date past 2026-10-22. Adding surface to a domain with 0
-referring domains is negative work: it splits an already-starved crawl budget
-across more URLs to decline.
+all 6 are in `sitemap.xml` and 5 are linked from the homepage. Four deploys on
+the pillar (2026-10-23 drawdown, 10-24 timing, 10-27 citation + snippet, 10-28
+inbound exact anchors) did not advance its crawl date past 2026-10-22. Adding
+surface to a domain with 0 referring domains is negative work: it splits an
+already-starved crawl budget across more URLs to decline.
 
 ### Order of work — never skip ahead
 
@@ -215,6 +231,13 @@ gets cited instead of summarised)
   recipient, one number, one link, ready to copy-paste. The owner can send it in
   a minute; you cannot send it. Do this whenever links are the blocker — they
   have been for weeks.
+- One listing request through an account the owner already has (a GitHub issue
+  on the list's own repo, e.g. bitcoin-only.com's "Explorers & Dashboards").
+  Added 2026-10-28: `github.com` is the only referrer that has ever produced a
+  session (7 in the 7 days to 2026-10-27), and the three asks sent to X, email
+  and BitcoinTalk produced 0 sends in 3 days. Prefer the channel with evidence
+  that the owner can act in it; do not open a second front while one ask is
+  outstanding.
 - A weekly recurring format (`/data/…` + RSS) that newsletters can lift whole.
 - Self-serve listings and data directories, with the exact URL, description and
   screenshot text prepared.

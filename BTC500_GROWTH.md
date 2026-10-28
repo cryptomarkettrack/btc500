@@ -53,7 +53,11 @@ GSC window ends 2026-10-25, GA4 window ends 2026-10-27, archive fresh to
   `/articles/sec-cancels-regulation-crypto`, `/articles/bip-110-rejection`,
   `/articles/bear-market-accumulation` (5 total including the homepage).
   20 of 25 need attention: 13 crawled-not-indexed, 5 unknown, 1 discovered, 1
-  in `INDEXING_STATE_UNSPECIFIED`.
+  in `INDEXING_STATE_UNSPECIFIED`. After contraction the inspection covers
+  **22 URLs: 5 indexed, 11 crawled-not-indexed, 6 unknown to Google**
+  (2026-10-28, `inspection-latest.json`). All 6 unknown URLs are in
+  `sitemap.xml` and 5 of them are linked from the homepage — discovery is not
+  the missing link, authority is.
 - Pillar still "Crawled - currently not indexed", lastCrawl **2026-10-22** — six
   days and four deploys (drawdown, timing, citation, snippet) after it was first
   declined.
@@ -65,44 +69,65 @@ GSC window ends 2026-10-25, GA4 window ends 2026-10-27, archive fresh to
 
 ---
 
+## Results review — 2026-10-28 (daily, verdict: FAILING, streak 4)
+
+Fourth consecutive non-improving review. `mayClaimImproving=false`: one positive
+outcome signal (7 referrals, all `github.com`) and indexation regressed. The
+cycle executed 3 of 4 mandates by 09:00 — 3 × 308 to `/articles` (sitemap
+25 → 22, verified live: 22 `<loc>`, both tested slugs redirect), the exact-anchor
+link from `/` and the four indexed articles, and `outreach/STATUS.md` — and the
+result column still went backwards: **indexed 6 → 5** (`/articles/strongest-hands`,
+last crawl 2026-08-17, lost its index), 0 non-brand clicks, 0 referrals from any
+asked channel.
+
+Findings that are new and go into the working docs:
+
+- **A declined page cannot be fixed on-page.** Four changes to the pillar in six
+  days (10-23, 10-24, 10-27, and five inbound exact-anchor links on 10-28) and
+  lastCrawl is still 2026-10-22. The prompt now records copy on a declined URL as
+  `archive-only`, not a ship.
+- **The GSC tables do not reconcile, and the 7-day report changes shape between
+  runs.** 2026-10-27 (window 10-18 → 10-24): 10 page rows summing to 40
+  impressions against a 21 total. 2026-10-28 (window 10-19 → 10-25): 1 page row
+  / 16 impressions, while the 28-day report from the same run still returns 11
+  page rows summing to 135 against a 96 total. `pagesWithImpressions` went
+  10 → 1 in a day while total impressions fell only 21 → 16 — a window artifact,
+  not a signal.
+- **Owner attention is the bottleneck and three asks split it.** All three asks
+  handed over 2026-10-27 are `sent: no` in STATUS.md; referrals 7d are
+  github.com 7 and 0 for x.com, twitter.com, bitcoinmagazine.com, bitcointalk.org.
+  This review issues **one** ask and retires the other three: the bitcoin-only.com
+  listing via a GitHub issue — the channel where the owner demonstrably acts and
+  the only referrer that has ever produced a session.
+- Targets: indexed 5/22 → 8/22 by 2026-11-10 (the contraction's own reading
+  date); non-brand 1 in 7d by 2026-11-15; referrals 7 → 9 by 2026-11-11;
+  ask-effect 1 from bitcoin-only.com by 2026-11-11; sitemap 22 → 21 by 10-30.
+
 ## Results review — 2026-10-27 (daily, verdict: FAILING, streak 3)
 
-Third consecutive non-improving review. The 2026-10-26 run wrote no verdict at
-all (`verdict-invalid`, file dated 2026-10-25), so the 10-27 file is the last
-valid order of work. Its verdict rests on: indexation 6/25 on six consecutive
-readings; 0 non-brand clicks in 7 days; 3 referral sessions, all `github.com`;
-two cycles, one of which shipped nothing.
-
-Mandates and their state after today:
-
-1. `consolidate-declined-urls` — **executed 2026-10-28** (below). Sitemap 25 → 22.
-2. `pillar-crawl-recovery` — **executed 2026-10-28**: exact-anchor links from the
-   homepage and the four currently indexed articles (five in the mandate; one of
-   the six was `/articles/strongest-hands`, which dropped out of the index today
-   and is now declined, so it is not a place to link _from_).
-3. `ask-ledger` — **executed 2026-10-28**: `scripts/autonomous/outreach/STATUS.md`
-   plus `npm run referrals`, a deterministic line for every commit.
-4. `review-runner-fails-loud` — **not executed**: marked `owner` by the reviewer
-   ("a machinery change I may not make myself"). Touching the runner that starts
-   this cycle is not a growth change; the guard is specified in the mandate and
-   waits for the owner's yes.
+Third consecutive non-improving review; the 2026-10-26 run wrote no verdict at
+all (`verdict-invalid`, file dated 2026-10-25). Basis: indexation 6/25 on six
+consecutive readings, 0 non-brand clicks in 7 days, 3 referral sessions all
+`github.com`, two cycles of which one shipped nothing. Mandates after 2026-10-28:
+`consolidate-declined-urls` **done** (sitemap 25 → 22), `pillar-crawl-recovery`
+**done** (exact anchor from `/` and the four indexed articles — the sixth was
+`/articles/strongest-hands`, which lost its index the same day, so it is not a
+place to link _from_), `ask-ledger` **done** (`outreach/STATUS.md` +
+`npm run referrals`), `review-runner-fails-loud` **not executed** — owner-owned,
+due 2026-11-03, still unbuilt.
 
 ## Results review — 2026-10-25 (deep, verdict: stagnant)
 
-0 positive outcome signals → `stagnant`: 28 commits since 10-19, 4 substantive
-changes, 0 new indexed URLs, 0 non-brand clicks, 0 referring domains. Competent
-work aimed at a URL Google had already declined. Caveat kept: GSC names a query
-for only 5 of 26 clicks in 28 days, so "0 non-brand" is a floor.
+0 positive outcome signals: 28 commits since 10-19, 4 substantive changes, 0 new
+indexed URLs, 0 non-brand clicks, 0 referring domains. GSC names a query for only
+5 of 26 clicks in 28 days, so "0 non-brand" is a floor.
 
-### Competitive benchmark (last full sweep 2026-10-25)
-
-Bitbo runs a live 500-day halving-window chart (4-hour refresh, buy/sell markers,
-per-window return including the open window); bitcoin-daily.com has a live cycle
-clock, pre-stated predictions and a paper with replication code;
-btc.aipeterlab.com is a live status dashboard (next buy date, countdown, decision
-path, +540-day variant). We have the drawdown survival table, the entry-timing
-test and a machine-readable dataset. Missing: a live view, any recommendation and
-any link. The gap is distribution, not data.
+**Competitive benchmark (last full sweep 2026-10-25).** Bitbo runs a live 500-day
+halving-window chart; bitcoin-daily.com a live cycle clock, pre-stated
+predictions and replication code; btc.aipeterlab.com a live status dashboard. We
+have the drawdown survival table, the entry-timing test and a JSON dataset.
+Missing: a live view, any recommendation and any link — the gap is distribution,
+not data.
 
 ---
 
@@ -140,35 +165,24 @@ bitcointalk.org N` from the newest GA4 report, counts `twitter.com`/`t.co` as
   measured" (exit 1) when there is no report, so a zero cannot be invented. A
   `.gitignore` exception makes `outreach/*.md` trackable.
 
-Validation: `npm test` 167/167, `tsc --noEmit` clean, default and node-server
-builds clean, no new eslint/prettier problems in touched files (the five article
-components were already prettier-dirty). Local SSR: `/`, `/articles` and the four
-indexed articles return 200 with the anchor link exactly once; the three
-contracted URLs 404 in the local node server (expected — the 301 is served by
-Vercel, proven by `/bear-market`), so production is the proof. The sitemap served
-locally lists 22 URLs and no contracted slug.
+Validation: `npm test` 167/167, `tsc --noEmit` clean, both builds clean. Local SSR
+serves the anchor on `/`, `/articles` and the four indexed articles once; the
+three contracted URLs 404 locally (the 308 is Vercel's), so production is the
+proof. Deployed `afc4772` (Vercel: success), production read at 06:17Z: sitemap
+22 URLs, anchors live, three redirects 308 → `/articles` 200, manifest 8/8,
+IndexNow 200 for 22 URLs. Vercel emits **308** for `permanent: true`, not 301 —
+equivalent for Google, but do not grep for `301` when checking this.
 
 Not done, deliberately: `/articles/strongest-hands` fell out of the index today
-and is a candidate for the _next_ contraction, but a 24-hour decline is not yet
-evidence.
-
-**Deployed `afc4772`** — GitHub commit status `Vercel: success`. Production read
-at 06:17Z: sitemap 22 URLs, `/` and the four indexed articles 200 with the anchor
-link, the three contracted URLs permanently redirect to `/articles` and land 200,
-`/robots.txt` 200, manifest 8/8 checks (`verify-deploy.mjs`), `npm run indexnow`
-200 for 22 URLs. Vercel emits **308** for `permanent: true`, not 301; Google
-documents 308 as equivalent for indexing and signal consolidation, so the intent
-of the mandate is met — but do not grep for `301` when checking this.
+and is the next contraction candidate, but a 24-hour decline is not yet evidence.
 
 ### 2026-10-27 — Citation surface and date-first snippet
 
-`/data/500-day-cycles.json` (server route, `src/lib/cycle-dataset.ts`) publishes
-per-window entry / halving / exit closes, drawdowns, ±120-day timing deltas, the
-method and a ready-made citation string (503 on an empty archive, CORS open,
-~12 KB); a citation block plus `Dataset` JSON-LD sits on the pillar; and the
-title, description and first sentence are built from the live halving snapshot
-(`src/lib/pillar-snippet.ts`, 13 tests), flipping to "Entry Was November 28,
-2026" once the date passes. Deployed `f925e32`, verified.
+`/data/500-day-cycles.json` publishes per-window entry / halving / exit closes,
+drawdowns, ±120-day timing deltas, the method and a citation string (CORS open,
+~12 KB); a citation block plus `Dataset` JSON-LD sits on the pillar; the title,
+description and first sentence come from the live halving snapshot (13 tests).
+Deployed `f925e32`, verified.
 
 ### History before 2026-10-27
 
@@ -191,19 +205,27 @@ title, description and first sentence are built from the live halving snapshot
 
 ## Next priorities
 
-0. **Read the contraction on 2026-11-10 and stop if it failed.** Success is
-   indexed ≥ 8 of 22 by then (base at shipping: 5 indexed / 22 sitemap). If it
-   is still 5, the `sitemap-contraction` experiment closes inconclusive and every
-   in-repo indexation action stops in favour of links only.
-1. **`/articles/strongest-hands`** — the first URL to lose its index. If it is
-   still declined on 2026-10-29, 301 it to `/articles` and drop it from the
-   sitemap (22 → 21) rather than rewriting it.
-2. **Make the citation surface visible to someone.** The JSON endpoint, the
-   citation block and the ask ledger exist; the three asks (due 2026-10-28,
-   10-29, 11-02) are the only way a stranger learns the number exists. The cycle
-   cannot send them; it can only keep the chain honest.
-3. **Own 2026-11-28** — the buy window opens in 31 days. On-site work is done;
-   the homepage and the pillar now say the same date and the same phrase.
+0. **Fix the GSC collector (mandate, due 2026-10-30).** The 7-day page table
+   returned 10 rows summing to 40 impressions against a 21 total on 10-27, then
+   1 row / 16 impressions on 10-28 while the 28-day report kept 11 rows. Reconcile
+   rows to each report's total and refuse to write a report that does not add up.
+1. **301 `/articles/strongest-hands` → `/articles`, sitemap 22 → 21 (mandate,
+   due 2026-10-30).** First URL to lose its index (last crawl 2026-08-17);
+   rewriting a declined page is what has already failed four times.
+2. **Answer one query from an indexed page (mandate, due 2026-10-31).** The
+   homepage is the only URL with impressions (16 in 7 days) and they are all
+   brand. Put the top cluster query in its H1/first 40 words; measure in 7 days.
+3. **Read the contraction on 2026-11-10.** Success is indexed ≥ 8 of 22 (base at
+   shipping: 5/22). If it is still 5, `sitemap-contraction` closes failed and all
+   in-repo indexation work stops permanently; every cycle then ships one
+   distribution asset or a defect fix and nothing else.
+4. **One ask, not three.** The owner has one live action: the bitcoin-only.com
+   listing issue (`outreach/2026-10-27-bitcoin-only-listing.txt`, channel:
+   GitHub). It is the only channel with any evidence of use — 7 of 7 referral
+   sessions are github.com — and it produces a real referring domain instead of
+   another post. The X, email and BitcoinTalk asks are retired (see the review).
+5. **Own 2026-11-28** — the buy window opens in 31 days. On-site work is done;
+   the homepage and the pillar say the same date and the same phrase.
 
 ## Ranked backlog
 
@@ -214,7 +236,7 @@ review). While the gate is shut only rows 0, 1 and 3–4 can be worked.
 | #   | Bet                                               | Why it can move the needle                                         | I   | E   |
 | --- | ------------------------------------------------- | ------------------------------------------------------------------ | --- | --- |
 | 0   | Contraction reading 2026-11-10                    | The only in-repo lever left; stop-work condition is written        | 8   | 1   |
-| 1   | Owner sends the 3 asks (email, community post, X) | Links are the gate; 0 referring domains, 20/25 unindexed           | 10  | 1   |
+| 1   | Owner files the bitcoin-only.com listing issue     | Only channel with evidence of use; 0 referring domains, 17/22 unindexed | 10  | 1   |
 | 2   | ~~Merge/301 the 5 August-crawled URLs~~           | Shipped 2026-10-28: 3 × 301, sitemap 25 → 22                       | —   | —   |
 | 3   | 301 `/articles/strongest-hands`                   | First indexed URL lost; 66+ days without a re-crawl of siblings    | 5   | 1   |
 | 4   | Consent banner (defect)                           | GA4 runs without it — legal + data-quality risk, still unfixed     | 6   | 2   |
@@ -226,7 +248,13 @@ review). While the gate is shut only rows 0, 1 and 3–4 can be worked.
 ## Open issues
 
 - **Indexation went backwards: 6 → 5 on 2026-10-28** (`/articles/strongest-hands`
-  lost). Treat every future cycle that adds a URL as adding to a declining set.
+  lost). Denominator is now 22 after contraction, so the reading is 5/22. Treat
+  every future cycle that adds a URL as adding to a declining set.
+- **The GSC tables do not reconcile.** 7-day report 2026-10-27: 10 page rows
+  summing to 40 impressions against a 21 total; 28-day report 2026-10-28: 11 page
+  rows summing to 135 against 96; query rows sum to 8 impressions against 21.
+  `pagesWithImpressions` is a window artifact (10 → 1 in a day while the total
+  fell 21 → 16) and must not be quoted until the collector reconciles.
 - **The review-runner guard is missing** — the 2026-10-26 review produced
   no verdict and nothing noticed. `run-review-cycle.sh` should hash
   `review-latest.json` before and after and report `review-missing` when it is
@@ -236,7 +264,9 @@ review). While the gate is shut only rows 0, 1 and 3–4 can be worked.
   90-day table to 2026-10-24 shows 1 non-brand click (`500 btc`, position 26) on
   723 non-brand impressions.
 - **The GSC page table does not sum to the total** (7-day 40 vs a 21-impression
-  total; 28-day 133 vs 94; 90-day 3,485 vs 3,378). Quote totals, not shares.
+  total on 10-27; 28-day 133 vs 94; 90-day 3,485 vs 3,378; and on 10-28 it did
+  sum — 1 row, 16 impressions — because only one row was returned). Quote totals,
+  never shares.
 - **EU cookie consent is still missing while GA4 is installed.** Legal risk, and
   it pollutes engagement numbers (76 sessions in 7 days is not traffic).
 - `/bear-market` earns impressions while 301-redirecting to the pillar. Dated

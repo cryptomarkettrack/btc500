@@ -41,11 +41,14 @@
       "opened": "2026-10-25",
       "what": "One X post from @btc500halving carrying the drawdown number, one community comment carrying the entry-timing table (both pointing at /bitcoin-500-day-cycle), and 3 send-ready pitches in scripts/autonomous/outreach/.",
       "hypothesis": "The first external mention is what turns 6/25 indexed into a crawled site. One real referral is evidence the page is worth linking; zero referrals after a finished post means the channel or the audience is wrong.",
-      "success": "At least 1 GA4 referral session from x.com, twitter.com or reddit.com, or 1 new indexed URL, by 2026-11-08.",
-      "inconclusive": "No ask was published by 2026-11-01. Then the test measured the owner's availability, not the channel, and is void.",
+      "success": "At least 1 GA4 referral session from any channel we asked (x.com, twitter.com, reddit.com, bitcointalk.org, bitcoinmagazine.com, bitcoin-only.com), or 1 new indexed URL, by 2026-11-08.",
+      "inconclusive": "scripts/autonomous/outreach/STATUS.md shows no ask with a send date by 2026-11-04. Then the test measured the owner's availability, not the channel, and is void — close it and issue the next ask on the one channel the ledger proves is usable.",
       "next_reading": "2026-11-08",
       "status": "open",
-      "verdict": null
+      "verdict": null,
+      "progress": [
+        "2026-10-28: written down as unmeasurable, not just unsent — STATUS.md records handed-over dates and `sent: no` for all three asks (2026-10-27). Referrals 7d: github.com 7, every asked channel 0. Success widened to any asked channel so the reading is not tied to X, which produced 0 sends in 3 days."
+      ]
     },
     {
       "id": "pillar-date-first-snippet",
@@ -63,8 +66,8 @@
       "opened": "2026-10-27",
       "what": "Merge or 301 the five URLs last crawled 2026-08-09 \u2192 2026-08-22 (/articles, /articles/bitcoin-volatility, /articles/bitcoin-infrastructure-exploits, /articles/ondo-finance-tokenization, /liquidation) into at most two pages, and drop them from sitemap.xml.",
       "hypothesis": "A four-month-old domain with 0 referring domains has a crawl budget set by authority, not by URL count. 25 URLs, 13 declined and 6 never fetched, means Google spends its visits re-declining the same inventory. Removing dead weight should let the remaining 20 URLs be crawled and indexed at a higher rate, and the indexed count is the only signal that can move first.",
-      "success": "Indexed count rises from 6/25 to 8/25, or any of the five merged source URLs' targets is indexed by 2026-11-10.",
-      "inconclusive": "Indexed stays at 6 and sitemap shrinks to 20 or fewer by 2026-11-10 \u2014 then crawl budget was not the limit and only external links can move it; stop all in-repo indexation work and spend every cycle on distribution only.",
+      "success": "Indexed rises from the 2026-10-28 base of 5 of 22 to 8 or more of 22 by 2026-11-10, or any of the three redirected slugs' target (/articles) is crawled after 2026-10-28 and indexed.",
+      "inconclusive": "Indexed stays at 5 or fewer with the sitemap at 22 by 2026-11-10 \u2014 then crawl budget was not the limit and only external links can move it; stop all in-repo indexation work permanently and spend every cycle on distribution only.",
       "next_reading": "2026-11-10",
       "status": "open",
       "verdict": null,
