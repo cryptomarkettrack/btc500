@@ -41,6 +41,7 @@ scripts/analytics/output/
 *.md
 !BTC500_GROWTH.md
 !scripts/autonomous/*.md
+!scripts/autonomous/outreach/*.md
 !.opencode/agents/*.md
 # Root-level scratch directory only. Without the leading slash this pattern
 # also matched scripts/search-console/, which silently excluded the Search

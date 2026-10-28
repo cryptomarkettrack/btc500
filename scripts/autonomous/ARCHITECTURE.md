@@ -135,7 +135,8 @@ you. When results are flat, that is the highest-leverage thing in the system.
 | What did it actually do?        | `~/.local/state/btc500-growth/YYYY-MM-DD.log`, `attempts/*.log`, `git log`                                                           |
 | What did the reviewer conclude? | `last-review.txt`, `review-history.csv`, `review-YYYY-MM-DD.log`, `scripts/autonomous/review-latest.json`                            |
 | **What am I supposed to do?**   | `~/.local/state/btc500-growth/owner-asks.txt`, the notification, or the `ASKS:` lines in the commit                                  |
-| Are the numbers moving?         | `results-history.csv`, `review-input.json`, and the sources: Search Console + GA4 via `npm run search-console` / `npm run analytics` |
+| Did I already do it?            | `scripts/autonomous/outreach/STATUS.md` — one row per ask and pitch: channel, recipient, handed over, due, sent, date sent, proof metric                                                          |
+| Are the numbers moving?         | `results-history.csv`, `review-input.json`, and the sources: Search Console + GA4 via `npm run search-console` / `npm run analytics`. Referral-only line: `npm run referrals`                    |
 | Is the site fine?               | <https://btc500.net>, `/sitemap.xml`, `/btc-usd-max.csv`, the notification                                                           |
 | Is the deployment real?         | GitHub commit status (Vercel), `scripts/autonomous/last-deploy.json` vs the live HTML                                                |
 | Why did we choose this work?    | `BTC500_GROWTH.md` (memory), `scripts/autonomous/experiments.json`, `GROWTH_PROMPT.md`                                               |

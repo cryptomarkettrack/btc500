@@ -90,15 +90,8 @@ export function WhyBitcoinPumpedArticle({ title, date, readTime }: ArticleProps)
           <h2>What happened on August 19, 2026</h2>
           <p>
             Bitcoin spent weeks trapped roughly between <strong>$61,500 and $65,000</strong>.
-            Implied volatility had already collapsed — we covered that in{" "}
-            <Link
-              to="/articles/bitcoin-volatility"
-              className="font-semibold text-primary underline"
-            >
-              Bitcoin Volatility Is Gone
-            </Link>
-            . Quiet ranges invite leverage. When a real catalyst arrives, that leverage becomes
-            fuel.
+            Implied volatility had already collapsed to near 35 — a quiet range that invites
+            leverage. When a real catalyst arrives, that leverage becomes fuel.
           </p>
           <p>
             During U.S. morning hours on Wednesday, August 19, Bitcoin broke the range. It

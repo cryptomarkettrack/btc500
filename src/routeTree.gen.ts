@@ -31,15 +31,12 @@ import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/art
 import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
 import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/articles.bitcoin-80k-breakout'
 import { Route as ArticlesBitcoinCasinoSearchesRouteImport } from './routes/articles.bitcoin-casino-searches'
-import { Route as ArticlesBitcoinInfrastructureExploitsRouteImport } from './routes/articles.bitcoin-infrastructure-exploits'
-import { Route as ArticlesBitcoinVolatilityRouteImport } from './routes/articles.bitcoin-volatility'
 import { Route as ArticlesBitcoinWeekAheadRouteImport } from './routes/articles.bitcoin-week-ahead'
 import { Route as ArticlesBtc500StrategyRouteImport } from './routes/articles.btc500-strategy'
 import { Route as ArticlesClarityActRouteImport } from './routes/articles.clarity-act'
 import { Route as ArticlesDoctorProfitBitcoinOctober2026RouteImport } from './routes/articles.doctor-profit-bitcoin-october-2026'
 import { Route as ArticlesGoldmanVsBlackrockRouteImport } from './routes/articles.goldman-vs-blackrock'
 import { Route as ArticlesIsTheBottomInRouteImport } from './routes/articles.is-the-bottom-in'
-import { Route as ArticlesOndoFinanceTokenizationRouteImport } from './routes/articles.ondo-finance-tokenization'
 import { Route as ArticlesRuplRouteImport } from './routes/articles.rupl'
 import { Route as ArticlesSecCancelsRegulationCryptoRouteImport } from './routes/articles.sec-cancels-regulation-crypto'
 import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes/articles.solar-eclipse-bitcoin-halving'
@@ -163,18 +160,6 @@ const ArticlesBitcoinCasinoSearchesRoute =
     path: '/bitcoin-casino-searches',
     getParentRoute: () => ArticlesRoute,
   } as any)
-const ArticlesBitcoinInfrastructureExploitsRoute =
-  ArticlesBitcoinInfrastructureExploitsRouteImport.update({
-    id: '/bitcoin-infrastructure-exploits',
-    path: '/bitcoin-infrastructure-exploits',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
-const ArticlesBitcoinVolatilityRoute =
-  ArticlesBitcoinVolatilityRouteImport.update({
-    id: '/bitcoin-volatility',
-    path: '/bitcoin-volatility',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
 const ArticlesBitcoinWeekAheadRoute =
   ArticlesBitcoinWeekAheadRouteImport.update({
     id: '/bitcoin-week-ahead',
@@ -208,12 +193,6 @@ const ArticlesIsTheBottomInRoute = ArticlesIsTheBottomInRouteImport.update({
   path: '/is-the-bottom-in',
   getParentRoute: () => ArticlesRoute,
 } as any)
-const ArticlesOndoFinanceTokenizationRoute =
-  ArticlesOndoFinanceTokenizationRouteImport.update({
-    id: '/ondo-finance-tokenization',
-    path: '/ondo-finance-tokenization',
-    getParentRoute: () => ArticlesRoute,
-  } as any)
 const ArticlesRuplRoute = ArticlesRuplRouteImport.update({
   id: '/rupl',
   path: '/rupl',
@@ -276,15 +255,12 @@ export interface FileRoutesByFullPath {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
-  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
-  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
-  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
@@ -316,15 +292,12 @@ export interface FileRoutesByTo {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
-  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
-  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
-  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
@@ -357,15 +330,12 @@ export interface FileRoutesById {
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
   '/articles/bitcoin-casino-searches': typeof ArticlesBitcoinCasinoSearchesRoute
-  '/articles/bitcoin-infrastructure-exploits': typeof ArticlesBitcoinInfrastructureExploitsRoute
-  '/articles/bitcoin-volatility': typeof ArticlesBitcoinVolatilityRoute
   '/articles/bitcoin-week-ahead': typeof ArticlesBitcoinWeekAheadRoute
   '/articles/btc500-strategy': typeof ArticlesBtc500StrategyRoute
   '/articles/clarity-act': typeof ArticlesClarityActRoute
   '/articles/doctor-profit-bitcoin-october-2026': typeof ArticlesDoctorProfitBitcoinOctober2026Route
   '/articles/goldman-vs-blackrock': typeof ArticlesGoldmanVsBlackrockRoute
   '/articles/is-the-bottom-in': typeof ArticlesIsTheBottomInRoute
-  '/articles/ondo-finance-tokenization': typeof ArticlesOndoFinanceTokenizationRoute
   '/articles/rupl': typeof ArticlesRuplRoute
   '/articles/sec-cancels-regulation-crypto': typeof ArticlesSecCancelsRegulationCryptoRoute
   '/articles/solar-eclipse-bitcoin-halving': typeof ArticlesSolarEclipseBitcoinHalvingRoute
@@ -399,15 +369,12 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
-    | '/articles/bitcoin-infrastructure-exploits'
-    | '/articles/bitcoin-volatility'
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
-    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
@@ -439,15 +406,12 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
-    | '/articles/bitcoin-infrastructure-exploits'
-    | '/articles/bitcoin-volatility'
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
-    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
@@ -479,15 +443,12 @@ export interface FileRouteTypes {
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
     | '/articles/bitcoin-casino-searches'
-    | '/articles/bitcoin-infrastructure-exploits'
-    | '/articles/bitcoin-volatility'
     | '/articles/bitcoin-week-ahead'
     | '/articles/btc500-strategy'
     | '/articles/clarity-act'
     | '/articles/doctor-profit-bitcoin-october-2026'
     | '/articles/goldman-vs-blackrock'
     | '/articles/is-the-bottom-in'
-    | '/articles/ondo-finance-tokenization'
     | '/articles/rupl'
     | '/articles/sec-cancels-regulation-crypto'
     | '/articles/solar-eclipse-bitcoin-halving'
@@ -675,20 +636,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ArticlesBitcoinCasinoSearchesRouteImport
       parentRoute: typeof ArticlesRoute
     }
-    '/articles/bitcoin-infrastructure-exploits': {
-      id: '/articles/bitcoin-infrastructure-exploits'
-      path: '/bitcoin-infrastructure-exploits'
-      fullPath: '/articles/bitcoin-infrastructure-exploits'
-      preLoaderRoute: typeof ArticlesBitcoinInfrastructureExploitsRouteImport
-      parentRoute: typeof ArticlesRoute
-    }
-    '/articles/bitcoin-volatility': {
-      id: '/articles/bitcoin-volatility'
-      path: '/bitcoin-volatility'
-      fullPath: '/articles/bitcoin-volatility'
-      preLoaderRoute: typeof ArticlesBitcoinVolatilityRouteImport
-      parentRoute: typeof ArticlesRoute
-    }
     '/articles/bitcoin-week-ahead': {
       id: '/articles/bitcoin-week-ahead'
       path: '/bitcoin-week-ahead'
@@ -729,13 +676,6 @@ declare module '@tanstack/react-router' {
       path: '/is-the-bottom-in'
       fullPath: '/articles/is-the-bottom-in'
       preLoaderRoute: typeof ArticlesIsTheBottomInRouteImport
-      parentRoute: typeof ArticlesRoute
-    }
-    '/articles/ondo-finance-tokenization': {
-      id: '/articles/ondo-finance-tokenization'
-      path: '/ondo-finance-tokenization'
-      fullPath: '/articles/ondo-finance-tokenization'
-      preLoaderRoute: typeof ArticlesOndoFinanceTokenizationRouteImport
       parentRoute: typeof ArticlesRoute
     }
     '/articles/rupl': {
@@ -795,15 +735,12 @@ interface ArticlesRouteChildren {
   ArticlesBip110RejectionRoute: typeof ArticlesBip110RejectionRoute
   ArticlesBitcoin80kBreakoutRoute: typeof ArticlesBitcoin80kBreakoutRoute
   ArticlesBitcoinCasinoSearchesRoute: typeof ArticlesBitcoinCasinoSearchesRoute
-  ArticlesBitcoinInfrastructureExploitsRoute: typeof ArticlesBitcoinInfrastructureExploitsRoute
-  ArticlesBitcoinVolatilityRoute: typeof ArticlesBitcoinVolatilityRoute
   ArticlesBitcoinWeekAheadRoute: typeof ArticlesBitcoinWeekAheadRoute
   ArticlesBtc500StrategyRoute: typeof ArticlesBtc500StrategyRoute
   ArticlesClarityActRoute: typeof ArticlesClarityActRoute
   ArticlesDoctorProfitBitcoinOctober2026Route: typeof ArticlesDoctorProfitBitcoinOctober2026Route
   ArticlesGoldmanVsBlackrockRoute: typeof ArticlesGoldmanVsBlackrockRoute
   ArticlesIsTheBottomInRoute: typeof ArticlesIsTheBottomInRoute
-  ArticlesOndoFinanceTokenizationRoute: typeof ArticlesOndoFinanceTokenizationRoute
   ArticlesRuplRoute: typeof ArticlesRuplRoute
   ArticlesSecCancelsRegulationCryptoRoute: typeof ArticlesSecCancelsRegulationCryptoRoute
   ArticlesSolarEclipseBitcoinHalvingRoute: typeof ArticlesSolarEclipseBitcoinHalvingRoute
@@ -817,9 +754,6 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
   ArticlesBip110RejectionRoute: ArticlesBip110RejectionRoute,
   ArticlesBitcoin80kBreakoutRoute: ArticlesBitcoin80kBreakoutRoute,
   ArticlesBitcoinCasinoSearchesRoute: ArticlesBitcoinCasinoSearchesRoute,
-  ArticlesBitcoinInfrastructureExploitsRoute:
-    ArticlesBitcoinInfrastructureExploitsRoute,
-  ArticlesBitcoinVolatilityRoute: ArticlesBitcoinVolatilityRoute,
   ArticlesBitcoinWeekAheadRoute: ArticlesBitcoinWeekAheadRoute,
   ArticlesBtc500StrategyRoute: ArticlesBtc500StrategyRoute,
   ArticlesClarityActRoute: ArticlesClarityActRoute,
@@ -827,7 +761,6 @@ const ArticlesRouteChildren: ArticlesRouteChildren = {
     ArticlesDoctorProfitBitcoinOctober2026Route,
   ArticlesGoldmanVsBlackrockRoute: ArticlesGoldmanVsBlackrockRoute,
   ArticlesIsTheBottomInRoute: ArticlesIsTheBottomInRoute,
-  ArticlesOndoFinanceTokenizationRoute: ArticlesOndoFinanceTokenizationRoute,
   ArticlesRuplRoute: ArticlesRuplRoute,
   ArticlesSecCancelsRegulationCryptoRoute:
     ArticlesSecCancelsRegulationCryptoRoute,

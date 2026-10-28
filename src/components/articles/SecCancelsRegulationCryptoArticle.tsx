@@ -283,6 +283,14 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
             in every completed cycle (2012, 2016, 2020). Past performance does not guarantee future
             results.
           </p>
+          <p>
+            The date is a function of block height, not of the legislative calendar:{" "}
+            <a href="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              when is 500 days before the next bitcoin halving
+            </a>{" "}
+            is recomputed from the live estimate, and the cycle page shows what each completed
+            window did from that entry.
+          </p>
 
           <div className="highlight-box">
             <p>

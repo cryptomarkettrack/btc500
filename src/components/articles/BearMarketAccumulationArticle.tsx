@@ -235,6 +235,15 @@ export function BearMarketAccumulationArticle({ title, date, readTime }: Article
           </p>
 
           <p>
+            That window is a date, not a prediction:{" "}
+            <a href="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              when is 500 days before the next bitcoin halving
+            </a>{" "}
+            is derived from the block-height estimate, and the cycle page records each completed
+            window's entry and exit close.
+          </p>
+
+          <p>
             The current market sits in a similar position. The bear market is real. But so is the
             opportunity it creates for those willing to act before the crowd.
           </p>

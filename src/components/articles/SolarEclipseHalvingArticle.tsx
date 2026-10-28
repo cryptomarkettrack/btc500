@@ -227,6 +227,14 @@ export function SolarEclipseHalvingArticle({ title, date, readTime }: ArticlePro
             <strong>November 30, 2026</strong>. The eclipse proved that preparation works. The
             question is whether you will act on that lesson.
           </p>
+          <p>
+            Both events are dates you can know in advance:{" "}
+            <a href="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              when is 500 days before the next bitcoin halving
+            </a>{" "}
+            tracks that date live from the block-height estimate, with the entry and exit close of
+            every completed window on the same page.
+          </p>
 
           <h2>Related Reading</h2>
           <ul>

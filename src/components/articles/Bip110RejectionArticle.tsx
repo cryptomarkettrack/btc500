@@ -333,6 +333,14 @@ export function Bip110RejectionArticle({ title, date, readTime }: ArticleProps) 
             rarely the main event. Custody, liquidity, and position discipline usually matter more
             than weekend fork headlines.
           </p>
+          <p>
+            The entry date works the same way — it is fixed by block height, not by which proposal
+            wins a weekend:{" "}
+            <a href="/bitcoin-500-day-cycle" className="font-semibold text-primary underline">
+              when is 500 days before the next bitcoin halving
+            </a>{" "}
+            follows the live estimate and lists what every completed window returned.
+          </p>
 
           <div className="strategy-box">
             <h3>The Core Strategy Still Holds</h3>

@@ -5,6 +5,21 @@
       "source": "/bear-market",
       "destination": "/bitcoin-500-day-cycle",
       "permanent": true
+    },
+    {
+      "source": "/articles/bitcoin-volatility",
+      "destination": "/articles",
+      "permanent": true
+    },
+    {
+      "source": "/articles/bitcoin-infrastructure-exploits",
+      "destination": "/articles",
+      "permanent": true
+    },
+    {
+      "source": "/articles/ondo-finance-tokenization",
+      "destination": "/articles",
+      "permanent": true
     }
   ],
   "headers": [

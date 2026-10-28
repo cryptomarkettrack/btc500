@@ -201,25 +201,6 @@ export const articles: ArticleMeta[] = [
       "Bitcoin NUPL, Net Unrealized Profit Loss, RUPL, Bitcoin market psychology, Bitcoin on-chain indicators",
   },
   {
-    id: "ondo-finance-tokenization",
-    slug: "ondo-finance-tokenization",
-    title: "Why Ondo Finance Is Tokenizing Wall Street",
-    description:
-      "From DTCC's first tokenized trades to 430+ tokenized stocks — how Ondo Finance is bridging Wall Street and on-chain finance.",
-    keywords:
-      "Ondo Finance, ONDO token, tokenized stocks, DTCC tokenization, BlackRock BUIDL, tokenized securities, DeFi compliance, institutional crypto, wall street blockchain",
-    date: "July 16, 2026",
-    dateISO: "2026-07-16",
-    dateModified: "2026-07-16",
-    dateModifiedISO: "2026-07-16",
-    readTime: "10 min read",
-    wordCount: 3000,
-    ogImage: `${SITE_URL}/og/default.png`,
-    articleSection: "Tokenization & DeFi",
-    schemaKeywords:
-      "Ondo Finance, ONDO token, tokenized stocks, DTCC, BlackRock BUIDL, tokenized securities, regulated DeFi, institutional tokenization",
-  },
-  {
     id: "bear-market-accumulation",
     slug: "bear-market-accumulation",
     title: "The Consensus Bottom Is a Trap: Bear Market Guide",
@@ -256,44 +237,6 @@ export const articles: ArticleMeta[] = [
     articleSection: "Crypto Regulation & Policy",
     schemaKeywords:
       "CLARITY Act, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, Bitcoin regulation, Ethereum regulation, digital asset regulation, crypto legislation",
-  },
-  {
-    id: "bitcoin-volatility",
-    slug: "bitcoin-volatility",
-    title: "Bitcoin Volatility Is Gone — But Risk Remains",
-    description:
-      "Deribit's DVOL has collapsed near 35 as Bitcoin hovers around $65,000. Here's what historically low volatility signals for the cycle.",
-    keywords:
-      "Bitcoin volatility, Bitcoin DVOL, Bitcoin low volatility, Bitcoin implied volatility, Bitcoin price compression, BTC volatility squeeze, Bitcoin options, Bitcoin market risk, Bitcoin accumulation, BTC500 strategy",
-    date: "August 8, 2026",
-    dateISO: "2026-08-08",
-    dateModified: "2026-08-08",
-    dateModifiedISO: "2026-08-08",
-    readTime: "8 min read",
-    wordCount: 2100,
-    ogImage: `${SITE_URL}/og/default.png`,
-    articleSection: "Bitcoin Market Analysis",
-    schemaKeywords:
-      "Bitcoin volatility, Bitcoin DVOL, Bitcoin low volatility, Bitcoin implied volatility, Bitcoin price compression, BTC volatility squeeze, Bitcoin options, Bitcoin market risk, BTC500 strategy",
-  },
-  {
-    id: "bitcoin-infrastructure-exploits",
-    slug: "bitcoin-infrastructure-exploits",
-    title: "Coldcard & Lightning Exploits: Bitcoin Security Risk",
-    description:
-      "From the ~$116M Coldcard seed theft to BTCPay Lightning node drains — how infrastructure exploits expose real Bitcoin self-custody risks.",
-    keywords:
-      "Coldcard hack, Coldcard exploit, Coinkite, BTCPay Server vulnerability, Lightning Network exploit, Bitcoin hardware wallet hack, Bitcoin self custody, Bitcoin security, LND macaroon, Bitcoin infrastructure risk, seed phrase security",
-    date: "August 8, 2026",
-    dateISO: "2026-08-08",
-    dateModified: "2026-08-08",
-    dateModifiedISO: "2026-08-08",
-    readTime: "9 min read",
-    wordCount: 2400,
-    ogImage: `${SITE_URL}/og/default.png`,
-    articleSection: "Bitcoin Security & Self-Custody",
-    schemaKeywords:
-      "Coldcard hack, Coldcard exploit, BTCPay Server, Lightning Network exploit, Bitcoin hardware wallet, self custody, Bitcoin security, Bitcoin infrastructure, seed phrase",
   },
   {
     id: "bitcoin-week-ahead",

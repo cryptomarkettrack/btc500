@@ -1,32 +1,45 @@
 {
-  "generated": "2026-10-27",
-  "summary": "citation block + /data/500-day-cycles.json + date-first snippet on the pillar",
+  "generated": "2026-10-28",
+  "summary": "301 three declined articles, exact-anchor path to the pillar, ask ledger",
   "checks": [
     {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "500 Days Before the Next Bitcoin Halving",
+      "path": "/",
+      "contains": "when is 500 days before the next bitcoin halving",
       "status": 200
     },
     {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "Method, data and how to cite this page",
-      "status": 200
-    },
-    { "path": "/bitcoin-500-day-cycle", "contains": "Cite this as", "status": 200 },
-    { "path": "/bitcoin-500-day-cycle", "contains": "data/500-day-cycles.json", "status": 200 },
-    {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "In all 4 completed BTC500 windows",
+      "path": "/articles/solar-eclipse-bitcoin-halving",
+      "contains": "when is 500 days before the next bitcoin halving",
       "status": 200
     },
     {
-      "path": "/data/500-day-cycles.json",
-      "contains": "\"schema\": \"btc500/500-day-cycles@1\"",
+      "path": "/articles/sec-cancels-regulation-crypto",
+      "contains": "when is 500 days before the next bitcoin halving",
       "status": 200
     },
     {
-      "path": "/data/500-day-cycles.json",
-      "contains": "\"medianLowVsEntryPercent\": -11.72",
+      "path": "/articles/bip-110-rejection",
+      "contains": "when is 500 days before the next bitcoin halving",
+      "status": 200
+    },
+    {
+      "path": "/articles/bear-market-accumulation",
+      "contains": "when is 500 days before the next bitcoin halving",
+      "status": 200
+    },
+    {
+      "path": "/articles/bitcoin-volatility",
+      "contains": "Articles — BTC500 Strategy",
+      "status": 200
+    },
+    {
+      "path": "/articles/ondo-finance-tokenization",
+      "contains": "Articles — BTC500 Strategy",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "contains": "<loc>https://btc500.net/articles/rupl</loc>",
       "status": 200
     }
   ]

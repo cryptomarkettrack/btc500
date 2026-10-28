@@ -264,9 +264,17 @@ export function HomePage() {
               >
                 The BTC500 buy date is {formatUtcDay(cycle.buyDate)} — 500 days before the next
                 estimated halving on {formatUtcDay(cycle.nextHalving)}. That date moves if Bitcoin
-                blocks come in faster or slower than ten minutes.{" "}
+                blocks come in faster or slower than ten minutes. The record of that offset, window
+                by window, is in{" "}
+                <Link
+                  to="/bitcoin-500-day-cycle"
+                  className="font-semibold text-primary hover:underline"
+                >
+                  when is 500 days before the next bitcoin halving
+                </Link>
+                . Every cycle date is on the{" "}
                 <Link to="/halving-dates" className="font-semibold text-primary hover:underline">
-                  See every cycle date
+                  halving dates page
                 </Link>
                 .
               </p>

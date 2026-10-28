@@ -1231,14 +1231,6 @@ export function ClarityActArticle({ title, date, readTime }: ArticleProps) {
                     Bear Market Accumulation: When to Buy
                   </a>
                 </li>
-                <li>
-                  <a
-                    href="/articles/ondo-finance-tokenization"
-                    className="text-primary underline hover:text-primary/80"
-                  >
-                    Ondo Finance: Tokenized Wall Street Assets
-                  </a>
-                </li>
               </ul>
             </div>
 
