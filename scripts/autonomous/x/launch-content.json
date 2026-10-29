@@ -1,0 +1,159 @@
+{
+  "schema": "btc500/x-launch-content@1",
+  "generated": "2026-10-29",
+  "handle": "@btc500halving",
+  "site": "https://btc500.net",
+  "objective": "make the @btc500halving X profile go viral",
+  "profile": {
+    "displayName": "BTC500 | Halving Cycle Rule",
+    "displayNameAlternative": "BTC500 — Buy −500d / Sell +500d",
+    "bio": "Buy BTC 500d before the halving. Sell 500d after. Now: countdown to Nov 30, 2026 buy. Then: public $50k PnL tracking. No TA. No guru calls. One rule.",
+    "category": "Financial Services",
+    "link": "https://btc500.net",
+    "avatarBrief": "Orange Bitcoin-orbit mark on black, readable at 40px.",
+    "bannerBrief": "Black/white + BTC500 orange; one clear rule (buy −500d / sell +500d) with the strategy chart.",
+    "whyThisCanGoViral": "States the two-phase product in one scroll: countdown now, public $50k scoreboard after Nov 30, 2026. Clear niche: the only account running a public rule-locked cycle position."
+  },
+  "pinnedPost": {
+    "copy": "BTC500: buy 500 days before a halving, sell 500 days after.\n\nPhase 1 (now): countdown to the official buy date — Nov 30, 2026.\nPhase 2 (then): public $50k position goes on the rule.\n\nNo TA. No guru calls. One rule.\n\nThe next trade isn't a call.\nIt's a date. Then a scoreboard.",
+    "mediaBrief": "Split card (1:1 or 4:5). Left: PHASE 1 · WAITING TO BUY — big ~32 DAYS + buy date Nov 30, 2026. Right: PHASE 2 · PUBLIC $50K PnL — ledger rows grayed out, unlocks on buy date. Footer: btc500.net.",
+    "whyItCanGoViral": "Two-phase identity in one scroll, explicit stakes (a public $50k position, not vibes), ends on a shareable line.",
+    "status": "draft"
+  },
+  "tweets": [
+    {
+      "id": "launch-1-receipt",
+      "phase": "phase-a",
+      "type": "thread",
+      "tweetIndex": 1,
+      "hook": "What did $50,000 do when it followed the 500-day rule through all 4 halving cycles?",
+      "copy": "What did $50,000 do when it followed the 500-day rule through all 4 halving cycles?\n\n2012 → +2,890%  ($50k → $1.49M)\n2016 → +3,318%  ($50k → $1.71M)\n2020 → +1,067%  ($50k → $583k)\n2024 → +560%    ($50k → $330k)\n\nMedian: ~11.7x.\n\nBoring strategy. Insane outcome.",
+      "media": {
+        "type": "text-card",
+        "brief": "Dark card, one number per row (end value + return), orange accents, btc500.net footer."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "Concrete money math across four cycles; the median line is quotable; sets up the live ledger.",
+      "measuredNumbers": [
+        "$50k → $1.49M (+2,890%) in the 2012 window",
+        "$50k → $1.71M (+3,318%) in the 2016 window",
+        "$50k → $583k (+1,067%) in the 2020 window",
+        "$50k → $330k (+560%) in the 2024 window",
+        "Median cycle multiple ≈ 11.7x"
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "launch-2-receipt-why",
+      "phase": "phase-a",
+      "type": "thread",
+      "tweetIndex": 2,
+      "hook": "Why it worked: the entry and exit were fixed.",
+      "copy": "Why it worked: the entry and exit were fixed.\n\nBuy 500 days before the halving. Sell 500 days after.\n\nNo discretion. No leverage. No \"this time is different\".\n\nThe market was the only variable.\n\nFull table + simulator: btc500.net",
+      "media": {
+        "type": "chart-card",
+        "brief": "Multi-cycle bar chart of end value per window, BTC500 orange, one insight per bar."
+      },
+      "cta": "btc500.net/simulator",
+      "whyItCanGoViral": "Turns the receipt into a why; the fixed-versus-discretion contrast is argument-ready.",
+      "measuredNumbers": ["Fixed T-500 entry / T+500 exit across all windows"],
+      "status": "draft"
+    },
+    {
+      "id": "launch-3-stakes",
+      "phase": "phase-a",
+      "type": "single",
+      "hook": "~32 days from now we stop counting down and start tracking.",
+      "copy": "~32 days from now we stop counting down and start tracking.\n\nNov 30, 2026: official BTC500 buy date.\n$50k public position goes on the rule that day.\n\nSell date already fixed: Aug 26, 2029.\n\nThe next trade this account makes isn't a call.\nIt's a date. Then a scoreboard.",
+      "media": {
+        "type": "deployment-timer",
+        "brief": "Countdown card ~32 DAYS → buy date Nov 30, 2026; right side shows PHASE 2 ledger preview (grayed)."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "Countdown with stakes (a public $50k position) instead of bare timer; phase flip is the cliff.",
+      "measuredNumbers": [
+        "Buy date: 2026-11-30 (T-500 of next halving ≈ 2028-04-13)",
+        "Sell date: 2029-08-26 (T+500)"
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "launch-4-patience",
+      "phase": "phase-a",
+      "type": "single",
+      "hook": "Everyone's trading the headline.",
+      "copy": "Everyone's trading the headline.\n\nWe're waiting for one calendar day.\n\nWhen the buy date hits, opinions get replaced by a PnL number.\nThat's the point.\n\nBTC500: buy 500 days before the halving, sell 500 days after.",
+      "media": {
+        "type": "text-card",
+        "brief": "Two-column card: left CT chaos, right one date + $50k."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "Anti-noise frame; shareable contrast with CT.",
+      "measuredNumbers": [],
+      "status": "draft"
+    },
+    {
+      "id": "launch-5-too-simple",
+      "phase": "phase-a",
+      "type": "single",
+      "hook": "The 500-day rule is too simple.",
+      "copy": "\"The 500-day rule is too simple.\"\n\nCorrect.\n\nSimple is how you still follow it when CT is screaming this time is different.\nComplicated systems die in drawdowns. Calendars don't.\n\n$50k deploys on the date — not on a vibe.\n\nbtc500.net",
+      "media": {
+        "type": "text-card",
+        "brief": "\"TOO SIMPLE?\" dark card, one idea per line."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "Contrarian-but-true hook; low-effort high-shareability.",
+      "measuredNumbers": [
+        "Worst max drawdown inside a rule window: −84.3% (2012), median low vs entry ≈ −11.5%"
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "launch-6-scoreboard",
+      "phase": "phase-b-tease",
+      "type": "single",
+      "hook": "After Nov 30, 2026 this account stops being a countdown.",
+      "copy": "After Nov 30, 2026 this account stops being a countdown.\n\nIt becomes a scoreboard:\n\n- Official BTC500 position\n- Live PnL since the $50k buy\n- Max drawdown, days held, days to sell\n- vs \"bought the top of this cycle\"\n\nOne number updates every day.\n\nbtc500.net",
+      "media": {
+        "type": "ledger-card",
+        "brief": "Mock Phase B ledger card: entry · $50k · PnL · drawdown · days held · days to sell."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "The Phase B promise is the follow magnet; scoreboard copy is screenshot-able.",
+      "measuredNumbers": [
+        "Sell date: 2029-08-26; horizon: buy 2026-11-30 → sell 2029-08-26 (1000 days)"
+      ],
+      "status": "draft"
+    },
+    {
+      "id": "launch-7-engagement",
+      "phase": "phase-a",
+      "type": "single",
+      "hook": "When the public $50k flips on Nov 30, 2026:",
+      "copy": "When the public $50k flips on Nov 30, 2026:\n\nWhat should the first daily scoreboard line show?\n\nA) PnL % vs entry\nB) $ value of the $50k\nC) Days held / days to sell\nD) Vs bought-the-top\nE) All of the above (say why)\n\nBest answers shape the live tracker UI.",
+      "media": {
+        "type": "text-card",
+        "brief": "Simple poll card, no image needed."
+      },
+      "cta": "btc500.net",
+      "whyItCanGoViral": "High reply potential; community stake before the ledger exists.",
+      "measuredNumbers": [],
+      "status": "draft"
+    }
+  ],
+  "ownerActions": [
+    {
+      "action": "Publish profile copy",
+      "detail": "Set display name + bio from profile block; pin pinnedPost.",
+      "asset": "scripts/autonomous/x/launch-content.json",
+      "status": "prepared"
+    },
+    {
+      "action": "Post launch tweets",
+      "detail": "Post tweets in thread order 1→2 then singles staggered across phase-a days; keep reply block per X-GROWTH-AUDIT-btc500halving.md.",
+      "asset": "scripts/autonomous/x/launch-content.json",
+      "status": "prepared"
+    }
+  ]
+}

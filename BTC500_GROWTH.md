@@ -84,6 +84,23 @@ GSC windows end 2026-10-26, GA4 window ends 2026-10-28, archive fresh to
 
 ## Completed work
 
+### 2026-10-29 — X profile virality content pack (launch assets)
+
+Why: the user objective for this session is a viral @btc500halving profile; the
+2026-08-08 audit diagnosed the account as a countdown billboard and the live bio
+still read as a bare timer plus an unstated tracking promise.
+
+- Added `scripts/autonomous/x/launch-content.json` (schema
+  `btc500/x-launch-content@1`): final profile copy, pinned post, 7 launch tweets
+  (thread 1→2 + 5 singles) and owner actions. All copy pre-validated: bio 149/160,
+  pinned 276/280, every tweet ≤ 280.
+- Tweets carry real measured numbers: $50k → $1.49M (+2,890%) / 2012 … $50k → $330k
+  (+560%) / 2024, median cycle multiple ≈ 11.7x; buy date 2026-11-30, sell date
+  2029-08-26.
+- Added `scripts/autonomous/x/launch-content.test.mjs` (5 tests) and wired it into
+  `npm test`. Validation: `npm test` 194/194 pass (189 existing + 5 new), prettier
+  clean, eslint clean on changed files.
+
 ### 2026-10-29 — 500-day-rule retarget + homepage SSR placeholder fix
 
 Why: the trending framing around the strategy ("Bitcoin 500-day rule", CoinDesk 08-05,
