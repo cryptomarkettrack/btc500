@@ -1,30 +1,15 @@
 {
   "generated": "2026-10-29",
-  "summary": "homepage retargeted to the Bitcoin 500-day halving rule; homepage SSR placeholder fix deployed",
+  "summary": "X profile virality launch content pack added (no site change)",
   "checks": [
-    {
-      "path": "/",
-      "contains": "BTC500 — The Bitcoin 500-Day Halving Rule",
-      "status": 200
-    },
     {
       "path": "/",
       "contains": "The Bitcoin 500-day rule: 500 days before the next Bitcoin halving is 28 November 2026",
       "status": 200
     },
     {
-      "path": "/",
-      "contains": "What is the Bitcoin 500-day rule?",
-      "status": 200
-    },
-    {
       "path": "/bitcoin-500-day-cycle",
       "contains": "What is the Bitcoin 500-day rule?",
-      "status": 200
-    },
-    {
-      "path": "/sitemap.xml",
-      "contains": "<loc>https://btc500.net/</loc>",
       "status": 200
     }
   ]
