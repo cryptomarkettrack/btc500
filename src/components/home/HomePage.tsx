@@ -245,7 +245,7 @@ export function HomePage() {
             className="mx-auto w-full max-w-3xl rounded-2xl border border-border/60 bg-card px-5 py-5 sm:px-6"
           >
             <h2 id="definition-heading" className="text-sm font-semibold text-foreground">
-              What is the Bitcoin 500-day cycle?
+              What is the Bitcoin 500-day rule?
             </h2>
             <p
               id="btc500-definition"

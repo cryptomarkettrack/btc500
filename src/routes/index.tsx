@@ -10,11 +10,12 @@ import {
 import { FAQ_ITEMS } from "@/lib/faq";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
+import { simulatorPreviewQuery } from "@/lib/queries";
 
 const homePageSchema = [
   generateWebPageSchema({
     path: "/",
-    name: "Bitcoin 500-Day Cycle | BTC500",
+    name: "The Bitcoin 500-Day Halving Rule | BTC500",
     description:
       "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
     breadcrumbs: [{ name: "Home", path: "/" }],
@@ -31,25 +32,34 @@ export const Route = createFileRoute("/")({
   head: () =>
     generatePageHead({
       path: "/",
-      title: "BTC500 — Trade the calendar, not the noise | Bitcoin 500-Day Cycle",
+      // Brand first so the branded query keeps its position in the title, with the
+      // "Bitcoin 500-day halving rule" phrase directly behind it — the framing the
+      // 2026 halving-cycle coverage (CoinDesk, Yahoo, Binance) is putting on the topic.
+      title: "BTC500 — The Bitcoin 500-Day Halving Rule",
       description:
-        "BTC500 is a rules-based Bitcoin plan: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
+        "BTC500 is the Bitcoin 500-day rule: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
       keywords:
-        "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving",
-      ogTitle: "BTC500 — Trade the calendar, not the noise",
+        "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving, bitcoin 500 day rule, 500 day bitcoin strategy",
+      ogTitle: "BTC500 — The Bitcoin 500-Day Halving Rule",
       ogDescription:
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
-      ogImageAlt: "BTC500 — Bitcoin 500-Day Cycle countdown",
-      twitterTitle: "BTC500 — Trade the calendar, not the noise",
+      ogImageAlt: "BTC500 — Bitcoin 500-Day Halving countdown",
+      twitterTitle: "BTC500 — The Bitcoin 500-Day Halving Rule",
       twitterDescription:
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
       schema: homePageSchema,
     }),
+  loader: async ({ context }) => {
+    // Seed the shared simulator payload before render so the SSR HTML carries the real
+    // completed-window stats and the ledger estimate. Without this the two useQuery reads
+    // start empty on the server and the served markup shows "—" record stats and
+    // "Completed-window data is loading." — the defect the 2026-10-29 review flagged on the
+    // one URL Google actually serves. The loader runs before render, so the hydrated client
+    // agrees instead of refetching mid-hydration.
+    await context.queryClient.ensureQueryData(simulatorPreviewQuery);
+  },
   // The halving countdown is seeded globally by the root loader from one cached
   // tip-height call (see src/lib/seed-halving.ts), so HTML and hydration agree.
-  // NOTE: simulator preview is NOT prefetched here — doing so would
-  // resolve after the HTML is rendered and break hydration (server showed a skeleton,
-  // client hydrated with data). Its client-side useQuery() fills it in after mount.
   component: HomePage,
   pendingComponent: Pending,
   errorComponent: ({ error }) => <RouteDataError error={error} />,

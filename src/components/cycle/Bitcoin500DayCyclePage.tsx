@@ -60,11 +60,11 @@ export function Bitcoin500DayCyclePage() {
           <div className="inline-flex items-center gap-2 rounded-full border border-border/60 px-4 py-1.5">
             <span className="block h-1.5 w-1.5 rounded-[1px] bg-primary" />
             <span className="font-mono text-[10px] font-medium uppercase tracking-[0.18em] text-muted-foreground">
-              The BTC500 window
+              The Bitcoin 500-day halving rule
             </span>
           </div>
           <h1 className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">
-            Bitcoin <span className="text-primary">500-Day</span> Cycle
+            Bitcoin <span className="text-primary">500-Day</span> Rule
           </h1>
           <p className="lead mx-auto mt-4 max-w-2xl text-base text-muted-foreground sm:text-lg">
             {snippet.lead}
@@ -129,13 +129,15 @@ function WhatIsSection() {
       aria-labelledby="what-is-heading"
     >
       <h2 id="what-is-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
-        What is the Bitcoin 500-day cycle?
+        What is the Bitcoin 500-day rule?
       </h2>
       <div className="mt-5 max-w-3xl space-y-4 text-sm leading-relaxed text-muted-foreground sm:text-base">
         <p>
           Bitcoin cuts the miner block reward in half every 210,000 blocks — roughly every four
-          years. BTC500 does not try to pick the exact bottom or top of that cycle. It measures one
-          fixed window around the event and shows what historically happened inside it.
+          years. The Bitcoin 500-day rule is the fixed-window framing of that event: buy at T-500,
+          exactly 500 days before the halving, and sell at T+500, exactly 500 days after it. BTC500
+          does not try to pick the exact bottom or top of that cycle. It measures one fixed window
+          around the event and shows what historically happened inside it.
         </p>
         <p>
           <strong className="text-foreground">T-500</strong> is the calendar day 500 days before a

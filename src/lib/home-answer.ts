@@ -98,14 +98,16 @@ export function buildHomeAnswer(input: {
   const before = dayKey(now) < dayKey(buyDate);
 
   if (before) {
-    const leadAnswer = `500 days before the next Bitcoin halving is ${dateLabel} — the BTC500 buy date.`;
+    const leadAnswer =
+      "The Bitcoin 500-day rule: 500 days before the next Bitcoin halving is " +
+      `${dateLabel} — the BTC500 buy date.`;
     const leadRest =
       "Sell 500 days after the halving. No indicators, no narratives: the dates are fixed and " +
       "the chart is just the ride.";
     return {
       phase: "before",
       dateLabel,
-      eyebrow: "Bitcoin halving countdown · Two dated trades per cycle",
+      eyebrow: "The Bitcoin 500-day halving rule · Two dated trades per cycle",
       leadAnswer,
       leadRest,
       lead: `${leadAnswer} ${leadRest}`,

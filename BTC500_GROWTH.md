@@ -84,6 +84,35 @@ GSC windows end 2026-10-26, GA4 window ends 2026-10-28, archive fresh to
 
 ## Completed work
 
+### 2026-10-29 — 500-day-rule retarget + homepage SSR placeholder fix
+
+Why: the trending framing around the strategy ("Bitcoin 500-day rule", CoinDesk 08-05,
+Yahoo 08-05, Binance, Pantera attribution) had not yet landed on the site, and the only
+indexed URL still shipped placeholder markup to Google.
+
+- Homepage (`/`) retargeted onto the rule while keeping the brand first: title
+  `BTC500 — The Bitcoin 500-Day Halving Rule`, description "BTC500 is the Bitcoin 500-day
+  rule: buy 500 days before the halving, sell 500 days after…", keywords extended with
+  `bitcoin 500 day rule, 500 day bitcoin strategy`. WebPage schema name → "The Bitcoin
+  500-Day Halving Rule | BTC500".
+- Home answer (`src/lib/home-answer.ts`) now opens with "The Bitcoin 500-day rule: 500 days
+  before the next Bitcoin halving is 28 November 2026 — the BTC500 buy date." Eyebrow →
+  "The Bitcoin 500-day halving rule · Two dated trades per cycle".
+- Pillar (`/bitcoin-500-day-cycle`) retargeted: H1 → "Bitcoin 500-Day Rule", hero badge →
+  "The Bitcoin 500-day halving rule", definition section → "What is the Bitcoin 500-day
+  rule?", WebPage schema name/description → "The Bitcoin 500-Day Halving Rule".
+- FAQ (`src/lib/faq.ts`, `src/lib/cycle-faq.ts`): new question "What is the Bitcoin 500-day
+  rule?" on both surfaces; BTC500 strategy answer now leads with the rule.
+- Homepage now renders the FAQ-driven definition heading "What is the Bitcoin 500-day rule?"
+  (`src/components/home/HomePage.tsx`).
+- Homepage SSR fix (`src/routes/index.tsx`): added a route loader that
+  `ensureQueryData(simulatorPreviewQuery)` before render, so the served HTML contains the
+  real completed-window stats and ledger estimate instead of "—" placeholders and
+  "Completed-window data is loading.". Build + 189/189 tests + tsc + lint green.
+
+Validation: `npm test` 189/189 pass, `tsc --noEmit` clean, eslint clean, `npm run build`
+clean. Not yet deployed.
+
 ### 2026-10-29 (review) — the measurement was fixed, and it made the week worse
 
 The 2026-10-29 results review found the collector correct and the week failing:
@@ -202,10 +231,14 @@ the live snapshot (13 tests). Deployed `f925e32`, verified.
    two minutes, by 2026-11-11 (`outreach/2026-10-27-bitcoin-only-listing.txt`).
    This is the only action left that can add a referring domain; 4 asks handed
    over since 10-27, 0 sent, 9 of 9 referral sessions are our own repo.
-2. **2026-10-31: fix the served HTML of `/`.** The only indexed URL currently
+2. **2026-10-31: fix the served HTML of `/`.** ~~The only indexed URL currently
    ships three `—` record stats and "Completed-window data is loading." in its
    markup, and sitemap lastmod for `/` is 2026-10-21 although the H1 changed
-   10-29. Verify by curl, not by browser.
+   10-29.~~ **DONE 2026-10-29** — route loader now seeds the simulator payload
+   before render (defect fixed in-repo; verified by build + 189/189 + tsc + lint).
+   Remaining: post-deploy curl of the production HTML must confirm the real stats
+   replace the placeholders. Sitemap `/` lastmod → 2026-10-29; pillar lastmod →
+   2026-10-29 (both updated).
 3. **2026-11-02: inspect, change nothing.** Print `indexed X/21` and the coverage
    of the two URLs lost on 10-29. If either returns to the index without any
    in-repo change, that is the answer to what moves it.

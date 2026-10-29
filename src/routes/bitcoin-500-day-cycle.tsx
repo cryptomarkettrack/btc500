@@ -17,9 +17,9 @@ import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError
 const pageSchema = [
   generateWebPageSchema({
     path: "/bitcoin-500-day-cycle",
-    name: "Bitcoin 500-Day Cycle",
+    name: "The Bitcoin 500-Day Halving Rule",
     description:
-      "The BTC500 rule buys 500 days before each Bitcoin halving and sells 500 days after. All four completed windows with entry, exit, drawdowns and an entry-timing test.",
+      "The Bitcoin 500-day rule buys 500 days before each Bitcoin halving and sells 500 days after. All four completed windows with entry, exit, drawdowns and an entry-timing test from a daily close archive.",
     breadcrumbs: [
       { name: "Home", path: "/" },
       { name: "Bitcoin 500-Day Cycle", path: "/bitcoin-500-day-cycle" },

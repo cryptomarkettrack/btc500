@@ -58,10 +58,10 @@ export function buildPillarSnippet(input: {
     return {
       phase: "unknown",
       buyLabel: null,
-      title: "500 Days Before the Next Bitcoin Halving | BTC500",
+      title: "The Bitcoin 500-Day Halving Rule | BTC500",
       description:
-        "Bitcoin's performance from 500 days before each halving to 500 days after, with drawdowns and an entry-timing test from a daily close archive.",
-      lead: "BTC500 measures one fixed window around every Bitcoin halving — 500 days before the event to 500 days after it — and publishes what that window paid, how deep it drew down, and what moving the entry date costs.",
+        "The Bitcoin 500-day rule: buy 500 days before each halving, sell 500 days after. All four completed windows with entry, exit, drawdowns and an entry-timing test.",
+      lead: "The Bitcoin 500-day rule buys 500 days before each event and sells 500 days after it — one fixed window around every Bitcoin halving.",
     };
   }
 
@@ -73,8 +73,8 @@ export function buildPillarSnippet(input: {
       phase: "before",
       buyLabel,
       title: `${buyLabel}: 500 Days Before the Next Bitcoin Halving`,
-      description: `500 days before the next Bitcoin halving is ${buyLabel} — the BTC500 buy date. Four completed windows, their drawdowns and the entry-timing test.`,
-      lead: `${buyLabel} is 500 days before the next Bitcoin halving — the date the BTC500 rule buys. This page shows what that window paid in all four completed cycles, how far below the entry price Bitcoin traded inside it, and what moving the entry date costs.`,
+      description: `The Bitcoin 500-day rule buys ${buyLabel} — 500 days before the next Bitcoin halving. Four completed windows, drawdowns and the entry-timing test.`,
+      lead: `The Bitcoin 500-day rule buys ${buyLabel}. That is 500 days before the next Bitcoin halving — the date the BTC500 window buys. This page shows what that window paid in all four completed cycles, how far below the entry price Bitcoin traded inside it, and what moving the entry date costs.`,
     };
   }
 
@@ -82,7 +82,7 @@ export function buildPillarSnippet(input: {
     phase: "after",
     buyLabel,
     title: `The Bitcoin 500-Day Cycle: Entry Was ${buyLabel}`,
-    description: `The Bitcoin 500-day window opened ${buyLabel}: entry, exit, worst drawdown and the entry-timing test for all four completed halving windows.`,
+    description: `The Bitcoin 500-day rule opened its window on ${buyLabel} — the date that was 500 days before the next Bitcoin halving — and the four completed windows are scored.`,
     lead: `The current 500-day window opened on ${buyLabel} — the date that was 500 days before the next Bitcoin halving, and the date the BTC500 rule bought. This page shows what the four completed windows paid and what moving the entry date cost.`,
   };
 }

@@ -5,6 +5,11 @@
 
 export const CYCLE_FAQ = [
   {
+    question: "What is the Bitcoin 500-day rule?",
+    answer:
+      "The Bitcoin 500-day rule is the fixed-window framework behind this page: buy Bitcoin 500 days before each halving and sell it 500 days after. The window spans about 1,000 days and is measured against the daily-close archive, not chosen by curve-fitting past returns.",
+  },
+  {
     question: "When is 500 days before the next Bitcoin halving?",
     answer:
       "T-500 is the calendar day 500 days before the next estimated Bitcoin halving. Because the halving is triggered at a block height (the next one is 1,050,000), that date moves if blocks arrive faster or slower than ten minutes. BTC500 shows the live T-500 date on this page and on the homepage countdown.",

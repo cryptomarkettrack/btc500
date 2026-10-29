@@ -5,9 +5,14 @@
 
 export const FAQ_ITEMS = [
   {
+    question: "What is the Bitcoin 500-day rule?",
+    answer:
+      "The Bitcoin 500-day rule is the framework BTC500 publishes: buy Bitcoin 500 days before a halving event and sell it 500 days after. It comes from the roughly four-year halving cycle and is measured against every completed window in BTC500's daily-close archive, not from a single backtest.",
+  },
+  {
     question: "What is the BTC500 strategy?",
     answer:
-      "The BTC500 strategy is a simple Bitcoin investment approach: buy exactly 500 days before each halving event and sell exactly 500 days after. This rules-based method is designed to capture historically strong parts of Bitcoin's roughly four-year halving cycle without day-trading or technical analysis.",
+      "The BTC500 strategy is a simple Bitcoin investment approach built on the Bitcoin 500-day rule: buy exactly 500 days before each halving event and sell exactly 500 days after. This rules-based method is designed to capture historically strong parts of Bitcoin's roughly four-year halving cycle without day-trading or technical analysis.",
   },
   {
     question: "When is the next Bitcoin halving?",

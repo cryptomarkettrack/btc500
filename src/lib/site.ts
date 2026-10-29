@@ -15,7 +15,7 @@ export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Stra
  * Last time homepage footer copy was reviewed. Page-specific — not a global
  * "today" stamp and not a default for other pages' dateModified.
  */
-export const HOME_LAST_REVIEWED = "2026-10-21";
+export const HOME_LAST_REVIEWED = "2026-10-29";
 /** @deprecated Use page-specific dates. Kept so existing homepage imports compile. */
 export const SITE_DATE_MODIFIED = HOME_LAST_REVIEWED;
 export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
