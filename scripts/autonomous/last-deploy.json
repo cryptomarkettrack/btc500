@@ -1,40 +1,30 @@
 {
   "generated": "2026-10-29",
-  "summary": "homepage answers the 500-day query with the live date; 4th declined URL contracted; GSC report reconciled",
+  "summary": "homepage retargeted to the Bitcoin 500-day halving rule; homepage SSR placeholder fix deployed",
   "checks": [
     {
       "path": "/",
-      "contains": "500 days before the next Bitcoin halving is 28 November 2026",
+      "contains": "BTC500 — The Bitcoin 500-Day Halving Rule",
       "status": 200
     },
     {
       "path": "/",
-      "contains": "next halving estimated 11 April 2028",
+      "contains": "The Bitcoin 500-day rule: 500 days before the next Bitcoin halving is 28 November 2026",
       "status": 200
     },
     {
-      "path": "/articles/strongest-hands",
-      "contains": "Articles — BTC500 Strategy",
+      "path": "/",
+      "contains": "What is the Bitcoin 500-day rule?",
+      "status": 200
+    },
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "What is the Bitcoin 500-day rule?",
       "status": 200
     },
     {
       "path": "/sitemap.xml",
-      "contains": "<loc>https://btc500.net/articles/rupl</loc>",
-      "status": 200
-    },
-    {
-      "path": "/llms.txt",
-      "contains": "- [NUPL / RUPL Guide](https://btc500.net/articles/rupl)",
-      "status": 200
-    },
-    {
-      "path": "/feed.xml",
-      "contains": "<title>BIP-110 Rejection: What It Means for Bitcoin</title>",
-      "status": 200
-    },
-    {
-      "path": "/articles/solar-eclipse-bitcoin-halving",
-      "contains": "The Consensus Bottom Trap",
+      "contains": "<loc>https://btc500.net/</loc>",
       "status": 200
     }
   ]
