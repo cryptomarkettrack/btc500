@@ -160,6 +160,12 @@ export function parsePerformance(json) {
   return {
     window: json.window ?? null,
     windowDays: num(json.window?.days, 0) || null,
+    // Which aggregation the report's totals use, and whether the run proved its
+    // tables add up. Absent on reports written before 2026-10-29 — those mixed
+    // byProperty totals with byPage rows and must not be quoted for trends.
+    aggregation: json.aggregation ?? null,
+    reconciled: json.reconciliation ? json.reconciliation.ok === true : null,
+    derived: json.derived ?? null,
     clicks: num(json.totals.clicks),
     impressions: num(json.totals.impressions),
     ctr: num(json.totals.ctr),

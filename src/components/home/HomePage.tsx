@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { computeCycle, daysBetween, formatUsd } from "@/lib/phase";
+import { buildHomeAnswer } from "@/lib/home-answer";
 import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
@@ -56,6 +57,15 @@ export function HomePage() {
     new Date(halving.nextHalvingDate),
     new Date(halving.lastHalvingDate),
   );
+
+  // The page Google actually serves (see the 2026-10-28 review) has to answer
+  // "when is 500 days before the next bitcoin halving" itself: the H1 and the
+  // first paragraph both carry the live T-500 date, from the same model.
+  const answer = buildHomeAnswer({
+    buyDateISO: cycle.buyDate.toISOString(),
+    nextHalvingISO: cycle.nextHalving.toISOString(),
+    nowISO: now.toISOString(),
+  });
 
   // Section 1: "Waiting to Buy" — active during the 500-day pre-halving window (buyDate to nextHalving)
   const isBuyActive = now >= cycle.buyDate && now < cycle.nextHalving;
@@ -139,21 +149,18 @@ export function HomePage() {
             className="mx-auto w-full max-w-3xl text-center"
           >
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Bitcoin halving countdown · Two dated trades per cycle
+              {answer.eyebrow}
             </p>
             <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              No indicators, no narratives.{" "}
-              <strong className="font-semibold text-foreground">
-                Buy 500 days before the halving. Sell 500 days after.
-              </strong>{" "}
-              The dates are fixed; the chart is just the ride.
+              <strong className="font-semibold text-foreground">{answer.leadAnswer}</strong>{" "}
+              {answer.leadRest}
             </p>
           </section>
 
           <Btc500Hero
             price={priceRes.data?.price ?? null}
             daysLeft={buyDays}
-            title={`Trade the <span class="text-primary">calendar</span>, not the noise<span class="mt-3 block text-base font-medium tracking-normal text-muted-foreground sm:text-lg">Bitcoin halving countdown &amp; the 500-day cycle</span>`}
+            title={`${answer.h1Html}<span class="mt-3 block text-base font-medium tracking-normal text-muted-foreground sm:text-lg">${answer.subline}</span>`}
             srTitle="Bitcoin 500-Day Cycle — historical performance from 500 days before each halving through 500 days after"
             tagline={<span className="font-semibold text-foreground">{phaseTagline}</span>}
             countdown={

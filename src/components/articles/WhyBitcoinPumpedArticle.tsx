@@ -231,11 +231,8 @@ export function WhyBitcoinPumpedArticle({ title, date, readTime }: ArticleProps)
             reported by Bloomberg on August 18, showed wallets excluding exchanges and miners
             adding about <strong>43,000 BTC</strong> over 60 days — roughly{" "}
             <strong>$2.75–$2.9 billion</strong> — after months of distribution. Buying resumed
-            near <strong>$60,000</strong>. That matches the picture in{" "}
-            <Link to="/articles/strongest-hands" className="font-semibold text-primary underline">
-              90 Elite Bitcoin Wallets
-            </Link>
-            : the strongest hands were accumulating while retail was still in fear.
+            near <strong>$60,000</strong>. That is the strongest-hands pattern in one line: large
+            holders accumulating while retail was still in fear.
           </p>
           <p>
             The Crypto Fear and Greed Index had only climbed from <strong>27 to 41</strong> —

@@ -149,9 +149,6 @@ The U.S. SEC cancelled its August 14, 2026 open meeting on Regulation Crypto Ass
 ### Goldman Sachs vs BlackRock: The $2.25B Bitcoin Income ETF War
 Goldman Sachs is acquiring NEOS, an ETF issuer running covered-call bitcoin income products, for $2.25 billion — expanding its derivative-powered ETF platform to about $130 billion in total assets and taking direct aim at BlackRock's BITA income fund (reported August 12, 2026). Income and staking products hold their bitcoin or ether rather than trading it, which reduces sellable float at a time when cumulative spot bitcoin ETF net inflows have reached $52.5 billion and daily inflows have run near 4x daily mining issuance. The institutional shift toward holding-style products is structurally supportive heading into the April 2028 halving, and it changes nothing about the BTC500 rule: buy exactly 500 days before the halving (November 30, 2026 as projected then). https://btc500.net/articles/goldman-vs-blackrock
 
-### Bitcoin's Strongest Hands Are Back
-The count of elite Bitcoin wallets holding more than 10,000 BTC hit a six-month high of 90 (as of August 11, 2026), a combined floor of 900,000+ BTC worth over $58 billion at current prices. Mid-sized whales (1,000–10,000 BTC) accumulated first and the largest wallets followed — the classic smart-money pattern. The strongest hands kept accumulating through the Coldcard exploit and the CLARITY Act delay; the signal is accumulation, not panic. https://btc500.net/articles/strongest-hands
-
 ### Bitcoin This Week (Aug 24–31): Jackson Hole & PCE
 Recurring weekly outlook for August 24–31, 2026 (updated in place): Bitcoin enters near $77,000 after the 19–20 August breakout ended the $54k–$64k summer range (June closing low $58,566; ~$69,700 tagged August 19 on Treasury buyback news and a ~$1.4B short squeeze; $73,033 close August 20; >$3B total liquidations), with the confirmation ladder at $71,500 (traded through), then $78,000 and $82,000 — a soft bull until $82k flips; the July FOMC minutes confirmed the 9–3 hold with the three hike dissenters reading as an isolated minority (median year-end dot 3.8%); the Kansas City Fed's Jackson Hole Economic Symposium runs August 27–29 (Kevin Warsh's marquee speech, theme "Financial Innovation: Implications for Payments and Policy"); July Core PCE lands Friday with weekly options expiry; spot ETF flows were ~$850M last week, ~$1.1B month-to-date (~3.5x daily mining issuance); Thursday jobless claims; CLARITY cloture is September 15. The buy date was then projected for November 30, 2026 (live date: https://btc500.net/halving-dates). The page pairs current market information with cycle context rather than generic news. https://btc500.net/articles/bitcoin-week-ahead
 
@@ -172,50 +169,6 @@ When the entire market agrees on the same bottom target, that target loses its p
 ### What Is the CLARITY Act?
 The CLARITY (Clear Legislation for Interpretation and Regulation of the Digital Assets) Act would split US crypto regulation between the SEC and the CFTC, giving the CFTC primary spot-market authority over digital commodities like Bitcoin and Ethereum. https://btc500.net/articles/clarity-act
 
-### Bitcoin's Volatility Has Nearly Disappeared
-Deribit's DVOL collapsed near 35 as Bitcoin hovered around $65,000. Historically low implied volatility does not mean risk is gone; options markets and price compression can precede large moves. https://btc500.net/articles/bitcoin-volatility
-
-### Coldcard & Lightning Exploits
-Two back-to-back infrastructure incidents — an estimated ~$116M Coldcard seed-generation theft and BTCPay Lightning node drains — expose real self-custody risks for long-term Bitcoin holders. https://btc500.net/articles/bitcoin-infrastructure-exploits
-
 ### BIP-110 Rejection
 Bitcoin Improvement Proposal BIP-110 (reduced data temporary soft fork) failed after near-zero miner support and a stalled minority chain. The episode is a case study in Bitcoin governance. https://btc500.net/articles/bip-110-rejection
 
-### Ondo Finance Tokenization
-Ondo Finance is building compliant tokenization rails for Wall Street, from DTCC's first tokenized securities trades to 430+ tokenized stocks and $1B+ in volume, positioning itself as a bridge between traditional finance and on-chain finance. https://btc500.net/articles/ondo-finance-tokenization
-
----
-
-## 6. Tools & Pages
-
-| Tool | URL | Purpose |
-| --- | --- | --- |
-| Home / Halving Countdown | https://btc500.net/ | Live countdown, Cycle Command Center |
-| Halving Dates | https://btc500.net/halving-dates | Full 2012–2028 schedule with buy/sell windows |
-| Calendar feed (.ics) | https://btc500.net/bitcoin-halving-calendar.ics | Next buy, halving and sell dates as all-day calendar events |
-| When to Sell Bitcoin | https://btc500.net/when-to-sell-bitcoin-after-halving | Every T+500 sell date, the 2024 exit, and the next estimated sell date |
-| Investment Simulator | https://btc500.net/simulator | Backtest BTC500 across all completed cycles; reinvest or repeat a stake; compare vs buy-and-hold |
-| DCA vs Lump Sum | https://btc500.net/dca | Compare DCA vs lump-sum around buy/sell dates |
-| Time Machine | https://btc500.net/timeline | Interactive replay of halving-cycle prices |
-| Liquidation Dashboard | https://btc500.net/liquidation | OI, funding rates, long/short ratios |
-| Insider Trading | https://btc500.net/insider-trading | SEC Form 4 analysis |
-| Bitcoin ETF Absorption | https://btc500.net/bitcoin-etf | ETF inflows in BTC vs miner issuance and the 500-day cycle |
-| Crypto News | https://btc500.net/news | Aggregated Bitcoin & crypto headlines |
-| Articles | https://btc500.net/articles | Strategy guides & on-chain education |
-| Embed Kit | https://btc500.net/embed-kit | Free countdown widgets |
-| About | https://btc500.net/about | Methodology, data sources, contact |
-| Privacy | https://btc500.net/privacy | Privacy policy |
-| Terms | https://btc500.net/terms | Terms of use / disclaimer |
-
----
-
-## 7. Notices & Access
-
-- BTC500 is free educational software. Nothing is financial advice.
-- Historical prices come from Bitstamp (public/btc-usd-max.csv).
-- /embed pages are excluded from search indexes.
-- Sitemap: https://btc500.net/sitemap.xml
-- Robots: https://btc500.net/robots.txt
-- Short index (llms.txt): https://btc500.net/llms.txt
-- Pricing (free): https://btc500.net/pricing.md
-- RSS: https://btc500.net/feed.xml

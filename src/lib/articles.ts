@@ -277,25 +277,6 @@ export const articles: ArticleMeta[] = [
       "BIP-110, BIP-110 rejection, Bitcoin BIP-110, Bitcoin governance, soft fork, Bitcoin Improvement Proposal, minority chain, Bitcoin upgrades",
   },
   {
-    id: "strongest-hands",
-    slug: "strongest-hands",
-    title: "90 Elite Bitcoin Wallets: Strongest Hands Are Back",
-    description:
-      "Elite Bitcoin wallets holding 10,000+ BTC just hit a six-month high of 90. Here's what whale accumulation says about the halving cycle.",
-    keywords:
-      "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, Bitcoin whale wallets 2026, elite Bitcoin wallets, on-chain Bitcoin accumulation, Bitcoin six-month high, whale accumulation halving, Bitcoin buy date, BTC500 strategy, Bitcoin accumulation phase",
-    date: "August 11, 2026",
-    dateISO: "2026-08-11",
-    dateModified: "2026-08-11",
-    dateModifiedISO: "2026-08-11",
-    readTime: "9 min read",
-    wordCount: 2400,
-    ogImage: `${SITE_URL}/articles/strongest-hands/og-strongest-hands.png`,
-    articleSection: "Bitcoin On-Chain Analysis",
-    schemaKeywords:
-      "Bitcoin whale accumulation, Bitcoin strongest hands, 10000 BTC wallets, on-chain Bitcoin accumulation, whale accumulation halving, Bitcoin buy date, BTC500 strategy",
-  },
-  {
     id: "sec-cancels-regulation-crypto",
     slug: "sec-cancels-regulation-crypto",
     title: "SEC Cancels Regulation Crypto Vote: What It Means",

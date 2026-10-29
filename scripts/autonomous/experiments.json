@@ -73,7 +73,8 @@
       "verdict": null,
       "progress": [
         "2026-10-28: shipped. 301 -> /articles for /articles/bitcoin-volatility, /articles/bitcoin-infrastructure-exploits and /articles/ondo-finance-tokenization (routes, metadata, components and sitemap rows deleted). /articles and /liquidation kept, per the mandate. Sitemap 25 -> 22.",
-        "2026-10-28: base at shipping is 5 indexed / 25 inspected, not 6 - /articles/strongest-hands (last crawl 2026-08-17) fell out of the index on the same day. Read the target as >= 8 indexed of 22 sitemap URLs by 2026-11-10, and treat 5 or fewer as the inconclusive/fail branch."
+        "2026-10-28: base at shipping is 5 indexed / 25 inspected, not 6 - /articles/strongest-hands (last crawl 2026-08-17) fell out of the index on the same day. Read the target as >= 8 indexed of 22 sitemap URLs by 2026-11-10, and treat 5 or fewer as the inconclusive/fail branch.",
+        "2026-10-29: contracted /articles/strongest-hands (sitemap 22 -> 21). Indexed fell again to 3 of 21 (inspection 2026-10-29T04:10Z): /articles/solar-eclipse-bitcoin-halving (crawl 08-17) and /articles/sec-cancels-regulation-crypto (crawl 08-16) were declined too. Indexed now: /, /articles/bip-110-rejection, /articles/bear-market-accumulation. The success bar (8 of 21) is now 5 net URLs away, so the 2026-11-10 reading is very likely to close failed - read it honestly rather than extending it."
       ]
     }
   ]

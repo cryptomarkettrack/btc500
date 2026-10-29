@@ -252,16 +252,6 @@ export function SolarEclipseHalvingArticle({ title, date, readTime }: ArticlePro
               — Why waiting for the crowd's "confirmed bottom" is the most expensive mistake in
               Bitcoin investing.
             </li>
-            <li>
-              <a
-                href="/articles/strongest-hands"
-                className="font-semibold text-primary underline"
-              >
-                Bitcoin's Strongest Hands Are Back
-              </a>{" "}
-              — Whale accumulation hit a six-month high in August 2026. What the largest wallets
-              are doing while the crowd waits.
-            </li>
           </ul>
 
           <p>

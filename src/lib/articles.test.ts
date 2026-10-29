@@ -20,12 +20,24 @@ const articleSlugs = [...read("./articles.ts").matchAll(/^\s{4}slug: "([^"]+)",$
  * Removed from the site on 2026-10-28 (review mandate `consolidate-declined-urls`):
  * three articles Google had crawled and declined, last re-crawled in August. A
  * noindex would keep the URLs alive in the crawl queue; a 301 ends them.
+ *
+ * `strongest-hands` was added on 2026-10-29 (review mandate
+ * `declined-url-301-and-crawl-test`): it was the first URL to *lose* an index
+ * (last crawl 2026-08-17), so it is the first one no amount of on-page work can
+ * bring back.
  */
 const CONTRACTED_SLUGS = [
   "bitcoin-volatility",
   "bitcoin-infrastructure-exploits",
   "ondo-finance-tokenization",
+  "strongest-hands",
 ];
+
+const machineReadable = [
+  ["public/llms.txt", read("../../public/llms.txt")],
+  ["public/llms-full.txt", read("../../public/llms-full.txt")],
+  ["public/feed.xml", read("../../public/feed.xml")],
+] as const;
 
 describe("archived articles", () => {
   it("finds article slugs in the metadata file", () => {
@@ -87,6 +99,20 @@ describe("contracted articles", () => {
         !existsSync(new URL(`../routes/articles.${slug}.tsx`, import.meta.url)),
         `route still exists: articles.${slug}.tsx`,
       );
+    }
+  });
+
+  it("are gone from the machine-readable surfaces as well as the sitemap", () => {
+    // llms.txt, llms-full.txt and feed.xml advertised the three 2026-10-28
+    // contractions for a day after they started returning a redirect. Anything
+    // that hands a URL to a crawler or an AI agent has to be killed with it.
+    for (const slug of CONTRACTED_SLUGS) {
+      for (const [file, contents] of machineReadable) {
+        assert.ok(
+          !contents.includes(`/articles/${slug}`),
+          `${file} still references contracted URL: ${slug}`,
+        );
+      }
     }
   });
 });

@@ -8,12 +8,14 @@
  *
  * Writes to scripts/search-console/output/ (gitignored).
  */
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { resolve as resolvePath } from "node:path";
 import {
   ConfigError,
   isoDaysAgo,
   loadDotEnv,
+  OUTPUT_DIR,
   parseFlags,
   querySearchAnalytics,
   resolveSite,
@@ -21,6 +23,13 @@ import {
   type SearchAnalyticsRow,
 } from "./client.ts";
 import { num, pct, pos, shortUrl, table, writeReport } from "./report.ts";
+import {
+  findLongerWindow,
+  reconcile,
+  toStoredWindow,
+  type Reconciliation,
+  type StoredWindow,
+} from "./reconcile.ts";
 
 const HELP = `Search Console performance report
 
@@ -81,8 +90,129 @@ export type Analysis = {
   pairs: SearchAnalyticsRow[];
   devices: SearchAnalyticsRow[];
   countries: SearchAnalyticsRow[];
+  /** `byProperty`: deduplicated, matches the Search Console UI total. */
   totals: SearchAnalyticsRow | undefined;
+  /** `byPage`: the sum of the page rows, used to prove the tables reconcile. */
+  pageTotals: SearchAnalyticsRow | undefined;
 };
+
+const SUMMARY_FILE = "performance-summary.json";
+
+function readSummary(): StoredWindow[] {
+  const path = resolvePath(OUTPUT_DIR, SUMMARY_FILE);
+  if (!existsSync(path)) return [];
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf8")) as unknown;
+    return Array.isArray(parsed) ? (parsed as StoredWindow[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+function writeSummary(stored: StoredWindow[], entry: StoredWindow): void {
+  // One record per (end, days) — the newest run wins. Keep the file bounded.
+  const kept = stored.filter((row) => !(row.end === entry.end && row.days === entry.days));
+  const next = [...kept, entry].slice(-60);
+  mkdirSync(OUTPUT_DIR, { recursive: true });
+  writeFileSync(
+    resolvePath(OUTPUT_DIR, SUMMARY_FILE),
+    `${JSON.stringify(next, null, 2)}\n`,
+    "utf8",
+  );
+}
+
+function reconciliationSection(
+  rec: Reconciliation,
+  rowCounts: { pages: number; queries: number; pairs: number },
+): string[] {
+  const lines: string[] = [];
+  lines.push("## Reconciliation");
+  lines.push("");
+  lines.push(
+    "Totals are fetched under two aggregation types and both are printed, because " +
+      "Search Console counts them differently: `byProperty` counts one impression once for " +
+      "the whole site (the number its UI shows), `byPage` counts it once per URL that appeared " +
+      "and is therefore the number the page rows must add up to.",
+  );
+  lines.push("");
+  lines.push(
+    table(
+      ["Table", "Aggregation", "Rows", "Clicks", "Impressions"],
+      [
+        [
+          "total",
+          "byProperty",
+          "1",
+          num(rec.propertyTotal.clicks),
+          num(rec.propertyTotal.impressions),
+        ],
+        ["total", "byPage", "1", num(rec.pageTotal.clicks), num(rec.pageTotal.impressions)],
+        [
+          "pages",
+          "byPage",
+          num(rowCounts.pages),
+          num(rec.sums.pages.clicks),
+          num(rec.sums.pages.impressions),
+        ],
+        [
+          "queries",
+          "byPage",
+          num(rowCounts.queries),
+          num(rec.sums.queries.clicks),
+          num(rec.sums.queries.impressions),
+        ],
+        [
+          "query × page",
+          "byPage",
+          num(rowCounts.pairs),
+          num(rec.sums.pairs.clicks),
+          num(rec.sums.pairs.impressions),
+        ],
+      ],
+    ),
+  );
+  lines.push("");
+  lines.push(
+    `Status: **${rec.ok ? "reconciled" : "REFUSED"}** — ` +
+      `${rec.sums.pages.impressions === rec.pageTotal.impressions ? "page rows equal the byPage total" : "page rows differ from the byPage total"}, ` +
+      `${rec.pageTotal.impressions - rec.propertyTotal.impressions} impressions are the byPage/byProperty ` +
+      "difference (one search result counted per URL).",
+  );
+  for (const failure of rec.failures) lines.push(`- FAIL: ${failure}`);
+  for (const warning of rec.warnings) lines.push(`- note: ${warning}`);
+  lines.push("");
+  lines.push("### Derived fields — and the window each came from");
+  lines.push("");
+  lines.push(
+    table(
+      ["Field", "Value", "Table", "Window", "Aggregation"],
+      [
+        [
+          "pagesWithImpressions",
+          num(rec.derived.pagesWithImpressions.value),
+          rec.derived.pagesWithImpressions.from,
+          `${rec.derived.pagesWithImpressions.window.start} → ${rec.derived.pagesWithImpressions.window.end} (${rec.derived.pagesWithImpressions.window.days}d)`,
+          rec.derived.pagesWithImpressions.aggregation,
+        ],
+        [
+          "positions4to20",
+          num(rec.derived.positions4to20.value),
+          rec.derived.positions4to20.from,
+          `${rec.derived.positions4to20.window.start} → ${rec.derived.positions4to20.window.end} (${rec.derived.positions4to20.window.days}d)`,
+          rec.derived.positions4to20.aggregation,
+        ],
+      ],
+    ),
+  );
+  lines.push("");
+  lines.push(
+    "`pagesWithImpressions` and `positions4to20` are counts of rows in the tables above " +
+      "for the window named on this line. They are not comparable across runs with different " +
+      "`--days` or a different end date: a 7-day window is a subset of a 28-day window.",
+  );
+  lines.push("");
+  return lines;
+}
 
 function bestPageByQuery(pairs: SearchAnalyticsRow[]): Map<string, string> {
   const best = new Map<string, { impressions: number; page: string }>();
@@ -97,7 +227,13 @@ function bestPageByQuery(pairs: SearchAnalyticsRow[]): Map<string, string> {
   return new Map([...best].map(([query, entry]) => [query, entry.page]));
 }
 
-export function buildReport(site: string, start: string, end: string, data: Analysis): string {
+export function buildReport(
+  site: string,
+  start: string,
+  end: string,
+  data: Analysis,
+  reconciliation?: Reconciliation,
+): string {
   const pagesFor = bestPageByQuery(data.pairs);
   const lines: string[] = [];
 
@@ -115,7 +251,19 @@ export function buildReport(site: string, start: string, end: string, data: Anal
     return lines.join("\n");
   }
 
+  if (reconciliation) {
+    lines.push(
+      ...reconciliationSection(reconciliation, {
+        pages: data.pages.length,
+        queries: data.queries.length,
+        pairs: data.pairs.length,
+      }),
+    );
+  }
+
   lines.push("## At a glance");
+  lines.push("");
+  lines.push("Site total, `byProperty` (deduplicated — the Search Console UI number):");
   lines.push("");
   lines.push(
     table(
@@ -296,27 +444,88 @@ async function main(): Promise<void> {
     dataState: options.dataState,
     type: "web",
   };
+  // `page`/`query` dimensions cannot be aggregated byProperty (the API rejects
+  // it), so every dimensioned table is byPage and the matching totals call is
+  // requested under the same aggregation. See reconcile.ts for why.
+  const byPage = { ...base, aggregationType: "byPage" };
 
-  const [totalsRows, queries, pages, pairs, devices, countries] = await Promise.all([
+  const [totalsRows, pageTotalRows, queries, pages, pairs, devices, countries] = await Promise.all([
     querySearchAnalytics(site, { ...base, dimensions: [] }, 1),
-    querySearchAnalytics(site, { ...base, dimensions: ["query"] }, options.rows),
-    querySearchAnalytics(site, { ...base, dimensions: ["page"] }, options.rows),
+    querySearchAnalytics(site, { ...byPage, dimensions: [] }, 1),
+    querySearchAnalytics(site, { ...byPage, dimensions: ["query"] }, options.rows),
+    querySearchAnalytics(site, { ...byPage, dimensions: ["page"] }, options.rows),
     querySearchAnalytics(
       site,
-      { ...base, dimensions: ["query", "page"] },
+      { ...byPage, dimensions: ["query", "page"] },
       Math.min(options.rows, 10_000),
     ),
     querySearchAnalytics(site, { ...base, dimensions: ["device"] }, 5),
     querySearchAnalytics(site, { ...base, dimensions: ["country"] }, 50),
   ]);
 
-  const data: Analysis = { totals: totalsRows[0], queries, pages, pairs, devices, countries };
-  const markdown = buildReport(site, start, end, data);
+  const window = { start, end, days: options.days };
+  const stored = readSummary();
+  const reconciliation = reconcile({
+    window,
+    propertyTotal: totalsRows[0],
+    pageTotal: pageTotalRows[0],
+    pages,
+    queries,
+    pairs,
+    longerWindow: findLongerWindow(stored, window),
+  });
+
+  for (const failure of reconciliation.failures) {
+    console.error(`reconcile: FAIL — ${failure}`);
+  }
+  for (const warning of reconciliation.warnings) {
+    console.error(`reconcile: note — ${warning}`);
+  }
+  console.error(
+    `reconcile: ${window.days}d ${start} -> ${end}: ` +
+      `property ${reconciliation.propertyTotal.clicks}/${reconciliation.propertyTotal.impressions}, ` +
+      `byPage ${reconciliation.pageTotal.clicks}/${reconciliation.pageTotal.impressions}, ` +
+      `pages ${reconciliation.sums.pages.clicks}/${reconciliation.sums.pages.impressions} in ${pages.length} rows, ` +
+      `queries ${reconciliation.sums.queries.clicks}/${reconciliation.sums.queries.impressions} in ${queries.length} rows`,
+  );
+
+  if (!reconciliation.ok) {
+    // Nothing is written: the previous performance-latest.* stays in place so a
+    // broken run cannot silently replace a report the review reads.
+    console.error(
+      "\nRefusing to write a report whose tables do not reconcile. " +
+        "The previous report is untouched.",
+    );
+    process.exit(1);
+  }
+
+  const data: Analysis = {
+    totals: totalsRows[0],
+    pageTotals: pageTotalRows[0],
+    queries,
+    pages,
+    pairs,
+    devices,
+    countries,
+  };
+  const markdown = buildReport(site, start, end, data, reconciliation);
+  const generated = new Date().toISOString();
   const { markdownPath, jsonPath } = writeReport("performance", markdown, {
     site,
-    window: { start, end, days: options.days, dataState: options.dataState },
+    window: { ...window, dataState: options.dataState },
+    aggregation: { totals: "byProperty", dimensions: "byPage" },
+    reconciliation: {
+      ok: reconciliation.ok,
+      failures: reconciliation.failures,
+      warnings: reconciliation.warnings,
+      sums: reconciliation.sums,
+      propertyTotal: reconciliation.propertyTotal,
+      pageTotal: reconciliation.pageTotal,
+    },
+    derived: reconciliation.derived,
     ...data,
   });
+  writeSummary(stored, toStoredWindow(window, reconciliation, pages, generated));
 
   console.log("");
   console.log(`Queries: ${num(queries.length)}   Pages: ${num(pages.length)}`);
@@ -326,6 +535,11 @@ async function main(): Promise<void> {
         `CTR: ${pct(data.totals.ctr)}   Avg pos: ${pos(data.totals.position)}`,
     );
   }
+  console.log(
+    `Reconciled: page rows ${num(reconciliation.sums.pages.impressions)} = byPage total ` +
+      `${num(reconciliation.pageTotal.impressions)}; property total ` +
+      `${num(reconciliation.propertyTotal.impressions)}`,
+  );
   console.log("");
   console.log(`Report: ${markdownPath}`);
   console.log(`Raw:    ${jsonPath}`);

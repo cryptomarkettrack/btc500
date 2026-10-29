@@ -20,6 +20,11 @@
       "source": "/articles/ondo-finance-tokenization",
       "destination": "/articles",
       "permanent": true
+    },
+    {
+      "source": "/articles/strongest-hands",
+      "destination": "/articles",
+      "permanent": true
     }
   ],
   "headers": [

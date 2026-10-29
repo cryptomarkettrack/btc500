@@ -357,11 +357,8 @@ export function IsTheBottomInArticle({ title, date, readTime }: ArticleProps) {
             move. One weekly close is a start. Two are the regime.
           </p>
           <p>
-            Elite wallets were already accumulating inside the box —{" "}
-            <Link to="/articles/strongest-hands" className="font-semibold text-primary underline">
-              90 addresses holding 10,000+ BTC
-            </Link>{" "}
-            hit a six-month high on 11 August. CryptoQuant via Bloomberg showed wallets
+            Elite wallets were already accumulating inside the box — 90 addresses holding
+            10,000+ BTC hit a six-month high on 11 August. CryptoQuant via Bloomberg showed wallets
             excluding exchanges and miners adding about 43,000 BTC over 60 days. The strongest
             hands bought the box. The squeeze is what forced everyone else to notice.
           </p>

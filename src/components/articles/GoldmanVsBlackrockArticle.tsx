@@ -299,12 +299,6 @@ export function GoldmanVsBlackrockArticle({ title, date, readTime }: ArticleProp
               </a>{" "}
               — Jackson Hole, July Core PCE, ETF flows, and why institutional demand is still the story.
             </li>
-            <li>
-              <a href="/articles/strongest-hands" className="font-semibold text-primary underline">
-                Bitcoin&apos;s Strongest Hands Are Back
-              </a>{" "}
-              — 90 elite wallets now hold 10,000+ BTC each as accumulation continues through the noise.
-            </li>
           </ul>
 
           <p>

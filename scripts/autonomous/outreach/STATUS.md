@@ -21,12 +21,19 @@ zero.
 
 | id                               | channel              | recipient                                      | handed over | due        | sent | date sent | proof metric                                          | status     |
 | -------------------------------- | -------------------- | ---------------------------------------------- | ----------- | ---------- | ---- | --------- | ----------------------------------------------------- | ---------- |
-| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap   | 2026-10-27  | 2026-10-28 | no   | —         | 1 GA4 referral session from bitcoinmagazine.com in 7d | unmeasured |
+| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap   | 2026-10-27  | 2026-10-28 | no   | —         | 1 GA4 referral session from bitcoinmagazine.com in 7d | lapsed     |
 | `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion") | 2026-10-27  | 2026-10-29 | no   | —         | 1 GA4 referral session from bitcointalk.org in 7d     | unmeasured |
 | `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | unmeasured |
+| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-28  | 2026-11-11 | no   | —         | 1 GA4 referral session from bitcoin-only.com in 14d   | unmeasured |
 
-Copy-paste text for these three lives in `<state>/owner-asks.txt` and in
-`review-latest.json` → `asks[].content`. Do not retype it.
+`lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
+never tested. The row stays so the next review cannot read it as "sent and
+ignored". It is retired, not re-issued — one ask per week, and the one live ask is
+the GitHub listing.
+
+Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
+and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
+`2026-10-27-bitcoin-only-listing.txt`. Do not retype it.
 
 ## Pitches prepared by the cycle (same rule: owner sends)
 
@@ -47,6 +54,12 @@ send. One send per channel per week; if both get sent, still one referral row.
 | ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------- |
 | 2026-10-27 | github.com 3, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `review-latest.json` / ga4 report 2026-10-27            |
 | 2026-10-28 | github.com 7, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-21 → 2026-10-27 |
+| 2026-10-29 | github.com 9, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-22 → 2026-10-28 |
 
 `github.com` is the repository and the owner's own browser sessions — it is not
 a mention. The ask-effect target is 1 session from any of the other four.
+
+Reading 2026-10-29: the GA4 property has no data before 2026-10-23, which is why
+the 7-day and 28-day reports return identical totals (91 sessions / 189 views).
+That is a young property, not a broken window — do not quote the 28-day number as
+a month of traffic.

@@ -1,45 +1,40 @@
 {
-  "generated": "2026-10-28",
-  "summary": "301 three declined articles, exact-anchor path to the pillar, ask ledger",
+  "generated": "2026-10-29",
+  "summary": "homepage answers the 500-day query with the live date; 4th declined URL contracted; GSC report reconciled",
   "checks": [
     {
       "path": "/",
-      "contains": "when is 500 days before the next bitcoin halving",
+      "contains": "500 days before the next Bitcoin halving is 28 November 2026",
       "status": 200
     },
     {
-      "path": "/articles/solar-eclipse-bitcoin-halving",
-      "contains": "when is 500 days before the next bitcoin halving",
+      "path": "/",
+      "contains": "next halving estimated 11 April 2028",
       "status": 200
     },
     {
-      "path": "/articles/sec-cancels-regulation-crypto",
-      "contains": "when is 500 days before the next bitcoin halving",
-      "status": 200
-    },
-    {
-      "path": "/articles/bip-110-rejection",
-      "contains": "when is 500 days before the next bitcoin halving",
-      "status": 200
-    },
-    {
-      "path": "/articles/bear-market-accumulation",
-      "contains": "when is 500 days before the next bitcoin halving",
-      "status": 200
-    },
-    {
-      "path": "/articles/bitcoin-volatility",
-      "contains": "Articles — BTC500 Strategy",
-      "status": 200
-    },
-    {
-      "path": "/articles/ondo-finance-tokenization",
+      "path": "/articles/strongest-hands",
       "contains": "Articles — BTC500 Strategy",
       "status": 200
     },
     {
       "path": "/sitemap.xml",
       "contains": "<loc>https://btc500.net/articles/rupl</loc>",
+      "status": 200
+    },
+    {
+      "path": "/llms.txt",
+      "contains": "- [NUPL / RUPL Guide](https://btc500.net/articles/rupl)",
+      "status": 200
+    },
+    {
+      "path": "/feed.xml",
+      "contains": "<title>BIP-110 Rejection: What It Means for Bitcoin</title>",
+      "status": 200
+    },
+    {
+      "path": "/articles/solar-eclipse-bitcoin-halving",
+      "contains": "The Consensus Bottom Trap",
       "status": 200
     }
   ]

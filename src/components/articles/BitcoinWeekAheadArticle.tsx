@@ -410,11 +410,8 @@ export function BitcoinWeekAheadArticle({ title, date, readTime }: ArticleProps)
             Last week, spot Bitcoin products recorded an estimated{" "}
             <strong>$850 million in net inflows</strong>, taking August to roughly{" "}
             <strong>$1.1 billion</strong> month-to-date — the strongest stretch since April.
-            That is the same structural bid described after the{" "}
-            <a href="/articles/strongest-hands" className="font-semibold text-primary underline">
-              strongest-hands
-            </a>{" "}
-            print: large holders accumulating while the tape coils.
+            That is the same structural bid described after the strongest-hands print: large
+            holders accumulating while the tape coils.
           </p>
 
           <p>
