@@ -45,8 +45,22 @@ GSC windows end 2026-10-26, GA4 window ends 2026-10-28, archive fresh to
 - The 7-day table has exactly one query row: `btc500` (1 click / 4 impressions @
   3.5). `when is 500 days before the next bitcoin halving` — **query not present**
   in the 7-day window, so the homepage H1 change cannot be read yet.
-- Windows moved one day forward, so 28d 25/94 and 7d 1/10 are **not** comparable
-  to yesterday's 26/96 and 5/16. At this base every movement is noise.
+- Windows moved one day forward, but the decline is **not** noise. Same collector,
+  eight consecutive 7-day readings, each one day later: clicks **14, 10, 9, 8, 8,
+  7, 5, 1** (−93%) and impressions **45, 37, 31, 28, 26, 21, 16, 10** (−78%). A
+  monotone run of eight is a result, not a swing. The 28-day totals (25-26 clicks,
+  90-96 impressions) are flat only because that window still contains the 14-click
+  week 2026-10-13..10-19; it ages out by 2026-11-09.
+- The page table shows the mechanism: the week to 2026-10-19 returned **11 URLs**
+  (74 impressions byPage, 29 of them across the ten non-homepage URLs, at
+  positions 2-6, all on the brand family); the week to 2026-10-26 returned **1
+  URL and 10 impressions**. The current site-wide run-rate is 1 brand click and
+  10 impressions a week.
+- The 28-day query table is **the brand written five ways**: `btc500` 4/40 @3.17,
+  `btc 500` 0/1, `bitcoin 500` 0/3, `bit 500` 0/1, `bitcoin plus 500` 0/2. No row
+  is a query a stranger would type without the brand; the four variants the
+  collector's `/btc 500/` regex calls non-brand carry 6 impressions and 0 clicks.
+  90 days to 2026-10-24: 723 non-brand impressions, 1 click.
 - **Indexation fell again: 5 → 3 of 21** (inspection 2026-10-29T04:10Z). Indexed
   now: `/` (crawled 2026-10-24), `/articles/bip-110-rejection` (08-11),
   `/articles/bear-market-accumulation` (08-08). Lost today:
@@ -69,6 +83,25 @@ GSC windows end 2026-10-26, GA4 window ends 2026-10-28, archive fresh to
 ---
 
 ## Completed work
+
+### 2026-10-29 (review) — the measurement was fixed, and it made the week worse
+
+The 2026-10-29 results review found the collector correct and the week failing:
+**indexed 3/21, 0 non-brand clicks, 7-day clicks 14 → 1, 7-day impressions 45 →
+10.** 4 of 4 mandates were executed and verified; the outcome was still negative,
+so the review retired the contraction rule and closed two experiments:
+
+- **`sitemap-contraction` closed FAILED** 12 days early, on its own fail branch
+  (≤5 of 22 on 2026-11-10; the site is at 3 of 21). `/articles` has not been
+  crawled since 2026-08-14.
+- **`pillar-date-first-snippet` closed UNREADABLE**: lastCrawl still 2026-10-22
+  through four deploys and five inbound exact anchors.
+- **`distribution-test` is the only open experiment.** The one live ask (GitHub
+  listing on bitcoin-only.com, by 2026-11-11) was restated narrower and now points
+  at the pillar, the URL that needs the external signal.
+- New rule: **distribution-only until 2026-11-12** — a cycle ships only a defect
+  fix on an indexed URL or a prepared ask; archive-only is a valid cycle; no URL
+  added, removed, merged or redirected; no copy edit on a declined URL.
 
 ### 2026-10-29 — measurement reconciled, 4th URL contracted, homepage answers the query
 
@@ -152,6 +185,7 @@ the live snapshot (13 tests). Deployed `f925e32`, verified.
 
 | date       | mode  | verdict  | what it forced                                                     |
 | ---------- | ----- | -------- | ------------------------------------------------------------------ |
+| 2026-10-29 | daily | failing  | 4 mandates: indexation hold + inspect, homepage placeholder fix, cluster query read 11-08, distribution-only. Closed sitemap-contraction FAILED and pillar snippet UNREADABLE (streak 5) |
 | 2026-10-28 | daily | failing  | 4 mandates: GSC reconcile, strongest-hands 301 + 11-03 crawl test, homepage answer, ask ledger (streak 4) |
 | 2026-10-27 | daily | failing  | contraction 25 → 22, exact-anchor path, ask ledger                  |
 | 2026-10-25 | deep  | stagnant | merged 3 single-page experiments into `distribution-test`            |
@@ -160,55 +194,68 @@ the live snapshot (13 tests). Deployed `f925e32`, verified.
 
 ## Next priorities
 
-0. **Read the contraction on 2026-11-10.** Base at shipping is **3 indexed of
-   21** (not 5/22 — two more August-crawled articles lost their index today).
-   If indexed is still ≤ 5 that day, `sitemap-contraction` closes failed and every
-   in-repo indexation action stops permanently: from then on a cycle ships one
-   distribution asset or a defect fix and nothing else.
-1. **Re-read the homepage query on 2026-11-04.** The 7-day window to 2026-10-26
-   predates the H1 change, so it is "too early". Success = the query appears with
-   impressions on `/`; failure = the homepage will not rank for it either and the
-   cluster is dead until the site has links.
-2. **Pillar crawl test on 2026-11-03** (mandate, part 2): re-inspect; if
-   lastCrawl is still 2026-10-22, close `pillar-date-first-snippet` unreadable and
-   make no further copy change to `/bitcoin-500-day-cycle`.
-3. **One ask, not four.** `outreach/2026-10-27-bitcoin-only-listing.txt`, channel
-   GitHub, due 2026-11-11. The three 2026-10-27 asks are retired: 0 of 3 sent,
-   and github.com is the only referrer that has ever produced a session.
-4. **Own 2026-11-28** — the buy window opens in 30 days; the homepage and the
-   pillar now state the same live date and the same phrase.
+0. **Distribution-only until 2026-11-12.** The contraction experiment is closed
+   failed at 3/21; the pillar snippet is closed unreadable. A cycle now ships
+   only a defect fix on an indexed URL or a prepared ask. No URL added, removed,
+   merged or redirected; no copy edit on a declined URL. Archive-only is valid.
+1. **Owner files the bitcoin-only.com GitHub issue** — one issue, one template,
+   two minutes, by 2026-11-11 (`outreach/2026-10-27-bitcoin-only-listing.txt`).
+   This is the only action left that can add a referring domain; 4 asks handed
+   over since 10-27, 0 sent, 9 of 9 referral sessions are our own repo.
+2. **2026-10-31: fix the served HTML of `/`.** The only indexed URL currently
+   ships three `—` record stats and "Completed-window data is loading." in its
+   markup, and sitemap lastmod for `/` is 2026-10-21 although the H1 changed
+   10-29. Verify by curl, not by browser.
+3. **2026-11-02: inspect, change nothing.** Print `indexed X/21` and the coverage
+   of the two URLs lost on 10-29. If either returns to the index without any
+   in-repo change, that is the answer to what moves it.
+4. **2026-11-08: read the cluster queries** in the 7-day and 28-day tables. If
+   all four are absent, close the homepage H1 change as unreadable and stop
+   targeting the cluster until the site has links.
+5. **Own 2026-11-28** — the buy window opens in 30 days; the homepage and the
+   pillar state the same live date. Do not touch either before the reading.
 
 ## Ranked backlog
 
-Scored 1–10 on impact × confidence ÷ effort. **Anything that adds a URL or a
-section stays frozen until indexed ≥ 8** (URL contraction, set by the 10-27
-review). While the gate is shut only rows 0–2 and 4 can be worked.
+Scored 1–10 on impact × confidence ÷ effort. **Distribution-only until
+2026-11-12: rows 0 and 1 are the only work permitted; everything else is
+blocked, not queued.** Adding a URL or a section is blocked until `indexed ≥ 8`
+and, under the 2026-10-29 rule, until 2026-11-12 at the earliest.
 
 | #   | Bet                                            | Why it can move the needle                                      | I   | E   |
 | --- | ---------------------------------------------- | --------------------------------------------------------------- | --- | --- |
-| 0   | Contraction reading 2026-11-10                 | The only in-repo lever left; stop-work condition is written     | 8   | 1   |
-| 1   | Owner files the bitcoin-only.com listing issue | Only channel with evidence of use; 0 referring domains, 18/21 unindexed | 10  | 1   |
-| 2   | Homepage query reading 2026-11-04              | Only indexed URL with impressions; the answer is now on it      | 7   | 1   |
+| 0   | Owner files the bitcoin-only.com listing issue | Only channel with evidence of use; 0 external referral sessions, 18/21 unindexed | 10  | 1   |
+| 1   | Homepage defect: placeholders + lastmod        | The only indexed URL serves "—" stats and "data is loading"     | 7   | 1   |
+| 2   | Cluster query reading 2026-11-08               | Decides whether the H1 change was readable at all               | 7   | 1   |
 | 3   | Consent banner (defect)                        | GA4 runs without it — legal + data-quality risk, still unfixed  | 6   | 2   |
-| 4   | Merge `/halving-dates` into the pillar         | One intent over two declined URLs; 0 impressions in 28d         | 5   | 3   |
+| 4   | Merge `/halving-dates` into the pillar         | Blocked: no URL merges before 2026-11-12; the page has 0 impressions in 28d | 5 | 3 |
 | 5   | Cycle-vs-cycle live tracker                    | Bitbo and bitcoin-daily own the live view; pays only once indexed | 4 | 6   |
 | 6   | `/cycle/*` pages, cost-of-waiting calculator   | New URLs on a site with 18/21 unindexed — blocked by the freeze | 3   | 6   |
 
 ## Open issues
 
-- **Indexation is decaying, not stalled: 6 (10-22) → 5 (10-28) → 3 (10-29).** Each
-  URL lost was last crawled in August. Google re-crawls (`/simulator` 10-25) and
-  then declines, which is an authority verdict, not a discovery or on-page one.
-  Treat every cycle that adds a URL as adding to a shrinking set.
+- **Indexation is decaying, not stalled: 6 (10-22) → 5 (10-28) → 3 (10-29).**
+  Coverage 24% → 14% while the denominator shrank 25 → 21. Each URL lost was last
+  crawled in August and was 200 with a matching canonical on the day it dropped.
+  Google re-crawls (`/simulator` 10-25) and then declines, which is an authority
+  verdict, not a discovery or on-page one. Treat every in-repo change as
+  unmeasurable until a link exists.
+- **The only indexed URL serves placeholders.** `https://btc500.net/` HTML
+  contains three `—` record stats, "Illustrative result —" and "Completed-window
+  data is loading."; sitemap lastmod for `/` is 2026-10-21 although the H1 changed
+  2026-10-29. Fix before any further reading of homepage engagement.
 - **GA4 has no data before 2026-10-23**, so 7-day and 28-day totals are identical
   (91 sessions). Quote it as "since 10-23", never as a month.
-- **The review-runner guard is missing** — the 2026-10-26 review produced no
-  verdict and nothing noticed. Owner-owned (mandate), due 2026-11-03, unbuilt.
-- **GSC query attribution is incomplete: "0 non-brand" is a floor** (5 of 7 clicks
-  in the 7-day window have no named query). Query rows are anonymised; the report
-  now says so in writing.
+- **GSC query attribution is incomplete: "0 non-brand" is a floor** (query rows
+  are anonymised; the 28-day table sums to 47 of 94 impressions). The report now
+  says so in writing, and the 90-day reading is 723 non-brand impressions / 1
+  click, so the floor is not hiding a trend.
 - **EU cookie consent is still missing while GA4 is installed.** Legal risk, and
   it pollutes engagement numbers.
+- The 2026-10-27 owner mandate for a hash guard in `run-review-cycle.sh` is
+  **dropped** (2026-10-29 review): `validate-review.mjs` already rejects a stale
+  `generated`/`mode` and did so on 2026-10-26, and the runner retries another
+  model when no verdict file is produced. Do not reopen it.
 - `/bear-market` earns impressions while 301-redirecting to the pillar. Dated
   article bodies still quote 30 November 2026 as published — intentional
   snapshots, explained by the live-date strip. Do not mass-rewrite them.

@@ -5,31 +5,32 @@ Channel   : GitHub issue via https://github.com/bitcoin-only/bitcoin-only/issues
             ("Content Suggestion — Get Started"; the route their listing page names)
 Send from : owner's GitHub account (the issue is public)
 Prepared  : 2026-10-27
-Number quoted (one): four
+Restated  : 2026-10-29 — narrower: one issue, one template, submitted today; by-date unchanged
+Number quoted (one): four completed windows
 Link (one): https://btc500.net/bitcoin-500-day-cycle
 Status    : not sent
 
 WHY THEM
 bitcoin-only.com lists Bitcoin-only dashboards and data tools. BTC500 is a
 Bitcoin-only research site with its own daily-close archive, no altcoins, no ads
-and no sign-up, which fits their two stated listing requirements.
+and no sign-up, which fits their two stated listing requirements. This is the
+only live ask: 4 asks handed over since 2026-10-27, 0 sent, 0 sessions from any external source,
+and 9 of 9 recorded referral sessions are github.com from our own repository.
 
-THE PITCH
-Issue title: Add BTC500 — Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)
+THE PITCH — paste exactly, title and body
 
-Body:
+Title: Add BTC500 - Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)
 
 Suggestion: BTC500 (https://btc500.net) for Explorers & Dashboards.
 
-What it is: a Bitcoin-only research site built on one fixed rule — buy 500 days
-before each halving, sell 500 days after — with four completed halving windows
-laid out from a daily-close archive back to 2011. Each window shows the entry,
-halving and exit close, the lowest close inside the window and the date it
-happened, and a test of what missing the exact entry date by 30, 60 or 120 days
-cost at the same exit.
+What it is: a Bitcoin-only research site built on one fixed rule - buy 500 days
+before each halving, sell 500 days after. Four completed windows (2012, 2016,
+2020, 2024) with entry, halving and exit closes, the lowest close inside each
+window and the date it happened, and what moving the entry 30, 60 or 120 days
+did at the same exit. The next T-500 date, 28 November 2026, is on the homepage.
 
-No altcoins, no accounts, no ads, and the underlying numbers are also served as
-JSON for anyone who wants to chart them.
+No altcoins, no accounts, no ads. Every number is also served as JSON for anyone
+who wants to chart it: https://btc500.net/data/500-day-cycles.json
 
 THE LINK
 https://btc500.net/bitcoin-500-day-cycle

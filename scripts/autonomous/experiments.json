@@ -47,7 +47,8 @@
       "status": "open",
       "verdict": null,
       "progress": [
-        "2026-10-28: written down as unmeasurable, not just unsent — STATUS.md records handed-over dates and `sent: no` for all three asks (2026-10-27). Referrals 7d: github.com 7, every asked channel 0. Success widened to any asked channel so the reading is not tied to X, which produced 0 sends in 3 days."
+        "2026-10-28: written down as unmeasurable, not just unsent — STATUS.md records handed-over dates and `sent: no` for all three asks (2026-10-27). Referrals 7d: github.com 7, every asked channel 0. Success widened to any asked channel so the reading is not tied to X, which produced 0 sends in 3 days.",
+        "2026-10-29: four asks handed over since 2026-10-27, 0 sent, 0 sessions from x.com, twitter.com, reddit.com, bitcointalk.org, bitcoinmagazine.com or bitcoin-only.com. github.com produced 9 sessions in 7 days from 2 users and STATUS.md records that as the owner's own repository, not a mention. The one live ask was restated narrower (one GitHub issue on bitcoin-only.com, by 2026-11-11) and now points at /bitcoin-500-day-cycle, the URL that needs the external signal. Void condition on 2026-11-04 still stands: if STATUS.md shows no send date, the test measured the owner's availability, not the channel."
       ]
     },
     {
@@ -58,8 +59,8 @@
       "success": "The pillar is indexed on 2026-11-19, or a click lands on any of the 3 cluster queries ('when is / what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle') in the 28 days after the change.",
       "inconclusive": "Pillar still 'Crawled - currently not indexed' on 2026-11-19 \u2014 then the snippet was never served and the test measured indexation, not the snippet; close it as unreadable rather than extending it.",
       "next_reading": "2026-11-19",
-      "status": "open",
-      "verdict": null
+      "status": "closed",
+      "verdict": "Closed UNREADABLE on 2026-10-29 by the results review, 21 days early and on its own inconclusive condition. /bitcoin-500-day-cycle has been 'Crawled - currently not indexed' with lastCrawl 2026-10-22 through four deploys (2026-10-23, 10-24, 10-27, 10-28) and five inbound exact-anchor links, and the 2026-10-29T07:32Z inspection is unchanged. A snippet that is never served cannot be tested, so no further copy, title, meta or section change to that URL may count as a cycle's work. Reopen only if the URL becomes indexed by an external cause."
     },
     {
       "id": "sitemap-contraction",
@@ -69,8 +70,8 @@
       "success": "Indexed rises from the 2026-10-28 base of 5 of 22 to 8 or more of 22 by 2026-11-10, or any of the three redirected slugs' target (/articles) is crawled after 2026-10-28 and indexed.",
       "inconclusive": "Indexed stays at 5 or fewer with the sitemap at 22 by 2026-11-10 \u2014 then crawl budget was not the limit and only external links can move it; stop all in-repo indexation work permanently and spend every cycle on distribution only.",
       "next_reading": "2026-11-10",
-      "status": "open",
-      "verdict": null,
+      "status": "closed",
+      "verdict": "Closed FAILED on 2026-10-29 by the results review, 12 days before its reading, because its own fail branch was met early: indexed is 3 of 21 today and the branch was '5 or fewer of 22 on 2026-11-10'. The sitemap went 25 -> 22 -> 21 and indexed went 6 -> 5 -> 3 over the same week, and none of the redirected slugs' target (/articles) has been crawled or indexed since 2026-10-28 - it is still 'Crawled - currently not indexed', lastCrawl 2026-08-14. Removing surface did not move the gate. Consequence: every in-repo indexation action stops; the site is distribution-only until an external link arrives.",
       "progress": [
         "2026-10-28: shipped. 301 -> /articles for /articles/bitcoin-volatility, /articles/bitcoin-infrastructure-exploits and /articles/ondo-finance-tokenization (routes, metadata, components and sitemap rows deleted). /articles and /liquidation kept, per the mandate. Sitemap 25 -> 22.",
         "2026-10-28: base at shipping is 5 indexed / 25 inspected, not 6 - /articles/strongest-hands (last crawl 2026-08-17) fell out of the index on the same day. Read the target as >= 8 indexed of 22 sitemap URLs by 2026-11-10, and treat 5 or fewer as the inconclusive/fail branch.",

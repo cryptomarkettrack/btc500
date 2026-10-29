@@ -91,7 +91,9 @@ Rules for interpreting data:
 
 ### The bar
 
-A cycle counts as progress only if it does at least one of these:
+A cycle counts as progress only if it does at least one of these.
+**Until 2026-11-12 the distribution-only rule below overrides this list:** the
+only shippable work is a defect fix on an indexed URL or a prepared owner ask.
 
 - publishes an original number, chart, dataset or tool nobody else has,
 - fixes a defect that measurably hurts us (indexation, contradiction between
@@ -114,33 +116,39 @@ URL Google has already crawled and declined must record itself `archive-only`,
 not `shipped`. Evidence: the pillar `/bitcoin-500-day-cycle` was changed on
 2026-10-23, 10-24, 10-27 and linked from five pages on 10-28 and its lastCrawl
 is still 2026-10-22; over the same four cycles indexed went 6 → 5 and non-brand
-clicks stayed at 0. What still counts as a ship while the gate is shut:
-removing or merging a URL, adding an internal link from an *indexed* page to a
-declined one, fixing a measurement or legal defect, and preparing one owner ask.
-What does not: a fifth rewrite of a page Google has declined four times.
+clicks stayed at 0. What still counts as a ship: a defect fix on a URL Google
+indexes, and preparing one owner ask. What does not: any copy, title, meta or
+section change on a page Google has declined — and, since 2026-10-29, any URL
+added, removed, merged or redirected at all.
 
-### URL contraction — set by the 2026-10-27 review, re-based 2026-10-28
+### Distribution-only — set by the 2026-10-29 review, replaces the contraction rule
 
-While fewer than 8 of the **22** sitemap URLs are indexed (5 on 2026-10-28),
-**do not add a new page, article, route or section, and do not extend an
-unindexed page further.** Every cycle must instead *reduce or strengthen* the
-declined surface: merge two `Crawled - currently not indexed` URLs into one, or
-301 an August-crawled URL into a page Google already indexes. State
-`indexed X/22, sitemap N` in the commit's PERFORMANCE section so the next review
-can see whether the gate moved. The reading is **2026-11-10**: if indexed is
-still 5 of 22 that day, the `sitemap-contraction` experiment closes failed and
-every in-repo indexation action stops for good — from then on a cycle may only
-prepare an owner ask or fix a defect. Lifting this freeze is the reviewer's
-call, not the cycle's.
+The URL-contraction experiment is **closed failed** (`experiments.json`): the
+sitemap went 25 → 22 → 21 and indexed went 6 → 5 → 3 over the same week, so
+removing surface is not what the gate is waiting for. Until **2026-11-12** a
+cycle may ship only:
 
-Reason: 5 of 22 indexed on 2026-10-28 — 6 on every reading 2026-10-22 → 10-27
-until `/articles/strongest-hands` (last crawl 2026-08-17) lost its index. 11
-`Crawled - currently not indexed` and 6 URLs Google has never fetched although
-all 6 are in `sitemap.xml` and 5 are linked from the homepage. Four deploys on
-the pillar (2026-10-23 drawdown, 10-24 timing, 10-27 citation + snippet, 10-28
-inbound exact anchors) did not advance its crawl date past 2026-10-22. Adding
-surface to a domain with 0 referring domains is negative work: it splits an
-already-starved crawl budget across more URLs to decline.
+- a defect fix on a URL Google actually indexes (on 2026-10-29 those are `/`,
+  `/articles/bip-110-rejection`, `/articles/bear-market-accumulation`), or
+- a prepared owner ask.
+
+Everything else is `archive-only`, and an archive-only cycle is a **valid**
+cycle: an empty cycle beats a fifth unmeasurable edit. Forbidden outright until
+2026-11-12: adding, removing, merging, 301/410-ing or rewriting any URL, and any
+copy, title, meta, section or sitemap edit on a declined URL. State
+`indexed X/21, sitemap N` in PERFORMANCE, and never describe a change to an
+unindexed page as a result.
+
+Evidence: 4 runs, 3 shipped + 1 archive-only, 0 failures and **4 of 4 review
+mandates executed and verified in 48 hours** produced indexed 6 → 3, 7-day
+clicks 14 → 1, 7-day impressions 45 → 10, 0 non-brand clicks and 0 referring
+domains. 18 of 21 URLs are declined and 6 have never been fetched. Only an
+external link changes that, and only the owner can send one.
+
+Test: if indexed rises above 3 by 2026-11-12 without a single URL added or
+removed, the cause was never our on-page work. If it does not, the next review
+extends the freeze and stops publishing altogether. Lifting this freeze is the
+reviewer's call, not the cycle's.
 
 ### Order of work — never skip ahead
 
@@ -174,11 +182,11 @@ due and whether you may open another.
 
 ### The idea menu
 
-**Frozen 2026-10-27:** every item in A–D below produces a new URL or a new
-section on an unindexed page, so all of them are blocked by the URL-contraction
-rule above until `indexed ≥ 8/25`. While the gate is shut the menu is: merge or
-301 a declined URL, add an internal exact-anchor path to the pillar, prepare a
-send-ready pitch or listing, or fix a defect. Choosing E or F over A–D is
+**Frozen 2026-10-27, absolute from 2026-10-29:** every item in A–D below
+produces a new URL or a new section on an unindexed page. All of them are
+forbidden until `indexed ≥ 8/21`, and the distribution-only rule above forbids
+them outright until 2026-11-12. While the gate is shut the only permitted work
+is a defect fix on an indexed URL or a prepared owner ask. Choosing E or F is
 following this prompt, not ignoring it.
 
 Pick the biggest swing you can build and verify inside one cycle.

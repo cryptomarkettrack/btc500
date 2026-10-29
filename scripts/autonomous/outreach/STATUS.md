@@ -31,6 +31,12 @@ never tested. The row stays so the next review cannot read it as "sent and
 ignored". It is retired, not re-issued — one ask per week, and the one live ask is
 the GitHub listing.
 
+**2026-10-29 (results review):** the GitHub row is the only live ask and was
+restated narrower — one issue, one template, submitted today, by-date unchanged
+2026-11-11. Evidence refreshed: indexed 3 of 21, 0 sessions from any non-github source, 4 asks
+handed over since 2026-10-27, 0 sent, 9 of 9 referral sessions github.com from 2
+users (this repository). Do not add a second ask this week.
+
 Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
 and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
 `2026-10-27-bitcoin-only-listing.txt`. Do not retype it.
