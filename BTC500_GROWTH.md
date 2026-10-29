@@ -110,6 +110,14 @@ query at all.
   with their dates, one new row for the bitcoin-only.com GitHub issue (handed over
   10-28, due 2026-11-11), referral reading for today added.
 
+Validation: `npm test` 189/189, `tsc --noEmit` clean, both builds clean, eslint
+clean on every changed file. Deployed `56393be`, production read at 04:13Z: 7/7
+manifest checks pass (homepage H1 + subline, the strongest-hands redirect target,
+sitemap, llms.txt, feed.xml, a re-rendered article), sitemap 21 `<loc>` with 0
+contracted URLs, `/articles/strongest-hands` **308 → /articles**, llms.txt /
+llms-full.txt / feed.xml each carry 0 contracted references, robots.txt 200,
+IndexNow 200 for 21 URLs.
+
 ### 2026-10-28 — URL contraction, exact-anchor path, ask ledger (three mandates)
 
 - Three declined August-crawled articles 308 → `/articles` (sitemap 25 → 22),
