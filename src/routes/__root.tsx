@@ -16,6 +16,7 @@ import ibmPlexMono500Url from "@/assets/fonts/ibm-plex-mono-500-latin.woff2?url"
 import ibmPlexMono600Url from "@/assets/fonts/ibm-plex-mono-600-latin.woff2?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { GoogleAnalytics } from "../components/GoogleAnalytics";
+import { ConsentBanner } from "../components/ConsentBanner";
 import { Nav } from "../components/Nav";
 import { Footer } from "../components/Footer";
 import { ArticleDateNotice } from "../components/articles/ArticleDateNotice";
@@ -362,6 +363,7 @@ function RootComponent() {
           <Outlet />
         </main>
         {!isEmbed && <Footer />}
+        {!isEmbed && <ConsentBanner />}
       </div>
     </QueryClientProvider>
   );

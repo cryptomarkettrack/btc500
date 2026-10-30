@@ -1,15 +1,25 @@
 {
-  "generated": "2026-10-29",
-  "summary": "X profile virality launch content pack added (no site change)",
+  "generated": "2026-10-30",
+  "summary": "consent defect fixed: GA4 runs Consent Mode v2 (storage denied before a choice) with a banner, and /privacy now discloses GA4 truthfully",
   "checks": [
     {
       "path": "/",
-      "contains": "The Bitcoin 500-day rule: 500 days before the next Bitcoin halving is 28 November 2026",
+      "contains": "Analytics cookies",
       "status": 200
     },
     {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "What is the Bitcoin 500-day rule?",
+      "path": "/",
+      "contains": "\"analytics_storage\":\"denied\"",
+      "status": 200
+    },
+    {
+      "path": "/privacy",
+      "contains": "Google Analytics 4",
+      "status": 200
+    },
+    {
+      "path": "/privacy",
+      "contains": "October 30, 2026",
       "status": 200
     }
   ]
