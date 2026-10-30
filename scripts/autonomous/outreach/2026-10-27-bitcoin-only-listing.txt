@@ -1,41 +1,46 @@
-BTC500 outreach — directory / roundup listing
-==============================================
+BTC500 outreach — directory listing
+===================================
 Recipient : bitcoin-only.com — "Explorers & Dashboards" list
 Channel   : GitHub issue via https://github.com/bitcoin-only/bitcoin-only/issues/new/choose
-            ("Content Suggestion — Get Started"; the route their listing page names)
+            → "Content Suggestion — Get Started"
 Send from : owner's GitHub account (the issue is public)
 Prepared  : 2026-10-27
 Restated  : 2026-10-29 — narrower: one issue, one template, submitted today; by-date unchanged
+Rewritten : 2026-10-30 — matched to their actual template file, which the earlier
+            version did not fit. Their .github/ISSUE_TEMPLATE/content-suggestion.md
+            (fetched 2026-10-30) requires a title of the form
+            "Content Suggestion: NAME OF CONTENT" and three numbered fields:
+            (1) Link to Content, (2) Briefly Describe Content, (3) Suggested
+            Section. The old text had a different title and no numbered fields,
+            so the owner could not paste it as written. That is a plausible
+            reason 4 asks went unsent; do not change the text now.
 Number quoted (one): four completed windows
 Link (one): https://btc500.net/bitcoin-500-day-cycle
 Status    : not sent
 
 WHY THEM
-bitcoin-only.com lists Bitcoin-only dashboards and data tools. BTC500 is a
-Bitcoin-only research site with its own daily-close archive, no altcoins, no ads
-and no sign-up, which fits their two stated listing requirements. This is the
-only live ask: 4 asks handed over since 2026-10-27, 0 sent, 0 sessions from any external source,
-and 9 of 9 recorded referral sessions are github.com from our own repository.
+bitcoin-only.com lists Bitcoin-only dashboards and data tools. Their listing
+requirements are two sentences: 1) support Bitcoin, 2) not support altcoins.
+BTC500 meets both — no altcoins, no ads, no sign-up — and their own README points
+contributors at the issue form. It is the only live ask.
+Evidence for the ask, 2026-10-30: indexed 3 of 21 (6 of 25 on 2026-10-22),
+0 non-brand clicks in 8 days of 7-day readings (1 in 90 days), 12 of 12 referral
+sessions in 7 days are github.com from 2 users (this repository, not a mention),
+4 asks handed over since 2026-10-27 and 0 sent.
 
 THE PITCH — paste exactly, title and body
 
-Title: Add BTC500 - Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)
+Title: Content Suggestion: BTC500 — Bitcoin 500-day halving dashboard
 
-Suggestion: BTC500 (https://btc500.net) for Explorers & Dashboards.
-
-What it is: a Bitcoin-only research site built on one fixed rule - buy 500 days
-before each halving, sell 500 days after. Four completed windows (2012, 2016,
-2020, 2024) with entry, halving and exit closes, the lowest close inside each
-window and the date it happened, and what moving the entry 30, 60 or 120 days
-did at the same exit. The next T-500 date, 28 November 2026, is on the homepage.
-
-No altcoins, no accounts, no ads. Every number is also served as JSON for anyone
-who wants to chart it: https://btc500.net/data/500-day-cycles.json
+1. Link to Content: https://btc500.net/bitcoin-500-day-cycle
+2. Briefly Describe Content: Bitcoin-only halving research dashboard: buy 500 days before each halving, sell 500 days after. All four completed windows (2012, 2016, 2020, 2024) with entry, exit and worst drawdown, plus the next buy date, 28 November 2026. No altcoins, no accounts, no ads. Every number is also served as JSON: https://btc500.net/data/500-day-cycles.json
+3. Suggested Section: Explorers & Dashboards
 
 THE LINK
 https://btc500.net/bitcoin-500-day-cycle
 
 SEND CHECK
 After the issue is opened, watch GA4 acquisition → Referral for
-bitcoin-only.com over the next 14 days, and check whether the listing appears on
-https://bitcoin-only.com/explorers-dashboards.
+bitcoin-only.com over the next 7 days, and check whether the entry appears on
+https://bitcoin-only.com/explorers-dashboards. A referral session or the live
+entry is proof the ask worked; silence with an open issue is not.

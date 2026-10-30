@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "max_open": 3,
-  "rule": "Read every experiment whose next_reading has passed before starting new work, then record the verdict here and in BTC500_GROWTH.md. Do not open a new experiment while `open` equals `max_open`: close, merge or read one first. Preflight reports due readings in preflight.json.",
+  "rule": "Read every experiment whose next_reading has passed before starting new work, then record the verdict here and in BTC500_GROWTH.md. Do not open a new experiment while `open` equals `max_open`: close, merge or read one first. Preflight reports due readings in preflight.json. Since the 2026-10-30 review the open count is 0 and no new experiment may be opened until the full freeze lifts: six experiments have been opened and six have closed without a result, all on the same wall (URL not served, or no audience).",
   "experiments": [
     {
       "id": "t500-date-calendar",
@@ -44,8 +44,8 @@
       "success": "At least 1 GA4 referral session from any channel we asked (x.com, twitter.com, reddit.com, bitcointalk.org, bitcoinmagazine.com, bitcoin-only.com), or 1 new indexed URL, by 2026-11-08.",
       "inconclusive": "scripts/autonomous/outreach/STATUS.md shows no ask with a send date by 2026-11-04. Then the test measured the owner's availability, not the channel, and is void — close it and issue the next ask on the one channel the ledger proves is usable.",
       "next_reading": "2026-11-08",
-      "status": "open",
-      "verdict": null,
+      "status": "closed",
+      "verdict": "Closed VOID on 2026-10-30, five days early and on its own void branch ('STATUS.md shows no ask with a send date by 2026-11-04 - then the test measured the owner's availability, not the channel'). STATUS.md today: 4 asks handed over between 2026-10-27 and 2026-10-29, 0 sent, 0 date-sent cells filled; GA4 referrals 7d are github.com 12 from 2 users (this repository), 0 from x.com, twitter.com, reddit.com, bitcointalk.org, bitcoinmagazine.com or bitcoin-only.com. The experiment never tested a channel; it has now measured one person's availability across four channels and five days. Closing it is the honest reading, and the consequence is the 2026-10-30 full freeze: no in-repo work is measurable while 3 of 21 URLs are indexed and no external link exists, so no replacement experiment is opened.",
       "progress": [
         "2026-10-28: written down as unmeasurable, not just unsent — STATUS.md records handed-over dates and `sent: no` for all three asks (2026-10-27). Referrals 7d: github.com 7, every asked channel 0. Success widened to any asked channel so the reading is not tied to X, which produced 0 sends in 3 days.",
         "2026-10-29: four asks handed over since 2026-10-27, 0 sent, 0 sessions from x.com, twitter.com, reddit.com, bitcointalk.org, bitcoinmagazine.com or bitcoin-only.com. github.com produced 9 sessions in 7 days from 2 users and STATUS.md records that as the owner's own repository, not a mention. The one live ask was restated narrower (one GitHub issue on bitcoin-only.com, by 2026-11-11) and now points at /bitcoin-500-day-cycle, the URL that needs the external signal. Void condition on 2026-11-04 still stands: if STATUS.md shows no send date, the test measured the owner's availability, not the channel.",

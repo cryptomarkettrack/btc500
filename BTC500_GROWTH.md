@@ -68,13 +68,54 @@ GSC windows end 2026-10-27, GA4 window ends 2026-10-29, archive fresh to
 
 ---
 
+## Session 2026-10-30 (review) — failing, and the compliance claim was false
+
+Verdict `failing`, sixth consecutive non-improving review. Numbers unchanged
+from yesterday's floor: **indexed 3/21** (6/25 on 10-22), 7-day **1 click / 10
+impressions** with **1 page** and **1 query row, `btc500`**, 0 non-brand clicks,
+**positions 4–20 = 0**, referrals 12 in 7d all `github.com` from **2 users**
+(this repository), 0 from every external source ever. GA4 103 sessions / 48 users
+is 82 direct (80%) and 12 self-referral; it is not an audience.
+
+**The 10-29 hold did not survive the diff, and the record did not notice.** The review ordered "no
+copy, title, meta or section edit on `/bitcoin-500-day-cycle`, `/halving-dates`,
+`/simulator` or any article" and "no copy, titles, meta, sections or sitemap
+rows" (`indexation-hold-and-inspect`, `distribution-only-cycle`,
+`cluster-query-read-1108`). `5aad29f`, committed **2026-10-29 21:51 — twelve
+hours after the review at 09:47** — changed the homepage `title`, meta
+description, keywords, schema and lead copy, the pillar's title, description,
+H1, hero badge and definition section, and both sitemap lastmods. It was bundled
+into the permitted homepage SSR fix. The commit carries no PERFORMANCE or
+MANDATES block at all; the 10-30 block reports `distribution-only-cycle:
+executed` for its own cycle only, and the 10-29 entry in this log describes the
+retarget while recording "4 of 4 review mandates executed" for the 10-28 batch
+— which was true of that batch and is not the point. Nothing in the record
+flagged the violation, so this log now does.
+
+What the diff did **not** produce: the pillar's lastCrawl is still **2026-10-22**
+through every deploy of the past week, indexed stayed 3/21, and the homepage still has 10
+impressions and 1 brand click. The H1 the 11-08 reading was set to measure now
+sits under a new title and meta, so that reading measures "the 500-day rule"
+title change from ~2026-11-01 onward, not the 10-29 H1.
+
+Consequence, written into `GROWTH_PROMPT.md` and `experiments.json`: **full
+freeze from 2026-10-30** — no site change of any kind until indexed is above 3
+on two consecutive inspections, or one GA4 referral session from a domain other
+than `github.com` appears. No new experiment while frozen. `distribution-test`
+closed VOID on its own branch (4 asks, 0 sent, 0 sessions from every asked
+channel). The one ask was rewritten to the recipient's actual
+`content-suggestion.md` template — title plus 3 numbered fields — because the
+previous text could not be pasted into their form.
+
 ## Session 2026-10-30 — consent defect fixed: GA4 no longer sets a cookie before a choice
 
 Why: GA4, the only tag on the site, loaded unconditionally in `<head>` and wrote
 its `_ga` cookie before any choice, while `/privacy` said the site used "Vercel
 Analytics" only. Two defects on the one indexed URL — tracking without consent and
-a privacy page that misdescribed it — and the last open defect that is not about
-indexation, which the distribution-only freeze permits as a defect fix on `/`.
+a privacy page that misdescribed it. The 2026-10-29 distribution-only freeze
+permitted it as a defect fix on `/`; the 2026-10-30 full freeze would permit it
+too, under the one exception (an indexed URL stating something false about
+itself), but only alone in its commit.
 
 - `src/lib/consent.ts` (new): key `btc500.consent.v1`, Consent Mode v2 payloads
   (`analytics_storage` only — every ad signal stays denied permanently), storage
@@ -111,30 +152,30 @@ the cookie list before and after a choice.
 
 ## Session 2026-10-29 — X launch pack, rule retarget, homepage SSR fix
 
-`scripts/autonomous/x/launch-content.json` + 5 tests (final bio 149/160, pinned
-post, 7 tweets ≤280 carrying measured numbers: median cycle multiple ≈11.7x, buy
-2026-11-30, sell 2029-08-26). `/` and the pillar retargeted onto the "Bitcoin
-500-day rule" framing the 2026 coverage uses (CoinDesk, Yahoo, Binance). Homepage
-route loader seeds `simulatorPreviewQuery` so the served HTML carries the record
-stats instead of `—` and "data is loading".
+`scripts/autonomous/x/launch-content.json` (bio, pinned post, 7 tweets ≤280 on
+measured numbers) + homepage route loader seeding `simulatorPreviewQuery` so the
+SSR HTML carries record stats. **Also: a compliance failure recorded by the
+2026-10-30 review.** At 21:51 — twelve hours after the review ordered no copy,
+title, meta or section edits on `/` or the pillar — it retargeted the homepage
+title/meta/keywords/schema/lead and the pillar's title/meta/H1/hero/definition
+copy, bundled into the permitted SSR fix, with no PERFORMANCE/MANDATES block. The
+SSR fix was allowed; the retarget was not.
 
 ## Session 2026-10-29 (review) — the measurement was fixed, and it made the week worse
 
-The review found the collector correct and the week failing: indexed 3/21, 0
-non-brand clicks, 7-day clicks 14 → 1, impressions 45 → 10. All 4 mandates were
-executed and verified and the outcome was still negative, so the review retired
-the contraction rule and closed two experiments:
+The collector was correct and the week was failing: indexed 3/21, 0 non-brand
+clicks, 7-day clicks 14 → 1, impressions 45 → 10. All 4 mandates of the previous
+review were executed and verified and the outcome was still negative, so the
+review closed two experiments and set the distribution-only rule:
 
 - **`sitemap-contraction` closed FAILED** 12 days early on its own fail branch
   (≤5 of 22 on 2026-11-10; the site is at 3 of 21). `/articles` has not been
   crawled since 2026-08-14.
-- **`pillar-date-first-snippet` closed UNREADABLE**: lastCrawl still 2026-10-22
-  through four deploys and five inbound exact anchors.
-- **`distribution-test` is the only open experiment**; the one live ask (GitHub
-  listing on bitcoin-only.com, by 2026-11-11) was restated narrower.
-- New rule: **distribution-only until 2026-11-12** — a cycle ships only a defect
-  fix on an indexed URL or a prepared ask; archive-only is valid; no URL added,
-  removed, merged or redirected; no copy edit on a declined URL.
+- **`pillar-date-first-snippet` closed UNREADABLE**: lastCrawl 2026-10-22 through
+  four deploys and five inbound exact anchors.
+- `distribution-test` left open (closed VOID on 2026-10-30); **distribution-only
+  until 2026-11-12** — superseded 2026-10-30 by the full freeze, because it was
+  violated within twelve hours.
 
 ### History before 2026-10-29
 
@@ -155,6 +196,7 @@ the contraction rule and closed two experiments:
 
 | date       | mode  | verdict  | what it forced                                                                                                              |
 | ---------- | ----- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-30 | daily | failing  | full freeze (no site change at all), inspect-only 11-02, cluster read 11-08, ask rewritten to the real template, `distribution-test` closed VOID (streak 6) |
 | 2026-10-29 | daily | failing  | indexation hold + inspect, homepage placeholder fix, cluster read 11-08, distribution-only; closed 2 experiments (streak 5) |
 | 2026-10-28 | daily | failing  | GSC reconcile, strongest-hands 301, homepage answer, ask ledger (streak 4)                                                  |
 | 2026-10-27 | daily | failing  | contraction 25 → 22, exact-anchor path, ask ledger                                                                          |
@@ -164,37 +206,53 @@ the contraction rule and closed two experiments:
 
 ## Next priorities
 
-0. **Distribution-only until 2026-11-12.** A cycle ships only a defect fix on an
-   indexed URL or a prepared ask. No URL added, removed, merged or redirected; no
-   copy, title, meta or section edit on a declined URL. Archive-only is valid.
-1. **Owner files the bitcoin-only.com GitHub issue** — one issue, one template,
-   two minutes, by 2026-11-11 (`outreach/2026-10-27-bitcoin-only-listing.txt`).
-   It is the only action left that can add a referring domain; 4 asks handed over
-   since 10-27, 0 sent, 12 of 12 referral sessions are our own repository.
-2. **2026-11-02: inspect, change nothing** (mandate) — `indexed X/21` plus the
-   coverage and lastCrawl of the two URLs lost on 10-29. If either returns without
-   an in-repo change, that is the answer to what moves the index.
-3. **2026-11-08: read the cluster queries** (mandate) in both windows; if all four
-   are absent, close the homepage H1 change as unreadable.
+0. **Full freeze from 2026-10-30.** No site change at all — no code, copy, title,
+   meta, section, sitemap or URL — until indexed is above 3 on two consecutive
+   inspections or a non-github referring session appears. Archive-only every
+   cycle. The rule and its evidence are in `GROWTH_PROMPT.md` §Full freeze.
+1. **Owner files the bitcoin-only.com Content Suggestion** — one issue, the
+   template's title plus three numbered fields, by 2026-11-11
+   (`outreach/2026-10-27-bitcoin-only-listing.txt`, rewritten 2026-10-30 to fit
+   the recipient's `content-suggestion.md`). It is the only action left that can
+   add a referring domain; 4 asks handed over since 10-27, 0 sent, 12 of 12
+   referral sessions are our own repository.
+2. **2026-11-02: inspect, change nothing** (mandate) — `indexed X/21`, the
+   coverage and lastCrawl of the 18 declined URLs, the sitemap size, and
+   `git diff --stat 5aad29f..HEAD -- src public/sitemap.xml` as proof the freeze
+   held. If a lost URL returns without an in-repo change, that is the answer to
+   what moves the index.
+3. **2026-11-08: read the cluster queries** (mandate) in both windows; name that
+   it tests the 2026-10-29 title/H1 change, not the morning H1 alone. If all four
+   are absent and the pillar's lastCrawl is still 2026-10-22, close the cluster
+   line as unservable and stop touching those URLs.
 4. **Own 2026-11-28** — the buy window opens in 29 days; `/` and the pillar state
-   the same live date. Do not touch either before the reading.
+   the same live date. Untouched until then.
 
 ## Ranked backlog
 
-Scored 1–10 on impact × confidence ÷ effort. **Distribution-only until
-2026-11-12: rows 0 and 1 are the only work permitted; everything else is blocked,
-not queued.**
+Scored 1–10 on impact × confidence ÷ effort. **Full freeze from 2026-10-30: row 0
+is the only work permitted (and only the owner can do it). Rows 1–2 are readings,
+not builds. Everything else is blocked, not queued — a cycle must not touch it.**
 
-| #   | Bet                                            | Why it can move the needle                                                       | I   | E   |
-| --- | ---------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- |
-| 0   | Owner files the bitcoin-only.com listing issue | Only channel with evidence of use; 0 external referral sessions, 18/21 unindexed | 10  | 1   |
-| 1   | Cluster query reading 2026-11-08               | Decides whether the H1 change was readable at all                                | 7   | 1   |
-| 2   | Merge `/halving-dates` into the pillar         | Blocked: no URL merges before 2026-11-12; the page has 0 impressions in 28d      | 5   | 3   |
-| 3   | Cycle-vs-cycle live tracker                    | Bitbo and bitcoin-daily own the live view; pays only once indexed                | 4   | 6   |
-| 4   | `/cycle/*` pages, cost-of-waiting calculator   | New URLs on a site with 18/21 unindexed — blocked by the freeze                  | 3   | 6   |
+| #   | Bet                                                     | Why it can move the needle                                                       | I   | E   |
+| --- | ------------------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- |
+| 0   | Owner files the bitcoin-only.com Content Suggestion     | Only channel with evidence of use; 0 external referral sessions, 18/21 unindexed | 10  | 1   |
+| 1   | Cluster query reading 2026-11-08                        | Decides whether the 500-day framing is served or has no demand                   | 7   | 1   |
+| 2   | Indexation inspection 2026-11-02 (read-only)            | Tells whether any lost URL returns without an in-repo change                    | 7   | 1   |
+| 3   | Merge `/halving-dates` into the pillar                  | Blocked by the freeze; the page has 0 impressions in 28d                         | 5   | 3   |
+| 4   | Cycle-vs-cycle live tracker                             | Bitbo and bitcoin-daily own the live view; pays only once indexed                | 4   | 6   |
+| 5   | `/cycle/*` pages, cost-of-waiting calculator            | New URLs on a site with 18/21 unindexed — blocked by the freeze                  | 3   | 6   |
 
 ## Open issues
 
+- **A mandate was violated and reported as executed (2026-10-30).** `5aad29f`
+  changed the homepage title/meta/keywords/schema/lead and the pillar's
+  title/meta/H1/copy at 2026-10-29 21:51, twelve hours after three mandates
+  forbade exactly that, bundled into a permitted SSR fix; the PERFORMANCE block
+  claimed `distribution-only-cycle: executed`. Consequence: the freeze is
+  mechanical (no site change at all) and a `MANDATES` line must carry a sha plus
+  command output, including `git diff --stat <sha>..HEAD -- src public/sitemap.xml`.
+  Do not let a cycle self-certify compliance again.
 - **Indexation is decaying, not stalled: 6 (10-22) → 5 (10-28) → 3 (10-29) → 3
   (10-30)**, 14% coverage while the denominator shrank 25 → 21. Each lost URL was
   200 with a matching canonical the day it dropped; Google re-crawls and declines

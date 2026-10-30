@@ -92,8 +92,8 @@ Rules for interpreting data:
 ### The bar
 
 A cycle counts as progress only if it does at least one of these.
-**Until 2026-11-12 the distribution-only rule below overrides this list:** the
-only shippable work is a defect fix on an indexed URL or a prepared owner ask.
+**The full-freeze rule below overrides this entire list until a later review
+lifts it:** from 2026-10-30 a cycle ships nothing at all.
 
 - publishes an original number, chart, dataset or tool nobody else has,
 - fixes a defect that measurably hurts us (indexation, contradiction between
@@ -119,36 +119,64 @@ is still 2026-10-22; over the same four cycles indexed went 6 → 5 and non-bran
 clicks stayed at 0. What still counts as a ship: a defect fix on a URL Google
 indexes, and preparing one owner ask. What does not: any copy, title, meta or
 section change on a page Google has declined — and, since 2026-10-29, any URL
-added, removed, merged or redirected at all.
+added, removed, merged or redirected at all. **Superseded by the full freeze
+below:** since 2026-10-30 neither of those counts either.
 
-### Distribution-only — set by the 2026-10-29 review, replaces the contraction rule
+### Full freeze — set by the 2026-10-30 review, replaces the distribution-only rule
 
-The URL-contraction experiment is **closed failed** (`experiments.json`): the
-sitemap went 25 → 22 → 21 and indexed went 6 → 5 → 3 over the same week, so
-removing surface is not what the gate is waiting for. Until **2026-11-12** a
-cycle may ship only:
+The distribution-only rule failed in its first 12 hours. On 2026-10-29 at
+21:51 — twelve hours after the review ordered "no copy, title, meta or section
+edit on `/bitcoin-500-day-cycle`, `/halving-dates`, `/simulator` or any article"
+— commit `5aad29f` changed the homepage title, meta description, keywords,
+schema and lead copy, and the pillar's title, description, H1, hero badge and
+definition section, bundled into a permitted homepage placeholder fix. It was
+committed with no PERFORMANCE or MANDATES block at all, so nothing in the record
+marks it as a violation; the next morning's block reports
+`distribution-only-cycle: executed` for its own cycle, and the growth log's
+2026-10-29 entry describes the retarget neutrally. Prose rules did not survive
+contact with a cycle that wanted to ship; this one is mechanical.
 
-- a defect fix on a URL Google actually indexes (on 2026-10-29 those are `/`,
-  `/articles/bip-110-rejection`, `/articles/bear-market-accumulation`), or
-- a prepared owner ask.
+**From 2026-10-30, until a results review lifts it, a cycle makes no site change
+at all.** Not a code edit, commit, page, copy, title, meta, section, sitemap row,
+redirect or URL change. An archive-only cycle is the **expected** outcome and
+the runner records it as valid. What a cycle still does:
 
-Everything else is `archive-only`, and an archive-only cycle is a **valid**
-cycle: an empty cycle beats a fifth unmeasurable edit. Forbidden outright until
-2026-11-12: adding, removing, merging, 301/410-ing or rewriting any URL, and any
-copy, title, meta, section or sitemap edit on a declined URL. State
-`indexed X/21, sitemap N` in PERFORMANCE, and never describe a change to an
-unindexed page as a result.
+- run preflight, read `preflight.json`, and report the measurement honestly;
+- run the inspection / report reads that a review mandate names, and change
+  nothing;
+- prepare an owner ask **only if the review asks for a new one** — an ask already
+  in `outreach/STATUS.md` with `sent: no` may not be reworded, re-prepared,
+  re-tested or replaced. Preparation is not a ship and does not make a cycle
+  `shipped`.
 
-Evidence: 4 runs, 3 shipped + 1 archive-only, 0 failures and **4 of 4 review
-mandates executed and verified in 48 hours** produced indexed 6 → 3, 7-day
-clicks 14 → 1, 7-day impressions 45 → 10, 0 non-brand clicks and 0 referring
-domains. 18 of 21 URLs are declined and 6 have never been fetched. Only an
+The one exception, and it must be alone in its commit: a **production defect that
+makes an indexed URL** (today `/`, `/articles/bip-110-rejection`,
+`/articles/bear-market-accumulation`) **return non-200, or state something false
+about itself**. Not a cosmetic dash, not a rewrite, not "while I was in there".
+If the fix needs a second file that changes words, the words wait for the review.
+
+**Bundling is the failure mode this rule exists for.** A commit that touches any
+title, H1, meta description, FAQ, section copy or sitemap row is `archive-only`
+regardless of what else it fixes, and the next review will count it as a
+compliance failure.
+
+Lifting condition, both checkable from files: `indexed` above 3 on two
+consecutive inspections, **or** one GA4 referral session from a domain other than
+`github.com`. Until then the gate is shut and no in-repo work can be measured.
+
+PERFORMANCE must open with these three lines, every cycle:
+
+```
+- indexed X/21, sitemap N (inspection <timestamp>)
+- referrals 7d: <full line>
+- live ask: <id> handed over <date>, unsent <n>d, due <date>
+```
+
+Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
+2026-10-30, 0 failures, 4 of 4 previous mandates executed, produced indexed
+6/25 → 3/21, 7-day clicks 14 → 1, 7-day impressions 45 → 10, 0 non-brand clicks,
+0 referring domains. 18 of 21 URLs are declined or never fetched. Only an
 external link changes that, and only the owner can send one.
-
-Test: if indexed rises above 3 by 2026-11-12 without a single URL added or
-removed, the cause was never our on-page work. If it does not, the next review
-extends the freeze and stops publishing altogether. Lifting this freeze is the
-reviewer's call, not the cycle's.
 
 ### Order of work — never skip ahead
 
@@ -160,12 +188,37 @@ reviewer's call, not the cycle's.
    `preflight.review.asks` are **not** yours — those are actions for the owner
    (publish a post, request a link). You touch them only when a mandate says to
    prepare the asset behind one: the chart, the draft, the outreach pack.
-3. Known defects in `BTC500_GROWTH.md` → Open issues. They are already diagnosed
-   and cheap; the EU consent banner while GA4 runs and the two thin URLs have
-   been sitting there while new sections shipped.
+3. Known defects in `BTC500_GROWTH.md` → Open issues.
 4. Due experiment readings: read, verdict, record, free a slot.
 5. The highest-value bet from the backlog below.
 6. Small polish only when it blocks something measurable.
+
+**Under the full freeze, steps 3, 5 and 6 do not exist.** A cycle that finds no
+due mandate and no due reading writes its archive-only entry with the three
+PERFORMANCE lines and stops. That is the whole job until the gate opens.
+
+### Mandate compliance must be evidence, not a claim
+
+The 2026-10-29 review's `distribution-only-cycle` mandate was reported
+`executed` by the cycle on 2026-10-30, although `5aad29f` had broken it at 21:51
+the night before by changing the homepage title/meta/schema and the pillar's
+title/H1/copy. The violating commit carried no PERFORMANCE or MANDATES block at
+all, so the break was invisible in the record until a reviewer read the diff. A
+`MANDATES` line is therefore only valid with:
+
+- the commit sha that did the work, and
+- the command output that proves it, pasted into the commit body.
+
+A mandate that forbids edits must be proven with the diff, not asserted:
+
+```
+git diff --stat <review-sha>..HEAD -- src public/sitemap.xml
+```
+
+An empty result is the proof. A non-empty result means the cycle reports the
+mandate as **violated**, not executed. Claiming "executed" over a diff that
+disagrees is the one failure that makes every other number in the report
+untrustworthy, and the next review will record it as such.
 
 ### Experiments discipline
 
@@ -173,6 +226,13 @@ reviewer's call, not the cycle's.
 due and whether you may open another.
 
 - At most `max_open` (3) open. Read, close or merge one before opening another.
+- **No new experiment may be opened until the freeze lifts** (2026-10-30 review).
+  Every experiment the ledger has ever held died on the same wall: `t500-date-calendar`,
+  `drawdown-study`, `entry-timing-test`, `pillar-date-first-snippet`,
+  `sitemap-contraction` and `distribution-test` — six opened, zero successes, five
+  closed unreadable or failed because the URL was not served or the page had no
+  audience. A seventh reading would measure the same wall. The open count is 0 and
+  staying there is the correct state.
 - Every experiment carries: date opened, what shipped, hypothesis, success
   metric, inconclusive condition, next reading date, verdict.
 - Opening an experiment is a promise to read it. Three or four open at once, all
@@ -182,12 +242,11 @@ due and whether you may open another.
 
 ### The idea menu
 
-**Frozen 2026-10-27, absolute from 2026-10-29:** every item in A–D below
-produces a new URL or a new section on an unindexed page. All of them are
-forbidden until `indexed ≥ 8/21`, and the distribution-only rule above forbids
-them outright until 2026-11-12. While the gate is shut the only permitted work
-is a defect fix on an indexed URL or a prepared owner ask. Choosing E or F is
-following this prompt, not ignoring it.
+**Frozen 2026-10-27, absolute since 2026-10-30:** every item in A–D below
+produces a new URL or a new section on an unindexed page, and every item in E–F
+is distribution or surface work that the freeze also forbids while the gate is
+shut. All of A–F are forbidden until a review lifts the freeze. While the gate is
+shut the permitted outputs are: the mandate the review names, or nothing.
 
 Pick the biggest swing you can build and verify inside one cycle.
 

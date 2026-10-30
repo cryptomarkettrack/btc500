@@ -37,6 +37,21 @@ restated narrower — one issue, one template, submitted today, by-date unchange
 handed over since 2026-10-27, 0 sent, 9 of 9 referral sessions github.com from 2
 users (this repository). Do not add a second ask this week.
 
+**2026-10-30 (results review):** the ask text was **rewritten to fit the
+recipient's real template**, fetched today from
+`https://github.com/bitcoin-only/bitcoin-only/blob/master/.github/ISSUE_TEMPLATE/content-suggestion.md`.
+It requires a title of the form `Content Suggestion: NAME OF CONTENT` and three
+numbered fields (Link to Content / Briefly Describe Content / Suggested Section).
+The 2026-10-27 and 2026-10-29 versions had neither, so the instruction "paste the
+title and body exactly as written" could not be followed at the form — a
+plausible cause of 4 asks and 0 sends that is not the owner's willingness. The
+corrected text is in `2026-10-27-bitcoin-only-listing.txt`; paste that. Checked
+today: `bitcoin-only/bitcoin-only` has issues enabled (177 open, last push
+2026-10-29) and the listing page still points contributors at the issue form. The
+next review reads the `sent` column, not the prepared file. If `sent` is still
+`no` on 2026-11-11, no review can move this site and the next one should say so
+in one line and stop issuing asks.
+
 Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
 and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
 `2026-10-27-bitcoin-only-listing.txt`. Do not retype it.
