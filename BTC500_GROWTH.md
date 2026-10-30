@@ -108,6 +108,15 @@ Not verified, stated: that production stops writing `_ga` is a code-level
 guarantee (the default is sent before the tag loads). The post-deploy browser
 check covers the cookie list; GA4 report behaviour cannot be read from here.
 
+Deployed `93231b3` and verified in production at 2026-10-30T04:14Z: manifest 4/4
+(`/` carries the banner + `"analytics_storage":"denied"`, `/privacy` carries the
+GA4 disclosure and the 10-30 date). Headless Chrome against https://btc500.net/:
+banner visible on a first visit, the **only** consent command sent is
+`default` → all four signals denied, **0 cookies** before a choice, gtag loaded
+(cookieless pings, so counts survive), Accept → `_ga` + `_ga_GM4WBKY74P` appear
+and the banner hides, choice stored, 0 page errors. `/` 200, `/privacy` 200,
+sitemap 21 `<loc>`, robots.txt 200, IndexNow 200 for 21 URLs.
+
 ## Session 2026-10-29 — X launch pack, rule retarget, homepage SSR fix
 
 - `scripts/autonomous/x/launch-content.json` + 5 tests: final bio (149/160),
