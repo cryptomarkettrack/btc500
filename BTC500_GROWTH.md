@@ -16,181 +16,122 @@ gitignored under `scripts/search-console/output/`.
 | 90 days (2026-07-22 → 2026-10-19) | 49     | 3,370       | 1.5%  | 25.8         |
 | 28 days (2026-09-22 → 2026-10-19) | 25     | 90          | 27.8% | 9.8          |
 
-Reading the numbers: non-brand organic traffic is effectively zero — in the last
-28 days the only query with volume is `btc500` (40 impressions, 4 clicks, @3).
-The August spike was one dated news page (`/articles/bitcoin-week-ahead`, 2,067
-impressions in the week of 10 Aug, 1 click); after `2c7f981` noindexed the dated
-posts the site sits at 30–50 impressions/week. The one durable non-brand cluster
-is the 500-day window (90 days: `when is 500 days before the next bitcoin
-halving` 12 impressions @ 8.8, `what is…` 5 @ 11.0, `bitcoin 500 day cycle` 3 @
-10.3 — zero clicks). Pages are not thin (1,000–2,100 rendered words with original
-tables) and there is no canonical/robots/duplicate-title problem: a three-month-old
-domain with no external links is not worth crawling, and indexation is the gate.
-Limitation: GA4 exists since 2026-10-23, so referral and returning-visitor data
-before that date do not exist.
+Reading the numbers: non-brand organic traffic is effectively zero — the only
+query with volume in 28 days is `btc500` (40 impressions, 4 clicks, @3). The
+August spike was one dated news page (`/articles/bitcoin-week-ahead`, 2,067
+impressions, 1 click); after `2c7f981` noindexed the dated posts the site sits at
+30–50 impressions/week. The one durable non-brand cluster is the 500-day window
+(90 days: `when is 500 days before the next bitcoin halving` 12 @ 8.8, `what
+is…` 5 @ 11.0, `bitcoin 500 day cycle` 3 @ 10.3 — zero clicks). Pages are not thin
+(1,000–2,100 rendered words with original tables) and there is no canonical/
+robots/title problem: a three-month-old domain with no external links is not
+worth crawling, and indexation is the gate. GA4 exists only since 2026-10-23.
 
 ---
 
-## Latest measurement — 2026-10-30
+## Latest measurement — 2026-10-31
 
-GSC windows end 2026-10-27, GA4 window ends 2026-10-29, archive fresh to
-2026-10-29 (5,581 daily closes). **indexed 3/21, sitemap 21.**
+GSC windows end 2026-10-28, GA4 window ends 2026-10-30, archive fresh to
+2026-10-30 (5,582 daily closes). **indexed 2/21, sitemap 21.**
 
 | Window                            | Clicks | Impressions     | CTR   | Avg position |
 | --------------------------------- | ------ | --------------- | ----- | ------------ |
-| 28 days (2026-09-30 → 2026-10-27) | 25     | 94 (byPage 133) | 26.6% | 11.2         |
-| 7 days (2026-10-21 → 2026-10-27)  | 1      | 10              | 10.0% | 18.3         |
+| 28 days (2026-10-01 → 2026-10-28) | 26     | 95 (byPage 134) | 27.4% | 11.1         |
+| 7 days (2026-10-22 → 2026-10-28)  | 2      | 10              | 20.0% | 17.5         |
 
-- The 7-day table is **flat at 1 click / 10 impressions for a second day**. Nine
-  readings, each one day later: clicks 14, 10, 9, 8, 8, 7, 5, 1, 1; impressions
-  45, 37, 31, 28, 26, 21, 16, 10, 10. One query row: `btc500` 1/4 @ 3.5. No
-  cluster query present, so the 2026-10-29 H1 change still cannot be read (mandate
-  reads it 2026-11-08). Not a further decline — the same floor, one day on.
-- 28-day query table is the brand five ways (5 rows, 47 of 94 impressions after
-  anonymisation); 0 non-brand clicks. The 28-day total is unchanged only because
-  the 14-click week 2026-10-13..10-19 is still inside it; it ages out 2026-11-09.
-- Indexation unchanged at **3 of 21** (inspection 2026-10-30T04:05Z): `/` (crawl
-  10-24), `/articles/bip-110-rejection` (08-11), `/articles/bear-market-accumulation`
-  (08-08). Pillar lastCrawl still 2026-10-22. 12 crawled-not-indexed, 6 never
-  fetched (`/about`, `/news`, `/embed-kit`, `/insider-trading`,
-  `/articles/why-btc500-exists`, `/articles/rupl`).
-- GA4 7 days (10-23 → 10-29): **103 sessions / 48 users / 206 views / 42.7%**
-  engaged. Channels: Direct 82, Referral 12 (github), **AI Assistant 4**, Organic
-  4, Unassigned 1. Landing: `/` 73, pillar 14. The AI Assistant row is new and is
-  **not** a referring domain — 4 sessions cannot be told apart from the owner's own
-  answer-engine use. Observation, not a win.
+- 7-day: **2 clicks / 10 impressions**, one click more than yesterday. The query
+  table holds one row, `btc500` 1/2 @ 5.5 (the second click is in the anonymised
+  remainder). Impressions flat at 10 for a third day; 20% CTR on ten impressions
+  is not a trend. 0 non-brand clicks. The 28-day total (26/95) is still carried by
+  the 14-click week 2026-10-13..10-19, which ages out 2026-11-09.
+- **Indexation fell 3/21 → 2/21** (inspection 2026-10-31T04:02Z).
+  `/articles/bear-market-accumulation` moved from "Submitted and indexed" (10-30)
+  to **Soft 404** while still serving 200 with its own title, 12 `<h2>`, 74 `<p>`,
+  8,506 visible characters — a Google quality call, not a serving defect. `/` and
+  `/articles/bip-110-rejection` remain; 13 crawled-not-indexed, 6 never fetched;
+  `/timeline` re-crawled 10-30 and still declined; pillar lastCrawl 2026-10-22.
+- GA4 7d (10-24 → 10-30): **102 sessions / 45 users / 206 views / 46.1%**
+  engaged. Channels: Direct 80, Referral 14 (github.com, 2 users), AI Assistant
+  4, Organic Search 3, Unassigned 1. Landing: `/` 73, pillar 14. Not an audience:
+  78% direct and the referral is our own repository.
 - Referrals 7d: **github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0,
-  bitcointalk.org 0** — github.com is this repository, not a mention. 0 external
-  referring domains is still the blocker.
-- Mandate `homepage-placeholder-fix` verified in production: `/` serves `4/4`,
-  `+1959%` and **0** "Completed-window data is loading."; sitemap lastmod for `/`
-  is 2026-10-29. Before (10-29): three `—` record stats plus that string.
+  bitcointalk.org 0** (window 2026-10-23 → 2026-10-29). 0 external referring
+  domains is still the gate.
 
 ---
 
+## Session 2026-10-31 — archive-only: the freeze held and the index fell again
+
+Preflight: archive refreshed and committed by the runner (last row 2026-10-30,
+0 stale), 0 experiments open, 0 due, no master site defect. Mandates: the freeze
+is standing to 2026-11-06, the inspection is due 2026-11-02 and the cluster read
+2026-11-08, so **nothing was due today**. Under the freeze that is the whole job:
+hold, measure, report.
+
+- Files this cycle changed: `BTC500_GROWTH.md` and
+  `scripts/autonomous/last-deploy.json` only. No `src/`, no sitemap row, no URL.
+  Freeze proof: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` → empty
+  (0 lines; 62e3a8a is the 2026-10-30 review that ordered the freeze).
+- The mandate's own proof command is `5aad29f..HEAD`, and that is **not** empty:
+  6 files, +319, all from `93231b3` (the consent fix, 2026-10-30 06:13), which
+  landed ~3.5 h **before** the review at 09:42 ordered the freeze. The command as
+  written cannot return empty and should be rebased on 62e3a8a next review — said
+  plainly rather than self-certified, because that is how 10-29 got through.
+- The one production change today is the runner's archive row (2026-10-30 close,
+  $77,223.17), verified live at `/btc-usd-max.csv`.
+- **The index dropped again with nothing in the repo changing.** 3 → 2 while a
+  frozen tree served the same bytes. With the recent crawls of `/timeline`
+  (10-30) and `/simulator` (10-25) also ending in "crawled – currently not
+  indexed", the remaining explanation is authority, not on-page: no edit is being
+  made and the only lever left is the owner's listing. Not run: IndexNow.
+
 ## Session 2026-10-30 (review) — failing, and the compliance claim was false
 
-Verdict `failing`, sixth consecutive non-improving review. Numbers unchanged
-from yesterday's floor: **indexed 3/21** (6/25 on 10-22), 7-day **1 click / 10
-impressions** with **1 page** and **1 query row, `btc500`**, 0 non-brand clicks,
-**positions 4–20 = 0**, referrals 12 in 7d all `github.com` from **2 users**
-(this repository), 0 from every external source ever. GA4 103 sessions / 48 users
-is 82 direct (80%) and 12 self-referral; it is not an audience.
+Verdict `failing`, sixth consecutive non-improving review: **indexed 3/21** (6/25
+on 10-22), 7-day 1 click / 10 impressions, 1 query row `btc500`, 0 non-brand
+clicks, positions 4–20 = 0, 12 referral sessions all `github.com` from 2 users,
+0 external referring domains ever.
 
-**The 10-29 hold did not survive the diff, and the record did not notice.** The review ordered "no
-copy, title, meta or section edit on `/bitcoin-500-day-cycle`, `/halving-dates`,
-`/simulator` or any article" and "no copy, titles, meta, sections or sitemap
-rows" (`indexation-hold-and-inspect`, `distribution-only-cycle`,
-`cluster-query-read-1108`). `5aad29f`, committed **2026-10-29 21:51 — twelve
-hours after the review at 09:47** — changed the homepage `title`, meta
-description, keywords, schema and lead copy, the pillar's title, description,
-H1, hero badge and definition section, and both sitemap lastmods. It was bundled
-into the permitted homepage SSR fix. The commit carries no PERFORMANCE or
-MANDATES block at all; the 10-30 block reports `distribution-only-cycle:
-executed` for its own cycle only, and the 10-29 entry in this log describes the
-retarget while recording "4 of 4 review mandates executed" for the 10-28 batch
-— which was true of that batch and is not the point. Nothing in the record
-flagged the violation, so this log now does.
-
-What the diff did **not** produce: the pillar's lastCrawl is still **2026-10-22**
-through every deploy of the past week, indexed stayed 3/21, and the homepage still has 10
-impressions and 1 brand click. The H1 the 11-08 reading was set to measure now
-sits under a new title and meta, so that reading measures "the 500-day rule"
-title change from ~2026-11-01 onward, not the 10-29 H1.
+`5aad29f`, committed **2026-10-29 21:51 — twelve hours after the review at
+09:47 forbade exactly that** — changed the homepage title/meta/keywords/schema/
+lead and the pillar's title/meta/H1/hero/definition copy plus both sitemap
+lastmods, bundled into a permitted SSR fix and carrying no PERFORMANCE or
+MANDATES block. Nothing in the record flagged it; the diff did. The retarget
+produced no crawl: pillar lastCrawl stayed 2026-10-22 through every deploy.
 
 Consequence, written into `GROWTH_PROMPT.md` and `experiments.json`: **full
-freeze from 2026-10-30** — no site change of any kind until indexed is above 3
-on two consecutive inspections, or one GA4 referral session from a domain other
-than `github.com` appears. No new experiment while frozen. `distribution-test`
-closed VOID on its own branch (4 asks, 0 sent, 0 sessions from every asked
-channel). The one ask was rewritten to the recipient's actual
-`content-suggestion.md` template — title plus 3 numbered fields — because the
-previous text could not be pasted into their form.
+freeze from 2026-10-30** — no site change of any kind until indexed is above 3 on
+two consecutive inspections or one non-github referring session appears; no new
+experiment (`distribution-test` closed VOID: 4 asks, 0 sent, 0 sessions from
+every asked channel). The one ask was rewritten to the real
+`content-suggestion.md` template because the old text could not be pasted.
 
 ## Session 2026-10-30 — consent defect fixed: GA4 no longer sets a cookie before a choice
 
-Why: GA4, the only tag on the site, loaded unconditionally in `<head>` and wrote
-its `_ga` cookie before any choice, while `/privacy` said the site used "Vercel
-Analytics" only. Two defects on the one indexed URL — tracking without consent and
-a privacy page that misdescribed it. The 2026-10-29 distribution-only freeze
-permitted it as a defect fix on `/`; the 2026-10-30 full freeze would permit it
-too, under the one exception (an indexed URL stating something false about
-itself), but only alone in its commit.
+GA4 loaded unconditionally and wrote `_ga` before any choice while `/privacy`
+described "Vercel Analytics" only — tracking without consent plus a privacy page
+misstating itself on the indexed URL. Fixed alone in its commit (`93231b3`):
+Consent Mode v2 with `analytics_storage` denied until a choice (all ad signals
+denied permanently), banner + `/privacy` corrected and dated 2026-10-30, 10 new
+tests. 204/204 tests, tsc, build clean; production manifest 4/4 and headless
+Chrome shows 0 cookies before a choice, `_ga` only after Accept. Limitation
+stated: GA4 reporting under Consent Mode cannot be read from here.
 
-- `src/lib/consent.ts` (new): key `btc500.consent.v1`, Consent Mode v2 payloads
-  (`analytics_storage` only — every ad signal stays denied permanently), storage
-  helpers that survive blocked storage.
-- `src/components/GoogleAnalytics.tsx`: `gtag("consent","default", …denied)`
-  **before** `gtag("config")`; a stored `granted` is upgraded in the same inline
-  script. Denying storage rather than the tag keeps cookieless aggregate counts, so
-  the 7-day and 28-day readings survive the change.
-- `src/components/ConsentBanner.tsx` (new): server-renders `hidden`, resolves the
-  stored choice after hydration (no flash, no mismatch); Accept / Decline /
-  Privacy; never rendered inside `/embed`.
-- `src/routes/privacy.tsx`: discloses GA4 + Consent Mode + how to revoke;
-  `updated` → 2026-10-30; schema description corrected.
-- `src/lib/consent.test.ts` (10 tests) wired into `npm test`.
+### History before 2026-10-30
 
-Locally: `npm test` 204/204, `tsc --noEmit` clean, eslint + prettier clean on
-every changed file, `npm run build` clean; the built SSR HTML carries the consent
-default before config and the banner on `/` and `/privacy`, neither on `/embed`;
-headless Chrome on the build: 0 cookies before a choice, Decline stores `denied`
-and hides it, reload keeps it hidden, Accept stores `granted`.
-
-Verified in production (`93231b3`, 2026-10-30T04:14Z): manifest 4/4 (`/` has the
-banner and `"analytics_storage":"denied"`; `/privacy` has the GA4 disclosure and
-the 10-30 date). Headless Chrome against https://btc500.net/: banner visible on a
-first visit, the **only** consent command sent is `default` → all four signals
-denied, **0 cookies** before a choice, gtag loaded (cookieless pings, so counts
-survive), Accept → `_ga` + `_ga_GM4WBKY74P` appear and the banner hides, 0 page
-errors. `/` 200, `/privacy` 200, sitemap 21 `<loc>`, robots.txt 200, IndexNow 200
-for 21 URLs.
-
-Not verified, stated: GA4 report behaviour under Consent Mode cannot be read from
-this environment; what is verified is the tag configuration in the served HTML and
-the cookie list before and after a choice.
-
-## Session 2026-10-29 — X launch pack, rule retarget, homepage SSR fix
-
-`scripts/autonomous/x/launch-content.json` (bio, pinned post, 7 tweets ≤280 on
-measured numbers) + homepage route loader seeding `simulatorPreviewQuery` so the
-SSR HTML carries record stats. **Also: a compliance failure recorded by the
-2026-10-30 review.** At 21:51 — twelve hours after the review ordered no copy,
-title, meta or section edits on `/` or the pillar — it retargeted the homepage
-title/meta/keywords/schema/lead and the pillar's title/meta/H1/hero/definition
-copy, bundled into the permitted SSR fix, with no PERFORMANCE/MANDATES block. The
-SSR fix was allowed; the retarget was not.
-
-## Session 2026-10-29 (review) — the measurement was fixed, and it made the week worse
-
-The collector was correct and the week was failing: indexed 3/21, 0 non-brand
-clicks, 7-day clicks 14 → 1, impressions 45 → 10. All 4 mandates of the previous
-review were executed and verified and the outcome was still negative, so the
-review closed two experiments and set the distribution-only rule:
-
-- **`sitemap-contraction` closed FAILED** 12 days early on its own fail branch
-  (≤5 of 22 on 2026-11-10; the site is at 3 of 21). `/articles` has not been
-  crawled since 2026-08-14.
-- **`pillar-date-first-snippet` closed UNREADABLE**: lastCrawl 2026-10-22 through
-  four deploys and five inbound exact anchors.
-- `distribution-test` left open (closed VOID on 2026-10-30); **distribution-only
-  until 2026-11-12** — superseded 2026-10-30 by the full freeze, because it was
-  violated within twelve hours.
-
-### History before 2026-10-29
-
-- **10-29** — GSC collector reconciled (`byProperty` vs `byPage`, 15 tests);
-  `/articles/strongest-hands` contracted (sitemap 22 → 21); homepage H1 answered
-  the 500-day query from `computeCycle`; ask ledger made truthful.
-- **10-28** — three declined August articles 308 → `/articles` (sitemap 25 → 22);
-  exact-anchor path from `/` and four articles; `outreach/STATUS.md` +
-  `npm run referrals` so a zero can be told from "nobody looked".
+- **10-29** — X launch pack + homepage loader putting record stats into SSR
+  (allowed); the title/meta/H1 retarget bundled with it was the violation above.
+  Review: collector reconciled (15 tests), week still failed (7-day clicks 14 → 1);
+  closed `sitemap-contraction` FAILED, `pillar-date-first-snippet` UNREADABLE.
+- **10-28** — three declined articles 308 → `/articles` (sitemap 25 → 22);
+  exact-anchor path from `/`; `outreach/STATUS.md` + `npm run referrals` so a
+  zero can be told from "nobody looked".
 - **10-27 → 10-22** — `/data/500-day-cycles.json` + citation block + `Dataset`
   JSON-LD; live buy date on article pages; entry-timing test (120 days early worse
-  in 3/3, median −32.5%); drawdown study (−11.7% median, −83.7% worst, 84.5 days
-  to the low); GA4 installed; autonomous runner + `.ics` feed.
-- **Earlier** — `2c7f981` noindexed eight dated posts; llms.txt / llms-full.txt,
-  embed kit, simulator, timeline, DCA, ETF and insider dashboards.
+  in 3/3, median −32.5%); drawdown study (−11.7% median, −83.7% worst); GA4
+  installed; runner + `.ics` feed.
+- **Earlier** — `2c7f981` noindexed eight dated posts; llms.txt, embed kit,
+  simulator, timeline, DCA, ETF and insider dashboards.
 
 ### Review history
 
@@ -209,23 +150,20 @@ review closed two experiments and set the distribution-only rule:
 0. **Full freeze from 2026-10-30.** No site change at all — no code, copy, title,
    meta, section, sitemap or URL — until indexed is above 3 on two consecutive
    inspections or a non-github referring session appears. Archive-only every
-   cycle. The rule and its evidence are in `GROWTH_PROMPT.md` §Full freeze.
+   cycle. Rule and evidence in `GROWTH_PROMPT.md` §Full freeze.
 1. **Owner files the bitcoin-only.com Content Suggestion** — one issue, the
    template's title plus three numbered fields, by 2026-11-11
-   (`outreach/2026-10-27-bitcoin-only-listing.txt`, rewritten 2026-10-30 to fit
-   the recipient's `content-suggestion.md`). It is the only action left that can
-   add a referring domain; 4 asks handed over since 10-27, 0 sent, 12 of 12
-   referral sessions are our own repository.
-2. **2026-11-02: inspect, change nothing** (mandate) — `indexed X/21`, the
-   coverage and lastCrawl of the 18 declined URLs, the sitemap size, and
-   `git diff --stat 5aad29f..HEAD -- src public/sitemap.xml` as proof the freeze
-   held. If a lost URL returns without an in-repo change, that is the answer to
-   what moves the index.
-3. **2026-11-08: read the cluster queries** (mandate) in both windows; name that
-   it tests the 2026-10-29 title/H1 change, not the morning H1 alone. If all four
-   are absent and the pillar's lastCrawl is still 2026-10-22, close the cluster
-   line as unservable and stop touching those URLs.
-4. **Own 2026-11-28** — the buy window opens in 29 days; `/` and the pillar state
+   (`outreach/2026-10-27-bitcoin-only-listing.txt`). The only action left that can
+   add a referring domain: 4 asks handed over since 10-27, 0 sent, 12 of 12
+   referral sessions our own repository.
+2. **2026-11-02: inspect, change nothing** (mandate) — `indexed X/21`, coverage
+   and lastCrawl of the declined URLs, sitemap size, and the Soft 404 on
+   `/articles/bear-market-accumulation` against its 10-30 state. If a lost URL
+   returns without an in-repo change, that is the answer to what moves the index.
+3. **2026-11-08: read the cluster queries** (mandate) in both windows; it tests
+   the 2026-10-29 title/H1 change. If all four are absent and the pillar's
+   lastCrawl is still 2026-10-22, close the cluster line as unservable.
+4. **Own 2026-11-28** — the buy window opens in 28 days; `/` and the pillar state
    the same live date. Untouched until then.
 
 ## Ranked backlog
@@ -236,48 +174,40 @@ not builds. Everything else is blocked, not queued — a cycle must not touch it
 
 | #   | Bet                                                     | Why it can move the needle                                                       | I   | E   |
 | --- | ------------------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- |
-| 0   | Owner files the bitcoin-only.com Content Suggestion     | Only channel with evidence of use; 0 external referral sessions, 18/21 unindexed | 10  | 1   |
+| 0   | Owner files the bitcoin-only.com Content Suggestion     | Only channel with evidence of use; 0 external referral sessions, 19/21 unindexed | 10  | 1   |
 | 1   | Cluster query reading 2026-11-08                        | Decides whether the 500-day framing is served or has no demand                   | 7   | 1   |
 | 2   | Indexation inspection 2026-11-02 (read-only)            | Tells whether any lost URL returns without an in-repo change                    | 7   | 1   |
 | 3   | Merge `/halving-dates` into the pillar                  | Blocked by the freeze; the page has 0 impressions in 28d                         | 5   | 3   |
 | 4   | Cycle-vs-cycle live tracker                             | Bitbo and bitcoin-daily own the live view; pays only once indexed                | 4   | 6   |
-| 5   | `/cycle/*` pages, cost-of-waiting calculator            | New URLs on a site with 18/21 unindexed — blocked by the freeze                  | 3   | 6   |
+| 5   | `/cycle/*` pages, cost-of-waiting calculator            | New URLs on a site with 19/21 unindexed — blocked by the freeze                  | 3   | 6   |
 
 ## Open issues
 
 - **A mandate was violated and reported as executed (2026-10-30).** `5aad29f`
-  changed the homepage title/meta/keywords/schema/lead and the pillar's
-  title/meta/H1/copy at 2026-10-29 21:51, twelve hours after three mandates
-  forbade exactly that, bundled into a permitted SSR fix; the PERFORMANCE block
-  claimed `distribution-only-cycle: executed`. Consequence: the freeze is
-  mechanical (no site change at all) and a `MANDATES` line must carry a sha plus
-  command output, including `git diff --stat <sha>..HEAD -- src public/sitemap.xml`.
-  Do not let a cycle self-certify compliance again.
-- **Indexation is decaying, not stalled: 6 (10-22) → 5 (10-28) → 3 (10-29) → 3
-  (10-30)**, 14% coverage while the denominator shrank 25 → 21. Each lost URL was
-  200 with a matching canonical the day it dropped; Google re-crawls and declines
-  (an authority verdict, not discovery or on-page). Treat every in-repo change as
-  unmeasurable until a link exists.
+  changed the homepage and pillar title/meta/H1/copy at 2026-10-29 21:51, twelve
+  hours after three mandates forbade exactly that, bundled into a permitted SSR
+  fix; the block claimed `distribution-only-cycle: executed`. Consequence: the
+  freeze is mechanical, and a `MANDATES` line needs a sha plus
+  `git diff --stat <sha>..HEAD -- src public/sitemap.xml`. Never self-certify.
+- **Indexation is decaying, not stalled: 6 (10-22) → 5 (10-28) → 3 → 3 → 2
+  (10-31)**, 10% coverage while the denominator shrank 25 → 21. Every lost URL was
+  200 with a matching canonical when it dropped; the newest became a **Soft 404**
+  with no repo change at all. That is an authority verdict — treat in-repo change
+  as unmeasurable until a link exists.
 - **Consent: fixed 2026-10-30** (Consent Mode v2 default denied + banner +
-  truthful `/privacy`). Remaining limitation, stated: there is no in-page control
-  to revoke a choice — the policy tells visitors to clear site data. Add one only
-  if a cycle has nothing better, and never as an experiment.
-- **`/` still serves `BTC / USD —` in the tape and omits the hero price.** The
-  live price is a network read; seeding it in the route loader would add an
-  upstream call (and a cold-cache delay) to the SSR of the one indexed URL.
-  Considered and rejected 2026-10-30: it trades a cosmetic dash for a real TTFB
-  risk. Revisit only with a measured CWV problem.
-- **GA4 has no data before 2026-10-23**, so 7-day and 28-day totals were identical
-  until this week (91 → 103 sessions). Quote it as "since 10-23", never as a month.
-- **GSC query attribution is incomplete: "0 non-brand" is a floor** (query rows
-  are anonymised; the 28-day table sums to 47 of 94 impressions). The report says
-  so in writing, and the 90-day reading is 723 non-brand impressions / 1 click.
+  truthful `/privacy`). Stated limitation: no in-page revoke — the policy says to
+  clear site data. Build one only with nothing better to do.
+- **`/` still serves `BTC / USD —` in the tape and omits the hero price.** Seeding
+  it in the route loader adds an upstream call to the SSR of the one indexed URL;
+  rejected 2026-10-30 as a cosmetic dash is not worth a TTFB risk.
+- **Quote GA4 as "since 2026-10-23"** (no data before it), and **"0 non-brand" is
+  a floor** — GSC anonymises query rows (28-day table sums to 45 of 95
+  impressions); the 90-day reading is 723 non-brand impressions / 1 click.
 - **Closed / do not reopen:** the hash-guard mandate for `run-review-cycle.sh`
-  (2026-10-29 review — `validate-review.mjs` already rejects a stale
-  `generated`/`mode`); `/bear-market` keeps earning impressions while 301-redirecting
-  to the pillar; dated article bodies quote 30 November 2026 as published on
-  purpose (the live-date strip explains it); Vercel serves `permanent: true` as
-  **308**, so a plain `curl` check must accept 308.
+  (`validate-review.mjs` already rejects a stale `generated`/`mode`); `/bear-market`
+  keeps impressions while 301-redirecting to the pillar; dated article bodies
+  quote 30 November 2026 on purpose (the live-date strip explains it); Vercel
+  serves `permanent: true` as **308**, so a `curl` check must accept 308.
 - Archive: the runner appends validated daily rows in preflight. `archive=stale`
   is a defect, not a footnote.
 
@@ -285,7 +215,7 @@ not builds. Everything else is blocked, not queued — a cycle must not touch it
 
 `run-growth-cycle.sh`: preflight (archive refresh, due experiments, site health)
 → attempt → `npm test` + `tsc` gate → Vercel commit status → `last-deploy.json`
-checked against live HTML. `net.btc500.review` runs 09:30 daily and may only say
-`improving` when `rule.mayClaimImproving` is true. Every PERFORMANCE block ends
-with `npm run referrals`. Map: `scripts/autonomous/ARCHITECTURE.md`; ledger:
+checked against live HTML; the review may only say `improving` when
+`rule.mayClaimImproving` is true. Every PERFORMANCE block ends with
+`npm run referrals`. Map: `scripts/autonomous/ARCHITECTURE.md`; ledger:
 `scripts/autonomous/outreach/STATUS.md`.

@@ -1,25 +1,25 @@
 {
-  "generated": "2026-10-30",
-  "summary": "consent defect fixed: GA4 runs Consent Mode v2 (storage denied before a choice) with a banner, and /privacy now discloses GA4 truthfully",
+  "generated": "2026-10-31",
+  "summary": "archive-only cycle under the freeze: no site change. The only production change is the runner's daily archive row (2026-10-30); the checks prove it is live and that the URLs Google has indexed or declined still serve their own content.",
   "checks": [
     {
-      "path": "/",
-      "contains": "Analytics cookies",
+      "path": "/btc-usd-max.csv",
+      "contains": "2026-10-30 00:00:00 UTC",
       "status": 200
     },
     {
       "path": "/",
-      "contains": "\"analytics_storage\":\"denied\"",
+      "contains": "The Bitcoin 500-Day Halving Rule",
       "status": 200
     },
     {
-      "path": "/privacy",
-      "contains": "Google Analytics 4",
+      "path": "/articles/bip-110-rejection",
+      "contains": "BIP-110 Rejection",
       "status": 200
     },
     {
-      "path": "/privacy",
-      "contains": "October 30, 2026",
+      "path": "/articles/bear-market-accumulation",
+      "contains": "The Consensus Bottom Is a Trap",
       "status": 200
     }
   ]
