@@ -319,6 +319,24 @@ Requirements the runner validates (a violation fails the run):
 - At least one target with `metric`, `current`, `target`, `by`.
 - Third consecutive non-improving review → at least one `self_changes[]`.
 
+**Self-check before you commit — mandatory since 2026-11-01.** The runner's
+validator is the only thing that decides whether this run happened at all, and
+until now the agent never ran it: the 2026-10-26 and 2026-10-31 runs both exited
+leaving the previous day's file in place and were recorded `verdict-invalid`, so
+the site had no verdict and preflight carried a two-day-old one. Before the
+commit, run:
+
+```
+node scripts/autonomous/validate-review.mjs --today "$(date +%F)" --mode <daily|deep>
+```
+
+It must print `PASS`. If it prints `FAIL`, fix the file and re-run; do not commit
+a file that fails, and never edit yesterday's `generated` — write the file from
+scratch, with `generated` taken from `date +%F`, not from the file you are
+replacing. Paste the `PASS` line into the commit body. If the run cannot finish,
+write nothing and say so in the log: a stale file is worse than an absent one,
+because the next cycle reads it as current.
+
 Commit with:
 
 ```

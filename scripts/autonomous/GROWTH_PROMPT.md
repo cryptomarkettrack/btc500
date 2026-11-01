@@ -169,8 +169,26 @@ PERFORMANCE must open with these three lines, every cycle:
 ```
 - indexed X/21, sitemap N (inspection <timestamp>)
 - referrals 7d: <full line>
-- live ask: <id> handed over <date>, unsent <n>d, due <date>
+- live ask: <id> — channel-verified: <what the channel itself says>, due <date>
 ```
+
+**The live-ask line must be verified against the channel, not the ledger.** This
+rule exists because the ledger was wrong for four days: `outreach/STATUS.md`
+said `sent: no` from 2026-10-27 to 2026-10-30 for a GitHub issue that had been
+open since 2026-10-27T05:34:46Z, and the 2026-10-30 review built its
+`ask-effect` verdict on that error. Before printing the line, ask the channel:
+
+- GitHub issue: `curl -s https://api.github.com/repos/<owner>/<repo>/issues/<n>`
+  → `state`, `created_at`, `comments`.
+- A listing page: `curl -s <page> | grep -c <our-domain>` — an open issue is not
+  a listing until the page contains the link.
+- X / community: the channel's own URL, or a GA4 referral session in the last 7
+  days (`npm run referrals`).
+
+Print what the channel says and the date it said it. If the ledger and the
+channel disagree, the channel wins and the ledger gets corrected in the same
+commit, with the evidence. Never report a send as pending or as done on the
+ledger's word alone — a status cell nobody checks is not evidence.
 
 Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
 2026-10-30, 0 failures, 4 of 4 previous mandates executed, produced indexed
@@ -215,10 +233,17 @@ A mandate that forbids edits must be proven with the diff, not asserted:
 git diff --stat <review-sha>..HEAD -- src public/sitemap.xml
 ```
 
-An empty result is the proof. A non-empty result means the cycle reports the
-mandate as **violated**, not executed. Claiming "executed" over a diff that
-disagrees is the one failure that makes every other number in the report
-untrustworthy, and the next review will record it as such.
+`<review-sha>` is the commit of the **review that ordered the freeze** (62e3a8a
+for the 2026-10-30 order) — never an older sha that happens to be convenient.
+The 2026-10-30 mandate named `5aad29f..HEAD`, which contains `93231b3` (the
+consent fix, committed 2026-10-30 06:13, three and a half hours *before* the
+09:42 freeze order) and can therefore never be empty. Two cycles reported that
+contradiction instead of a false "executed", which is the correct behaviour; the
+baseline is fixed from 2026-11-01. An empty result is the proof. A non-empty
+result means the cycle reports the mandate as **violated**, not executed.
+Claiming "executed" over a diff that disagrees is the one failure that makes
+every other number in the report untrustworthy, and the next review will record
+it as such.
 
 ### Experiments discipline
 

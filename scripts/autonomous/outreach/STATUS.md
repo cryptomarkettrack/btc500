@@ -25,6 +25,7 @@ zero.
 | `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion") | 2026-10-27  | 2026-10-29 | no   | —         | 1 GA4 referral session from bitcointalk.org in 7d     | unmeasured |
 | `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | unmeasured |
 | `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d   | sent / awaiting referral |
+| `email-coindesk-500day-followup` | email                | CoinDesk — Olivier Acuna (wrote the 2026-08-05 500-day-rule piece) | 2026-11-01  | 2026-11-03 | no   | —         | 1 GA4 referral session from coindesk.com in 14d       | unmeasured |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -73,6 +74,20 @@ owner's own wording, not the template text in
 `2026-10-27-bitcoin-only-listing.txt`, and the title does not use the
 `Content Suggestion: …` form. It is open and correctly labelled, so it is not a
 defect — but do not re-prepare or re-send this ask; watch the referral column.
+
+**2026-11-01 (deep review): two asks issued, and the github row is put on notice.**
+(a) `email-coindesk-500day-followup` — email Olivier Acuna at CoinDesk (author of
+the 2026-08-05 piece on the 500-day rule; the address is in the article's author
+markup) with the per-window drawdown number. Verbatim subject and body in
+`review-latest.json` → `owner_asks[0]` and `<state>/owner-asks.txt`; due
+2026-11-03. (b) `x-cycle-window-post-restated` is restated narrower, due
+2026-11-03 — one post from @btc500halving, no thread. The `github-bitcoin-only-listing`
+row stays `sent` but is on notice: the issue is still open with 0 comments and
+`https://bitcoin-only.com/explorers-dashboards` still contains no `btc500`
+(verified today, 200 / 415,137 bytes). If it is still unmerged on 2026-11-10,
+mark the row `failed` and stop reporting it as live. If the X post is not sent by
+2026-11-03, mark that row `lapsed` and the next review stops asking for it — a
+channel nobody uses is not a strategy.
 
 Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
 and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
