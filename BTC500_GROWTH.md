@@ -107,6 +107,10 @@ inspection 11-02, cluster read 11-08 → **nothing due today**. Archive-only.
 - No indexed-URL defect: `/` and `/articles/bip-110-rejection` 200, sitemap 21,
   robots open, `/data/500-day-cycles.json` generated today. The archive row for
   10-31 was committed but unpushed, so production was a day behind — pushed now.
+- Deploy verified in production at `1b61f0b`: `/btc-usd-max.csv` served
+  2026-10-30 until **60 s** after the push, then served the 2026-10-31 row
+  ($77,474.08); all four manifest checks 200 with their strings present;
+  `/sitemap.xml` and `/robots.txt` 200. IndexNow not run (no URL change).
 
 ## Session 2026-10-31 — archive-only: the freeze held and the index fell again
 
