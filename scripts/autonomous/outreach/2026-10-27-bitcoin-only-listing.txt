@@ -16,7 +16,12 @@ Rewritten : 2026-10-30 — matched to their actual template file, which the earl
             reason 4 asks went unsent; do not change the text now.
 Number quoted (one): four completed windows
 Link (one): https://btc500.net/bitcoin-500-day-cycle
-Status    : not sent
+Status    : sent — issue #1009, created 2026-10-27T05:34:46Z by cryptomarkettrack
+            (verified against the GitHub API on 2026-11-01; an earlier note in
+            this file said 2026-10-31, which was the date the record was
+            corrected, not the date it was sent). Open, labelled
+            "content suggestion". Body is the owner's own wording, not the
+            template text above — do not re-prepare or re-send.
 
 WHY THEM
 bitcoin-only.com lists Bitcoin-only dashboards and data tools. Their listing

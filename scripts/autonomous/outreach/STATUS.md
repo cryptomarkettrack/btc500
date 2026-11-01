@@ -24,7 +24,7 @@ zero.
 | `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap   | 2026-10-27  | 2026-10-28 | no   | —         | 1 GA4 referral session from bitcoinmagazine.com in 7d | lapsed     |
 | `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion") | 2026-10-27  | 2026-10-29 | no   | —         | 1 GA4 referral session from bitcointalk.org in 7d     | unmeasured |
 | `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | unmeasured |
-| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-28  | 2026-11-11 | no   | —         | 1 GA4 referral session from bitcoin-only.com in 14d   | unmeasured |
+| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d   | sent / awaiting referral |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -52,6 +52,28 @@ next review reads the `sent` column, not the prepared file. If `sent` is still
 `no` on 2026-11-11, no review can move this site and the next one should say so
 in one line and stop issuing asks.
 
+**2026-10-31:** the GitHub ask was opened — issue
+[#1009](https://github.com/bitcoin-only/bitcoin-only/issues/1009) *"Add BTC500 —
+Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)"* is **Open**
+(labelled `content suggestion`), so the send happened. The row was set to `sent`
+= yes and the ask window opened.
+
+**2026-11-01 (verified, corrects the row above):** `GET
+https://api.github.com/repos/bitcoin-only/bitcoin-only/issues/1009` returns
+`created_at: 2026-10-27T05:34:46Z`, `author: cryptomarkettrack`, `state: open`,
+`labels: [content suggestion]`. **The ask has been live since 2026-10-27, not
+2026-10-31** — the 10-31 note recorded when the ledger was corrected, and the
+2026-10-30 review's "0 of 4 asks sent" was wrong by one live send for four days.
+Date-sent cell and the listing file now carry the API date.
+What this changes for the 2026-11-11 target: the ask's exposure window is
+**2026-10-27 → 2026-11-10**, and five of those fifteen days have produced
+**0 sessions from bitcoin-only.com** (`npm run referrals`, window 2026-10-25 →
+2026-10-31: github.com 15, every other tracked source 0). The issue body is the
+owner's own wording, not the template text in
+`2026-10-27-bitcoin-only-listing.txt`, and the title does not use the
+`Content Suggestion: …` form. It is open and correctly labelled, so it is not a
+defect — but do not re-prepare or re-send this ask; watch the referral column.
+
 Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
 and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
 `2026-10-27-bitcoin-only-listing.txt`. Do not retype it.
@@ -77,6 +99,7 @@ send. One send per channel per week; if both get sent, still one referral row.
 | 2026-10-28 | github.com 7, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-21 → 2026-10-27 |
 | 2026-10-29 | github.com 9, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-22 → 2026-10-28 |
 | 2026-10-30 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-23 → 2026-10-29 |
+| 2026-11-01 | github.com 15, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-25 → 2026-10-31 |
 
 `github.com` is the repository and the owner's own browser sessions — it is not
 a mention. The ask-effect target is 1 session from any of the other four.

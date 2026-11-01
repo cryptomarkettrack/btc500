@@ -1,10 +1,10 @@
 {
-  "generated": "2026-10-31",
-  "summary": "archive-only cycle under the freeze: no site change. The only production change is the runner's daily archive row (2026-10-30); the checks prove it is live and that the URLs Google has indexed or declined still serve their own content.",
+  "generated": "2026-11-01",
+  "summary": "archive-only cycle under the freeze: no site change. The only production change is the runner's daily archive row (2026-10-31), which was one push behind; the checks prove it is live and that the URLs Google has indexed or declined still serve their own content.",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
-      "contains": "2026-10-30 00:00:00 UTC",
+      "contains": "2026-10-31 00:00:00 UTC,77474.07610954811",
       "status": 200
     },
     {
@@ -18,8 +18,8 @@
       "status": 200
     },
     {
-      "path": "/articles/bear-market-accumulation",
-      "contains": "The Consensus Bottom Is a Trap",
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "500-day",
       "status": 200
     }
   ]
