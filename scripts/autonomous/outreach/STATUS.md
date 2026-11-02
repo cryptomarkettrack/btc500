@@ -115,6 +115,22 @@ send. One send per channel per week; if both get sent, still one referral row.
 | 2026-10-29 | github.com 9, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-22 → 2026-10-28 |
 | 2026-10-30 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-23 → 2026-10-29 |
 | 2026-11-01 | github.com 15, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-25 → 2026-10-31 |
+| 2026-11-02 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-26 → 2026-11-01 |
+
+**2026-11-02 (channel-verified, the daily mandate):** `GET https://api.github.com/
+repos/bitcoin-only/bitcoin-only/issues/1009` → `state: open`, `comments: 0`,
+`created_at` and `updated_at` both **2026-10-27T05:34:46Z** (no activity in six
+days), label `content suggestion`. `curl https://bitcoin-only.com/explorers-dashboards`
+→ 200 / 415,145 bytes, `grep -c btc500` → **0**. The issue is live and unmerged
+and the listing still does not carry us, so the row stays `sent` and the
+ask-effect clock runs to 2026-11-10, when it is closed as tested-and-failed if
+unchanged. Nothing was re-prepared or re-sent.
+
+Tooling note (2026-11-02): `referral-line.mjs` prints the newest `ga4-*.json` by
+filename, so a `--days=28` report generated after the `--days=7` one makes it
+label a 28-day count as `referrals 7d` (15 github sessions instead of 12).
+Reproduced today; the workaround is to generate the 7-day report last. Fixed in
+the first cycle after the freeze lifts.
 
 `github.com` is the repository and the owner's own browser sessions — it is not
 a mention. The ask-effect target is 1 session from any of the other four.
