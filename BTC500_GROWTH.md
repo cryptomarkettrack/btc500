@@ -55,6 +55,37 @@ GSC windows end 2026-10-30 (3-day lag), GA4 ends 2026-11-01, archive fresh to
 
 ---
 
+## Session 2026-11-02 (results review) — failing: the ask routes were wrong, not just unsent
+
+Ninth consecutive non-improving review. **failing**: indexed regressed
+6/25 (10-22) → 2/21 (11-02), 0 non-brand clicks in 12 readings, 0 external
+referring domains, 6 asks handed over since 10-27 and **1 sent**. 8 runs / 8
+shipped / 0 failures in the week, 3 of 3 due mandates executed (commit `2f205f1`),
+freeze held for a fifth cycle — and the gate moved backwards anyway.
+
+Two findings this review adds:
+
+- **Two of the five asks were unexecutable as written.** The 2026-11-01 CoinDesk
+  ask named `ollie.acuna@coindesk.com` and claimed the address was in the
+  article's author markup; the article
+  (`/markets/2026/08/05/why-bitcoin-s-500-day-rule-faces-its-biggest-test-yet`)
+  publishes no author address and returns 429 to a script. The X ask names
+  `@btc500halving`; a web search returns no such account and six days produced no
+  post. An unexecutable ask and an ignored ask look identical in the ledger, which
+  is how the same ask gets restated four times. Rule added to GROWTH_REVIEW.md §10
+  and GROWTH_PROMPT.md.
+- **The one "green" outcome is a self-referral.** The runner marks
+  `referral-sessions` green at 12; all 12 are `github.com` from 2 users — this
+  repository and the owner's browser. `externalReferringDomains` is still 0.
+
+Replacement asks, both checkable: `contact@coindesk.com` (the address CoinDesk
+publishes) for Olivier Acuna, due 2026-11-05; and one PR to
+`igorbarinov/awesome-bitcoin` → "Additional Resources", due 2026-11-06. X is
+retired until an account is recorded. Send count after this review: **6 handed
+over, 1 sent, 0 non-github referral sessions.** Mandates: cluster read 11-08,
+indexation decision 11-10, referral-line defect fix 11-05, ask verification 11-03,
+runner guard (owner) 11-08.
+
 ## Session 2026-11-02 — archive-only: three read-only mandates, no site change
 
 Preflight: archive refreshed and committed by the runner (last row 2026-11-01, 0
@@ -117,29 +148,21 @@ Files changed: this file and `scripts/autonomous/last-deploy.json` only. No
 Eighth consecutive non-improving review (streak 8), **failing**: 2/21 indexed, 1
 click / 9 impressions in 7 days, **0 non-brand clicks in 11 readings**, 100 GA4
 sessions (76 direct, 15 github.com from 2 users), **0 external referring domains**.
-
-Benchmark, fetched: CoinDesk 2026-08-05 "A historically reliable bitcoin trading
-rule says a major buy signal is coming" (Olivier Acuna); Yahoo Finance 2026-06-24
-"…Flashes Next Buy Signal in November 2026"; bitbo.io owns `/halving/` and a
-500-day chart page; bitcoin-only.com still has no `btc500`. Not a rendering
-defect: all seven checked URLs 200, the declined pillar serves 3,004 raw-HTML
-words vs 2,059 on the indexed homepage — authority, not markup.
-
-Issued 5 mandates (11-02 inspection, 11-02 Soft-404 diagnosis, 11-08 cluster read,
-daily channel-verified ask line with a close-by-11-10 rule, owner mandate for the
-review runner) and 2 asks by 2026-11-03 — CoinDesk email, restated X post. Proof
-baseline corrected from `5aad29f..HEAD` (unsatisfiable) to the review sha
-`62e3a8a`. `indexed` target lowered to 3/21 by 11-10; 2 or fewer closes the line.
+Benchmark: CoinDesk 2026-08-05 (Olivier Acuna), Yahoo Finance 2026-06-24 — both
+ran the 500-day rule with our date. All seven checked URLs 200 and the declined
+pillar serves 3,004 raw-HTML words: authority, not markup. Issued 5 mandates and
+2 asks by 11-03 (CoinDesk email, restated X post) — both superseded by the
+2026-11-02 review below, after the addresses in them proved unverifiable. Proof
+baseline corrected from `5aad29f..HEAD` to `62e3a8a`; `indexed` target lowered to
+3/21 by 11-10.
 
 ## Session 2026-11-01 — archive-only: the crawl resumed and the ask ledger was wrong
 
 Nothing due (review stale, `verdict-invalid` on 10-31). **The owner filed the
 bitcoin-only issue four days before the record said:** API `created_at
-2026-10-27T05:34:46Z` while the ledger carried `sent: no` on 10-27..10-30 and the
-10-30 review computed "0 of 4 asks sent" from it. Corrected; ask-effect window is
-10-27 → 11-10. Does not lift the freeze. The crawler returned — `/` 10-24 →
-10-31, `/articles` 08-14 → 10-31 — and indexed stayed 2/21, so the stall is
-neither site-wide nor robots. Deploy verified at `1b61f0b`; IndexNow not run.
+2026-10-27T05:34:46Z` while the ledger carried `sent: no` on 10-27..10-30. The
+crawler returned (`/` 10-24 → 10-31, `/articles` 08-14 → 10-31) and indexed stayed
+2/21, so the stall is neither site-wide nor robots. Deploy verified at `1b61f0b`.
 
 ### History before 2026-11-01
 
@@ -166,6 +189,7 @@ neither site-wide nor robots. Deploy verified at `1b61f0b`; IndexNow not run.
 
 | date       | mode  | verdict  | what it forced                                                                                                              |
 | ---------- | ----- | -------- | --------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-02 | daily | failing  | CoinDesk re-routed to `contact@coindesk.com` (by 11-05) + awesome-bitcoin PR (by 11-06); X retired; cluster read 11-08; indexation decision 11-10; `referral-line.mjs` fix; runner guard re-issued (streak 8) |
 | 2026-11-01 | deep  | failing  | CoinDesk email + restated X post (both by 11-03), inspection 11-02, Soft-404 diagnosis, daily channel-verified ask line, owner mandate for the runner; `indexed` target lowered to 3/21 (streak 8) |
 | 2026-10-31 | daily | invalid  | run rejected its own file (`generated` 2026-10-30 ≠ today); the 10-30 mandates stand                                        |
 | 2026-10-30 | daily | failing  | full freeze (no site change at all), inspect-only 11-02, cluster read 11-08, `distribution-test` closed VOID (streak 6)      |
@@ -179,42 +203,66 @@ neither site-wide nor robots. Deploy verified at `1b61f0b`; IndexNow not run.
    meta, section, sitemap or URL — until indexed is above 3 on two consecutive
    inspections or a non-github referring session appears. Proof baseline: `git
    diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` must be empty.
-1. **Two asks, both by 2026-11-03:** email Olivier Acuna at CoinDesk with the
-   drawdown number and per-window table; post the restated X post from
-   @btc500halving. Verbatim in `<state>/owner-asks.txt`. Measure: referral
-   sessions from coindesk.com / x.com. Missing the date retires both channels.
-2. **bitcoin-only #1009 live since 2026-10-27** — open, 0 comments, listing page
-   still has no `btc500`. Print the channel-verified state each cycle; if unmerged
-   on 2026-11-10, close it as tested-and-failed.
-3. **2026-11-08: read the cluster queries** in both windows; it tests the 10-29
-   title/H1 change. If all four are absent and the pillar's lastCrawl is still
-   2026-10-22, close the cluster line as unservable.
-4. **Own 2026-11-28** — the buy window opens in 26 days; `/` and the pillar state
-   the same live date. The only news peg the site has, and why the CoinDesk pitch
-   is worth sending now rather than in December.
-5. **Watch `/articles/bear-market-accumulation` for a re-crawl.** If Google
+1. **Two live asks, both checkable (set 2026-11-02):**
+   (a) email `contact@coindesk.com`, subject addressed to Olivier Acuna (the
+   2026-08-05 author), due **2026-11-05** — the 2026-11-01 personal address is
+   not published by the article and is retired; (b) one PR to
+   `igorbarinov/awesome-bitcoin` → "Additional Resources", due **2026-11-06**.
+   Verbatim in `<state>/owner-asks.txt`. Measure: `coindesk.com` referral
+   sessions, and `indexed` 2/21 → ≥3/21. Send count to beat: **6 handed over, 1
+   sent** since 2026-10-27.
+2. **X is retired until an account is written down here.** `@btc500halving` has
+   no public trace in search and produced no post in six days; asking again
+   without a verifiable account is the loop that produced 0 sessions from x.com
+   in every reading. If the owner has an account, record it first.
+3. **bitcoin-only #1009 live since 2026-10-27** — open, 0 comments, `updated_at`
+   == `created_at`, listing page still has no `btc500`. Close it as
+   tested-and-failed on 2026-11-10 if unchanged.
+4. **2026-11-08: read the cluster queries** in both windows; it tests the 10-29
+   title/H1 change. If all four are absent and indexed is ≤2, close the cluster
+   line as unservable and make no copy edit to `/` or the pillar through
+   2026-12-31.
+5. **2026-11-10: the indexation decision.** Target is 3/21; if it is 2 or fewer,
+   the line closes permanently — no in-repo indexation work without an external
+   link, ever — and rows 5–7 of the backlog are deleted rather than left blocked.
+6. **Own 2026-11-28** — the buy window opens in 26 days; `/` and the pillar state
+   the same live date. It is the only news peg the site has and the reason the
+   CoinDesk email is worth sending now rather than in December.
+7. **Watch `/articles/bear-market-accumulation` for a re-crawl.** If Google
    re-fetches and keeps the Soft 404, the merge case becomes real.
 
 ## Ranked backlog
 
 Scored 1–10 on impact × confidence ÷ effort. **Rows 0–1 are the only work
-permitted and only the owner can do them. Rows 3–4 are readings, not builds. Rows
+permitted and only the owner can do them. Rows 2–3 are readings, not builds. Rows
 5–7 are blocked while indexed is under 5 — eight cycles of shipping moved the gate
-6 → 2, so building more pages is not a bet, it is a habit.**
+6 → 2, so building more pages is not a bet, it is a habit.** Rows 5–7 are deleted
+on 2026-11-10 if indexed is 2 or fewer.
 
 | #   | Bet                                                     | Why it can move the needle                                                       | I   | E   |
 | --- | ------------------------------------------------------- | -------------------------------------------------------------------------------- | --- | --- |
-| 0   | CoinDesk email to Olivier Acuna (2026-08-05 author) — the drawdown number | The rule is already in mainstream press with our exact date; he has the story and not the −83.65% / −11.72% per-window table. Due 2026-11-03 | 10  | 1   |
-| 1   | X post from @btc500halving (restated 2026-10-27 ask)    | Only owned channel, never tested. One post, one link, by 2026-11-03              | 6   | 1   |
-| 2   | bitcoin-only/bitcoin-only #1009 (open since 2026-10-27) | Unmerged, 0 comments, no listing, 0 sessions in 6 days. Watch to 11-10, then close | 4   | 0   |
-| 3   | Cluster query reading 2026-11-08                        | Decides whether the 500-day framing is served or has no demand                   | 7   | 1   |
-| 4   | Watch the Soft 404 for a re-crawl                       | Separates a stale verdict from a content judgment; decides merge vs keep         | 5   | 0   |
+| 0   | Email `contact@coindesk.com` for Olivier Acuna — the −83.65% drawdown | CoinDesk (2026-08-05), Yahoo (06-24), Investing.com (08-06) and pluang (08-05) all ran the rule; none ran the per-window drawdown. Due 2026-11-05 | 10  | 1   |
+| 1   | One PR to `igorbarinov/awesome-bitcoin` (1,358 stars)   | A followed link on a maintained list is the only input that has ever moved indexation; GitHub is the one channel the ledger proves the owner uses (#1009). Due 2026-11-06 | 8   | 1   |
+| 2   | ~~X post from @btc500halving~~                          | **Retired 2026-11-02** — no account found publicly, no post in six days, 0 sessions from x.com ever. Reopen only when an account is recorded in STATUS.md | 0   | 0   |
+| 3   | bitcoin-only/bitcoin-only #1009 (open since 2026-10-27) | Unmerged, 0 comments, no listing, 0 sessions in 6 days. Close on 11-10, do not extend | 3   | 0   |
+| 4   | Cluster query reading 2026-11-08                        | Decides whether the 500-day framing is served or has no demand                   | 7   | 1   |
 | 5   | ~~Merge `/halving-dates` into the pillar~~              | **Blocked while indexed is under 5** — needs a served page; 0 impressions in 28d | 5   | 3   |
 | 6   | ~~Cycle-vs-cycle live tracker~~                         | **Blocked while indexed is under 5** — bitbo and bitcoin-daily own the live view | 4   | 6   |
 | 7   | ~~`/cycle/*` pages, cost-of-waiting calculator~~        | **Blocked while indexed is under 5** — new URLs on a site with 19/21 unindexed   | 3   | 6   |
 
 ## Open issues
 
+- **Two asks were unexecutable as written (found 2026-11-02).** The CoinDesk ask
+  named a personal address the article does not publish (it publishes none; the
+  fetch returns 429) and the X ask named `@btc500halving`, which a web search does
+  not return and which has produced no post in six days. Rule: an ask must name a
+  route that is publicly verified or that the ledger proves the owner has used —
+  today GitHub (#1009, 2026-10-27) and `contact@coindesk.com`. Never a guessed
+  personal address, never a handle nobody has shown exists.
+- **`referral-sessions` green is a self-referral (2026-11-02).** 12 sessions, 12 of
+  12 `github.com`, 2 users — this repository and the owner's browser. The runner
+  counts it as a positive outcome; the review must not. Only a non-`github.com`
+  referring session counts, and `externalReferringDomains` is 0.
 - **`/articles/bear-market-accumulation` — keep and leave alone.** Soft 404 set on
   a crawl dated 2026-08-08; edited twice since and never re-fetched; serves 200
   with 1,383 server-rendered words, 0 body paragraphs duplicated from the pillar,

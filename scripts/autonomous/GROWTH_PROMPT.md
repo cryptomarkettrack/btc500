@@ -190,6 +190,41 @@ channel disagree, the channel wins and the ledger gets corrected in the same
 commit, with the evidence. Never report a send as pending or as done on the
 ledger's word alone — a status cell nobody checks is not evidence.
 
+**Set by the 2026-11-02 review — only two asks exist, and both are checkable.**
+The 2026-11-01 ask set was partly unexecutable: the CoinDesk ask named a personal
+address that the article does not publish (it publishes no email; the fetch
+returns 429), and the X ask names `@btc500halving`, for which a web search returns
+no account and which has produced no post in six days. An ask that cannot be
+carried out fails the same way as an ignored one and the review restates it
+forever. From today:
+
+- **Live ask 1 — email to CoinDesk**, routed through `contact@coindesk.com` (the
+  address the outlet publishes) with the subject line addressed to Olivier Acuna.
+  Do not substitute a personal address. Due 2026-11-05.
+- **Live ask 2 — one PR to `igorbarinov/awesome-bitcoin`** (1,358 stars, last push
+  2026-10-21, "Additional Resources" section), adding one line that links to
+  `/bitcoin-500-day-cycle`. GitHub is the only channel the ledger proves the owner
+  uses — issue #1009 was filed from `cryptomarkettrack` on 2026-10-27. Due
+  2026-11-06.
+- **Retired: X.** Do not prepare, restate or re-issue an X post until the owner
+  records an account that exists in `outreach/STATUS.md`. 0 sessions from x.com in
+  every reading, no post in six days, no public trace of the handle.
+- Also retired after 2026-11-10: the bitcoin-only listing issue, if unmerged with
+  0 comments.
+- Verify each live ask against its channel every cycle: `contact@coindesk.com`
+  cannot be read, so the evidence is the GA4 `coindesk.com` referral count; the PR
+  is readable — `GET /search/issues?q=author:cryptomarkettrack+repo:igorbarinov/awesome-bitcoin`
+  returns `state` (`open` = sent, `closed`/merged = resolved, empty = not sent).
+- **No new experiment may be opened before 2026-12-01**, and none at all while
+  `indexed` is under 5. Six experiments have opened and six have closed without a
+  result; a seventh reading on an unserved site measures the same wall.
+
+A cycle that has no due mandate and no due reading prints the three PERFORMANCE
+lines plus these two ask states, writes its archive-only entry, and stops. Adding
+pages, sections, titles or narratives before an external link exists is a
+measured failure, not work: four frozen cycles produced 3/21 → 2/21 and four
+shipping cycles produced 6/25 → 3/21.
+
 Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
 2026-10-30, 0 failures, 4 of 4 previous mandates executed, produced indexed
 6/25 → 3/21, 7-day clicks 14 → 1, 7-day impressions 45 → 10, 0 non-brand clicks,

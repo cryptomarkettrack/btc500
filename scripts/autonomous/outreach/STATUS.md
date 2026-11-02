@@ -23,9 +23,10 @@ zero.
 | -------------------------------- | -------------------- | ---------------------------------------------- | ----------- | ---------- | ---- | --------- | ----------------------------------------------------- | ---------- |
 | `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap   | 2026-10-27  | 2026-10-28 | no   | —         | 1 GA4 referral session from bitcoinmagazine.com in 7d | lapsed     |
 | `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion") | 2026-10-27  | 2026-10-29 | no   | —         | 1 GA4 referral session from bitcointalk.org in 7d     | unmeasured |
-| `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | unmeasured |
+| `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | retired 2026-11-02 — no such account found, no post in 6d |
 | `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d   | sent / awaiting referral |
-| `email-coindesk-500day-followup` | email                | CoinDesk — Olivier Acuna (wrote the 2026-08-05 500-day-rule piece) | 2026-11-01  | 2026-11-03 | no   | —         | 1 GA4 referral session from coindesk.com in 14d       | unmeasured |
+| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece) | 2026-11-01  | 2026-11-05 | no   | —         | 1 GA4 referral session from coindesk.com in 14d       | unmeasured — re-routed 2026-11-02 |
+| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources | 2026-11-02  | 2026-11-06 | no   | —         | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21 | unmeasured |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -131,6 +132,30 @@ filename, so a `--days=28` report generated after the `--days=7` one makes it
 label a 28-day count as `referrals 7d` (15 github sessions instead of 12).
 Reproduced today; the workaround is to generate the 7-day report last. Fixed in
 the first cycle after the freeze lifts.
+
+**2026-11-02 (results review): two routes were wrong, not two sends missing.**
+The 2026-11-01 ask set was not merely unsent — parts of it were unexecutable.
+(a) `email-coindesk-500day-followup` named `ollie.acuna@coindesk.com` and asserted
+it was in the article's author markup. The article
+`/markets/2026/08/05/why-bitcoin-s-500-day-rule-faces-its-biggest-test-yet`
+publishes no author address and returns 429 to a script. The ask is re-routed to
+`contact@coindesk.com`, the address CoinDesk publishes, with the subject line
+addressed to Olivier Acuna; due 2026-11-05 (was 11-03).
+(b) `x-cycle-window-post-restated` names `@btc500halving`; a web search returns no
+such account and six days of asking produced no post. The row is **retired**, not
+re-issued — a channel nobody can be shown to have is not a strategy. If the owner
+has an X account, `BTC500_GROWTH.md` records that it has to be written down before
+this review asks for X again.
+(c) The replacement second ask is a **PR to `igorbarinov/awesome-bitcoin`**
+(1,358 stars, pushed 2026-10-21, not archived, "Additional Resources" section):
+one line, one link, and a route the ledger proves the owner uses — issue #1009 was
+filed from `cryptomarkettrack` on 2026-10-27. Due 2026-11-06. Its state is
+readable: `GET https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:igorbarinov/awesome-bitcoin`
+— `open` means sent, merged means done, empty means not sent.
+
+Send counts after this review: **6 asks handed over since 2026-10-27, 1 sent, 0
+referral sessions from any non-github domain.** That is the number the next review
+reports first.
 
 `github.com` is the repository and the owner's own browser sessions — it is not
 a mention. The ask-effect target is 1 session from any of the other four.

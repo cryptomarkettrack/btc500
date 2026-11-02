@@ -366,3 +366,41 @@ CHANGED <self_changes, or "none">
 ```
 
 Be blunt. A review that softens a failed week is worthless.
+
+## 10. Ask validity — rules added 2026-11-02
+
+Two defects made the ask loop unmeasurable rather than merely unlucky. Both are
+the reviewer's fault, not the owner's, and both are now rules.
+
+**(a) An ask must name a route that exists and can be checked.** Between
+2026-10-27 and 2026-11-02 five asks were handed over and one was sent. The
+unverified ones were not all ignored — two of them were unexecutable as written:
+
+- `email-coindesk-500day-followup` (2026-11-01) told the owner to use
+  `ollie.acuna@coindesk.com`, asserting the address was "in that article's author
+  markup". The 2026-08-05 CoinDesk article (now at
+  `/markets/2026/08/05/why-bitcoin-s-500-day-rule-faces-its-biggest-test-yet`)
+  publishes no author email; the fetch returns 429 to a script. An ask built on
+  a guessed address can only bounce or be silently skipped, and the next review
+  cannot tell which.
+- `x-cycle-window-post-restated` (2026-10-27, restated 2026-11-01) names
+  `@btc500halving`. A web search for that handle returns no account, and no post
+  has appeared in six days. "From @btc500halving" may be an instruction the owner
+  cannot follow at all.
+
+Rule: before an ask is written, the route must be either publicly verified (a
+contact address the outlet publishes, a repo whose contribution path is open) or
+proven by the ledger (a channel the owner has actually used — today only GitHub,
+via issue bitcoin-only/bitcoin-only#1009). An ask that names an unverified
+address or handle is invalid, because its failure is indistinguishable from the
+owner ignoring it and the review will keep restating it forever.
+
+**(b) A `github.com` referral is never a positive outcome signal.** The runner
+counts `referral-sessions` green whenever any referral session exists. On
+2026-11-02 that was 12 sessions, 12 of 12 from `github.com`, 2 users —
+`STATUS.md` records those as this repository and the owner's browser. A
+self-referral is the automation watching itself. When quoting that signal, always
+print the source split and the user count, and never let it satisfy
+`mayClaimImproving` on the reviewer's side even though the runner's arithmetic
+does. The only referral session that counts is one from a domain that is not
+`github.com`.
