@@ -26,7 +26,8 @@ zero.
 | `x-cycle-window-post-restated`   | X post               | @btc500halving                                                     | 2026-10-27  | 2026-11-02 | no   | —          | 1 GA4 referral session from x.com/twitter.com in 7d                                    | retired 2026-11-02 — no such account found, no post in 6d                                                                       |
 | `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                    | sent / awaiting referral                                                                                                        |
 | `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)         | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                        | unmeasured — re-routed 2026-11-02; **0 coindesk.com sessions in 7d and 28d, verified 2026-11-03**                               |
-| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources               | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21 | unmeasured — **no open PR, verified 2026-11-03; the same list already closed two BTC500 PRs unmerged** (#201 07-27, #202 08-02) |
+| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources               | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21 | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2 |
+| `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                  | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | prepared — destination qualifies: 99 merged PRs, 3 merged 2026-11-03 (#147, #149, #156) |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -193,7 +194,24 @@ reports first.
 `github.com` is the repository and the owner's own browser sessions — it is not
 a mention. The ask-effect target is 1 session from any of the other four.
 
-Reading 2026-10-29: the GA4 property has no data before 2026-10-23, which is why
+**2026-11-03 (results review): the ask funnel splits by channel, and one destination
+was already tried.** GitHub asks were carried out **3 of 3** (#1009 on 2026-10-27;
+PRs #201 and #202 from `cryptomarkettrack`), while email, community and X asks were
+sent **0 of 4**. So the failing half of this loop is not the owner's willingness in
+general — it is email. Two consequences, both written into `GROWTH_PROMPT.md`:
+`igorbarinov/awesome-bitcoin` is **withdrawn** (0 of 2, both closed unmerged with 0
+comments); it is replaced by `yjjnls/awesome-blockchain`, which merged three outside
+contributions on 2026-11-03 (#147, #149, #156) and takes a one-line entry under
+`## Releated Tools`. The CoinDesk email is restated at 60 words or fewer, due
+2026-11-05; if it is unsent on 11-05 the row is `lapsed` and the review stops
+restating it.
+Measured today and worth recording before anyone promises indexation from a list
+entry: `github.com` serves `rel="nofollow"` on README links (90 of them in the
+rendered `awesome-bitcoin` page). A merged line is discovery and referral traffic,
+not authority. The only link that can move `indexed` is one from a publication that
+carries followed links — CoinDesk, or a comparable outlet.
+
+**Reading 2026-10-29: the GA4 property has no data before 2026-10-23, which is why
 the 7-day and 28-day reports return identical totals (91 sessions / 189 views).
 That is a young property, not a broken window — do not quote the 28-day number as
 a month of traffic.

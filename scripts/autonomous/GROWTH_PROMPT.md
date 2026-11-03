@@ -198,14 +198,29 @@ no account and which has produced no post in six days. An ask that cannot be
 carried out fails the same way as an ignored one and the review restates it
 forever. From today:
 
-- **Live ask 1 — email to CoinDesk**, routed through `contact@coindesk.com` (the
-  address the outlet publishes) with the subject line addressed to Olivier Acuna.
-  Do not substitute a personal address. Due 2026-11-05.
-- **Live ask 2 — one PR to `igorbarinov/awesome-bitcoin`** (1,358 stars, last push
-  2026-10-21, "Additional Resources" section), adding one line that links to
-  `/bitcoin-500-day-cycle`. GitHub is the only channel the ledger proves the owner
-  uses — issue #1009 was filed from `cryptomarkettrack` on 2026-10-27. Due
-  2026-11-06.
+- **Live ask 1 — email to CoinDesk**, routed through `contact@coindesk.com` (an
+  address CoinDesk publishes: "Email us at contact@coindesk.com", coindesk.com;
+  corroborated by Crunchbase) with the subject line addressed to Olivier Acuna.
+  Do not substitute a personal address. **60 words or fewer** — the 2026-11-01
+  version was 200 words and 3 of 3 email asks since 2026-10-27 went unsent, so
+  length is part of the defect. Due 2026-11-05.
+- **Live ask 2 — one PR to `yjjnls/awesome-blockchain`** (3,644 stars, pushed
+  2026-11-03, `CONTRIBUTING.md` says "Contributions welcome"), one line at the top
+  of `## Releated Tools`. Due 2026-11-06. This replaces
+  `igorbarinov/awesome-bitcoin`, **withdrawn 2026-11-03**: that list closed both
+  BTC500 PRs unmerged (#201, 2026-07-27; #202, closed 2026-08-02, `merged: false`,
+  0 comments), so its record is 0 of 2 and the 2026-11-02 review's "the only thing
+  never tried" was false. `yjjnls/awesome-blockchain` merged 3 outside
+  contributions on 2026-11-03 alone (#147, #149, #156).
+- **A destination is qualified by its merge record, not its star count.** Before a
+  destination enters an ask: an outside contributor's submission was merged or
+  published there within the last 14 days (quote the PR number and merge date), and
+  the entry format is one line we can satisfy. `awesome-bitcoin` had 1,358 stars
+  and a 0-of-2 record; that is the mistake this rule exists to stop.
+- **`github.com` links are `rel="nofollow"` (measured 2026-11-03: 90 `rel="nofollow"`
+  in the rendered `awesome-bitcoin` README).** A merged GitHub line is a discovery
+  and referral-traffic bet, never an authority fix. Do not promise indexation from
+  it, and do not describe a GitHub list as a "followed link".
 - **Retired: X.** Do not prepare, restate or re-issue an X post until the owner
   records an account that exists in `outreach/STATUS.md`. 0 sessions from x.com in
   every reading, no post in six days, no public trace of the handle.
@@ -220,10 +235,20 @@ forever. From today:
   result; a seventh reading on an unserved site measures the same wall.
 
 A cycle that has no due mandate and no due reading prints the three PERFORMANCE
-lines plus these two ask states, writes its archive-only entry, and stops. Adding
-pages, sections, titles or narratives before an external link exists is a
-measured failure, not work: four frozen cycles produced 3/21 → 2/21 and four
-shipping cycles produced 6/25 → 3/21.
+lines plus these two ask states, and then must still produce **one qualified
+distribution destination**: a repo or outlet where (a) an outside contributor's
+submission was merged or published within the last 14 days, (b) the entry format
+is one line we can satisfy, and (c) the exact submission text is written out
+verbatim in `outreach/<date>-<slug>.txt`, with the merge evidence (PR number and
+merge date) quoted at the top. One destination per cycle, no site change.
+
+That last requirement is new on 2026-11-03 and it replaces "write its archive-only
+entry and stop". Eight cycles to 2026-11-03 produced 8 `shipped` statuses, 4
+archive-CSV refreshes and 0 site changes, and the outcome fell from 6/25 to 2/21
+indexed. A cycle that ends at "archive refreshed, nothing to do" is a wasted day
+in a 25-day window. Adding pages, sections, titles or narratives before an
+external link exists is a measured failure, not work: four frozen cycles produced
+3/21 → 2/21 and four shipping cycles produced 6/25 → 3/21.
 
 Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
 2026-10-30, 0 failures, 4 of 4 previous mandates executed, produced indexed

@@ -55,6 +55,31 @@ fourth consecutive inspection (10-31, 11-01, 11-02, 11-03).
 
 ---
 
+---
+
+## Review 2026-11-03 (daily) — failing, tenth consecutive
+
+- **Result: no measurable gain.** indexed **2/21** (fourth inspection at 2, from
+  6/25 on 2026-10-22), **0 non-brand clicks in 13 readings**, 7-day 1 click / 9
+  impressions, 82 sessions (63 direct, 3 organic), referrals 12 of 12
+  `github.com` / 2 users = this repo. `externalReferringDomains` 0.
+- **Input vs output:** 8 runs, 8 shipped, 0 failures, 2 of 2 due mandates
+  executed (`ask-verify-1103`, `referral-line-fix-1105`) — and **0 commits to
+  `src/` or `public/sitemap.xml` since `62e3a8a`** (freeze held,
+  `git diff --stat` empty). The week's only production change is the daily price
+  CSV. `shipped` is green on a cycle that changed nothing, which is the same
+  false-green defect as `referral-sessions`.
+- **New: the ask funnel splits by channel.** GitHub 3 of 3 executed; email,
+  community and X 0 of 4 sent. And the destination from 2026-11-02 was already
+  tried: `awesome-bitcoin` closed BTC500 PRs #201/#202 unmerged (0 comments).
+- **New: a GitHub merge cannot fix indexation** — `github.com` serves
+  `rel="nofollow"` (90 in the rendered awesome-bitcoin README). The only link
+  that counts now is one from a publication.
+- **Decision held:** the 2026-11-10 indexation line and the 2026-11-08 cluster
+  read stand unchanged. The freeze stands.
+- Verdict `failing`; rule `mayClaimImproving=false`, blocked on
+  `regressed: indexation`.
+
 ## Session 2026-11-03 — archive-only: both asks verified, one route was already tried
 
 Preflight: archive refreshed (last row 2026-11-02, 0 stale), 0 experiments open, 0
@@ -139,6 +164,7 @@ since 2026-10-27T05:34:46Z with 0 comments. Freeze proof empty.
 
 | date       | mode  | verdict | what it forced                                                                                                                                                                                                |
 | ---------- | ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-03 | daily | failing | CoinDesk email restated at 60 words; awesome-bitcoin **withdrawn** (0/2) and replaced by `yjjnls/awesome-blockchain` (3 merges on 11-03); destination must have a merge record; GitHub links are nofollow; one qualified destination per cycle (streak 10) |
 | 2026-11-02 | daily | failing | CoinDesk re-routed to `contact@coindesk.com` (by 11-05) + awesome-bitcoin PR (by 11-06); X retired; cluster read 11-08; indexation decision 11-10; `referral-line.mjs` fix; runner guard re-issued (streak 8) |
 | 2026-11-01 | deep  | failing | CoinDesk email + restated X post (both by 11-03), inspection 11-02, Soft-404 diagnosis, daily channel-verified ask line, owner mandate for the runner; `indexed` target lowered to 3/21 (streak 8)            |
 | 2026-10-31 | daily | invalid | run rejected its own file (`generated` 2026-10-30 ≠ today); the 10-30 mandates stand                                                                                                                          |
@@ -153,16 +179,19 @@ since 2026-10-27T05:34:46Z with 0 comments. Freeze proof empty.
    meta, section, sitemap or URL — until indexed is above 3 on two consecutive
    inspections or a non-github referring session appears. Proof baseline: `git
 diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` must be empty.
-1. **Two live asks, both checkable (set 2026-11-02):**
+1. **Two live asks, both checkable (revised 2026-11-03 after the channel check):**
    (a) email `contact@coindesk.com`, subject addressed to Olivier Acuna (the
-   2026-08-05 author), due **2026-11-05** — the 2026-11-01 personal address is
-   not published by the article and is retired; (b) one PR to
-   `igorbarinov/awesome-bitcoin` → "Additional Resources", due **2026-11-06**.
+   2026-08-05 author), 60 words or fewer, due **2026-11-05** — the 2026-11-01
+   personal address is not published by the article and is retired; (b) one PR to
+   `yjjnls/awesome-blockchain` → `## Releated Tools`, due **2026-11-06**.
    Verbatim in `<state>/owner-asks.txt`. Measure: `coindesk.com` referral
-   sessions, and `indexed` 2/21 → ≥3/21. Send count to beat: **6 handed over, 1
-   sent** since 2026-10-27. **Verified 2026-11-03: neither sent** — and the
-   awesome-bitcoin list already closed two BTC500 PRs unmerged (#201 07-27,
-   #202 08-02, 0 comments), so that route's prior record is 0 of 2, not untried.
+   sessions, and the PR's own state. Send count to beat: **6 handed over, 1
+   sent** since 2026-10-27. **Verified 2026-11-03: neither sent.**
+   `igorbarinov/awesome-bitcoin` is **withdrawn**: it closed both BTC500 PRs
+   unmerged (#201 2026-07-27, #202 closed 2026-08-02, `merged: false`, 0
+   comments) — 0 of 2, not untried, and the 2026-11-02 review's "never tried"
+   claim was wrong. `yjjnls/awesome-blockchain` merged 3 outside contributions on
+   2026-11-03 (#147, #149, #156), which is the record a destination needs.
 2. **X is retired until an account is written down here.** `@btc500halving` has
    no public trace in search and produced no post in six days; asking again
    without a verifiable account is the loop that produced 0 sessions from x.com
@@ -194,7 +223,7 @@ on 2026-11-10 if indexed is 2 or fewer.
 | #   | Bet                                                                   | Why it can move the needle                                                                                                                                                                                                                                                         | I   | E   |
 | --- | --------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
 | 0   | Email `contact@coindesk.com` for Olivier Acuna — the −83.65% drawdown | CoinDesk (2026-08-05), Yahoo (06-24), Investing.com (08-06) and pluang (08-05) all ran the rule; none ran the per-window drawdown. Due 2026-11-05                                                                                                                                  | 10  | 1   |
-| 1   | One PR to `igorbarinov/awesome-bitcoin` (1,358 stars)                 | A followed link on a maintained list is the only input that has ever moved indexation; GitHub is the one channel the ledger proves the owner uses (#1009). Due 2026-11-06. **Prior record on this list: 0 of 2 — #201 and #202 closed unmerged, 0 comments (verified 2026-11-03)** | 5   | 1   |
+| 1   | One PR to `yjjnls/awesome-blockchain` (3,644 stars)                    | Merges outside contributions: 99 merged PRs, 3 on 2026-11-03 (#147, #149, #156); one line under `## Releated Tools`. GitHub is the one channel the ledger proves the owner uses (#1009, #201, #202 = 3 of 3 executed). Due 2026-11-06. **But `github.com` links are `rel="nofollow"` (90 on the rendered awesome-bitcoin README): a merge buys discovery, not authority** | 5   | 2   |
 | 2   | ~~X post from @btc500halving~~                                        | **Retired 2026-11-02** — no account found publicly, no post in six days, 0 sessions from x.com ever. Reopen only when an account is recorded in STATUS.md                                                                                                                          | 0   | 0   |
 | 3   | bitcoin-only/bitcoin-only #1009 (open since 2026-10-27)               | Unmerged, 0 comments, no listing, 0 sessions in 6 days. Close on 11-10, do not extend                                                                                                                                                                                              | 3   | 0   |
 | 4   | Cluster query reading 2026-11-08                                      | Decides whether the 500-day framing is served or has no demand                                                                                                                                                                                                                     | 7   | 1   |
@@ -217,7 +246,25 @@ on 2026-11-10 if indexed is 2 or fewer.
   the owner uses; a `sent` cell is verified against the channel, not the file
   (#1009 had been open since 2026-10-27T05:34Z while the ledger said "0 of 4
   sent"); and a route's prior record is part of the ask.
-- **`referral-sessions` green is a self-referral (2026-11-02).** 12 sessions, 12 of
+- **The ask funnel splits by channel, and only GitHub is executed (2026-11-03).**
+  Counted from `outreach/STATUS.md`: GitHub asks carried out **3 of 3** (#1009
+  filed 2026-10-27; PRs #201 and #202 in July/August, `author:cryptomarkettrack`),
+  email/community/X asks sent **0 of 4** (bitcoinmagazine, bitcointalk,
+  CoinDesk ×2, X retired). So "the owner does not send" is false and "email
+  works" is unsupported: the reviewer must aim at GitHub or stop pretending.
+  Second half of the same finding: a merged GitHub line is **nofollow** (90
+  `rel="nofollow"` in the rendered `awesome-bitcoin` README, measured today), so
+  even a merge cannot lift indexation. The gate that remains is a link from a
+  site that carries followed links — a publication, not a README.
+- **A destination needs a merge record, not stars (2026-11-03).** The 2026-11-02
+  review sent the owner at `igorbarinov/awesome-bitcoin` (1,358 stars) calling it
+  "the only thing never tried". It had already declined BTC500 twice: #201
+  (created and closed 2026-07-27) and #202 (created 2026-07-27, closed
+  2026-08-02, `merged: false`, 0 comments, `README.md` +1 for
+  `btc500.vercel.app`). The rule is now in `GROWTH_PROMPT.md`: an outside
+  contributor's submission merged there within 14 days, quoted with its PR
+  number, or the destination is not used.
+- **`referral-sessions` green is a self-referral (2026-11-02).** 12 sessions,
   12 `github.com`, 2 users — this repository and the owner's browser. Only a
   non-`github.com` referring session counts, and `externalReferringDomains` is 0.
 - **Indexation flat at 2: 6 (10-22) → 5 (10-28) → 3 → 3 → 2 (10-31) → 2 (11-01) →
