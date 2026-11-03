@@ -16,10 +16,17 @@
  * channel nobody asked for is still evidence.
  *
  * Usage:
- *   node scripts/autonomous/referral-line.mjs [--dir scripts/analytics/output]
+ *   node scripts/autonomous/referral-line.mjs [--days=7] [--dir scripts/analytics/output]
  *
- * Exit code 1 means no GA4 report was found; the printed line then says
- * "not measured" so it cannot be pasted as if it were zero.
+ * The window label comes from the report's own `window` (`days`, or counted from
+ * its start/end), never from the filename and never from a default: a 28-day
+ * report cannot be printed as "referrals 7d". The 2026-11-02 review found the
+ * opposite — 15 github sessions labelled as 7 days when the 7-day figure was 12
+ * — because the newest `ga4-*.json` by filename was chosen and the label was
+ * hardcoded.
+ *
+ * Exit code 1 means no report for the requested window was found; the printed
+ * line then says "not measured" so it cannot be pasted as if it were zero.
  */
 
 import { readdirSync, readFileSync } from "node:fs";
@@ -74,48 +81,82 @@ export function referralLine(rows, window) {
     .sort((a, b) => b[1] - a[1])
     .map(([host, sessions]) => `${host} ${sessions}`);
 
-  let line = `referrals 7d: ${parts.join(", ")}`;
+  const days = reportDays({ window });
+  let line = `${days ? `referrals ${days}d:` : "referrals (window unknown):"} ${parts.join(", ")}`;
   if (other.length > 0) line += ` — other: ${other.join(", ")}`;
-  if (window) line += ` (window ${window})`;
+  if (window?.start && window?.end) line += ` (window ${window.start} → ${window.end})`;
   return line;
 }
 
-/** Newest `ga4-*.json` report in a directory, or null. */
-export function newestReport(dir) {
+/**
+ * Window length in days, read from the report's own `window` — its `days` field
+ * when present, otherwise counted inclusively from `start`/`end`. Returns null
+ * when the report does not say, so the caller prints "unknown" instead of 7.
+ */
+export function reportDays(report) {
+  const window = report?.window;
+  if (!window || typeof window !== "object") return null;
+  const stated = Number(window.days);
+  if (Number.isFinite(stated) && stated > 0) return Math.round(stated);
+  const start = Date.parse(`${window.start}T00:00:00Z`);
+  const end = Date.parse(`${window.end}T00:00:00Z`);
+  if (Number.isFinite(start) && Number.isFinite(end) && end >= start) {
+    return Math.round((end - start) / 86_400_000) + 1;
+  }
+  return null;
+}
+
+/**
+ * Newest `ga4-*.json` report in a directory, ordered by the window it covers
+ * (end date, then filename), or null. Pass `{ days }` to require a report of
+ * exactly that window length — the only way to guarantee a 7-day number is a
+ * 7-day report, whatever order the reports were generated in.
+ */
+export function newestReport(dir, { days } = {}) {
   let names;
   try {
     names = readdirSync(dir);
   } catch {
     return null;
   }
-  const reports = names
-    .filter((name) => /^ga4-.*\.json$/.test(name))
-    .map((name) => ({ name, path: join(dir, name) }))
-    .sort((a, b) => a.name.localeCompare(b.name));
-  const latest = reports.at(-1);
-  if (!latest) return null;
-  try {
-    return { path: latest.path, report: JSON.parse(readFileSync(latest.path, "utf8")) };
-  } catch {
-    return null;
+  const reports = [];
+  for (const name of names) {
+    if (!/^ga4-.*\.json$/.test(name)) continue;
+    const path = join(dir, name);
+    let report;
+    try {
+      report = JSON.parse(readFileSync(path, "utf8"));
+    } catch {
+      continue;
+    }
+    const length = reportDays(report);
+    if (days !== undefined && length !== days) continue;
+    reports.push({ name, path, report, end: String(report?.window?.end ?? "") });
   }
+  if (reports.length === 0) return null;
+  reports.sort((a, b) =>
+    a.end === b.end ? a.name.localeCompare(b.name) : a.end.localeCompare(b.end),
+  );
+  const latest = reports.at(-1);
+  return { path: latest.path, report: latest.report };
 }
 
 function main(argv) {
   const dirFlag = argv.indexOf("--dir");
   const dir = resolve(dirFlag === -1 ? DEFAULT_DIR : argv[dirFlag + 1]);
-  const found = newestReport(dir);
+  const daysFlag = argv.find((arg) => arg.startsWith("--days="));
+  const requested = daysFlag ? Number(daysFlag.slice("--days=".length)) : 7;
+  const wanted = Number.isFinite(requested) && requested > 0 ? Math.round(requested) : 7;
+  const found = newestReport(dir, { days: wanted });
   if (!found) {
     console.log(
-      `referrals 7d: not measured — no GA4 report in ${dir}. Run: npm run analytics -- --days=7`,
+      `referrals ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}. Run: npm run analytics -- --days=${wanted}`,
     );
     return 1;
   }
   const table = found.report?.tables?.referrals;
   const rows = referralRows(table);
-  const window = found.report?.window;
-  const label = window?.start && window?.end ? `${window.start} → ${window.end}` : null;
-  console.log(referralLine(rows, label));
+  console.log(referralLine(rows, found.report?.window));
   return 0;
 }
 

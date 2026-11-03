@@ -19,14 +19,14 @@ zero.
 
 ## Asks issued by the review (owner action, cycle prepares the asset)
 
-| id                               | channel              | recipient                                      | handed over | due        | sent | date sent | proof metric                                          | status     |
-| -------------------------------- | -------------------- | ---------------------------------------------- | ----------- | ---------- | ---- | --------- | ----------------------------------------------------- | ---------- |
-| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap   | 2026-10-27  | 2026-10-28 | no   | —         | 1 GA4 referral session from bitcoinmagazine.com in 7d | lapsed     |
-| `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion") | 2026-10-27  | 2026-10-29 | no   | —         | 1 GA4 referral session from bitcointalk.org in 7d     | unmeasured |
-| `x-cycle-window-post-restated`   | X post               | @btc500halving                                 | 2026-10-27  | 2026-11-02 | no   | —         | 1 GA4 referral session from x.com/twitter.com in 7d   | retired 2026-11-02 — no such account found, no post in 6d |
-| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d   | sent / awaiting referral |
-| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece) | 2026-11-01  | 2026-11-05 | no   | —         | 1 GA4 referral session from coindesk.com in 14d       | unmeasured — re-routed 2026-11-02 |
-| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources | 2026-11-02  | 2026-11-06 | no   | —         | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21 | unmeasured |
+| id                               | channel              | recipient                                                          | handed over | due        | sent | date sent  | proof metric                                                                           | status                                                                                                                          |
+| -------------------------------- | -------------------- | ------------------------------------------------------------------ | ----------- | ---------- | ---- | ---------- | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap                       | 2026-10-27  | 2026-10-28 | no   | —          | 1 GA4 referral session from bitcoinmagazine.com in 7d                                  | lapsed                                                                                                                          |
+| `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion")                     | 2026-10-27  | 2026-10-29 | no   | —          | 1 GA4 referral session from bitcointalk.org in 7d                                      | unmeasured                                                                                                                      |
+| `x-cycle-window-post-restated`   | X post               | @btc500halving                                                     | 2026-10-27  | 2026-11-02 | no   | —          | 1 GA4 referral session from x.com/twitter.com in 7d                                    | retired 2026-11-02 — no such account found, no post in 6d                                                                       |
+| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                    | sent / awaiting referral                                                                                                        |
+| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)         | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                        | unmeasured — re-routed 2026-11-02; **0 coindesk.com sessions in 7d and 28d, verified 2026-11-03**                               |
+| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources               | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21 | unmeasured — **no open PR, verified 2026-11-03; the same list already closed two BTC500 PRs unmerged** (#201 07-27, #202 08-02) |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -55,8 +55,8 @@ next review reads the `sent` column, not the prepared file. If `sent` is still
 in one line and stop issuing asks.
 
 **2026-10-31:** the GitHub ask was opened — issue
-[#1009](https://github.com/bitcoin-only/bitcoin-only/issues/1009) *"Add BTC500 —
-Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)"* is **Open**
+[#1009](https://github.com/bitcoin-only/bitcoin-only/issues/1009) _"Add BTC500 —
+Bitcoin halving 500-day window dashboard (Bitcoin-only, no altcoins)"_ is **Open**
 (labelled `content suggestion`), so the send happened. The row was set to `sent`
 = yes and the ask window opened.
 
@@ -109,14 +109,47 @@ send. One send per channel per week; if both get sent, still one referral row.
 
 ## Referral readings
 
-| date       | referrals 7d                                                                  | source                                                  |
-| ---------- | ----------------------------------------------------------------------------- | ------------------------------------------------------- |
-| 2026-10-27 | github.com 3, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `review-latest.json` / ga4 report 2026-10-27            |
-| 2026-10-28 | github.com 7, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-21 → 2026-10-27 |
-| 2026-10-29 | github.com 9, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-22 → 2026-10-28 |
-| 2026-10-30 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-23 → 2026-10-29 |
-| 2026-11-01 | github.com 15, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-25 → 2026-10-31 |
-| 2026-11-02 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-26 → 2026-11-01 |
+| date       | referrals 7d                                                                   | source                                                                                                              |
+| ---------- | ------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| 2026-10-27 | github.com 3, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `review-latest.json` / ga4 report 2026-10-27                                                                        |
+| 2026-10-28 | github.com 7, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `npm run referrals`, ga4 window 2026-10-21 → 2026-10-27                                                             |
+| 2026-10-29 | github.com 9, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `npm run referrals`, ga4 window 2026-10-22 → 2026-10-28                                                             |
+| 2026-10-30 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-23 → 2026-10-29                                                             |
+| 2026-11-01 | github.com 15, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-25 → 2026-10-31                                                             |
+| 2026-11-02 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-26 → 2026-11-01                                                             |
+| 2026-11-03 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-27 → 2026-11-02 (7d report, label read from the report after the fix below) |
+
+**2026-11-03 (channel-verified, `ask-verify-1103`): both live asks are unsent,
+and one of the two routes has already been tried.** (a) `GET
+https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:igorbarinov/awesome-bitcoin`
+→ `total_count: 2`, both **closed unmerged**: #201 (created 2026-07-27T19:11:54Z,
+closed 2026-07-27T19:15:36Z) and #202 (created 2026-07-27T19:17:40Z, closed
+2026-08-02T13:38:14Z, `merged: false`, 0 comments, one line added to `README.md`
+under **Utilities** for `btc500.vercel.app`). No open PR, so the 2026-11-02 ask is
+**not sent** — and the route is not untried: this list has already declined a
+BTC500 line submitted in its own one-line format, without comment. The
+"Additional Resources" section and the `btc500.net` domain are different, so a
+third PR is not identical, but its prior record here is **0 of 2**. (b) coindesk.com
+referrals: **0** in the 7-day report (2026-10-27 → 2026-11-02) and **0** in the
+28-day report (2026-10-06 → 2026-11-02); the only referral row in either window is
+`github.com` (12 / 15, 2 users). The CoinDesk email has therefore produced no
+session, as expected for an inbox that cannot be read.
+
+No ask was prepared, reworded or re-sent. Both rows keep `sent: no`; the 11-06
+checkpoint (mark lapsed, stop issuing asks) stands and is not pre-empted here.
+
+**2026-11-03 (tooling fix, `referral-line-fix-1105`, executed):**
+`referral-line.mjs` now takes the window from the report it prints — `window.days`,
+or counted from `window.start`/`end` — and `newestReport(dir, { days })` selects a
+report of the requested length instead of the newest filename. `npm run referrals`
+defaults to 7 and refuses to print a 28-day report under a 7-day label:
+`referrals 7d: github.com 12 … (window 2026-10-27 → 2026-11-02)` and `--days=28`
+→ `referrals 28d: github.com 15 …`. The 15 that the 2026-11-01 review read as a
+7-day count was the 28-day figure, as the 2026-11-02 review said. Regression test:
+`scripts/autonomous/referral-line.test.mjs` → "a 28-day report generated after the
+7-day one cannot print as referrals 7d". The 2026-11-02 note above that deferred
+this "until the freeze lifts" was wrong — the freeze covers `src/` and
+`public/sitemap.xml`, not `scripts/autonomous`.
 
 **2026-11-02 (channel-verified, the daily mandate):** `GET https://api.github.com/
 repos/bitcoin-only/bitcoin-only/issues/1009` → `state: open`, `comments: 0`,
