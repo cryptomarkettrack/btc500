@@ -1,0 +1,70 @@
+DESTINATION 1 of 2 — qualified 2026-11-04 (mandate destination-qualify-1104)
+jlopp/lopp.net -> bitcoin-information/trading.html -> "Charts & Metrics:" section
+Rendered at https://www.lopp.net/bitcoin-information/trading.html (200, 0 rel="nofollow")
+
+WHY THIS ONE
+- Followed link, not a nofollow README: the rendered page is a normal website. The
+  HTML fetched on 2026-11-04 contains 0 `rel="nofollow"`; every external anchor is
+  `<a ... target="_blank" rel="noopener">`. This is the one property none of the
+  previous destinations had.
+- The page itself invites submissions: "Note that this list is open source; please
+  suggest changes on Github!" with a link to the repo.
+- The repo has a curation guide (AGENTS.md, 561 lines) with an exact entry format
+  and a link-check step, so a correctly formed PR is reviewable in one pass.
+
+EVIDENCE — outside contributions merged within 14 days
+  PR #1260 merged 2026-11-03 by volodymyrslipak — "trading: add Perly Charts to
+    Charts & Metrics" (one line, same section we target)
+  PR #1259 merged 2026-11-01 by cryptokeyhole — "Add CryptoKeyhole to
+    Miscellaneous Metrics"
+  PR #1258 merged 2026-10-31 by fknoedt — "Add Orbit BTC to Miscellaneous Metrics"
+  Source: GET https://api.github.com/search/issues?q=repo:jlopp/lopp.net+is:pr+is:merged
+  -> total_count 298, newest three above. Every one is a one-line link addition by
+  an outside contributor, merged by the maintainer.
+
+ENTRY FORMAT — taken from the destination's own file (bitcoin-information/trading.html)
+  <li><a href="URL" title="TITLE" target="_blank" rel="noopener">Display</a> - annotation</li>
+  - Alphabetical by display name. "BTC500" sorts after "Bitcoin Bottom Score" and
+    before "BitInfoCharts", so it goes between lines 112 and 113 of the file.
+  - `target="_blank" rel="noopener"` is mandatory (AGENTS.md section 2).
+  - No new section, no reordering, one file changed.
+
+EXACT CHANGE — verbatim, one line, 12-space indent as in the file
+            <li><a href="https://btc500.net/bitcoin-500-day-cycle" title="BTC500" target="_blank" rel="noopener">BTC500</a> - Bitcoin halving 500-day cycle dashboard: entry and exit for every completed window, post-entry drawdown (worst -83.65%), and the live buy date; daily BTC/USD closes as CSV and the same numbers as JSON, no sign-up</li>
+
+PR TITLE — verbatim
+trading: add BTC500 to Charts & Metrics
+
+PR BODY — verbatim
+Adds one entry under `Charts & Metrics`, in alphabetical position, one line, one file.
+
+BTC500 publishes the four completed Bitcoin halving 500-day windows (buy 500 days
+before the halving, sell 500 days after): entry and exit date, multiple, the lowest
+close against the entry, and the days from entry to the low.
+
+- Worst post-entry drawdown: -83.65% (2012 window, $14.07 entry, low $2.30, 128 days
+  from entry to the low).
+- Median across the four windows: -11.72%.
+- All four closed below their entry at some point after the buy (4 of 4).
+- Next window opens 2026-11-28.
+
+Numbers: https://btc500.net/data/500-day-cycles.json
+Daily BTC/USD closes: https://btc500.net/btc-usd-max.csv
+No sign-up, no ads, no affiliate or referral links, no custody of funds.
+
+Format checked against `bitcoin-information/trading.html` and AGENTS.md section 2;
+no section added, no other entry touched.
+
+RISK, STATED BEFORE SENDING (AGENTS.md section 1, "Reputation before listing")
+  The guide holds brand-new services "indefinitely" until they prove they are not
+  scams. The btc500.net domain is about three months old, so this is the most likely
+  reason for a decline. The entry is written to answer that rule rather than dodge
+  it: it says what the site is (a free data page), links the machine-readable JSON
+  so a maintainer can verify every number without trusting the page, and states
+  no ads, no referrals, no custody. If it is declined on the reputation rule, treat
+  that as a destination-level no and do not re-submit within 90 days.
+
+CHECK BEFORE OPENING THE PR
+  - https://btc500.net/bitcoin-500-day-cycle returns 200 (verified 2026-11-04).
+  - `grep -ci btc500 bitcoin-information/trading.html` -> 0, so it is not a duplicate.
+  - One file, one line; run `python3 check_links.py -ff` as AGENTS.md asks.

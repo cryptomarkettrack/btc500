@@ -1,0 +1,77 @@
+DESTINATION 2 of 2 — qualified 2026-11-04 (mandate destination-qualify-1104)
+CryptoQuant Quicktake — https://cryptoquant.com/insights/quicktake
+Route: free CryptoQuant account -> Quicktake editor. No editorial gate, no email,
+no PR; the post is typed into their own editor and appears on the public feed.
+
+WHY THIS ONE
+- Audience fit is exact: Quicktake is where on-chain and cycle analysts publish
+  short data posts, and it is read by the people who search for halving-cycle
+  numbers. It is a distribution channel, not a link directory.
+- It publishes outside authors continuously, so the 14-day rule is easy to satisfy
+  with the site's own records (below).
+- The listing page returned 200 on 2026-11-04 with 0 `rel="nofollow"` in its HTML.
+
+EVIDENCE — outside contributions published within 14 days
+  "Bitcoin Is Testing the Trader Realized Price" — authorName "Trdaer_Gemini",
+    createdAt 2026-11-04T04:08:43Z
+  "U.S. Demand Is Missing From Bitcoin's Recovery" — authorName "BaykusCharts",
+    createdAt 2026-11-03T20:37:10Z
+  "Binance BTC Funding Rate Hits 2-Month High" — authorName "Arab Chain",
+    createdAt 2026-11-04T04:27:20Z
+  Source: the site's own embedded feed payload at
+  https://cryptoquant.com/quicktake (fetched 2026-11-04). All three are community
+  analysts, not CryptoQuant staff, and all three were published in the last 24 hours.
+
+CAVEAT, MEASURED TODAY — do not overpromise
+  Individual Quicktake post pages return HTTP 403 to a scripted fetch (tried with
+  and without a browser user-agent), so the rel attribute of the links inside a
+  published post could NOT be verified. The listing page is 200 / 0 nofollow.
+  Treat a Quicktake as audience and referral traffic first, and as a possible
+  followed link second. Do not tell anyone it will fix indexation.
+
+FORMAT — taken from the outlet itself
+  - A title, then a body of short paragraphs; charts/images optional; links written
+    in the body as plain URLs.
+  - Length: keep it under ~250 words. The three posts above are 60-150 words.
+  - No prices, no calls to action, no affiliate or tracking links. CryptoQuant is a
+    data platform; a promotional post will be ignored and can be removed.
+
+POST TITLE — verbatim
+All four 500-day windows traded below entry — worst was -83.65%
+
+POST BODY — verbatim
+Every completed Bitcoin halving 500-day window has traded below its entry after the
+buy. That is 4 of 4, not one bad cycle.
+
+The rule: buy 500 days before the halving, sell 500 days after it. The drawdown
+comes after the buy, not before it.
+
+- 2012: entry $14.07 (2011-07-17), low $2.30 (2011-11-22) — -83.65%, 128 days from
+  entry to the low, and 491 of the 501 days before the halving closed below entry.
+- 2016: entry $237.38, low $210.09 — -11.49%, 180 days to the low.
+- 2020: entry $3,854.42, low $3,394.01 — -11.94%, 41 days to the low.
+- 2024: entry $16,851.30, low $16,422.56 — -2.54%, 12 days to the low.
+
+Median low against entry across the four windows: -11.72%. All four windows still
+finished higher 500 days after the halving (6.60x to 34.18x), so this is a
+statement about what the entry feels like, not about the exit.
+
+Next window opens 2026-11-28, 500 days before the next halving.
+
+Per-window table: https://btc500.net/bitcoin-500-day-cycle
+Same numbers as JSON, free to quote: https://btc500.net/data/500-day-cycles.json
+Daily BTC/USD closes as CSV: https://btc500.net/btc-usd-max.csv
+
+No sign-up, no ads, no affiliate links.
+
+NUMBERS CHECKED 2026-11-04 against the live endpoint (generated 2026-11-04T05:37:36Z)
+  summary.risk: belowEntryCount 4, allBelowEntry true, medianLowVsEntryPercent
+  -11.72, worstLowVsEntryPercent -83.65 (2012 Halving). Per-window entry/exit/low
+  values copied from cycles[].entry / .exit / .drawdown. Do not retype them from
+  this file if the JSON has moved — re-read the JSON before posting.
+
+RISK
+  Quicktake has no editor, so quality control is the poster's. A post that reads as
+  promotion gets no traction; the version above is numbers first and links last.
+  If the owner does not want to create a CryptoQuant account, this destination is
+  skipped and the lopp.net PR stands alone — do not substitute a paid listing.
