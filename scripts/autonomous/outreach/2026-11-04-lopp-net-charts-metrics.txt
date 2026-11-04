@@ -24,8 +24,14 @@ EVIDENCE — outside contributions merged within 14 days
 
 ENTRY FORMAT — taken from the destination's own file (bitcoin-information/trading.html)
   <li><a href="URL" title="TITLE" target="_blank" rel="noopener">Display</a> - annotation</li>
-  - Alphabetical by display name. "BTC500" sorts after "Bitcoin Bottom Score" and
-    before "BitInfoCharts", so it goes between lines 112 and 113 of the file.
+  - Alphabetical by display name, case-insensitively (the rendered list sorts
+    "Bitcoin Bottom Score" < "BitInfoCharts" < "CME Futures"). "BTC500" compares
+    as "btc500": b=b, then t > i, so it sorts after BOTH "Bitcoin Bottom Score"
+    (line 112) and "BitInfoCharts" (line 113), and before "CME Futures" (line
+    114). CORRECTED 2026-11-04 by the review: this file previously said "between
+    Bitcoin Bottom Score and BitInfoCharts", which is correct under neither
+    case-sensitive nor case-insensitive collation of those two neighbours. Put
+    the line between lines 113 and 114.
   - `target="_blank" rel="noopener"` is mandatory (AGENTS.md section 2).
   - No new section, no reordering, one file changed.
 

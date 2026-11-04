@@ -50,6 +50,36 @@ a proven fall from 2: `/halving-dates`, `/embed-kit` and
 - Pillar `lastCrawl` **2026-10-22** (13 days). Crawled and declined on 2026-11-03:
   `/articles/btc500-strategy` and `/articles/why-btc500-exists`.
 
+## Review 2026-11-04 (daily) — failing, eleventh consecutive
+
+- **Result: no measurable gain.** indexed **1/21** (inspection 2026-11-04T06:06:58Z:
+  `/` only; `/articles/bip-110-rejection` fell out between 11-03 04:05 and 11-04
+  06:06 with no site change, lastCrawl 2026-08-08). Series 6/25 (10-22) → 5/22 →
+  3/21 → 2/21 (10-31 → 11-03) → 1/21. 0 non-brand clicks in 14 readings, 7d
+  1 click / 9 impressions, 28d 26/95, 57 sessions (76 prior, −25.0%), referrals
+  8 of 8 `github.com`, `externalReferringDomains` 0.
+- **Measurement defect, recorded:** `review-input.json` quoted **1/3** because the
+  collector selected a 04:32 `--limit=3` inspection as the day's report; the sitemap
+  has 21 locs and the 21-row run says 1/21. `results-history.csv` now holds
+  `indexed 1, totalUrls 3`, so the series is corrupted until the collector prefers
+  a full report and treats `ERROR` rows as unknown. Owner mandate
+  `runner-honesty-1108` extended with this third defect.
+- **Input vs output:** 8 runs, 8 shipped, 0 failures; 0 commits to `src/` or
+  `public/sitemap.xml` since `62e3a8a`; today's `63efa20` is five doc/outreach files
+  and is recorded `shipped` at 10:25:14 — the runner's `archive-only` branch only
+  fires when the agent commits nothing at all.
+- **Decision brought forward:** the indexation line closes on **2026-11-05**, not
+  11-10. The closure condition (≤2) was met on 11-03; waiting six more days to
+  re-read 1 is not a measurement. No in-repo indexation work without an external
+  referring link; backlog rows 5–7 deleted.
+- **Ask:** `jlopp/lopp.net` PR — the first destination with a **followed** link
+  (page 200, 0 `rel="nofollow"`, 298 merged PRs, #1260 merged 2026-11-03 in the same
+  `Charts & Metrics` section). Insertion point corrected by this review (after
+  `BitInfoCharts`, before `CME Futures`). CoinDesk email lapsed unverifiable
+  (coindesk.com/contact → HTTP 429; 0 of 4 email asks ever sent). awesome-blockchain
+  withdrawn (not sent, `github.com` nofollow). #1009 closed tested-and-failed
+  (8 days, 0 comments, 0 sessions).
+
 ## Review 2026-11-03 (daily) — failing, tenth consecutive
 
 - **Result: no measurable gain.** indexed 2/21 for a fourth inspection, 0 non-brand
@@ -134,6 +164,7 @@ as `referrals 7d`; regression test added.
 
 | date       | mode  | verdict | what it forced                                                                                                                                                             |
 | ---------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-04 | daily | failing | Indexation line **closed** on 11-05 (1/21); lopp.net PR ask (first followed link, 0 nofollow, #1260 merged 11-03) with the insertion point corrected; CoinDesk email lapsed (429, unverifiable); awesome-blockchain withdrawn; #1009 closed; collector must stop quoting `--limit` inspections (streak 11) |
 | 2026-11-03 | daily | failing | CoinDesk email at 60 words; awesome-bitcoin **withdrawn** (0/2) → `yjjnls/awesome-blockchain`; destination must have a merge record; GitHub links are nofollow (streak 10) |
 | 2026-11-02 | daily | failing | CoinDesk re-routed to `contact@coindesk.com`; awesome-bitcoin PR; X retired; cluster read 11-08; indexation decision 11-10; runner guard re-issued (streak 8)              |
 | 2026-11-01 | deep  | failing | CoinDesk email + X restated; inspection 11-02; Soft-404 diagnosis; channel-verified ask line; owner mandate for the runner; `indexed` target 3/21 (streak 8)               |
@@ -149,25 +180,28 @@ as `referrals 7d`; regression test added.
    meta, section, sitemap or URL — until indexed is above 3 on two consecutive
    inspections or a non-github referring session appears. Proof baseline: `git diff
 --stat 62e3a8a..HEAD -- src public/sitemap.xml` must be empty.
-1. **Owner asks, channel-verified 2026-11-04: both unsent.** (a) email
-   `contact@coindesk.com`, 60 words, due **2026-11-05**; (b) PR to
-   `yjjnls/awesome-blockchain`, due **2026-11-06** — `author:cryptomarkettrack`
-   returns 0 results, so it has not been opened. If (a) is unsent on 11-05 it is
-   marked lapsed and not restated a fourth time.
-2. **Prepared 2026-11-04 and not yet used: the lopp.net PR** — the only route in
-   eight cycles that carries a followed link (`0 rel="nofollow"` on the rendered
-   page), with three outside merges in the last five days (#1260, #1259, #1258).
-   Text and format are ready in `2026-11-04-lopp-net-charts-metrics.txt`. Its known
-   risk is the repo's "reputation before listing" rule for new domains.
+1. **Live ask, channel-verified 2026-11-04: the `jlopp/lopp.net` PR, due
+   2026-11-06 — unsent.** `author:cryptomarkettrack` returns 0 results, so it has
+   not been opened. Text, corrected insertion point and evidence in
+   `outreach/2026-11-04-lopp-net-charts-metrics.txt`. This is the only prepared
+   route that carries a followed link; attempt it before writing any other copy.
+   CoinDesk email **lapsed 2026-11-05** (unverifiable: coindesk.com/contact → 429;
+   0 of 4 email asks ever sent). `yjjnls/awesome-blockchain` withdrawn 11-04
+   (nofollow; never sent).
+2. **The buy-window peg, 2026-11-28** — `/` and the pillar state the same live
+   date and the page answers 200 from production. It is the only news peg the site
+   has; the lopp.net PR should point at it.
 3. **X is retired** until an account is written down in `outreach/STATUS.md`.
-4. **bitcoin-only #1009** — open since 2026-10-27, 0 comments, no listing, 0
-   sessions. Close as tested-and-failed on 2026-11-10 if unchanged.
+4. **bitcoin-only #1009 — closed tested-and-failed 2026-11-04**: opened
+   2026-10-27, 8 days, `comments: 0`, `updated_at == created_at`, 0 sessions from
+   bitcoin-only.com. Not restated.
 5. **2026-11-08: read the four cluster queries** in both windows; if all four are
    absent and indexed is ≤2, close the cluster line as unservable and make no copy
    edit to `/` or the pillar through 2026-12-31.
-6. **2026-11-10: the indexation decision.** If indexed is 2 or fewer, the line closes
-   permanently — no in-repo indexation work without an external link, ever — and
-   backlog rows 5–7 are deleted rather than left blocked.
+6. **2026-11-05: the indexation decision, brought forward from 11-10.** indexed is
+   1/21, below the ≤2 bar today; the line closes permanently — no in-repo
+   indexation work without an external referring link, ever — and backlog rows 5–7
+   are deleted rather than left blocked.
 7. **Own 2026-11-28** — the buy window opens in 24 days; `/` and the pillar state the
    same live date. It is the only news peg the site has.
 
@@ -176,13 +210,14 @@ as `referrals 7d`; regression test added.
 Scored 1–10 on impact × confidence ÷ effort. **Only rows 0–2 are permitted work, and
 only the owner can do them. Rows 3–4 are readings, not builds. Rows 5–7 are blocked
 while indexed is under 5 — eight cycles of shipping moved the gate 6 → 2, so building
-more pages is a habit, not a bet. Rows 5–7 are deleted on 2026-11-10 if indexed ≤2.**
+more pages is a habit, not a bet. Rows 5–7 are deleted on 2026-11-05 if indexed ≤2
+(the decision was brought forward from 11-10: it is already 1/21).**
 
 | #   | Bet                                                            | Why it can move the needle                                                                                                                                                                          | I   | E   |
 | --- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
 | 0   | Email `contact@coindesk.com` — the −83.65% drawdown            | CoinDesk (2026-08-05), Yahoo (06-24), Investing.com (08-06) all ran the rule; none ran the per-window drawdown. Due 2026-11-05                                                                      | 10  | 1   |
-| 1   | PR to `jlopp/lopp.net` → Charts & Metrics (**prepared 11-04**) | **Followed link** (0 nofollow on the rendered page), 298 merged PRs, three outside merges 10-31 → 11-03, one-line format. The only destination with both a record and a followed link               | 9   | 2   |
-| 2   | PR to `yjjnls/awesome-blockchain` (3,644 stars)                | Merged 3 outside PRs on 2026-11-03; one line under `## Releated Tools`. GitHub is the channel the ledger proves the owner uses — but `github.com` is `rel="nofollow"`, so discovery only. Due 11-06 | 5   | 2   |
+| 1   | PR to `jlopp/lopp.net` → Charts & Metrics (**live ask, due 11-06**) | **Followed link** (0 nofollow on the rendered page), 298 merged PRs, three outside merges 10-31 → 11-03, one-line format. The only destination with both a record and a followed link; insertion point corrected 11-04 (after `BitInfoCharts`, before `CME Futures`) | 9   | 2   |
+| 2   | ~~PR to `yjjnls/awesome-blockchain` (3,644 stars)~~               | **Withdrawn 2026-11-04, never sent** (`author:cryptomarkettrack` → 0 results). `github.com` is `rel="nofollow"`, so a merge buys discovery only and cannot move `indexed` or `externalReferringDomains`. Replaced by row 1 in the same channel | 2   | 2   |
 | 3   | CryptoQuant Quicktake (**prepared 11-04**)                     | Community research feed with an exact audience fit; outside posts published hourly. No editorial gate, needs an account; post pages 403 to a scripted fetch, so followed status unverified          | 6   | 3   |
 | 4   | Cluster query reading 2026-11-08                               | Decides whether the 500-day framing is served or has no demand                                                                                                                                      | 7   | 1   |
 | 5   | ~~Merge `/halving-dates` into the pillar~~                     | **Blocked while indexed is under 5** — needs a served page; 0 impressions in 28d                                                                                                                    | 5   | 3   |

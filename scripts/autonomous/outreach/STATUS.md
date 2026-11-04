@@ -24,10 +24,11 @@ zero.
 | `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap                       | 2026-10-27  | 2026-10-28 | no   | —          | 1 GA4 referral session from bitcoinmagazine.com in 7d                                                                                                    | lapsed                                                                                                                                         |
 | `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion")                     | 2026-10-27  | 2026-10-29 | no   | —          | 1 GA4 referral session from bitcointalk.org in 7d                                                                                                        | unmeasured                                                                                                                                     |
 | `x-cycle-window-post-restated`   | X post               | @btc500halving                                                     | 2026-10-27  | 2026-11-02 | no   | —          | 1 GA4 referral session from x.com/twitter.com in 7d                                                                                                      | retired 2026-11-02 — no such account found, no post in 6d                                                                                      |
-| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                                                                                      | sent / awaiting referral                                                                                                                       |
-| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)         | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                                                                                          | unmeasured — re-routed 2026-11-02; **0 coindesk.com sessions in 7d and 28d, verified 2026-11-03**                                              |
+| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account) | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                                                                                      | **failed 2026-11-04** — 8 days open, `comments: 0`, `updated_at == created_at` 2026-10-27T05:34:46Z, 0 bitcoin-only.com sessions: tested, no effect |
+| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)         | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                                                                                          | **lapsed 2026-11-05 (unverifiable)** — 0 sent; address cannot be confirmed: coindesk.com/contact and coindesk.com both return HTTP 429 to a scripted fetch (2026-11-04). Not restated |
 | `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources               | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21                                                                   | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2 |
-| `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                  | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | prepared — destination qualifies: 99 merged PRs, 3 merged 2026-11-03 (#147, #149, #156)                                                        |
+| `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                  | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | **withdrawn 2026-11-04, never sent** (`q=author:cryptomarkettrack` → 0 results); `github.com` nofollow cannot move `indexed`. Replaced by `github-lopp-net-charts` |
+| `github-lopp-net-charts`         | GitHub PR            | `jlopp/lopp.net` → `bitcoin-information/trading.html` → Charts & Metrics | 2026-11-04  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:jlopp/lopp.net`; GA4 referral sessions from lopp.net in 14d                                                | **live** — first destination with a **followed** link (page 200, 0 `rel="nofollow"`); 298 merged PRs, #1260 merged 2026-11-03 in the same section; insertion point corrected 11-04 |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -245,3 +246,28 @@ The lopp.net entry is the first prepared route that carries a followed link, so 
 the one to attempt first. Its known risk is stated in the file: the repo's AGENTS.md
 holds brand-new services "indefinitely" until they prove they are not scams, and this
 domain is about three months old.
+
+**2026-11-04 (results review, daily) — the ledger after eleven non-improving weeks:
+9 asks handed over since 2026-10-27, 3 executed, all of them GitHub.** `#1009`
+opened 2026-10-27 and unchanged for 8 days (`comments: 0`, `updated_at ==
+created_at`) with 0 bitcoin-only.com sessions → **failed**, not extended.
+`github-awesome-blockchain-pr` never existed (`q=author:cryptomarkettrack+repo:
+yjjnls/awesome-blockchain` → `0`) and `github.com` serves `nofollow` on README
+links, so it is **withdrawn** rather than carried into a second week.
+The CoinDesk email is **lapsed 2026-11-05**: `https://www.coindesk.com/contact`
+and `https://www.coindesk.com/` both return **HTTP 429** to a scripted fetch
+today, so `contact@coindesk.com` is not verifiable, and §10(a) of the review
+protocol makes an unverified address invalid — the failure would be
+indistinguishable from the owner ignoring it. It is not restated a fourth time.
+
+One live ask remains, and it is the first with a followed link: `jlopp/lopp.net`
+→ `bitcoin-information/trading.html` → `Charts & Metrics`, due **2026-11-06**,
+text in `2026-11-04-lopp-net-charts-metrics.txt`. Verified today, independently
+of the preparing cycle: rendered page 200 with **0** `rel="nofollow"`, 298 merged
+PRs, `#1260` merged **2026-11-03** by volodymyrslipak in the same section. The
+review corrected the prepared insertion point: `BTC500` sorts after `BitInfoCharts`
+(line 113) and before `CME Futures` (line 114), not between `Bitcoin Bottom Score`
+and `BitInfoCharts`.
+
+From today, no new destination copy is written while this ask is unsent. If it is
+unsent on 2026-11-07, all outreach preparation stops until 2026-11-28.

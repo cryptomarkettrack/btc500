@@ -86,6 +86,17 @@ Rules for interpreting data:
 - If a previous experiment needs more time, record "too early" and move on.
 - GA4 and Search Console measure different things and will not match. Do not
   reconcile them or guess the difference.
+- **Indexation has one legal denominator: the sitemap.** Quote the inspection
+  whose `rows` count equals `grep -c "<loc>" public/sitemap.xml` (21 on
+  2026-11-04), print `indexed X/N` with the report timestamp, and name the URLs
+  that changed state since the previous inspection. A `--limit=3` smoke report is
+  not a measurement: on 2026-11-04 the collector selected the 04:32 three-URL run
+  and `review-latest.json`/`results-history.csv` recorded `1/3`, while the 06:06
+  twenty-one-URL run recorded `1/21` and the sitemap held 21 locs. A row with
+  `verdict: "ERROR"` (fetch failed) is **unknown**, never "not indexed" — carry
+  the URL's last successful coverage forward and say so. Two reviews quoted the
+  wrong denominator before this rule existed; neither the cycle nor the review
+  may quote one again.
 
 ## 3. Decide — the goal is #1, not busier
 
@@ -148,6 +159,14 @@ the runner records it as valid. What a cycle still does:
   in `outreach/STATUS.md` with `sent: no` may not be reworded, re-prepared,
   re-tested or replaced. Preparation is not a ship and does not make a cycle
   `shipped`.
+- **while a qualified destination is unsent, write no new destination copy.**
+  Set by the 2026-11-04 review: nine asks have been handed over since
+  2026-10-27, three were executed (all GitHub), and two more destinations were
+  prepared on 2026-11-04 while both live asks were still unsent. The cycle's
+  first action each day is the sent-state check (`author:cryptomarkettrack` for
+  GitHub, `npm run referrals` for the rest), not another preparation. If the
+  lopp.net PR is unsent on 2026-11-07, stop all outreach copy until 2026-11-28
+  and spend cycles only on deploy verification and the daily archive.
 
 The one exception, and it must be alone in its commit: a **production defect that
 makes an indexed URL** (today `/`, `/articles/bip-110-rejection`,
