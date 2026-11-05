@@ -92,6 +92,47 @@ a proven fall from 2: `/halving-dates`, `/embed-kit` and
 - **Decision held:** the 2026-11-10 indexation line and the 2026-11-08 cluster read
   stand. The freeze stands. Verdict `failing`, blocked on `regressed: indexation`.
 
+## Session 2026-11-05 — mandate `indexed-decision-1105` executed: the indexation line closes
+
+Preflight: archive fresh (last row 2026-11-04, 0 stale), 0 experiments open, 0 due,
+site 200/200, review 2026-11-04 (`failing`, streak 11) with the one mandate due today
+(`indexed-decision-1105`); full freeze held — `git diff --stat 62e3a8a..HEAD -- src
+public/sitemap.xml` → empty. No site file touched today.
+
+**`indexed-decision-1105` — executed: the indexation line closes on 2026-11-05.**
+- Wrote in BTC500_GROWTH.md that no in-repo indexation work — no merge, redirect,
+  sitemap row, title, meta, section or new page — is attempted again without an
+  external referring link. The gate is now `externalReferringDomains > 0`.
+- Retired the `indexed` target (review-latest.json → status `retired`). The ≤2
+  condition was met on 2026-11-03 and is now 1/21, so waiting to 2026-11-10 was
+  theatre, not measurement.
+- Deleted ranked-backlog rows 5–7 (`/halving-dates` merge, cycle-vs-cycle live
+  tracker, `/cycle/*` pages + cost-of-waiting calculator) — blocked while indexed
+  is under 5, which no longer governs the roadmap.
+- Series printed in this block: **6/25 (10-22) → 5/22 → 3/21 → 2/21 (10-31 → 11-03) →
+  1/21 (11-04 06:06, 21 rows)**.
+
+Two state changes did not come from us, and are recorded as such:
+
+- Pillar `/bitcoin-500-day-cycle` `lastCrawl` **2026-10-22** (13 days), while
+  `/articles/btc500-strategy` and `/articles/why-btc500-exists` were crawled
+  2026-11-03 and declined on first fetch.
+- `/articles/bip-110-rejection` moved from indexed (2026-11-03T04:05Z) to
+  not-indexed (2026-11-04T06:06Z) with no site change in between (diff since
+  `62e3a8a` empty).
+
+**Decision taken (mandate executed 2026-11-05): no in-repo indexation work — no
+merge, redirect, sitemap row, title, meta, section or new page — without an
+external referring link.** Shipping took the series 6 → 2; freezing held 2 → 2 then
+2 → 1. Until a non-github referral session lands, the freeze stands and the cycle
+ships nothing further.
+
+Ask state today (channel-verified, not from the ledger): live ask
+`github-lopp-net-charts` — `q=author:cryptomarkettrack+repo:jlopp/lopp.net` →
+**0 results**, so it stays **unsent** (due 2026-11-06); `npm run referrals` →
+`github.com 8`, no other source. No new destination copy written while it is
+unsent.
+
 ## Session 2026-11-04 — archive-only: two destinations qualified, one with a followed link
 
 Preflight: archive refreshed (last row 2026-11-03, 0 stale), 0 experiments open, 0
@@ -208,10 +249,9 @@ as `referrals 7d`; regression test added.
 ## Ranked backlog
 
 Scored 1–10 on impact × confidence ÷ effort. **Only rows 0–2 are permitted work, and
-only the owner can do them. Rows 3–4 are readings, not builds. Rows 5–7 are blocked
-while indexed is under 5 — eight cycles of shipping moved the gate 6 → 2, so building
-more pages is a habit, not a bet. Rows 5–7 are deleted on 2026-11-05 if indexed ≤2
-(the decision was brought forward from 11-10: it is already 1/21).**
+only the owner can do them. Rows 3–4 are readings, not builds. Rows 5–7 were deleted on
+2026-11-05 (mandate `indexed-decision-1105`): the indexation line closed with indexed
+at 1/21, so blocked-build rows are retired, not carried forward.**
 
 | #   | Bet                                                            | Why it can move the needle                                                                                                                                                                          | I   | E   |
 | --- | -------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
@@ -220,9 +260,6 @@ more pages is a habit, not a bet. Rows 5–7 are deleted on 2026-11-05 if indexe
 | 2   | ~~PR to `yjjnls/awesome-blockchain` (3,644 stars)~~               | **Withdrawn 2026-11-04, never sent** (`author:cryptomarkettrack` → 0 results). `github.com` is `rel="nofollow"`, so a merge buys discovery only and cannot move `indexed` or `externalReferringDomains`. Replaced by row 1 in the same channel | 2   | 2   |
 | 3   | CryptoQuant Quicktake (**prepared 11-04**)                     | Community research feed with an exact audience fit; outside posts published hourly. No editorial gate, needs an account; post pages 403 to a scripted fetch, so followed status unverified          | 6   | 3   |
 | 4   | Cluster query reading 2026-11-08                               | Decides whether the 500-day framing is served or has no demand                                                                                                                                      | 7   | 1   |
-| 5   | ~~Merge `/halving-dates` into the pillar~~                     | **Blocked while indexed is under 5** — needs a served page; 0 impressions in 28d                                                                                                                    | 5   | 3   |
-| 6   | ~~Cycle-vs-cycle live tracker~~                                | **Blocked while indexed is under 5** — bitbo and bitcoin-daily own the live view                                                                                                                    | 4   | 6   |
-| 7   | ~~`/cycle/*` pages, cost-of-waiting calculator~~               | **Blocked while indexed is under 5** — new URLs on a site with 20/21 unindexed                                                                                                                      | 3   | 6   |
 
 ## Open issues
 

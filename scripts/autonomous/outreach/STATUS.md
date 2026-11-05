@@ -271,3 +271,10 @@ and `BitInfoCharts`.
 
 From today, no new destination copy is written while this ask is unsent. If it is
 unsent on 2026-11-07, all outreach preparation stops until 2026-11-28.
+
+**2026-11-05 (ask gate, `ask-gate-1107` check): the live ask is still unsent.**
+`GET https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:jlopp/lopp.net`
+→ `total_count: 0`, so the `github-lopp-net-charts` PR has not been opened; due
+**2026-11-06**. `npm run referrals` → `referrals 7d: github.com 8, x.com 0, reddit.com
+0, bitcoinmagazine.com 0, bitcointalk.org 0` (window 2026-10-28 → 2026-11-03).
+Preparation stops while the ask is unsent; no new destination copy written today.
