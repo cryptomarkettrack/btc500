@@ -272,8 +272,11 @@ LAST_MODEL=""
 LAST_HEAD="$START_HEAD"
 LAST_RC=1
 AGENT_COMMIT=0
+MODEL_COUNT="${#MODELS[@]}"
+MODEL_IDX=0
 
 for model in "${MODELS[@]}"; do
+  MODEL_IDX=$((MODEL_IDX + 1))
   if [[ $(( $(date +%s) - START_EPOCH )) -ge "$CYCLE_DEADLINE" ]]; then
     log "Cycle deadline reached before trying $model; stopping"
     break
@@ -322,7 +325,11 @@ for model in "${MODELS[@]}"; do
   fi
 
   if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    log "Attempt left uncommitted changes and never settled; not retrying on a dirty tree"
+    log "Attempt left uncommitted changes and never settled"
+    if [[ $MODEL_IDX -lt $MODEL_COUNT ]]; then
+      log "Tree still dirty; retrying with the next free model ($((MODEL_IDX + 1)) of $MODEL_COUNT)"
+      continue
+    fi
     FINAL_HEAD="$AFTER_HEAD"
     finish 1 dirty-tree
   fi
