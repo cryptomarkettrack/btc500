@@ -183,6 +183,14 @@ Lifting condition, both checkable from files: `indexed` above 3 on two
 consecutive inspections, **or** one GA4 referral session from a domain other than
 `github.com`. Until then the gate is shut and no in-repo work can be measured.
 
+**2026-11-05 (this review):** the lift condition is retired as a content bar and
+replaced by the gate alone — the indexation line closed on 2026-11-05 (mandate
+`indexed-decision-1105`, executed today), so the only remaining lever is
+`externalReferringDomains > 0`. Until a non-github referral session lands, content
+work (idea menu A–D) may not resume; the cycle's permitted output is the
+mandate-named action or an archive-only reading, and any future content bet waits
+for the gate.
+
 PERFORMANCE must open with these three lines, every cycle:
 
 ```

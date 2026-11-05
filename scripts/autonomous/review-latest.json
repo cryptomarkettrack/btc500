@@ -1,106 +1,98 @@
 {
   "schema": 1,
-  "generated": "2026-11-04",
+  "generated": "2026-11-05",
   "mode": "daily",
-  "window": { "start": "2026-10-28", "end": "2026-11-04" },
+  "window": { "start": "2026-10-29", "end": "2026-11-04" },
   "verdict": "failing",
   "signals": [
     {
       "id": "indexation",
       "state": "regressed",
-      "note": "1 of 21 indexed (inspection 2026-11-04T06:06:58Z, 21 rows): only `/`. `/articles/bip-110-rejection` was indexed at 2026-11-03T04:05Z and is now 'Crawled - currently not indexed' (lastCrawl 2026-08-08) with no site change in between. Series: 6/25 (10-22) → 5/22 (10-28) → 3/21 (10-29, 10-30) → 2/21 (10-31 → 11-03) → 1/21. Coverage now: 1 indexed, 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404 (`/articles/bear-market-accumulation`). MEASUREMENT DEFECT: review-input.json says 1/3 because the collector selected the 04:32 three-URL `--limit` inspection (rows 3) as the day's report; the sitemap has 21 locs and the 21-row inspection says 1/21."
+      "note": "1/21 indexed (inspection 2026-11-05T07:32:31Z, 21 rows; `/` only, Submitted and indexed, lastCrawl 2026-11-01). Series: 6/25 (2026-10-22) → 5/22 (2026-10-28) → 3/21 (2026-10-29, 2026-10-30) → 2/21 (2026-10-31 → 2026-11-03) → 1/21 (2026-11-04 06:06, 21 rows) → 1/21 (2026-11-05 07:32, 21 rows). Coverage now: 1 indexed, 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404 (/articles/bear-market-accumulation). /articles/bip-110-rejection moved indexed→not-indexed between 2026-11-03T04:05Z and 2026-11-04T06:06Z with no site change; pillar /bitcoin-500-day-cycle lastCrawl 2026-10-22; /articles/btc500-strategy and /articles/why-btc500-exists crawled 2026-11-03 and declined."
     },
     {
       "id": "non-brand-clicks",
       "state": "stalled",
-      "note": "0 non-brand clicks in 14 consecutive readings of results-history.csv (2026-10-22 → 2026-11-04) and 0 in the 28-day report. The 7-day query table is two rows: 'btc500' 0 clicks / 1 impression @7 and 'bitcoin 500' 0 clicks / 1 impression @67. 7-day totals 1 click / 9 impressions, and that click is on `/` at position 20.3. Stage: not served — 20 of 21 URLs are outside the index, so no query we would want can be won yet."
+      "note": "0 non-brand clicks in 14 consecutive readings of results-history.csv (2026-10-22 → 2026-11-04) and 0 in the 28-day report; the 7-day query table is two rows, both our own name or a near variant ('btc500' 0 clicks / 1 impression @7, 'bitcoin 500' 0 / 1 @67); 7-day totals 1 click / 9 impressions, that click on / at position 20.3. Stalled since the baseline reading, under the 21-day stall bar. Demand exists (CoinDesk 2026-08-05, Yahoo Finance 2026-06-24, Investing.com 2026-08-06 ran the 500-day rule) but the pillar is not served."
     },
     {
       "id": "impressions",
       "state": "flat",
-      "note": "9 impressions in the 7 days to 2026-11-01 (1 click, 11.1% CTR, position 20.3), spread across 9 pages at exactly 1 impression each — nine single-impression rows, not a ranking. 28 days: 26 clicks / 95 impressions / 27.4% / position 11.4, still carried by the 14-click week that ages out on 2026-11-09. Down from 45 impressions on 2026-10-22. Under 100 impressions this is noise and is reported, not acted on."
+      "note": "9 impressions in the 7 days to 2026-11-02 (1 click, 11.1% CTR, position 20.3), spread across 9 pages at exactly 1 impression each — nine single-impression rows, not a ranking; 28 days 26/95; down from 45 impressions on 2026-10-22; under 100 impressions this is noise and is reported, not acted on."
     },
     {
       "id": "positions-4-to-20",
       "state": "stalled",
-      "note": "positions4to20 = 1 (query rows are anonymised, so this is a floor). None of the four 500-day cluster queries ('when is / what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle', '500 days before next bitcoin halving') appears in the 7-day or 28-day table. The pillar's lastCrawl is still 2026-10-22 — 13 days, and 6 days after the 2026-10-29 title/meta/H1 retarget (5aad29f) that has never been served."
+      "note": "positions4to20 = 1 (query rows are anonymised, so this is a floor). None of the four 500-day cluster queries ('when is / what is 500 days before the next bitcoin halving', 'what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle', '500 days before next bitcoin halving') appears in the 7-day or 28-day table; the pillar's lastCrawl is still 2026-10-22, 6 days after the 2026-10-29 title/meta/H1 retarget (5aad29f, 21:51) that has never been served."
     },
     {
       "id": "sessions",
       "state": "flat",
-      "note": "57 sessions / 24 users / 15 new / 113 views / 30 engaged (52.6%) in the GA4 window 2026-10-28 → 2026-11-03; the report's own previous 7d is 76 sessions, so −25.0%. Direct 42, Referral 8, Organic Search 1. Landing: / 45, (not set) 4, /bitcoin-500-day-cycle 2, /insider-trading 2. Direct-led, not search — not growth."
+      "note": "GA4 7d (2026-10-29 → 2026-11-04): 51 sessions / 23 users / 13 new / 91 views / 45.1% engaged / 130.16s avg; previous 7d 91 sessions / 45 users / 47 new / 189 views / 45.1% / 144.75s; Direct 39, Referral 6, AI Assistant 4, Organic Search 1, Organic Social 1, Unassigned 1; landing / 38, /bitcoin-500-day-cycle 2, /insider-trading 2. Sessions down vs the prior period and Direct-led, not search — not growth. results-history for 2026-11-05: sessions 51."
     },
     {
       "id": "referral-sessions",
       "state": "stalled",
-      "note": "8 referral sessions in 7 days, 8 of 8 from github.com — this repository and the owner's browser, as outreach/STATUS.md records. x.com 0, reddit.com 0, coindesk.com 0, bitcoinmagazine.com 0, bitcointalk.org 0, bitcoin-only.com 0, lopp.net 0. externalReferringDomains = 0. The runner marks this green and credits ask-effect; §10(b) says a github self-referral is not an outcome, and this review does not count it as one."
+      "note": "6 referral sessions in 7 days, 6 of 6 from github.com, 1 user — this repository and the owner's browser, as outreach/STATUS.md records; x.com 0, reddit.com 0, coindesk.com 0, bitcoinmagazine.com 0, bitcointalk.org 0, bitcoin-only.com 0, lopp.net 0; externalReferringDomains = 0. Per §10(b) a github.com referral is not a positive outcome signal; only a session from a domain that is not github.com counts."
     },
     {
       "id": "ask-effect",
       "state": "stalled",
-      "note": "9 asks handed over since 2026-10-27, 3 executed — all GitHub (#1009 filed 2026-10-27; PRs #201/#202 to awesome-bitcoin, both closed unmerged). Email, community and X: 0 of 6 sent. #1009 re-verified today: state open, comments 0, created_at == updated_at 2026-10-27T05:34:46Z (8 days), 0 sessions from bitcoin-only.com. 0 sessions from any non-github domain, 0 merged or accepted listings. Two destinations were prepared on 2026-11-04 and neither was sent."
+      "note": "The github-lopp-net-charts ask (due 2026-11-06) is still unsent today: `q=author:cryptomarkettrack+repo:jlopp/lopp.net` → total_count 0; `npm run referrals` → github.com 8, no other source; #1009 closed tested-and-failed 2026-11-04 (8 days open, 0 comments, 0 sessions); CoinDesk ask lapsed 2026-11-05 (unverifiable, coindesk.com 429); X ask retired 2026-11-02 (no such account). Measurable after 2026-11-11."
     },
     {
-      "id": "input-vs-output",
+      "id": "deploy-health",
       "state": "regressed",
-      "note": "8 runs, 8 shipped, 0 failures in 7 days; 1 of 1 due mandate executed (destination-qualify-1104). In the same window: 0 commits to src/ or public/sitemap.xml since 62e3a8a (`git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` empty), and today's head 63efa20 touches 5 files — BTC500_GROWTH.md, last-deploy.json, two outreach .txt files, STATUS.md — recorded `shipped` at 2026-11-04T10:25:14. Output over the same period: indexed 2 → 1, 7-day clicks 1, 7-day impressions 9, non-brand clicks 0, external referring domains 0, 0 new sends."
+      "note": "1 failed run in 7d: dirty-tree (2026-11-05T06:20:26, deepseek attempt never settled; tests/vercel/manifest/site skipped, site 000, archive refreshed-committed); last run 2026-11-05T08:16:17 shipped clean on opencode/flint-40b-free head 257a504 (tests pass, vercel success, manifest pass, site 200, archive fresh). Also 2026-10-30 vercel=timeout."
     },
     {
       "id": "cycle-yield",
       "state": "flat",
-      "note": "The runner reports cycle-yield green (8 shipped, 2 positive outcome signals) — the two positives are the github self-referral and session count. The 8 'shipped' cycles changed no page, URL, title or meta; the runner's `archive-only` branch fires only when the agent commits nothing at all (scripts/autonomous/run-growth-cycle.sh:456-462), so a doc-only commit is counted as a ship. Same false-green as counting a github.com self-referral as growth."
-    },
-    {
-      "id": "deploy-health",
-      "state": "green",
-      "note": "8 runs in 7 days, 0 failures (status-history.csv, last 2026-11-04T10:25:14 head 63efa20, tests pass, vercel success, manifest pass, site 200). Re-fetched by this review: https://btc500.net/ → 200, /sitemap.xml → 200 with 21 locs, /bitcoin-500-day-cycle → 200 per last-deploy.json checks, /data/500-day-cycles.json → 200. Note: the 08:44 URL-inspection run reported `https://btc500.net/ fetch failed` — that is an API error, not an outage; the URL answers 200 to curl."
+      "note": "8 cycles shipped in 7d; the runner reports 2 positive outcome signals; the shipped work moved no page/URL/title/meta — the freeze held and head 257a504 is docs-only; the doc-only commit was recorded shipped (runner-honesty defect)."
     },
     {
       "id": "data-freshness",
       "state": "green",
-      "note": "All three reports were fetched 4.2–4.7h before this review (ageHours in review-input.json sources) and the GSC 7-day report reconciles: byProperty 1 click / 9 impressions = byPage 1 / 9. The indexation report is fresh but partial (3 rows vs 21 sitemap locs), so freshness is real and the denominator is wrong."
+      "note": "All three reports fetched within 36h (ages 0–1.6h in review-input.json sources); GSC 7-day reconciles: byProperty 1 click / 9 impressions = byPage 1 / 9."
     }
   ],
   "why": [
-    "Indexation is the regression, and it is an authority verdict, not a markup defect. Stage: crawled and declined. 6/25 (2026-10-22) → 5/22 (10-28) → 3/21 (10-29, 10-30) → 2/21 (10-31 → 11-03) → 1/21 (11-04 06:06). The crawler is active — /articles/btc500-strategy and /articles/why-btc500-exists were crawled 2026-11-03 and declined on first fetch — while 14 of 21 URLs are 'Crawled - currently not indexed', 5 are unknown to Google and one is a Soft 404. The decisive datum: /articles/bip-110-rejection moved from indexed (2026-11-03T04:05Z) to not-indexed (2026-11-04T06:06Z) with zero site changes since 62e3a8a. Nothing inside this repository caused that and nothing inside it can undo it. Falsifiable test: there is none left in-repo, which is why the closure decision is brought forward to 2026-11-05.",
-    "Non-brand clicks are zero because we are not eligible for the queries, not because the phrasing is wrong. Stage: not served. 0 in 14 readings; the whole 7-day table is two rows, both our own name or a near variant ('btc500' @7, 'bitcoin 500' @67). The demand is documented, not inferred: CoinDesk (2026-08-05), Yahoo Finance (2026-06-24) and Investing.com (2026-08-06) all ran the 500-day rule. With 20 of 21 URLs outside the index, a title rewrite cannot be served, so no cycle mandate is written for this signal — the action is the external link, and this review issues exactly one.",
-    "Impressions (9), positions 4–20 (1) and sessions (57) are one failure seen three times: an unserved index. Nine impressions spread one per page and a 20.3 average position made of nine single-impression rows are noise; 57 sessions are 42 direct, 1 organic and 8 self-referrals from github.com, down 25.0% from 76 in the report's own previous 7d. Warning for the next review: the 28-day 26/95 still contains a 14-click week that ages out on 2026-11-09, so the 28-day figure will fall sharply then. That fall is arithmetic, not a new regression — do not report it as one.",
-    "The measurement itself failed today, and in the reviewer's favour, which is worse. review-input.json records indexed 1/3 and results-history.csv writes `indexed 1, totalUrls 3` for 2026-11-04, against a sitemap of 21 locs. Cause: scripts/autonomous/collect-results.mjs `datedReportIndex` keeps the first same-day report when two candidates are equally close to the preferred window, and an inspection report has no window, so the 04:32 `--limit=3` smoke run beat the 06:06 21-URL run. The runner's `regressed: indexation` is still correct — 2 → 1 happened on 11-03 — but the printed '6 → 1' is not, and the series is now polluted with a denominator of 3. Two consequences: the owner mandate must fix the collector, and this review quotes 1/21, not 1/3.",
-    "The ask funnel has produced one thing in eleven weeks: motion. 9 asks handed over, 3 executed, all on GitHub; 0 sessions from any non-github domain; 0 external referring domains; 1 indexed URL. The cycle's own 2026-11-04 work was two more prepared destinations while both live asks were unsent — preparation is not a ship, and it cannot be measured. The one route that could change the gate was found today and verified independently of the cycle: jlopp/lopp.net carries a followed link (page 200, 0 rel=\"nofollow\"), merges outside one-line PRs within days (#1260 merged 2026-11-03 in the same `Charts & Metrics` section, 298 merged in total), and is submitted through GitHub — the only channel this owner has ever executed. That is the ask, and the prepared file was wrong about where the line goes: 'BTC500' collates after `BitInfoCharts`, not before it. A PR placed on the wrong line is a rejection that looks like a reputation problem.",
-    "The machine still reports health it does not have, and the owner mandate for it has now been restated three times without being implemented. `grep -nE 'review-rejected|review-invalid' scripts/autonomous/run-review-cycle.sh` returns nothing on 2026-11-04; the `archive-only` branch in run-growth-cycle.sh (line 456) only fires when AGENT_COMMIT=0, so today's five-file doc commit is `shipped`; and the collector's inspection selection produced 1/3. Three separate false-greens, one file each, and no cycle can fix any of them because the reviewer may not edit the runners."
+    "Indexation is the regression, and it is an authority verdict, not a markup defect. Stage: crawled and declined. Series 6/25 (2026-10-22) → 5/22 → 3/21 → 2/21 → 1/21 (2026-11-05, inspection 2026-11-05T07:32:31Z, 21 rows; `/` only). The crawler is active — /articles/btc500-strategy and /articles/why-btc500-exists were crawled 2026-11-03 and declined — while 14 of 21 URLs are crawled-not-indexed, 5 are unknown to Google and one is a Soft 404; /articles/bip-110-rejection indexed→not-indexed between 2026-11-03T04:05Z and 2026-11-04T06:06Z with no site change since 62e3a8a. Falsifiable test: none left in-repo, which is why the closure decision was brought forward to 2026-11-05 and the freeze is now unconditional in its object.",
+    "Non-brand clicks are zero because we are not eligible for the queries, not because the phrasing is wrong. Stage: not served. 0 non-brand clicks in 14 consecutive readings (2026-10-22 → 2026-11-04) and 0 in the 28-day report; the 7-day query table holds two rows, both our own name or a near variant, 0 clicks; the 7-day totals are 1 click / 9 impressions with that click on / at position 20.3. Demand is documented — CoinDesk (2026-08-05), Yahoo Finance (2026-06-24), Investing.com (2026-08-06) all ran the 500-day rule — and the blocker is the unserved pillar.",
+    "Impressions (9), positions 4–20 (1) and sessions (51) are the unserved-index failure seen three times: nine impressions spread one per page, a 20.3 average position made of single-impression rows, and sessions down to 51 (GA4 previous 7d 91) and Direct-led, not search. The 28-day 26/95 still carries a 14-click week that ages out on 2026-11-09; that fall is arithmetic, not a regression.",
+    "The machine still reported a deploy-health regression this week (1 failed run, dirty-tree at 2026-11-05T06:20:26 on the never-settling deepseek attempt; last run 08:16:17 shipped clean). The false-green paths are unchanged and were re-issued as owner mandate runner-honesty-1108.",
+    "No measurable gain: 8 cycles shipped in the week, none moving a page/URL/title/meta (freeze held; head 257a504 docs-only), and the outcome did not gain — indexed 2/21 → 1/21, non-brand clicks 0 → 0, impressions 9, sessions 82 → 51, externalReferringDomains 0, 0 new indexed pages, 0 non-brand clicks, 0 new sends executed."
   ],
   "questions": [
-    "Eleven reviews, one published site, 1 of 21 URLs indexed, 0 non-brand clicks in 14 readings, 0 external referring domains, 1 executed ask that produced 0 sessions. What does the twelfth review do that the first eleven did not, other than write this file?",
-    "The cycle prepared two destinations on 2026-11-04 while the two asks it already had were unsent. Why is producing more copy still a permitted cycle outcome when the ledger says 9 handed over and 3 executed?",
-    "If the indexation line closes on 2026-11-05 as this review orders, what is the cycle for between 2026-11-05 and the 2026-11-28 buy window — and can that period produce anything measurable without a link?",
-    "Who is the one editor who would publish a -83.65% post-entry drawdown before 2026-11-28, and is there a route to them that has ever produced a send?"
+    "Twelve reviews in, one published site, 1 of 21 URLs indexed, 0 non-brand clicks in 14 readings, 0 external referring domains — what does this review do that the last one did not, other than write this file?",
+    "The cycle shipped eight times this week and moved no page; with the indexation line retired and the freeze unconditional, what is the cycle's permitted output between the closure on 2026-11-05 and the buy window opening on 2026-11-28?"
   ],
   "mandates": [
     {
-      "id": "indexed-decision-1105",
-      "action": "Close the indexation line on 2026-11-05, one day after this review, not on 11-10: write in BTC500_GROWTH.md that no in-repo indexation work — no merge, redirect, sitemap row, title, meta, section or new page — is attempted again without an external referring link, delete ranked-backlog rows 5–7, and retire the `indexed` target. Print the series in the same block: 6/25 (10-22) → 5/22 → 3/21 → 2/21 (10-31 → 11-03) → 1/21 (11-04 06:06, 21 rows), with the two state changes that did not come from us: pillar lastCrawl 2026-10-22, bip-110 indexed→not-indexed between 11-03 04:05 and 11-04 06:06. Change no site file on that day. This replaces mandate indexed-decision-1110: its condition (indexed ≤2) was met on 11-03 and is now 1, so waiting six days to re-read 1 is theatre, not measurement.",
-      "because": "indexed 1/21 today, down from 6/25 on 2026-10-22, with 14 of 21 URLs crawled-not-indexed, 5 unknown to Google, 1 Soft 404 and 0 external referring domains. The last indexed article left the index between two inspections with no site change (git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml empty). Both strategies are measured: shipping took 6 → 2, freezing held 2 → 2 then 2 → 1. There is no in-repo lever left to test.",
-      "due": "2026-11-05",
-      "owner": "cycle"
-    },
-    {
-      "id": "cluster-read-1108",
-      "action": "On 2026-11-08 print, for 'when is 500 days before the next bitcoin halving', 'what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle' and '500 days before next bitcoin halving', impressions / clicks / position or 'not present' in both the 7-day and 28-day reports, plus the pillar's coverage and lastCrawl and the 28-day property total (the 14-click week ages out on 2026-11-09). State in the same block that the change being measured is the 2026-10-29 title/meta/H1 retarget (5aad29f, 21:51) and that it has never been served. If all four are absent, the pillar's lastCrawl is still 2026-10-22 and indexed is 2 or fewer, write in BTC500_GROWTH.md that the 500-day cluster is closed as unservable and make no copy, title, meta or section edit to / or /bitcoin-500-day-cycle through 2026-12-31. Change no URL.",
-      "because": "Restated unchanged from the 2026-11-03 review (due today+4, not overdue). 0 non-brand clicks in 14 readings; the four queries carried 28 impressions and 0 clicks over 90 days at positions 8.00, 9.07, 11.00 and 15.29, none appears in today's 7-day or 28-day table, and the pillar has not been re-crawled since 2026-10-22. This is the last read that can tell us whether the 500-day framing has demand; if it is absent on 11-08 the answer is no.",
-      "due": "2026-11-08",
-      "owner": "cycle"
+      "id": "lopp-net-pr-send-1106",
+      "action": "Execute the live ask by 2026-11-06: open ONE pull request from cryptomarkettrack to jlopp/lopp.net changing only bitcoin-information/trading.html, inserting the corrected BTC500 line in the Charts & Metrics list AFTER the BitInfoCharts entry (line 113) and BEFORE the CME Futures entry (line 114), with the Title and Body verbatim from outreach/2026-11-04-lopp-net-charts-metrics.txt; then run python3 check_links.py -ff as the repo's AGENTS.md asks. One PR, one file, one line, no other section touched.",
+      "because": "externalReferringDomains is 0 (the gate) and 0 sessions from any non-github referrer exist in 14 readings; indexed is 1/21; the jlopp/lopp.net route is the only one with both a followed link and a merge record in the last cycle (page 200, 0 rel=\"nofollow\"; PR #1260 merged 2026-11-03; 298 merged PRs).",
+      "due": "2026-11-06",
+      "owner": "owner"
     },
     {
       "id": "ask-gate-1107",
-      "action": "Check the live ask's sent state first thing on 2026-11-05, 11-06 and 11-07 — `q=author:cryptomarkettrack+repo:jlopp/lopp.net` and `npm run referrals` — and record the result in outreach/STATUS.md. Write no new destination copy, no reworded ask and no new outreach file while the lopp.net PR is unsent. If it is still unsent on 2026-11-07, write 'outreach preparation stopped until 2026-11-28' in outreach/STATUS.md and spend every cycle to 11-28 on deploy verification and the daily archive only. Do not open a second GitHub PR to compensate.",
-      "because": "9 asks handed over since 2026-10-27, 3 executed (all GitHub), 0 sessions from any non-github domain. On 2026-11-04 the cycle prepared two more destinations while both live asks were unsent; prepared copy has produced 0 links in 11 cycles. The only route with a followed link and a merge record is now in the owner's hands, and more preparation is how a cycle reports activity without producing a result.",
+      "action": "Check the live ask's sent state first thing on 2026-11-05, 2026-11-06 and 2026-11-07 — `q=author:cryptomarkettrack+repo:jlopp/lopp.net` and `npm run referrals` — and record the result in outreach/STATUS.md; write no new destination copy while it is unsent; if it is still unsent on 2026-11-07, write 'outreach preparation stopped until 2026-11-28' in outreach/STATUS.md and spend every cycle to 2026-11-28 on deploy verification and the daily archive only; do not open a second GitHub PR to compensate.",
+      "because": "9 asks handed over since 2026-10-27, 3 executed, all GitHub; 0 sessions from any non-github domain; the lopp.net PR is still unsent (total_count 0) and due 2026-11-06.",
       "due": "2026-11-07",
       "owner": "cycle"
     },
     {
+      "id": "cluster-read-1108",
+      "action": "On 2026-11-08 print, for 'when is 500 days before the next bitcoin halving', 'what is 500 days before the next bitcoin halving', 'bitcoin 500 day cycle' and '500 days before next bitcoin halving', impressions / clicks / position or 'not present' in both the 7-day and 28-day reports, plus the pillar's coverage and lastCrawl and the 28-day property total; if all four are absent and indexed is ≤2, write in BTC500_GROWTH.md that the 500-day cluster is closed as unservable and make no copy edit to / or the pillar through 2026-12-31.",
+      "because": "0 non-brand clicks in 14 readings; the four queries carried 28 impressions and 0 clicks over 90 days at positions 8.00, 9.07, 11.00 and 15.29, none appears in today's tables, pillar lastCrawl 2026-10-22; this is the last read that can tell whether the 500-day framing has demand.",
+      "due": "2026-11-08",
+      "owner": "cycle"
+    },
+    {
       "id": "runner-honesty-1108",
-      "action": "OWNER ONLY — three edits, all in the runners/collector, all proving one thing: the pipeline must not report green, or a number, that the data does not support. (1) In scripts/autonomous/run-review-cycle.sh, when validate-review.mjs exits non-zero, rename scripts/autonomous/review-latest.json to review-rejected-<today>.json and write <state>/review-invalid.txt with the validator's FAIL line before exiting — restated unchanged for the fourth time. (2) In scripts/autonomous/run-growth-cycle.sh, record a commit whose diff is only docs/outreach/last-deploy.json as `doc-only` (or `archive-only`), not `shipped`: today's 63efa20 touched 5 files and zero src/sitemap files and is recorded `shipped` at 10:25:14. The existing archive-only branch at line 456 only fires when AGENT_COMMIT=0. (3) In scripts/autonomous/collect-results.mjs, make the inspection selector prefer the report whose `rows` count matches the sitemap loc count (today: 21, not the 04:32 `--limit=3` run) and treat `verdict: \"ERROR\"` rows as unknown — carry the URL's last successful coverage forward — instead of counting them as not indexed. Prove (1) by forcing one FAIL on a scratch copy and showing the rename, (2) with the status line for today's doc-only commit, and (3) by re-running the collector and printing `indexed 1/21` instead of `1/3`.",
-      "because": "`grep -nE 'review-rejected|review-invalid' scripts/autonomous/run-review-cycle.sh` returns nothing on 2026-11-04, three days after the owner was told the same thing; two of the last twelve review runs left the previous day's file in place. Today's status-history row 2026-11-04T10:25:14 says `shipped` for a commit with no src/ or sitemap change (`git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` empty). And the number the runner generated today says 1/3 while the sitemap says 21: results-history.csv now records `totalUrls 3`, so the next review's series is wrong before it starts. These are the three ways this pipeline can be green on a week with no output.",
+      "action": "OWNER ONLY — three edits, all in the runners/collector: (1) in scripts/autonomous/run-review-cycle.sh, when validate-review.mjs exits non-zero, rename scripts/autonomous/review-latest.json to review-rejected-<today>.json and write <state>/review-invalid.txt with the validator's FAIL line before exiting; (2) in scripts/autonomous/run-growth-cycle.sh, record a commit whose diff is only docs/outreach/last-deploy.json as doc-only (or archive-only), not shipped; (3) in scripts/autonomous/collect-results.mjs, make the inspection selector prefer the report whose rows count matches the sitemap loc count and treat verdict ERROR rows as unknown. Prove each with a scratch-copy test before implementing.",
+      "because": "`grep -nE 'review-rejected|review-invalid' scripts/autonomous/run-review-cycle.sh` returns nothing; the archive-only branch only fires when AGENT_COMMIT=0; the collector picked a 04:32 --limit=3 inspection so results-history wrote indexed 1, totalUrls 3 on 2026-11-04 while the 21-row run said 1/21.",
       "due": "2026-11-08",
       "owner": "owner"
     }
@@ -108,11 +100,11 @@
   "targets": [
     {
       "metric": "indexed",
-      "current": "1/21 (inspection 2026-11-04T06:06:58Z; review-input printed 1/3 from a 3-URL run)",
+      "current": "1/21 (2026-11-05T07:32:31Z inspection, 21 rows; `/` only; line retired 2026-11-05)",
       "target": "3/21",
       "by": "2026-11-10",
       "status": "retired",
-      "note": "Re-stated from the 2026-11-03 review (2/21) so the series survives: 6/25 (10-22) → 5/22 → 3/21 → 2/21 (10-31 → 11-03) → 1/21. The condition for closing the line (≤2) was met on 11-03 and is now 1, so mandate indexed-decision-1105 closes it on 2026-11-05 and this target is retired, not lowered again. Closed 2026-11-05 by the cycle (mandate executed): the line is closed permanently; no in-repo indexation work without an external referring link, ever. From 11-05 the gate is externalReferringDomains, and no in-repo number is measurable while it is 0."
+      "note": "Retired 2026-11-05 by mandate indexed-decision-1105 (executed today, commit 257a504): the ≤2 condition was met on 2026-11-03 and is now 1/21, so the line closed permanently; no in-repo indexation work without an external referring link is attempted again. Series re-stated with the same metric id so it survives: 6/25 (2026-10-22) → 5/22 → 3/21 → 2/21 → 1/21 (2026-11-05)."
     },
     {
       "metric": "nonBrandClicks",
@@ -127,7 +119,7 @@
       "target": "1 in 7d from a non-github referrer",
       "by": "2026-11-11",
       "status": "miss-so-far",
-      "note": "The github.com half is this repository and the owner's browser (§10(b)); only the non-github half counts, and it has been 0 in every reading since 2026-10-27. lopp.net is the referrer the new ask will be measured by."
+      "note": "The github.com half is a self-referral (§10(b)); only the non-github half counts, and it has been 0 in every reading since 2026-10-27. lopp.net is the referrer the live ask will be measured by."
     },
     {
       "metric": "externalReferringDomains",
@@ -135,31 +127,31 @@
       "target": "1",
       "by": "2026-11-17",
       "status": "miss-so-far",
-      "note": "The gate, and after 2026-11-05 the only target that matters. A nofollow README merge cannot satisfy it (github.com: 90 rel=\"nofollow\" on the awesome-bitcoin page; lopp.net measured today at 0). If it is still 0 on 2026-11-17 the next condition is a pitch actually sent to a publication that carried the story, not a lower number."
+      "note": "The gate, and after 2026-11-05 the only target that matters. If still 0 on 2026-11-17 the next condition is a pitch actually sent to a publication that carried the story, not a lower number."
     },
     {
       "metric": "askEffectReferrals",
-      "current": "0 from bitcoin-only.com; #1009 open 8 days, comments 0, updated_at == created_at 2026-10-27T05:34:46Z",
+      "current": "0 from bitcoin-only.com; #1009 closed tested-and-failed 2026-11-04 (8 days open, 0 comments, 0 sessions)",
       "target": "1 session from bitcoin-only.com",
       "by": "2026-11-11",
       "status": "miss-so-far",
-      "note": "Closed as tested-and-failed on 2026-11-04, ahead of the 11-10 date set by the last review: nothing has changed in 8 days and the listing does not carry us. Not extended a fourth time."
+      "note": "Closed as tested-and-failed on 2026-11-04, ahead of the 2026-11-10 date set by the last review; not extended a fourth time."
     },
     {
       "metric": "coindeskReferrals",
-      "current": "0 in 7d (10-28→11-03) and 0 in 28d; email never sent, address unverifiable (429)",
+      "current": "0 in 7d (2026-10-28→2026-11-03) and 0 in 28d; email never sent, address unverifiable (429)",
       "target": "1 session from coindesk.com",
       "by": "2026-11-16",
       "status": "miss-so-far",
-      "note": "Lapsed 2026-11-05 as committed on 2026-11-03. The route failed verification, not the owner: coindesk.com returns 429 to a scripted fetch, so the address cannot be confirmed and §10(a) forbids restating it."
+      "note": "Lapsed 2026-11-05 as committed on 2026-11-03; the route failed verification, not the owner. Not restated."
     },
     {
       "metric": "asksExecuted",
-      "current": "3 of 9 handed over since 2026-10-27 (all GitHub; email/community/X 0 of 6)",
+      "current": "3 of 10 handed over since 2026-10-27 (all GitHub; email/community/X 0 of 6)",
       "target": "4 of 10",
       "by": "2026-11-11",
       "status": "miss-so-far",
-      "note": "One new ask handed over today (github-lopp-net-charts, the first with a followed link), so the denominator becomes 10. Execution has never happened outside GitHub; the target is 1 more send, not a bigger pile of copy."
+      "note": "One new ask handed over today (github-lopp-net-charts, first with a followed link), so the denominator became 10; execution has never happened outside GitHub; the target is 1 more send, not a bigger pile of copy."
     }
   ],
   "owner_asks": [
@@ -171,49 +163,47 @@
       "url": "https://btc500.net/bitcoin-500-day-cycle",
       "because": "0 external referring domains and 1/21 URLs indexed after eleven non-improving reviews. GitHub is the only channel this owner has executed (3 of 3 asks carried out), and this is the first destination in eight cycles with BOTH a merge record and a followed link: re-verified by this review on 2026-11-04 — page https://www.lopp.net/bitcoin-information/trading.html returns 200 with 0 rel=\"nofollow\" (every external anchor uses rel=\"noopener\"), the repo has 298 merged PRs, and #1260 was merged 2026-11-03 by volodymyrslipak adding a chart in this exact section. Stated risk, from the repo's own AGENTS.md: brand-new services are held until they prove they are not scams, and btc500.net is ~3 months old. If declined on that rule, treat it as a destination no and do not resubmit for 90 days.",
       "measure": "PR state via GET https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:jlopp/lopp.net (open = sent, merged = executed) within 7 days; GA4 referral sessions from lopp.net in the 14 days after a merge",
-      "referrers": ["lopp.net"],
+      "referrers": [
+        "lopp.net"
+      ],
       "by": "2026-11-06"
     }
   ],
   "mandate_compliance": [
     {
-      "id": "destination-qualify-1104",
+      "id": "indexed-decision-1105",
       "status": "executed",
-      "evidence": "Due today, executed: scripts/autonomous/outreach/2026-11-04-lopp-net-charts-metrics.txt and 2026-11-04-cryptoquant-quicktake.txt, plus the 2026-11-04 block in outreach/STATUS.md and commit 63efa20. Re-verified independently by this review: GET https://api.github.com/search/issues?q=repo:jlopp/lopp.net+is:pr+is:merged → total_count 298, newest #1260 merged 2026-11-03T15:30:56Z by volodymyrslipak 'trading: add Perly Charts to Charts & Metrics'; the rendered trading.html is 200 with 0 rel=\"nofollow\". Defect found and corrected by this review: the file placed BTC500 'between Bitcoin Bottom Score and BitInfoCharts', which is correct under neither collation — under the page's own case-insensitive order it belongs after BitInfoCharts (line 113) and before CME Futures (line 114)."
+      "evidence": "Due 2026-11-05, executed today (commit 257a504 'growth: archive-only — indexation line closed'): BTC500_GROWTH.md gained the closure block, the indexed target retired, ranked-backlog rows 5–7 deleted, no site file changed; freeze held."
     },
     {
       "id": "cluster-read-1108",
       "status": "pending",
-      "evidence": "Due 2026-11-08, restated unchanged above; not overdue."
+      "evidence": "Due 2026-11-08, restated unchanged; not overdue."
     },
     {
-      "id": "indexed-decision-1110",
-      "status": "superseded",
-      "evidence": "Replaced by indexed-decision-1105 (due 2026-11-05). Its trigger condition — indexed ≤2 — is already met (1/21 on 2026-11-04), so the 11-10 date would only delay a decision the data has made."
+      "id": "ask-gate-1107",
+      "status": "pending",
+      "evidence": "Due 2026-11-07; checked today — live ask still unsent (q=author:cryptomarkettrack+repo:jlopp/lopp.net → total_count 0, due 2026-11-06); npm run referrals → github.com 8, no other source."
     },
     {
       "id": "runner-honesty-1108",
       "status": "pending",
-      "evidence": "Owner mandate, restated a third/fourth time inside runner-honesty-1108. Still absent on 2026-11-04: `grep -nE 'review-rejected|review-invalid' scripts/autonomous/run-review-cycle.sh` returns nothing; `git show --stat 63efa20` shows 5 doc/outreach files and the status row still says `shipped`; results-history.csv records totalUrls 3 against a sitemap of 21."
+      "evidence": "Owner mandate, restated a fourth time inside runner-honesty-1108; still absent on 2026-11-05: grep returns nothing; archive-only branch only fires when AGENT_COMMIT=0; collector picked the 04:32 --limit=3 inspection."
     }
   ],
   "mandates_dropped": [],
   "asks_dropped": [
     {
       "id": "email-coindesk-drawdown-short",
-      "reason": "Lapsed 2026-11-05, not restated. The route cannot be verified today: https://www.coindesk.com/contact and https://www.coindesk.com/ both return HTTP 429 to a scripted fetch (2026-11-04), so `contact@coindesk.com` is not publicly confirmable, and the ledger shows 0 of 4 email asks ever sent, so it is not proven by use either. §10(a) makes an unverified address invalid — a bounce and an ignored email look identical in the next review, which is how this row survived three restatements. 0 coindesk.com sessions in 7d and 28d."
+      "reason": "Lapsed 2026-11-05, not restated. The route cannot be verified today: https://www.coindesk.com/contact and https://www.coindesk.com/ both return HTTP 429 to a scripted fetch (2026-11-04), so the address cannot be confirmed, and the ledger shows 0 of 4 email asks ever sent, so it is not proven by use either. §10(a) makes an unverified address invalid — a bounce and an ignored email look identical in the next review, which is how this row survived three restatements. 0 coindesk.com sessions in 7d and 28d."
     },
     {
       "id": "github-awesome-blockchain-pr",
-      "reason": "Withdrawn 2026-11-04, never sent: GET https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain returns total_count 0. It was aimed at discovery only — github.com serves rel=\"nofollow\" on README links — so a merge could not move `indexed` or `externalReferringDomains`, the two signals that block an improving verdict. Replaced in the same channel by jlopp/lopp.net, which has a followed link and merged three outside PRs in the five days to 2026-11-03."
+      "reason": "Withdrawn 2026-11-04, never sent: GET https://api.github.com/search/issues?q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain returns total_count 0. It was aimed at discovery only — github.com serves rel=\"nofollow\" on README links — so a merge could not move indexed or externalReferringDomains, the two signals that block an improving verdict. Replaced in the same channel by jlopp/lopp.net, which has a followed link and merged three outside PRs in the five days to 2026-11-03."
     }
   ],
   "self_changes": [
-    "GROWTH_PROMPT.md §2: added the indexation-measurement rule — quote the inspection whose rows count equals the sitemap loc count (21 on 2026-11-04), print indexed X/N with the timestamp, and treat ERROR rows as unknown rather than not-indexed. Today the collector picked a 04:32 --limit=3 smoke report and the review file read 1/3 while the 21-row run said 1/21.",
-    "GROWTH_PROMPT.md §Freeze: added the rule that while a qualified destination is unsent, no new destination copy is written; the cycle's first action each day is the sent-state check. Nine asks, three executed, two more prepared on 2026-11-04 — preparation had become the cycle's way of reporting activity.",
-    "outreach/2026-11-04-lopp-net-charts-metrics.txt: corrected the insertion point. The file said BTC500 goes between `Bitcoin Bottom Score` and `BitInfoCharts`; under the page's case-insensitive order (`Bitcoin Bottom Score` < `BitInfoCharts` < `CME Futures`) and under ASCII order it belongs after `BitInfoCharts`, before `CME Futures`. A one-line PR in the wrong position is a rejection that looks like the reputation rule.",
-    "BTC500_GROWTH.md: added the 2026-11-04 review block and history row, brought the indexation decision forward to 2026-11-05 (from 11-10), closed #1009 as tested-and-failed, marked the CoinDesk email lapsed and awesome-blockchain withdrawn, and rewrote Next priorities and backlog rows 1–2 around the lopp.net ask.",
-    "outreach/STATUS.md: rewrote the ask table — #1009 → failed (8 days, 0 comments, 0 sessions), CoinDesk → lapsed/unverifiable (429), awesome-blockchain → withdrawn (0 results, nofollow), added github-lopp-net-charts as the one live ask, and recorded the rule that no new copy is prepared while it is unsent."
+    "GROWTH_PROMPT.md §Freeze: added the 2026-11-05 escalation — the lift condition is retired as a content bar and replaced by the gate alone (externalReferringDomains > 0); content work (idea menu A–D) may not resume until a non-github referral session lands or indexed > 3 twice. The indexation line closed on 2026-11-05 and the freeze is now unconditional in its object until then."
   ],
-  "next_review_focus": "2026-11-05: did the line close, and is indexed printed as 1/21 rather than 1/3? 2026-11-06: is the lopp.net PR open (search API) — the first followed-link route ever handed over, and the only input that can move the gate. 2026-11-07: if unsent, outreach stops until 11-28 and the cycle must say so. 2026-11-08: the four cluster queries in both windows and whether the owner's runner-honesty mandate (rename-on-FAIL, doc-only status, full inspection selection) has finally been implemented. 2026-11-09: the 14-click week ages out of the 28-day window — the resulting drop is arithmetic, not a regression."
+  "next_review_focus": "2026-11-06: did the lopp.net PR open (GitHub search API) — the first followed-link route ever handed over, and the only input that can move the gate. 2026-11-07: if the live ask is still unsent, outreach stops until 2026-11-28 and the cycle must say so. 2026-11-08: the four cluster queries in both windows and whether the owner's runner-honesty mandate has finally been implemented. 2026-11-09: the 14-click week ages out of the 28-day window — the resulting drop is arithmetic, not a regression."
 }
