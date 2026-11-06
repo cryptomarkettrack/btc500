@@ -120,6 +120,9 @@ send. One send per channel per week; if both get sent, still one referral row.
 | 2026-11-01 | github.com 15, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-25 → 2026-10-31                                                             |
 | 2026-11-02 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-26 → 2026-11-01                                                             |
 | 2026-11-03 | github.com 12, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 | `npm run referrals`, ga4 window 2026-10-27 → 2026-11-02 (7d report, label read from the report after the fix below) |
+| 2026-11-04 | github.com 8, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `npm run referrals`, ga4 window 2026-10-28 → 2026-11-03                                                             |
+| 2026-11-05 | github.com 8, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `npm run referrals`, ga4 window 2026-10-28 → 2026-11-03                                                             |
+| 2026-11-06 | github.com 6, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0  | `npm run referrals`, ga4 window 2026-10-29 → 2026-11-04                                                             |
 
 **2026-11-03 (channel-verified, `ask-verify-1103`): both live asks are unsent,
 and one of the two routes has already been tried.** (a) `GET
@@ -278,3 +281,25 @@ unsent on 2026-11-07, all outreach preparation stops until 2026-11-28.
 **2026-11-06**. `npm run referrals` → `referrals 7d: github.com 8, x.com 0, reddit.com
 0, bitcoinmagazine.com 0, bitcointalk.org 0` (window 2026-10-28 → 2026-11-03).
 Preparation stops while the ask is unsent; no new destination copy written today.
+
+**2026-11-06 (ask gate, day 2 of `ask-gate-1107`): the live ask is still unsent on
+its due date.** `GET https://api.github.com/search/issues?q=author:cryptomarkettrack+
+repo:jlopp/lopp.net` → `total_count: 0`, and a second query with no author filter,
+`q=repo:jlopp/lopp.net+btc500` → `total_count: 0`, so no PR exists under any author
+and the `github-lopp-net-charts` row keeps `sent: no`. The destination is unchanged
+and still qualified: `https://www.lopp.net/bitcoin-information/trading.html` → 200,
+**0** `rel="nofollow"`, `grep -c BTC500` → 0. `npm run referrals` → `referrals 7d:
+github.com 6, x.com 0, reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0`
+(window 2026-10-29 → 2026-11-04); 0 from any non-github referrer, so
+`externalReferringDomains` is still 0 and the freeze is untouched.
+
+The cycle cannot execute this row: it asks the owner to open a PR from the
+`cryptomarkettrack` account, which `src/AGENTS.md` §13 forbids the cycle to do. The
+text and the corrected insertion point (between `BitInfoCharts`, line 113, and
+`CME Futures`, line 114) are unchanged in `2026-11-04-lopp-net-charts-metrics.txt`.
+**No new destination copy was written today** — the 2026-11-04 rule holds while a
+qualified destination is unsent. The row becomes overdue at the end of 2026-11-06;
+the 11-07 checkpoint is recorded here in advance so tomorrow's cycle cannot
+re-litigate it: if it is still unsent on 2026-11-07, all outreach preparation stops
+until 2026-11-28, and cycles to that date are deploy verification and the daily
+archive only. Do not open a second GitHub PR to compensate.
