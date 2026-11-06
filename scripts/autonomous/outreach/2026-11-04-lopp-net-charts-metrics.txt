@@ -27,11 +27,16 @@ ENTRY FORMAT — taken from the destination's own file (bitcoin-information/trad
   - Alphabetical by display name, case-insensitively (the rendered list sorts
     "Bitcoin Bottom Score" < "BitInfoCharts" < "CME Futures"). "BTC500" compares
     as "btc500": b=b, then t > i, so it sorts after BOTH "Bitcoin Bottom Score"
-    (line 112) and "BitInfoCharts" (line 113), and before "CME Futures" (line
-    114). CORRECTED 2026-11-04 by the review: this file previously said "between
+    (line 104) and "BitInfoCharts" (line 105), and before "CME Futures" (line
+    106). CORRECTED 2026-11-04 by the review: this file previously said "between
     Bitcoin Bottom Score and BitInfoCharts", which is correct under neither
-    case-sensitive nor case-insensitive collation of those two neighbours. Put
-    the line between lines 113 and 114.
+    case-sensitive nor case-insensitive collation of those two neighbours.
+    RE-VERIFIED 2026-11-06 18:40Z: jlopp/lopp.net merged PR #1264 on 2026-11-04 and
+    the file is now 204 lines, so the old 112/113/114 numbers were stale. Grepped
+    from https://www.lopp.net/bitcoin-information/trading.html (200; the apex
+    https://lopp.net/... 301s to www): line 105 = BitInfoCharts
+    (bitinfocharts.com), line 106 = CME Futures (cmegroup.com). Put the line
+    between 105 and 106.
   - `target="_blank" rel="noopener"` is mandatory (AGENTS.md section 2).
   - No new section, no reordering, one file changed.
 
@@ -71,6 +76,13 @@ RISK, STATED BEFORE SENDING (AGENTS.md section 1, "Reputation before listing")
   that as a destination-level no and do not re-submit within 90 days.
 
 CHECK BEFORE OPENING THE PR
-  - https://btc500.net/bitcoin-500-day-cycle returns 200 (verified 2026-11-04).
+  - https://btc500.net/bitcoin-500-day-cycle returns 200 (re-verified 2026-11-06);
+    the JSON at /data/500-day-cycles.json and the CSV at /btc-usd-max.csv also 200.
   - `grep -ci btc500 bitcoin-information/trading.html` -> 0, so it is not a duplicate.
-  - One file, one line; run `python3 check_links.py -ff` as AGENTS.md asks.
+  - One file, one line. **Browser-only, no clone, no terminal** (updated 2026-11-06):
+    the review's issued ask dropped the `check_links.py` step because it needs a
+    local clone — that is the step that made nine asks unsent. Use GitHub's edit
+    button on trading.html, insert, "Propose changes".
+  - The numbers in the PR body were re-derived from `public/btc-usd-max.csv` on
+    2026-11-06 and are correct: -83.65% worst (2012), -11.72% median, 4 of 4
+    below entry, next window 2026-11-28.

@@ -1,6 +1,6 @@
 {
   "generated": "2026-11-06",
-  "summary": "archive-only cycle under the freeze: sent-state check recorded, no site change; daily archive advanced to 2026-11-05",
+  "summary": "archive-only cycle under the freeze: no site change; lopp.net ask re-verified on its www host and the stale 113/114 line numbers corrected to 105/106 in the outreach text and ledger",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
