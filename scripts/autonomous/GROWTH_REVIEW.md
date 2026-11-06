@@ -404,3 +404,28 @@ print the source split and the user count, and never let it satisfy
 `mayClaimImproving` on the reviewer's side even though the runner's arithmetic
 does. The only referral session that counts is one from a domain that is not
 `github.com`.
+
+**(c) An unsent ask shrinks; it is never re-pasted.** Added 2026-11-06 after the
+same lopp.net PR was handed over on 2026-11-04, 2026-11-05 and 2026-11-06 and was
+absent on all three (`q=repo:jlopp/lopp.net+btc500` → `total_count: 0`, so no PR
+under any author). Ten asks have been handed over since 2026-10-27; 0 have been
+sent since 2026-10-27. Restating identical text a third time is not escalation —
+it is the ledger proving the instruction does not fit the owner's day.
+
+Rules for the next review that finds an ask still unsent:
+
+1. **Re-verify the instruction, not just the route.** On 2026-11-06 the
+   `jlopp/lopp.net` file had shrunk from 113/114 to 105/106 lines (PR #1264
+   merged 2026-11-04). An ask quoting dead line numbers is unexecutable in the
+   same way a dead email address is: the failure looks like indifference.
+2. **Remove every requirement the route does not actually impose.** "From
+   `cryptomarkettrack`" was self-imposed; any GitHub account can open the PR.
+3. **Cut the step count, then say the count.** "Open this page in the browser,
+   paste one line, press Propose changes" is one action. "Clone, branch, edit,
+   run check_links.py, open PR" is five — and the five-step version has now
+   failed three times.
+4. **If the narrowed version also fails, drop the channel, do not move the
+   goal.** A third unsent restatement ends the route: record it `unexecutable` in
+   `outreach/STATUS.md` with the channel evidence, and the next ask must come
+   from a different channel that §10(a) allows. The goal (`externalReferringDomains
+   > 0`) never changes to make a channel look alive.

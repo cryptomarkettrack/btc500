@@ -76,6 +76,16 @@ site 200/200, review 2026-11-05 (`failing`, streak 12). Freeze held:
   experiment opened. No defect on an indexed URL: `/`,
   `/articles/bip-110-rejection` and `/articles/bear-market-accumulation` all 200.
 
+### Review 2026-11-06 (daily) — twelfth failing: the ask has not been sent, and the instructions had gone stale
+
+- **`indexed` 1/21 for a second inspection** (2026-11-06T04:04:49Z, 21 rows: 1 indexed, 14 crawled-not-indexed, 5 unknown, 1 Soft 404). `/` only. The pillar was crawled **2026-11-05** — first fetch since 2026-10-22 — and declined the same day, unchanged. Waiting does not index a page nobody links to.
+- **The due-11-06 mandate's insertion point no longer exists.** `bitcoin-information/trading.html` is now **204 lines**; `BitInfoCharts` is line **105** and `CME Futures` line **106** (the 2026-11-04 file said 113/114). The page shrank because `jlopp/lopp.net` merged PR **#1264** on 2026-11-04 (`BTC500` still appears **0** times). The position is unchanged — after `BitInfoCharts`, before `CME Futures` — but the line numbers in `outreach/2026-11-04-lopp-net-charts-metrics.txt` are stale and are corrected in the 2026-11-06 ask. An owner following the old numbers would have edited the wrong list row or given up.
+- **`#1009` is still `open` with 0 comments** (`GET /repos/bitcoin-only/bitcoin-only/issues/1009`, 2026-11-06; created 2026-10-27T05:34:46Z, `updated_at == created_at`). The *experiment* is closed as failed; the *thread* is not closed. Do not write "issue closed" — write "0 comments in 10 days". 0 bitcoin-only.com sessions.
+- **`shipped` was counting archive refreshes.** 9 runs / 8 `shipped` / 1 `dirty-tree` in 7d, while `git log --oneline 62e3a8a..HEAD -- src public/sitemap.xml` returns nothing and `git diff --stat 62e3a8a..HEAD -- public` returns one line of `public/btc-usd-max.csv`. `GROWTH_PROMPT.md` §The bar now defines `shipped` as a diff touching `src/` or the sitemap.
+- **Sessions are falling, not green.** GA4 7d (10-30 → 11-05): **45** sessions vs **103** on 2026-10-30 (−56.3%); 33 direct, 4 organic, 4 AI assistant, 3 referral (github.com), 1 organic social. The runner marks `sessions` green only because its first row (2026-10-24, 12 sessions) sits at the property's creation, not at a real week.
+- **0 non-brand clicks in 16 consecutive readings** (2026-10-22 → 2026-11-06). The 7d table holds 2 query rows (`btc500` 0/1 @7.0, `bitcoin 500` 0/1 @67.0) and 1 click that is neither brand nor non-brand — it is unattributable, so it is not a result.
+- Asks: 10 handed over since 2026-10-27, **0 sent since 2026-10-27**. The 2026-11-06 ask is reissued narrower — a browser-only edit, any GitHub account, current line numbers.
+
 ## Session 2026-11-05 — `indexed-decision-1105` executed: the indexation line closes
 
 - Recorded in this log that no in-repo indexation work — merge, redirect, sitemap
@@ -135,11 +145,14 @@ empty.
 0. **Full freeze stands.** No code, copy, title, meta, section, sitemap or URL
    change until `externalReferringDomains > 0`. Proof each cycle:
    `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` must be empty.
-1. **Live ask `github-lopp-net-charts`, due 2026-11-06 — unsent, owner-only.**
-   `author:cryptomarkettrack` returns 0 results. This is the only prepared route
-   with a followed link; text and corrected insertion point in
-   `outreach/2026-11-04-lopp-net-charts-metrics.txt`. If unsent on 11-07, all
-   outreach preparation stops until 2026-11-28.
+1. **Live ask `github-lopp-net-charts`, due 2026-11-09 — unsent, owner-only.**
+   `q=author:cryptomarkettrack+repo:jlopp/lopp.net` and
+   `q=repo:jlopp/lopp.net+btc500` both return 0. This is the only prepared route
+   with a followed link; text in `outreach/2026-11-04-lopp-net-charts-metrics.txt`.
+   **Insert after `BitInfoCharts`, now line 105, before `CME Futures`, line 106**
+   (file is 204 lines as of 2026-11-06 — the old 113/114 numbers are stale). Any
+   GitHub account will do; the PR does not have to come from `cryptomarkettrack`.
+   If unsent on 2026-11-07, all outreach preparation stops until 2026-11-28.
 2. **2026-11-08: read the four cluster queries** in both windows plus the
    pillar's coverage/lastCrawl; if all four are absent and indexed ≤2, close the
    500-day cluster as unservable and make no copy edit to `/` or the pillar

@@ -121,6 +121,25 @@ lifts it:** from 2026-10-30 a cycle ships nothing at all.
 Rewording, reordering or restyling a page without a measured problem is not
 progress. One large, verified change beats five shallow ones.
 
+**Added 2026-11-06 by that day's review: `shipped` is a diff, not a status.** A
+cycle may record `shipped` only if its commit touches `src/` or
+`public/sitemap.xml`. A commit whose only diff is a price-archive CSV
+(`btc-usd-max.csv`, `public/btc-usd-max.csv`), `BTC500_GROWTH.md`,
+`scripts/autonomous/outreach/`, `scripts/autonomous/last-deploy.json` or
+`review-latest.json` is `archive-only`, whatever the runner's status column says.
+Quote the check in the commit body:
+
+```
+git log --oneline 62e3a8a..HEAD -- src public/sitemap.xml
+```
+
+Evidence: the 7 days to 2026-11-06 recorded 9 runs, 8 `shipped`, 1 failure — and
+that command returns **nothing**, while `git diff --stat 62e3a8a..HEAD -- public`
+returns one line of `public/btc-usd-max.csv`. Eight "ships" produced 0 site
+changes, 0 new indexed pages and `indexed` 6/25 → 1/21. The runner's own
+`shipped` counter is an owner fix (`runner-honesty-1108`); this rule is the
+working document's guard and it binds today, not after the fix.
+
 **Set by the 2026-10-28 review — work on a declined URL no longer counts as a
 ship.** A cycle whose only deliverable is copy, markup, titles or sections on a
 URL Google has already crawled and declined must record itself `archive-only`,
@@ -262,20 +281,32 @@ forever. From today:
   result; a seventh reading on an unserved site measures the same wall.
 
 A cycle that has no due mandate and no due reading prints the three PERFORMANCE
-lines plus these two ask states, and then must still produce **one qualified
-distribution destination**: a repo or outlet where (a) an outside contributor's
-submission was merged or published within the last 14 days, (b) the entry format
-is one line we can satisfy, and (c) the exact submission text is written out
-verbatim in `outreach/<date>-<slug>.txt`, with the merge evidence (PR number and
-merge date) quoted at the top. One destination per cycle, no site change.
+lines plus these two ask states and stops. It does **not** prepare a new
+destination.
 
-That last requirement is new on 2026-11-03 and it replaces "write its archive-only
-entry and stop". Eight cycles to 2026-11-03 produced 8 `shipped` statuses, 4
-archive-CSV refreshes and 0 site changes, and the outcome fell from 6/25 to 2/21
-indexed. A cycle that ends at "archive refreshed, nothing to do" is a wasted day
-in a 25-day window. Adding pages, sections, titles or narratives before an
-external link exists is a measured failure, not work: four frozen cycles produced
-3/21 → 2/21 and four shipping cycles produced 6/25 → 3/21.
+**Deleted 2026-11-06 by that day's review: the "one qualified destination per
+cycle" requirement added on 2026-11-03.** It was meant to stop cycles ending at
+"archive refreshed, nothing to do" and it produced the opposite of a send.
+Between 2026-11-03 and 2026-11-06 the automation prepared two destinations
+(`jlopp/lopp.net`, CryptoQuant Quicktake) while `github-lopp-net-charts` was
+unsent, and on its due date it is still unsent:
+`q=author:cryptomarkettrack+repo:jlopp/lopp.net` → `total_count: 0` and
+`q=repo:jlopp/lopp.net+btc500` → `0`, so no PR exists under any author. Ten asks
+have been handed over since 2026-10-27; **0 have been sent since 2026-10-27**.
+A prepared destination that is never sent is not progress — it is the substitute
+for progress, and requiring one per cycle institutionalised the substitution.
+
+Preparation may resume only when (a) no qualified destination is live, or (b) the
+results review names a new destination explicitly in a mandate or ask. Preparing
+a second destination while the first is unsent is now a compliance failure, not
+initiative.
+
+Evidence that the wasted days were not the problem: eight cycles to 2026-11-03
+produced 8 `shipped` statuses, 4 archive-CSV refreshes and 0 site changes, and
+`indexed` fell 6/25 → 2/21 over the same period. Adding pages, sections, titles
+or narratives before an external link exists is a measured failure, not work:
+four frozen cycles produced 3/21 → 2/21 and four shipping cycles produced
+6/25 → 3/21. Neither shipping nor idling moved it, because neither is a link.
 
 Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
 2026-10-30, 0 failures, 4 of 4 previous mandates executed, produced indexed
