@@ -24,66 +24,66 @@ not worth crawling, and indexation is the gate. GA4 exists since 2026-10-23.
 
 ---
 
-## Latest measurement — 2026-11-06 (18:36Z, second reading of the day)
+## Latest measurement — 2026-11-07 (04:05Z)
 
-GSC windows still end 2026-11-03 (3-day lag), GA4 still ends 2026-11-05, archive
-fresh to 2026-11-05 (5,588 closes). **indexed 1/21, sitemap 21** (inspection
-2026-11-06T18:36:11Z, 21 rows, 0 failed to inspect): 1 indexed, 14
-crawled-not-indexed, 5 unknown to Google, 1 Soft 404. Same split and the same
-`lastCrawl` values as the 07:32Z and 04:04Z runs — **zero URLs changed state
-today**, so this is the third consecutive 1/21 and the decline is not moving.
+GSC windows still end 2026-11-04, GA4 ends 2026-11-06, archive fresh to 2026-11-06
+(75,775.28). **indexed 1/21, sitemap 21** (inspection 2026-11-07T04:05:34Z, 21
+rows, 0 failed to inspect): 1 indexed, 14 crawled-not-indexed, 5 unknown to
+Google, 1 Soft 404. **Zero URLs changed coverage or `lastCrawl` since
+2026-11-06T18:36:11Z** — the fourth consecutive 1/21.
 
 | Window                            | Clicks | Impressions | CTR   | Avg position |
 | --------------------------------- | ------ | ----------- | ----- | ------------ |
-| 28 days (2026-10-07 → 2026-11-03) | 23     | 84          | 27.4% | 12.6         |
-| 7 days (2026-10-28 → 2026-11-03)  | 1      | 9           | 11.1% | 20.3         |
+| 28 days (2026-10-08 → 2026-11-04) | 23     | 84          | 27.4% | 12.5         |
+| 7 days (2026-10-29 → 2026-11-04)  | 1      | 9           | 11.1% | 20.6         |
 
-- Both GSC tables are unchanged because the lag has not advanced: "too early",
-  not zero. 7d holds 2 query rows (`btc500` 0/1 @7.0, `bitcoin 500` 0/1 @67.0);
-  none of the four 500-day cluster queries appears. **0 non-brand clicks in 16
-  readings.** The 11-08 read still decides that line.
-- GA4 7d (10-30 → 11-05): **45 sessions / 20 users / 81 views / 57.8% engaged**,
-  −56.3% vs 103; 28d 148 / 58 / 287 / 47.3%. Unchanged since the morning run.
-- Referrals 7d: **github.com 3**, x.com / reddit / bitcoinmagazine / bitcointalk 0
-  (window 2026-10-30 → 2026-11-05). Down from 6 on 10-29 → 11-04 because the
-  window slid, not because anything changed; both are the repo/owner browser.
-  `externalReferringDomains` **0**, gate shut.
-- **Re-derived the numbers the owner is about to send, from the archive itself**
-  (`public/btc-usd-max.csv`, closes only): 2011-07-17 $14.07 → 2014-04-12 $420.66
-  = 29.90x, low $2.30 at +128 d = **−83.65%**; 2015-02-25 $237.38 → 2017-11-21
-  $8,114.13 = 34.18x, −11.49%; 2018-12-28 $3,854.42 → 2021-09-23 $44,980.90 =
-  11.67x, −11.94%; 2022-12-07 $16,851.30 → 2025-09-02 $111,190.18 = 6.60x,
-  −2.54%. Median −11.72%, 4 of 4 below entry. The PR body's claims are true.
-- **Live model re-check:** tip height 974,836 → 75,164 blocks to 1,050,000 →
-  522.0 days at the 600 s target → **2028-04-11**, so T-500 = **2026-11-28**.
-  `/` renders "22 days to buy", 28 November 2026, 11 April 2028, height 974,836 —
-  computed, not hardcoded. All 27 internal links on `/` return 200. No defect on
-  an indexed URL.
+- Both tables are identical to yesterday's reading of the previous one-day window
+  (23/84, 1/9) with the window slid forward: no movement, not a recovery. The 7d
+  holds `btc500` 1/3 @3.7 and `bitcoin 500` 0/1 @67; the 28d query table holds
+  five rows, none of them a 500-day cluster query — **0 non-brand clicks in 17
+  readings**. The 11-08 mandate makes the formal call.
+- GA4 7d (10-31 → 11-06): **40 sessions / 18 users / 66 views / 52.5% engaged**,
+  −60.8% against the previous 7d (102); window slid one day from yesterday's 45,
+  so read it as drift, not a verdict. 28d: 154 / 60 / 294 / 46.8%.
+- Referrals: GA4 7d (10-31 → 11-06) **github.com 1**; `npm run referrals` prints
+  **github.com 3** for its own window (10-30 → 11-05). Different windows, not a
+  correction. **0 from any non-github referrer in both**, lopp.net absent because
+  the line is not merged — `externalReferringDomains` **0**, gate shut.
+- **The live ask was sent: PR [jlopp/lopp.net#1267](https://github.com/jlopp/lopp.net/pull/1267),
+  `state: open`, `created_at 2026-11-06T18:54:00Z`, `comments: 0`, not a draft,
+  `merged_at: null`** (checked 2026-11-07 04:03Z). It was opened eighteen minutes
+  after the 2026-11-06 cycle's last channel check, so that day's `sent: no` was
+  true when written. First send since 2026-10-27 — the funnel is now merge-limited,
+  not send-limited. The PR diff is one file, one line, after `BitInfoCharts`,
+  before `CME Futures`; no other line touched.
+- Production: `/` 200, `/bitcoin-500-day-cycle` 200, `/data/500-day-cycles.json`
+  200, `/btc-usd-max.csv` 200, `/sitemap.xml` 200. `/btc-usd-max.csv` still ends
+  2026-11-05 in production because the runner's 2026-11-06 archive commit
+  (`ae867a5`) has not been pushed yet; it goes out with this commit.
 
-## Session 2026-11-06 (18:36Z) — archive-only: ask re-verified, stale line numbers corrected
+## Session 2026-11-07 (04:00Z) — archive-only: the ask was sent, ledger corrected
 
-Preflight: archive fresh (2026-11-05, 0 appended), 0 experiments open, 0 due, site
-200/200, review 2026-11-06 (`failing`, streak 13), no mandate due before 11-07.
-Freeze held: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` → **empty**.
+Preflight: archive refreshed to 2026-11-06 (1 row appended), 0 experiments open, 0
+due, site 200/200, review 2026-11-06 (`failing`, streak 13). Freeze held:
+`git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` → **empty**.
 
-- **Channel check (18:38Z):** `q=author:cryptomarkettrack+repo:jlopp/lopp.net` → 0
-  and `q=repo:jlopp/lopp.net+btc500` → 0, so no PR under any author. `#1009` is
-  still `open`, `comments: 0`, `updated_at == created_at 2026-10-27T05:34:46Z`.
-- **New fact: the apex host redirects.** `https://lopp.net/…/trading.html` → **301**
-  → `https://www.lopp.net/…/trading.html` → 200. The 200 claim is a www-host claim;
-  a future cycle must fetch with `-L` or the www URL, not read the 301 as a dead page.
-  www today: 205 rendered lines, `BitInfoCharts` line **105**, `CME Futures` line
-  **106**, **0** `rel="nofollow"`, **0** `BTC500`.
-- **Corrected the stale instructions in the two files the owner might read.** Both
-  `outreach/2026-11-04-lopp-net-charts-metrics.txt` and the 11-06 ledger note still
-  said 112/113/114; corrected to 104/105/106 (`Bitcoin Bottom Score` / `BitInfoCharts`
-  / `CME Futures`) with the grep output, and the file's "run check_links.py" step
-  removed because the issued ask is browser-only. Entry text, title and body
-  unchanged.
-- No site change, no new page, no sitemap row, no title/meta/copy edit, no
-  experiment opened, no new destination copy. Morning review (12th failing) is in
-  the history table: `shipped` had been counting archive refreshes; sessions fell
-  103 → 45; the pillar was re-crawled 2026-11-05 and declined unchanged.
+- **`outreach-stop-1107` — stop condition false, so no stop was written.** The
+  mandate says to mark the lopp.net row `unexecutable` _if the PR is still absent_.
+  It is not: `q=repo:jlopp/lopp.net+btc500` → `total_count: 1` (PR #1267). The row
+  is now `sent: yes / 2026-11-06`, the 04:03Z query output is quoted in
+  `outreach/STATUS.md`, and no new destination copy was written. The next signal is
+  a merge and a lopp.net referral, not another send.
+- **`dirty-tree-guard-1107` — pre-attempt check run: tree clean, 0 paths.** The
+  script half is implemented: `dirty_paths_note()` in `run-growth-cycle.sh` now
+  puts a one-line, comma-free path list into `status-history.csv`
+  (`pre-run-dirty-…` before an attempt, `dirty-tree-…` at exit) and the
+  `dirty-tree` notification names them. It deliberately does **not** auto-commit or
+  auto-remove: the CLI exits 130 while the session may still be writing, so a file
+  present before an attempt cannot be told apart from live work. Verified with
+  `bash -n` plus a scratch repo: `3-path(s):"d/two three.txt"|one.txt|untracked.txt`
+  and `WARN: working tree is dirty before the run (2-path(s):…)`.
+- No site change, no new page, no sitemap row, no copy/title/meta edit, no
+  experiment opened.
 
 ## Session 2026-11-05 — `indexed-decision-1105`: the indexation line closes
 
@@ -99,8 +99,13 @@ first destination in eight cycles with a **followed** link (298 merged PRs, #126
 merged 11-03 in that section). Second, CryptoQuant Quicktake, unverified followed
 status. Four other lists disqualified on merge dates 2019–2023. No site file touched.
 
-### History before 2026-11-04
+### History
 
+- **11-06** — archive-only: the ask was re-verified **unsent** at 18:38Z (both
+  GitHub search queries → 0); PR #1267 appeared at 18:54Z, after that commit. The
+  lopp.net insertion point was corrected to `BitInfoCharts` 105 / `CME Futures` 106
+  after PR #1264 merged 11-04, the apex→www 301 was documented, and the runner's
+  dirty-tree retry policy was widened (`411b9fb`).
 - **11-03** — `ask-verify-1103`: awesome-bitcoin had already closed BTC500 PRs
   #201/#202 unmerged (0 of 2), so the 11-02 ask was never sent; `referral-line.mjs`
   fixed to print the window from the report, not the newest filename.
@@ -135,24 +140,22 @@ status. Four other lists disqualified on merge dates 2019–2023. No site file t
 0. **Full freeze stands.** No code, copy, title, meta, section, sitemap or URL
    change until `externalReferringDomains > 0`. Proof each cycle:
    `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` must be empty.
-1. **Live ask `github-lopp-net-charts`, due 2026-11-09 — unsent, owner-only.**
-   `q=author:cryptomarkettrack+repo:jlopp/lopp.net` and
-   `q=repo:jlopp/lopp.net+btc500` both return 0 (checked 18:38Z today). This is the
-   only prepared route with a followed link; text in
-   `outreach/2026-11-04-lopp-net-charts-metrics.txt`, now carrying the current
-   numbers. **Insert after `BitInfoCharts` (line 105), before `CME Futures` (106)**
-   on the www host — the apex 301s to www. Any GitHub account will do; the PR does
-   not have to come from `cryptomarkettrack`. If unsent on 2026-11-07, all outreach
-   preparation stops until 2026-11-28.
+1. **PR [jlopp/lopp.net#1267](https://github.com/jlopp/lopp.net/pull/1267) is open
+   — awaiting review, not re-issuable.** `state: open`, `comments: 0`,
+   `created_at 2026-11-06T18:54:00Z`. Each cycle: re-read the state with
+   `GET /repos/jlopp/lopp.net/issues/1267` and record it. **Do not resubmit, do not
+   open a second PR, do not edit the body.** A decline on its `AGENTS.md`
+   new-service rule is a destination no and is not retried for 90 days. The effect
+   is measurable only as a `lopp.net` referral session after a merge.
 2. **2026-11-08: read the four cluster queries** in both windows plus the
    pillar's coverage/lastCrawl; if all four are absent and indexed ≤2, close the
    500-day cluster as unservable and make no copy edit to `/` or the pillar
-   through 2026-12-31. Today's reading already shows all four absent.
+   through 2026-12-31. Today's 28d and 7d tables both lack all four.
 3. **The buy-window peg, 2026-11-28** — `/` and the pillar state the same live
    date (28 November 2026, from a 2028-04-11 estimate at height 974,836) and answer
    200 from production. It is the only news peg the site has.
 4. **Owner mandates, not cycle work:** `runner-honesty-1108` (collector + review
-   validator fixes) and the lopp.net send. Neither is executable from this session.
+   validator fixes). `dirty-tree-guard-1107`'s script half is now in the repo.
 
 ## Ranked backlog
 
@@ -160,12 +163,12 @@ Only rows 0–2 are permitted work, and only the owner can do them. Rows 3–4 a
 readings, not builds. Rows 5–7 were deleted on 2026-11-05 (mandate
 `indexed-decision-1105`): blocked-build rows are retired, not carried forward.
 
-| #   | Bet                                                                 | Why it can move the needle                                                                                                                                                                                                     | I   | E   |
-| --- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --- | --- |
-| 0   | PR to `jlopp/lopp.net` → Charts & Metrics (**live ask, due 11-09**) | **Followed link** (0 nofollow on the rendered page), 298 merged PRs, one-line format, three outside merges 10-31 → 11-03. Only destination with both a merge record and a followed link; the only input that can move the gate | 9   | 2   |
-| 1   | CryptoQuant Quicktake (**prepared 11-04**)                          | Community feed with an exact audience fit; no editorial gate, needs an account; post pages 403 to a scripted fetch, followed status unverified. Second in line, not prepared again while ask 0 is unsent                       | 6   | 3   |
-| 2   | ~~CoinDesk email~~ / ~~awesome-blockchain PR~~ / ~~X post~~         | Lapsed 11-05 (address unverifiable, 429), withdrawn (nofollow), retired (no account). None restated                                                                                                                            | —   | —   |
-| 3   | Cluster query reading 2026-11-08                                    | Decides whether the 500-day framing is served or has no demand                                                                                                                                                                 | 7   | 1   |
+| #   | Bet                                                                         | Why it can move the needle                                                                                                                                                                               | I   | E   |
+| --- | --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| 0   | PR to `jlopp/lopp.net` → Charts & Metrics (**sent 11-06, awaiting review**) | **Followed link** (0 nofollow on the rendered page), 298 merged PRs, one-line format, three outside merges 10-31 → 11-03. Sent as #1267; the only input that can move the gate, now merge-limited        | 9   | 1   |
+| 1   | CryptoQuant Quicktake (**prepared 11-04**)                                  | Community feed with an exact audience fit; no editorial gate, needs an account; post pages 403 to a scripted fetch, followed status unverified. Second in line, not prepared again while ask 0 is unsent | 6   | 3   |
+| 2   | ~~CoinDesk email~~ / ~~awesome-blockchain PR~~ / ~~X post~~                 | Lapsed 11-05 (address unverifiable, 429), withdrawn (nofollow), retired (no account). None restated                                                                                                      | —   | —   |
+| 3   | Cluster query reading 2026-11-08                                            | Decides whether the 500-day framing is served or has no demand                                                                                                                                           | 7   | 1   |
 
 ## Open issues
 
@@ -175,16 +178,17 @@ readings, not builds. Rows 5–7 were deleted on 2026-11-05 (mandate
   This is the cleanest available test of the freeze hypothesis, and it failed:
   waiting does not index a page nobody links to.
 - **Indexation: 6 (10-22) → 5 (10-28) → 3 → 3 → 2 (10-31) → 2 → 2 → 2 → 1
-  (11-04) → 1/21 (11-05, 11-06 twice, no URL changed state on 11-06)**, denominator
-  21 = sitemap locs. 5% coverage; 14 crawled-not-indexed, 5 unknown, 1 Soft 404.
+  (11-04) → 1/21 (11-05, 11-06 twice, 11-07; no URL changed state since 11-06)**,
+  denominator 21 = sitemap locs. 5% coverage; 14 crawled-not-indexed, 5 unknown,
+  1 Soft 404.
 - **`lopp.net` is www-only from a scripted fetch.** `https://lopp.net/…/trading.html`
   returns **301** to `https://www.lopp.net/…/trading.html` (200). Read the 301 as a
   canonical-host redirect, not a removed page; `curl -L` or the www URL for any
   future check of the destination.
-- **Ask routes: only one is left, and it is owner-only.** 10 asks handed over
-  since 2026-10-27, 3 executed (all GitHub), 0 sessions from any non-github
-  referrer in every reading. A `sent` cell is verified against the channel, never
-  against this file.
+- **Ask routes: one is live and it is a PR, not a send problem.** 10 asks handed
+  over since 2026-10-27, 4 carried out (three earlier GitHub asks, plus PR #1267
+  opened 2026-11-06T18:54:00Z), **0 sessions from any non-github referrer in every
+  reading**. A `sent` cell is verified against the channel, never against this file.
 - **A destination needs a merge record, not stars.** Four lists were disqualified
   on their own merge dates (2019–2023); awesome-bitcoin had 1,358 stars and a 0
   of 2 record.

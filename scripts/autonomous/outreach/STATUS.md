@@ -19,16 +19,16 @@ zero.
 
 ## Asks issued by the review (owner action, cycle prepares the asset)
 
-| id                               | channel              | recipient                                                                | handed over | due        | sent | date sent  | proof metric                                                                                                                                             | status                                                                                                                                                                                                                          |
-| -------------------------------- | -------------------- | ------------------------------------------------------------------------ | ----------- | ---------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap                             | 2026-10-27  | 2026-10-28 | no   | —          | 1 GA4 referral session from bitcoinmagazine.com in 7d                                                                                                    | lapsed                                                                                                                                                                                                                          |
-| `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion")                           | 2026-10-27  | 2026-10-29 | no   | —          | 1 GA4 referral session from bitcointalk.org in 7d                                                                                                        | unmeasured                                                                                                                                                                                                                      |
-| `x-cycle-window-post-restated`   | X post               | @btc500halving                                                           | 2026-10-27  | 2026-11-02 | no   | —          | 1 GA4 referral session from x.com/twitter.com in 7d                                                                                                      | retired 2026-11-02 — no such account found, no post in 6d                                                                                                                                                                       |
-| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account)       | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                                                                                      | **failed 2026-11-04** — 8 days open, `comments: 0`, `updated_at == created_at` 2026-10-27T05:34:46Z, 0 bitcoin-only.com sessions: tested, no effect                                                                             |
-| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)               | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                                                                                          | **lapsed 2026-11-05 (unverifiable)** — 0 sent; address cannot be confirmed: coindesk.com/contact and coindesk.com both return HTTP 429 to a scripted fetch (2026-11-04). Not restated                                           |
-| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources                     | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21                                                                   | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2                                                                                  |
-| `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                        | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | **withdrawn 2026-11-04, never sent** (`q=author:cryptomarkettrack` → 0 results); `github.com` nofollow cannot move `indexed`. Replaced by `github-lopp-net-charts`                                                              |
-| `github-lopp-net-charts`         | GitHub PR            | `jlopp/lopp.net` → `bitcoin-information/trading.html` → Charts & Metrics | 2026-11-04  | 2026-11-09 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:jlopp/lopp.net`; GA4 referral sessions from lopp.net in 14d                                                | **live** — first destination with a **followed** link (page 200, 0 `rel="nofollow"`); 298 merged PRs, #1260 merged 2026-11-03 in the same section; insertion point corrected 11-04; due moved 11-06 → 11-09 by the 11-06 review |
+| id                               | channel              | recipient                                                                | handed over | due        | sent | date sent  | proof metric                                                                                                                                             | status                                                                                                                                                                                                                                                                                                                                |
+| -------------------------------- | -------------------- | ------------------------------------------------------------------------ | ----------- | ---------- | ---- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `email-bitcoinmagazine-drawdown` | email (contact form) | bitcoinmagazine.com — newsroom / Daily Recap                             | 2026-10-27  | 2026-10-28 | no   | —          | 1 GA4 referral session from bitcoinmagazine.com in 7d                                                                                                    | lapsed                                                                                                                                                                                                                                                                                                                                |
+| `community-bitcointalk-timing`   | community post       | bitcointalk.org board 1 ("Bitcoin Discussion")                           | 2026-10-27  | 2026-10-29 | no   | —          | 1 GA4 referral session from bitcointalk.org in 7d                                                                                                        | unmeasured                                                                                                                                                                                                                                                                                                                            |
+| `x-cycle-window-post-restated`   | X post               | @btc500halving                                                           | 2026-10-27  | 2026-11-02 | no   | —          | 1 GA4 referral session from x.com/twitter.com in 7d                                                                                                      | retired 2026-11-02 — no such account found, no post in 6d                                                                                                                                                                                                                                                                             |
+| `github-bitcoin-only-listing`    | GitHub issue         | bitcoin-only.com "Explorers & Dashboards" (owner's GitHub account)       | 2026-10-27  | 2026-11-11 | yes  | 2026-10-27 | 1 GA4 referral session from bitcoin-only.com in 14d                                                                                                      | **failed 2026-11-04** — 8 days open, `comments: 0`, `updated_at == created_at` 2026-10-27T05:34:46Z, 0 bitcoin-only.com sessions: tested, no effect                                                                                                                                                                                   |
+| `email-coindesk-500day-followup` | email                | CoinDesk editorial desk → Olivier Acuna (2026-08-05 piece)               | 2026-11-01  | 2026-11-05 | no   | —          | 1 GA4 referral session from coindesk.com in 14d                                                                                                          | **lapsed 2026-11-05 (unverifiable)** — 0 sent; address cannot be confirmed: coindesk.com/contact and coindesk.com both return HTTP 429 to a scripted fetch (2026-11-04). Not restated                                                                                                                                                 |
+| `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources                     | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21                                                                   | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2                                                                                                                                                                                        |
+| `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                        | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | **withdrawn 2026-11-04, never sent** (`q=author:cryptomarkettrack` → 0 results); `github.com` nofollow cannot move `indexed`. Replaced by `github-lopp-net-charts`                                                                                                                                                                    |
+| `github-lopp-net-charts`         | GitHub PR            | `jlopp/lopp.net` → `bitcoin-information/trading.html` → Charts & Metrics | 2026-11-04  | 2026-11-09 | yes  | 2026-11-06 | PR #1267 state via `q=author:cryptomarkettrack+repo:jlopp/lopp.net`; merge + 1 GA4 session from lopp.net in 14d                                          | **sent 2026-11-06T18:54:00Z — PR #1267 `open`, `comments: 0`, not a draft, `merged_at: null`** (verified 2026-11-07 04:03Z). The diff is one file, one added line, inserted between `BitInfoCharts` and `CME Futures`; no other line touched. First send since 2026-10-27. Awaiting review — do not resubmit, do not open a second PR |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -326,3 +326,48 @@ entry. If the row is still `sent: no` on 2026-11-07, preparation stops to 2026-1
 `referrals 7d: github.com 3, x.com 0, reddit.com 0, bitcoinmagazine.com 0,
 bitcointalk.org 0` (window 2026-10-30 → 2026-11-05). The count fell from 6 because
 the window slid one day; still 0 from any non-github referrer.
+
+**2026-11-07 (channel check, `outreach-stop-1107`) — the ask was SENT. PR #1267 is
+open; the checkpoint's stop condition does not apply.**
+
+`GET https://api.github.com/search/issues?q=repo:jlopp/lopp.net+btc500` →
+`total_count: 1`; `q=author:cryptomarkettrack+repo:jlopp/lopp.net` → `total_count: 1`.
+`GET https://api.github.com/repos/jlopp/lopp.net/issues/1267` →
+
+```
+number      = 1267
+title       = trading: add BTC500 to Charts & Metrics
+user        = cryptomarkettrack
+state       = open
+created_at  = 2026-11-06T18:54:00Z
+updated_at  = 2026-11-06T18:54:00Z
+closed_at   = None
+comments    = 0
+draft       = False
+merged_at   = null
+```
+
+`created_at` is 18:54Z on 2026-11-06 — eighteen minutes after that cycle's last
+channel check and 2h18m after its commit, so the 2026-11-06 rows that say `sent:
+no` were true when written and are stale now. The channel wins: the row above is
+set `sent: yes`, `date sent: 2026-11-06`, and the `unexecutable` marking ordered
+by `outreach-stop-1107` is **not** applied — its condition ("if the PR is still
+absent") is false.
+
+The diff was read to confirm the send is the one that was prepared
+(`curl -sL https://github.com/jlopp/lopp.net/pull/1267.diff`): one file
+(`bitcoin-information/trading.html`), one `+` line, `@@ -103,6 +103,7 @@`, inserted
+after the `BitInfoCharts` row and before the `CME Futures` row, `rel="noopener"`,
+`target="_blank"`, no other line changed. Title and body match the prepared file;
+the only differences are the ones corrected on 2026-11-06 (105/106, browser-only).
+
+Referrals, same check: `npm run referrals` → `referrals 7d: github.com 3, x.com 0,
+reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 (window 2026-10-30 →
+2026-11-05)`. The 7-day GA4 report generated at 04:03Z ends 2026-11-06 and shows
+**1** github.com referral session; the two numbers are different windows, not a
+correction of each other. **0 sessions from lopp.net in either window** — expected,
+because the line is not merged and the page does not link us yet. `externalReferringDomains`
+is still **0**; the gate stays shut, and the next milestone is a merge, not a send.
+
+No new destination copy was written today. `#1009` unchanged (`state: open`,
+`comments: 0`, `updated_at == created_at 2026-10-27T05:34:46Z`).

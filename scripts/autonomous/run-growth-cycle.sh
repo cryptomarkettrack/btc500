@@ -103,6 +103,18 @@ ARCHIVE_LIVE="n/a"
 SITE_CODE="000"
 STATUS_NOTE=""
 
+# One-line, CSV-safe summary of the dirty paths for the status-history note.
+# The history row is comma-separated, so paths are joined with '|' and cut to
+# 140 chars; the untruncated list stays in the run log. Set by
+# dirty-tree-guard-1107: the 2026-11-05 dirty-tree run recorded note='' and the
+# tree state was unrecoverable from the record.
+dirty_paths_note() {
+  local paths count
+  count="$(git status --porcelain 2>/dev/null | wc -l | tr -d ' ')"
+  paths="$(git status --porcelain 2>/dev/null | cut -c4- | paste -sd'|' - | cut -c1-140)"
+  printf '%s-path(s):%s' "$count" "${paths:-unknown}"
+}
+
 status_message() {
   local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}"
   case "$status" in
@@ -114,7 +126,7 @@ status_message() {
     validation-failed)   echo "Local checks failed (${TEST_STATE}); nothing was pushed. Head ${head} is still local." ;;
     push-blocked)        echo "Commits could not be pushed (tree dirty or remote rejected). Head ${head} is local only." ;;
     no-commit)           echo "Model ${model##*/} finished without a commit. Archive ${ARCHIVE_STATE}." ;;
-    dirty-tree)          echo "Working tree was left dirty at ${head}. Check the log." ;;
+    dirty-tree)          echo "Working tree was left dirty at ${head} (${STATUS_NOTE:-no paths recorded}). Check the log." ;;
     site-down)           echo "Production homepage returned ${SITE_CODE}. Check btc500.net now." ;;
     failed)              echo "Configuration or setup failure. Check the log." ;;
     *)                   echo "status=${status} vercel=${VERCEL_STATE} manifest=${MANIFEST_STATE}." ;;
@@ -182,7 +194,12 @@ if [[ "$(git branch --show-current 2>/dev/null)" != "$DEPLOY_BRANCH" ]]; then
 fi
 
 if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-  log "WARN: working tree is dirty before the run; skipping fast-forward pull"
+  DIRTY_BEFORE="$(dirty_paths_note)"
+  STATUS_NOTE="pre-run-dirty-${DIRTY_BEFORE}"
+  log "WARN: working tree is dirty before the run (${DIRTY_BEFORE}); skipping fast-forward pull"
+  # Deliberately no auto-commit/auto-remove here: the CLI exits 130 while the
+  # session can still be writing, so files found before an attempt are
+  # indistinguishable from a live session's uncommitted work. Record, don't touch.
 else
   if git fetch --quiet origin "$DEPLOY_BRANCH"; then
     git merge --ff-only --quiet "origin/$DEPLOY_BRANCH" 2>/dev/null \
@@ -325,12 +342,14 @@ for model in "${MODELS[@]}"; do
   fi
 
   if [[ -n "$(git status --porcelain 2>/dev/null)" ]]; then
-    log "Attempt left uncommitted changes and never settled"
+    DIRTY_AFTER="$(dirty_paths_note)"
+    log "Attempt left uncommitted changes and never settled (${DIRTY_AFTER})"
     if [[ $MODEL_IDX -lt $MODEL_COUNT ]]; then
       log "Tree still dirty; retrying with the next free model ($((MODEL_IDX + 1)) of $MODEL_COUNT)"
       continue
     fi
     FINAL_HEAD="$AFTER_HEAD"
+    STATUS_NOTE="dirty-tree-${DIRTY_AFTER}"
     finish 1 dirty-tree
   fi
 

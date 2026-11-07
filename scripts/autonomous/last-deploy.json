@@ -1,10 +1,10 @@
 {
-  "generated": "2026-11-06",
-  "summary": "archive-only cycle under the freeze: no site change; lopp.net ask re-verified on its www host and the stale 113/114 line numbers corrected to 105/106 in the outreach text and ledger",
+  "generated": "2026-11-07",
+  "summary": "archive-only cycle under the freeze: PR jlopp/lopp.net#1267 verified open and the ask ledger corrected from sent=no to sent=yes/2026-11-06; runner now records dirty-tree paths in the status-history note; no site change",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
-      "contains": "2026-11-05 00:00:00 UTC,76005.50915811297",
+      "contains": "2026-11-06 00:00:00 UTC,75775.28148740849",
       "status": 200
     },
     {
