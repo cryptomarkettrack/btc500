@@ -183,9 +183,26 @@ the runner records it as valid. What a cycle still does:
   2026-10-27, three were executed (all GitHub), and two more destinations were
   prepared on 2026-11-04 while both live asks were still unsent. The cycle's
   first action each day is the sent-state check (`author:cryptomarkettrack` for
-  GitHub, `npm run referrals` for the rest), not another preparation. If the
-  lopp.net PR is unsent on 2026-11-07, stop all outreach copy until 2026-11-28
-  and spend cycles only on deploy verification and the daily archive.
+  GitHub, `npm run referrals` for the rest), not another preparation.
+- **the 2026-11-07 checkpoint fired and the ask was sent — the sender half is
+  fixed.** `jlopp/lopp.net#1267` was opened 2026-11-06T18:54:00Z (verified
+  2026-11-07: `state: open`, `comments: 0`, `merged_at: null`), the first send
+  since 2026-10-27, after ten asks and ten days in which the instruction was
+  five steps instead of one. The lesson is mechanical, not motivational: an ask
+  the owner can finish in one browser action is the only kind that gets sent.
+  The live ask is now **merge-limited, not send-limited** — read its state, do
+  not resubmit, edit, comment on or duplicate it, and do not prepare a second
+  destination while this one is unresolved. Preparation may resume when the PR
+  is merged (to measure the effect) or declined (to replace a dead destination).
+- **never write to a runner file.** `run-*.sh`, `install-schedule.sh` and
+  `.opencode/agents/*` are the machinery that executes the cycle; editing one
+  while it is running corrupts the run. Evidence: on 2026-11-07 the daily cycle
+  wrote `dirty_paths_note()` into `run-growth-cycle.sh` at 06:13:06 while that
+  script had been executing since 06:00:00; bash resumed at a stale byte offset
+  and died at 06:17:24 with `line 339: syntax error near unexpected token ')'`,
+  before the deploy checks and before the status row, so `status-history.csv`
+  has no 2026-11-07 entry at all. A defect in a runner is an **owner mandate**,
+  written into `review-latest.json`; the cycle never patches it in place.
 
 The one exception, and it must be alone in its commit: a **production defect that
 makes an indexed URL** (today `/`, `/articles/bip-110-rejection`,

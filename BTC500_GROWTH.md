@@ -57,9 +57,40 @@ Google, 1 Soft 404. **Zero URLs changed coverage or `lastCrawl` since
   not send-limited. The PR diff is one file, one line, after `BitInfoCharts`,
   before `CME Futures`; no other line touched.
 - Production: `/` 200, `/bitcoin-500-day-cycle` 200, `/data/500-day-cycles.json`
-  200, `/btc-usd-max.csv` 200, `/sitemap.xml` 200. `/btc-usd-max.csv` still ends
-  2026-11-05 in production because the runner's 2026-11-06 archive commit
-  (`ae867a5`) has not been pushed yet; it goes out with this commit.
+  200, `/btc-usd-max.csv` 200, `/sitemap.xml` 200. `/btc-usd-max.csv` ends
+  2026-11-06 in production (re-verified 2026-11-07 after `ae867a5` was pushed).
+
+## Review 2026-11-07 (daily) — failing: the ask was sent, nothing downstream moved
+
+`rule.mayClaimImproving=false` (regressed: indexation, deploy-health), 14th
+consecutive non-improving review. The week's one real movement is on the input
+side: **PR [jlopp/lopp.net#1267](https://github.com/jlopp/lopp.net/pull/1267) was
+opened 2026-11-06T18:54:00Z** — the first ask sent since 2026-10-27, after ten
+asks and ten days of prose. It is `state: open`, `comments: 0`, `merged_at: null`
+(re-verified by API on 2026-11-07), and `asksExecuted` goes 3 of 10 → **4 of 10**.
+
+Output did not move with it. indexed **1/21** for the fourth consecutive
+inspection (14 crawled-not-indexed, 5 unknown, 1 Soft 404; 6/25 on 2026-10-22 →
+1/21 = −5 pages in 16 days), **0 non-brand clicks in 17 readings**, 7d 1 click /
+9 impressions where the one click is brand (`btc500` 1/3 @3.7) and the only
+non-brand row is `bitcoin 500` 0/1 @67, **positions4to20 = 0**, GA4 7d
+**40 sessions** vs 103 on 2026-10-30 (−61.2%; 29 direct, 4 organic, 1 referral),
+`externalReferringDomains` **0**. `git log 62e3a8a..HEAD -- src
+public/sitemap.xml` is empty: 9 recorded runs, 8 `shipped`, **0 site changes**.
+
+The machinery regressed too. The 2026-11-07 cycle edited `run-growth-cycle.sh`
+while that script was executing; the run died at 06:17:24 with `line 339: syntax
+error near unexpected token ')'` and wrote **no 2026-11-07 status row** (last
+row 2026-11-06T20:46:25), so today's `activity.runs=9` cannot see it. `bash -n`
+passes at HEAD and the site is 200, so 2026-11-08 is not blocked — the cost is
+the missing record and the skipped deploy checks. Owner mandate
+`runner-mid-run-edit-1108`.
+
+Ask for the next week: one comment on #1267 on **2026-11-13** answering
+lopp.net's own `AGENTS.md` reputation rule (no account, no ads, no affiliate
+links, no custody, reproducible from two static files) — not a second PR, not a
+new destination. `cluster-read-1108` is still due 2026-11-08 and decides whether
+the 500-day framing is closed as unservable.
 
 ## Session 2026-11-07 (04:00Z) — archive-only: the ask was sent, ledger corrected
 

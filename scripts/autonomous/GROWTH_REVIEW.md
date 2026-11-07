@@ -429,3 +429,20 @@ Rules for the next review that finds an ask still unsent:
    `outreach/STATUS.md` with the channel evidence, and the next ask must come
    from a different channel that §10(a) allows. The goal (`externalReferringDomains
    > 0`) never changes to make a channel look alive.
+
+**Confirmed 2026-11-07 — the ladder works, and it is now the default shape.** The
+browser-only, one-line, "any GitHub account" version of the lopp.net ask was sent:
+PR [jlopp/lopp.net#1267](https://github.com/jlopp/lopp.net/pull/1267) opened
+2026-11-06T18:54:00Z, `state: open`, `comments: 0`, `merged_at: null` — the first
+send since 2026-10-27, after ten asks and ten days in which the same route was
+handed over in a five-step form. Two rules follow, and both are mechanical:
+
+1. **An ask is written for the owner's hands, not the cycle's conscience.** State
+   the step count in the ask (`one page, one paste, one button`); if the honest
+   count is above two, cut steps until it is not. A destination that needs a
+   clone, a local script and a named account has not been handed over.
+2. **Once an ask is sent, the next step on that route is the merge, not a new
+   destination.** The reviewer's job the following week is to make the live ask
+   easier to accept — e.g. a comment that answers the destination's own stated
+   policy — and to read its state. Preparing a replacement while the first is
+   unresolved is the failure mode `outreach-stop-1107` was written to stop.
