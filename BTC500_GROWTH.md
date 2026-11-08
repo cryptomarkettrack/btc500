@@ -65,8 +65,10 @@ cycle`, `500 days before next bitcoin halving` — are not present in either
   repo). **0 lopp.net sessions** — the link was live for under two hours of the 7d
   window, so this is too early, not zero as a verdict.
 - Production 200s: `/`, `/bitcoin-500-day-cycle`, `/sitemap.xml`, `/robots.txt`,
-  `/data/500-day-cycles.json`; `/btc-usd-max.csv` ends 2026-11-06 in production
-  (the 2026-11-07 row was committed locally by the runner and pushed today).
+  `/data/500-day-cycles.json`, `/articles/bear-market-accumulation`;
+  `/btc-usd-max.csv` served 2026-11-06 until 04:20Z, then **ends 2026-11-07**
+  (`75776.3772`) once `817a349` deployed — verified by replaying every
+  `last-deploy.json` check against production (5 of 5 pass).
 
 ## Session 2026-11-08 (04:00Z) — archive-only: the link merged; the cluster closes
 
