@@ -1,10 +1,15 @@
 {
-  "generated": "2026-11-08",
-  "summary": "archive-only cycle under the freeze: jlopp/lopp.net#1267 verified MERGED 2026-11-07T20:20:30Z and the live Charts & Metrics page verified to carry a followed link to /bitcoin-500-day-cycle; cluster-read-1108 executed (all four 500-day queries absent, cluster closed as unservable); no site change",
+  "generated": "2026-11-09",
+  "summary": "archive-only cycle under the freeze: the 2026-11-08 archive row is the only deployed change (CSV tail + dataset lastDate); lopp.net#1267 re-verified merged with a followed anchor and still no post-merge crawl; no site change. Date-bearing checks removed: the buy date is rendered per request from live block height and moved Nov 28 -> Nov 29 with no deploy, so the 2026-11-08 token would fail today.",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
-      "contains": "2026-11-07 00:00:00 UTC,75776.37720009114",
+      "contains": "2026-11-08 00:00:00 UTC,74740.41780080694",
+      "status": 200
+    },
+    {
+      "path": "/data/500-day-cycles.json",
+      "contains": "\"lastDate\": \"2026-11-08\"",
       "status": 200
     },
     {
@@ -14,12 +19,7 @@
     },
     {
       "path": "/bitcoin-500-day-cycle",
-      "contains": "November 28, 2026",
-      "status": 200
-    },
-    {
-      "path": "/data/500-day-cycles.json",
-      "contains": "\"cycles\"",
+      "contains": "The Bitcoin 500-day rule buys",
       "status": 200
     },
     {

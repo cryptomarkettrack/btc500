@@ -24,85 +24,84 @@ since 2026-10-23.
 
 ---
 
-## Latest measurement — 2026-11-08 (04:03Z)
+## Latest measurement — 2026-11-09 (04:03Z)
 
-**The first followed external link is live.** `jlopp/lopp.net#1267` was **merged
-2026-11-07T20:20:30Z by jlopp** (merge commit `4585231c`, 1 file, +1/−0,
-`comments: 0`). The destination page
-`https://www.lopp.net/bitcoin-information/trading.html` (200) now contains
-`<a href="https://btc500.net/bitcoin-500-day-cycle" … rel="noopener">BTC500</a> -
-500-day cycle dashboard` — **0 `rel="nofollow"` on the anchor**. First input to the
-indexation gate in the site's history; `externalReferringDomains` is still **0 as
-measured** (GA4 referral sessions), so the freeze is not lifted yet.
+**The buy date moved one day with no deploy: Nov 28 → Nov 29, 2026.** The
+2026-11-08 manifest asserted `/bitcoin-500-day-cycle` contained "November 28,
+2026" and passed; today the same URL serves `<title>November 29, 2026: 500 Days
+Before the Next Bitcoin Halving</title>` and `/` reads "29 November 2026 / 20 DAYS
+TO BUY" — with no push since `dc7d2d0`. Both pages render the date per request
+from the live block height (975,127 today), so the date is a live estimate by
+design (the homepage says so) but it cannot be a manifest token. Every check in
+`last-deploy.json` is now date-free.
 
-- **indexed 1/21, sitemap 21** (inspection 2026-11-08T04:03:35Z, 21 rows, 0 failed
-  to inspect): 1 indexed, 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404 —
-  fifth consecutive 1/21. One URL changed since the 2026-11-07T07:32:25Z
-  inspection: `/simulator` re-crawled (2026-10-25 → 2026-11-07), still declined.
-  **The pillar was re-crawled 2026-11-07T03:42:34Z — 16h38m _before_ the merge —
-  and declined again** (`Crawled - currently not indexed`, robots ALLOWED, fetch
-  SUCCESSFUL, canonical match, `referringUrls` btc500.vercel.app/bear-market +
-  /articles/solar-eclipse-bitcoin-halving). No crawl after the merge yet.
-- GSC, both windows end 2026-11-05 (3-day lag; the merge is outside them):
-  **28d 2026-10-09 → 11-05: 20 clicks / 82 impressions / 24.4% / avg pos 12.70**
-  (previous reading 23 / 84 / 27.4% / 12.5 on a window one day earlier — the window
-  slid, so this is not a regression). **7d 2026-10-30 → 11-05: 1 click / 11
-  impressions / 9.1% / 16.8** (previous 1 / 9 / 11.1% / 20.6). `positions4to20` = 0.
-- **Cluster raw rows (`cluster-read-1108`), as printed:**
-  - 7d: `btc500` 1/4 @3.00 · `bitcoin 500` 0/1 @67.00
-  - 28d: `btc500` 5/29 @3.14 · `bit 500` 0/1 @95.00 · `bitcoin 500` 0/2 @54.00 ·
-    `bitcoin plus 500` 0/2 @20.50 · `btc 500` 0/1 @63.00
-  - **All four target queries — `when is 500 days before the next bitcoin
-halving`, `what is 500 days before the next bitcoin halving`, `bitcoin 500 day
-cycle`, `500 days before next bitcoin halving` — are not present in either
-    window.** With `indexed` at 1 ≤ 2 this executes the mandate's closure clause:
-    **the 500-day cluster is closed as unservable**, and no copy edit is made to
-    `/` or `/bitcoin-500-day-cycle` through 2026-12-31.
-- GA4 7d 2026-11-01 → 11-07: **43 sessions / 16 users / 10 new / 57 views / 44.2%
-  engaged**; channels 34 direct / 4 organic / 4 AI Assistant / 2 unassigned /
-  **0 referral**. That is −58.3% against 103 on 2026-10-30. 28d: 162 / 62 / 303
-  views / 45.1%; the only referrer is `github.com` (15 sessions / 2 users, this
-  repo). **0 lopp.net sessions** — the link was live for under two hours of the 7d
-  window, so this is too early, not zero as a verdict.
-- Production 200s: `/`, `/bitcoin-500-day-cycle`, `/sitemap.xml`, `/robots.txt`,
-  `/data/500-day-cycles.json`, `/articles/bear-market-accumulation`;
-  `/btc-usd-max.csv` served 2026-11-06 until 04:20Z, then **ends 2026-11-07**
-  (`75776.3772`) once `817a349` deployed — verified by replaying every
-  `last-deploy.json` check against production (5 of 5 pass).
+- **indexed 1/21, sitemap 21** (inspection 2026-11-09T04:03:40Z, 21 rows, 0 failed
+  to inspect): **sixth consecutive 1/21** — 1 indexed, 14 crawled-not-indexed,
+  5 unknown to Google, 1 Soft 404. **No URL changed state** since the
+  2026-11-08T04:03:35Z inspection. **The pillar's `lastCrawl` is still 2026-11-07
+  (03:42:34Z) — 16h38m before the merge** (2026-11-07T20:20:30Z): no post-merge
+  crawl, so Google has not yet read the new link.
+- GSC, both windows end 2026-11-06 (3-day lag): **28d 2026-10-10 → 11-06: 19
+  clicks / 78 impressions / 24.4% / avg pos 13.1** (previous reading 20 / 82 /
+  24.4% / 12.70 on a window one day earlier — not a regression). **7d 2026-10-31 →
+  11-06: 1 click / 11 impressions / 9.1% / 16.3**; query rows `btc500` 1/4 @1.50,
+  `bitcoin 500` 0/1 @67.00; page rows `/` 1/11 @16.3, `/articles/bip-110-rejection`
+  0/3 @2.0, `/bitcoin-500-day-cycle` 0/2 @1.5.
+- **Cluster rows (`cluster-read-1108`, closed 2026-11-08):** none of the four
+  target queries appears in either window — 7d has 2 query rows, 28d has 5
+  (`btc500` 5/27 @3.00 · `bit 500` 0/1 @95.00 · `bitcoin 500` 0/2 @54.00 ·
+  `bitcoin plus 500` 0/2 @20.50 · `btc 500` 0/1 @63.00). Closure stands.
+- GA4 7d 2026-11-02 → 11-08: **50 sessions / 18 users / 10 new / 59 views / 34.0%
+  engaged**; channels 37 direct / 4 AI Assistant / 4 organic / 3 referral /
+  3 unassigned. Referral = `github.com` 3, **lopp.net 0**. −46.2% against the
+  previous 7d window and −51.5% against 103 on 2026-10-30. `sessions` is not a
+  positive signal (`sessions-honest-1109`). The pillar's 9 landing sessions are
+  not new traffic: the 11-08 reading had 6 and the 28d window 21.
+- Production 200s: `/`, `/bitcoin-500-day-cycle`, `/articles/bip-110-rejection`,
+  `/articles/bear-market-accumulation`, `/sitemap.xml` (21 locs), `/robots.txt`,
+  `/data/500-day-cycles.json`, `/btc-usd-max.csv`. At 04:05Z the CSV still ended
+  2026-11-07 and the dataset reported `lastDate: "2026-11-07"`, because the
+  runner's 2026-11-08 archive commit (`82776de`) was unpushed; pushed 06:08Z, the
+  deploy landed **06:11:56Z** and both now read **2026-11-08** — `last-deploy.json`
+  replayed against production: 5 of 5 checks pass.
+
+## Session 2026-11-09 (04:00Z) — archive-only: no post-merge crawl, date moved
+
+Preflight: archive refreshed to 2026-11-08 (1 row appended, 0 dropped, overlap
+median 0%), 0 experiments open, review 2026-11-07 `failing` (streak 15), site
+200/200. Freeze held, provable: `git diff --stat 62e3a8a..HEAD -- src
+public/sitemap.xml` → **empty**.
+
+- **`lopp-merge-watch-1114` — executed (daily channel check).**
+  `GET /repos/jlopp/lopp.net/pulls/1267` → `state: closed`, `merged: true`,
+  `merged_at 2026-11-07T20:20:30Z`, `comments: 0`. The live page still carries
+  `<a href="https://btc500.net/bitcoin-500-day-cycle" … rel="noopener">BTC500</a>`
+  with **0 `rel="nofollow"`**. First crawl after the merge: **none** (pillar
+  `lastCrawl` 2026-11-07). lopp.net referral sessions: **0** in the 7d window,
+  which covers ~27h post-merge — too early, not a zero verdict.
+- **`sessions-honest-1109` — printed above**; no positive claim about sessions.
+- **`cluster-read-1108`** — closed 2026-11-08; re-read today, still absent, not
+  reopened.
+- **`runner-mid-run-edit-1108` — skipped, owner-only.** A cycle writing
+  `run-*.sh` mid-run is exactly what aborted 2026-11-07; the split of
+  `dirty_paths_note()` and the missing 2026-11-07 status row are the owner's.
+- **No site change, no new destination.** #1267 merged 32h ago; its effect is the
+  only thing that can move the gate, and a second pack now would repeat the
+  prepared-but-unsent substitution and contaminate the one clean measurement.
+- **X (distribution, not a site change):** the Monday countdown was published
+  from the live model — `20 Days until 500 days before halving #Bitcoin…buy Nov
+  29, 2026 — the current block-height estimate`, verified on the profile at
+  2026-11-09T04:06:07Z. Yesterday's post also read "20 Days" because the estimate
+  itself slid one day: N must be read from the site at post time, never copied
+  from the previous post.
 
 ## Session 2026-11-08 (04:00Z) — archive-only: the link merged; the cluster closes
 
-Preflight: archive refreshed to 2026-11-07 (1 row appended, 0 dropped, overlap
-median 0%), 0 experiments open, 0 due, site 200/200, review 2026-11-07 `failing`
-(streak 14). Freeze held: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml`
-→ **empty** (this commit touches only this log, `outreach/STATUS.md` and
-`last-deploy.json`).
-
-- **`lopp-merge-watch-1114` — executed; the answer changed.** PR #1267 is merged
-  (recorded in `outreach/STATUS.md` with the API rows and the live anchor). The
-  first post-merge crawl does not exist yet; the lopp.net referral line is 0 and
-  too early. Owner ask `github-lopp-net-policy-comment-1113` is **resolved before
-  its due date** — no comment, no action.
-- **`cluster-read-1108` — executed** (raw rows above). Closure clause invoked.
-- **`sessions-honest-1109` — printed** below; `sessions` is not cited as a positive
-  signal anywhere in this commit.
-- **No new destination prepared.** The 2026-11-07 rule allows preparation once
-  #1267 is merged, but the 2026-11-06 review deleted the "one destination per
-  cycle" requirement precisely because five prepared-but-unsent packs substituted
-  for sends, and the review has named no new destination. A sixth pack today would
-  repeat the substitution on the day the first link landed.
-- **No site change** — deliberately. The pillar has never been crawled while an
-  external followed link pointed at it; the clean test of the freeze hypothesis is
-  an _unchanged_ page plus a link Google can follow. Editing it now would
-  contaminate the only clean measurement the site has left.
-
-## Session 2026-11-07 (04:00Z) — archive-only: the ask was sent, ledger corrected
-
-`outreach-stop-1107` stop condition false (the PR existed), row set `sent: yes` and
-the channel output quoted. `dirty-tree-guard-1107`: `dirty_paths_note()` verified
-in a scratch repo; the runner then aborted at 06:17:24 (`line 339: syntax error`)
-because that same script was edited mid-run — no 2026-11-07 status row. Owner
-mandate `runner-mid-run-edit-1108`.
+#1267 verified **merged 2026-11-07T20:20:30Z** (merge commit `4585231c`, 1 file,
++1/−0, 0 comments) and the destination page verified to carry the followed anchor
+— the first followed external link in the site's history. `cluster-read-1108`
+executed: all four target queries absent at indexed 1/21 → **the 500-day cluster is
+closed as unservable** (no copy edit to `/` or the pillar through 2026-12-31).
 
 ## Session 2026-11-05 — `indexed-decision-1105`: the indexation line closes
 
@@ -158,8 +157,12 @@ Futures`; apex→www 301 documented.
    title, meta or section edit to `/` or `/bitcoin-500-day-cycle` through
    2026-12-31. Reopening needs a measured change — a cluster query reappearing or
    the pillar being indexed — not a new argument.
-3. **The buy-window peg, 2026-11-28** — `/` and the pillar state 28 November 2026
-   from a 2028-04-11 estimate at height 974,836 and both answer 200. Only news peg.
+3. **The buy-window peg is a live estimate, now 29 November 2026** (it read 28
+   November on 2026-11-08 at height 974,836; today 29 November at 975,127). `/` and
+   `/bitcoin-500-day-cycle` agree and both answer 200. Re-read the date from the
+   site every cycle — never from this log, and never from an older post. Article
+   bodies date body copy to 30 November 2026 and the X bio says Nov 30: a one-day
+   gap, not fixed while the freeze holds.
 4. **Owner mandates, not cycle work:** `runner-mid-run-edit-1108` (split
    `dirty_paths_note()`, restore the missing 2026-11-07 status row).
 
@@ -183,13 +186,19 @@ Only rows 0–2 are permitted work. Rows 3–4 are readings. Rows 5–7 were del
   freeze hypothesis with the missing input present. Until it happens, "waiting
   does not index a page nobody links to" is still unfalsified, not confirmed.
 - **Indexation: 6 (10-22) → 5 → 3 → 2 (10-31) → 1 (11-04) → 1/21 (11-05, 11-06
-  twice, 11-07, 11-08)**, denominator 21 = sitemap locs. 5% coverage; 14
+  twice, 11-07, 11-08, 11-09)**, denominator 21 = sitemap locs. 5% coverage; 14
   crawled-not-indexed, 5 unknown, 1 Soft 404. Only `/` is indexed.
+- **The buy date is live-derived and has moved Nov 28 → Nov 29 with no deploy.**
+  Nothing is wrong with that — the model projects from live block height and the
+  homepage says the date moves — but three surfaces now disagree by a day: site
+  (29 Nov), dated article bodies (30 Nov), X bio (30 Nov). The 11-08 manifest
+  check `contains "November 28, 2026"` would fail today; date-bearing manifest
+  tokens are now banned (they can only verify a deploy for the hours the estimate
+  holds).
 - **`lopp.net` is www-only from a scripted fetch** — `https://lopp.net/…/trading.html`
-  → 301 → `https://www.lopp.net/…/trading.html` (200). Canonical-host redirect, not
-  a removed page.
+  → 301 → `www` (200). Canonical-host redirect, not a removed page.
 - **Ask routes: the only live ask is resolved.** 10 asks handed over since
-  2026-10-27, 4 carried out, and #1267 merged on 2026-11-07. **0 sessions from any
+  2026-10-27, 4 carried out, #1267 merged 2026-11-07. **0 sessions from any
   non-github referrer in every reading.** A `sent` cell is verified against the
   channel, never against this file.
 - **A destination needs a merge record, not stars** (awesome-bitcoin: 1,358 stars,
@@ -199,7 +208,7 @@ Only rows 0–2 are permitted work. Rows 3–4 are readings. Rows 5–7 were del
 - **`/articles/bear-market-accumulation` — keep and leave alone.** Soft 404 set on
   a 2026-08-08 crawl; serves 200, 1,383 words, no pillar duplication.
 - **"0 non-brand" is a floor** — GSC anonymises query rows (28-day query table sums
-  to 35 of 136 byPage impressions).
+  to 33 of 132 byPage impressions).
 - **The homepage's GSC `referringUrls` includes `domainsc.com/page-…html`.** Fetched
   2026-11-08: a parked "domain may be for sale" page, 0 occurrences of `btc500`.
   Stale/disavowed — do not count it as a referring domain.

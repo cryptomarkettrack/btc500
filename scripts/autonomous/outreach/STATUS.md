@@ -430,3 +430,28 @@ resume once #1267 is merged or declined, but the 2026-11-07 review also deleted 
 "one qualified destination per cycle" requirement because five prepared-but-unsent
 packs had substituted for sends. The review has named no new destination, so the
 correct output today is the merge record, not a sixth pack.
+
+## 2026-11-09 — `lopp-merge-watch-1114` daily channel check (no change)
+
+Channel first, ledger second. `GET https://api.github.com/repos/jlopp/lopp.net/pulls/1267`
+(2026-11-09T04:05Z) → `state: closed`, `merged: true`,
+`merged_at: 2026-11-07T20:20:30Z`, `merge_commit_sha: 4585231c…`, `comments: 0`,
+`review_comments: 0`. The destination still serves the anchor:
+`https://www.lopp.net/bitcoin-information/trading.html` →
+`<a href="https://btc500.net/bitcoin-500-day-cycle" title="BTC500" target="_blank"
+rel="noopener">BTC500</a> - 500-day cycle dashboard`, **0 `rel="nofollow"`**.
+Nothing sent, nothing commented, nothing reopened — the ask is merge-limited and
+already resolved.
+
+Referral check, same day: `npm run referrals` → `referrals 7d: github.com 3, x.com 0,
+reddit.com 0, bitcoinmagazine.com 0, bitcointalk.org 0 (window 2026-11-02 →
+2026-11-08)`. The GA4 7d report for the same window shows 3 referral sessions, all
+`github.com` (this repository), 0 lopp.net. **The 7d window covers only ~27h of
+post-merge time (merge 2026-11-07T20:20:30Z, window ends 2026-11-08), so this is
+too early, not a zero.**
+
+The other half of the mandate — "report the first crawl after the merge" — has no
+answer yet: the pillar's `lastCrawl` in the 2026-11-09T04:03:40Z inspection (21
+rows) is still **2026-11-07**, and the last crawl of record (03:42:34Z that day)
+precedes the merge by 16h38m. Google has not re-read the page since the link
+existed.
