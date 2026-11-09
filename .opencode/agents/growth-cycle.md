@@ -127,9 +127,16 @@ verify-on-profile). Guardrails:
    Today it is 20 days to the official buy date (Nov 30, 2026); guidance
    expires after the buy date: past Nov 30 2026 STOP posts shaped like
    "<N> days until buy date" and switch to the Phase B template below.
-3. **Post template (Phase A, until Nov 30 2026):**
-   `<N> Days until 500 days before halving #Bitcoin`
-   where N is the live countdown from the site. Max one post per run.
+3. **Post template — day-of-week rotation (Phase A, until Nov 30 2026):**
+
+   - **Monday:** `<N> Days until 500 days before halving #Bitcoin\n\nThe rule is fixed: buy Nov 28, 2026. No indicators. No narratives. Just the calendar. Who’s with me? 🚀`
+   - **Tuesday:** `Replying to @somehandle: the "perfect entry" is a trap. The 500-day rule removes guesswork. Bottoms cluster at T-500, gains run to T+500. This cycle buy date is Nov 28, 2026. Period.`
+   - **Wednesday:** `<N> Days until 500 days before halving #Bitcoin\n\nQuick question: why does every "Bitcoin cycle top caller" ignore the 500-day rule? Asking for a friend who's tracking a $10k paper position live until 2029. 🧵👇`
+   - **Thursday:** `If the 2028 halving lands in April, "500 days before" is early December. First time I'm setting a calendar alert instead of a price alert. The 500-day rule removes the guesswork entirely: bottoms cluster near T-500, gains run to T+500. #Bitcoin`
+   - **Friday:** `This week on @btc500halving: 3 replies to cycle-data thinkers, 3 new followers, and the buy date is officially locked: Nov 28, 2026. Public $10k position opens that day. Track it with us. #Bitcoin`
+
+   Max one post per run. Use the `BTC500_X_SLOT` environment variable (am/md/pm) to rotate, or compute the day-of-week in the agent. If no slot is set, default to Monday template.
+
 4. **Phase B template (after the buy date):**
    `Day <N> of the public $10,000 BTC500 position. Entry was $<entry> on Nov
    30, 2026. Now $<now> (<+/-P>%). Sell date Aug 26, 2029. #Bitcoin`
