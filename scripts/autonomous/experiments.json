@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "max_open": 3,
-  "rule": "Read every experiment whose next_reading has passed before starting new work, then record the verdict here and in BTC500_GROWTH.md. Do not open a new experiment while `open` equals `max_open`: close, merge or read one first. Preflight reports due readings in preflight.json. THE LEDGER IS CLOSED: 0 open, and no experiment may be opened before 2026-12-01, nor at any time while `indexed` is below 5 (review of 2026-11-02). Six experiments have been opened and six have closed without a result, all on the same wall: an unserved URL or no audience. The 2026-11-02 inspection made the wall explicit — the crawler is active (`/` lastCrawl 2026-11-01) and still declines 19 of 21 URLs, so any in-repo hypothesis is unreadable until an external link exists. distribution-test's closure was re-based on the corrected ask ledger on 2026-11-01 — it was closed on a false '0 sent' premise; one channel had in fact been tested for five days and produced nothing. A closure is only as good as the evidence under it, so a verdict that names a ledger cell must cite the channel's own record.",
+  "rule": "Read every experiment whose next_reading has passed before starting new work, then record the verdict here and in BTC500_GROWTH.md. Do not open a new experiment while `open` equals `max_open`: close, merge or read one first. Preflight reports due readings in preflight.json. THE LEDGER IS CLOSED: 0 open, and no experiment may be opened before 2026-12-01, nor at any time while `indexed` is below 5 (review of 2026-11-02). One exception, opened 2026-11-09: `lopp-link-effect` (reading 2026-11-28) — the first experiment whose required input exists (one merged, followed external link, lopp.net 2026-11-07T20:20:30Z); the ban was written when externalReferringDomains was 0, and no second exception is allowed. Six experiments have been opened and six have closed without a result, all on the same wall: an unserved URL or no audience. The 2026-11-02 inspection made the wall explicit — the crawler is active (`/` lastCrawl 2026-11-01) and still declines 19 of 21 URLs, so any in-repo hypothesis is unreadable until an external link exists. distribution-test's closure was re-based on the corrected ask ledger on 2026-11-01 — it was closed on a false '0 sent' premise; one channel had in fact been tested for five days and produced nothing. A closure is only as good as the evidence under it, so a verdict that names a ledger cell must cite the channel's own record.",
   "experiments": [
     {
       "id": "t500-date-calendar",
@@ -78,6 +78,20 @@
         "2026-10-28: shipped. 301 -> /articles for /articles/bitcoin-volatility, /articles/bitcoin-infrastructure-exploits and /articles/ondo-finance-tokenization (routes, metadata, components and sitemap rows deleted). /articles and /liquidation kept, per the mandate. Sitemap 25 -> 22.",
         "2026-10-28: base at shipping is 5 indexed / 25 inspected, not 6 - /articles/strongest-hands (last crawl 2026-08-17) fell out of the index on the same day. Read the target as >= 8 indexed of 22 sitemap URLs by 2026-11-10, and treat 5 or fewer as the inconclusive/fail branch.",
         "2026-10-29: contracted /articles/strongest-hands (sitemap 22 -> 21). Indexed fell again to 3 of 21 (inspection 2026-10-29T04:10Z): /articles/solar-eclipse-bitcoin-halving (crawl 08-17) and /articles/sec-cancels-regulation-crypto (crawl 08-16) were declined too. Indexed now: /, /articles/bip-110-rejection, /articles/bear-market-accumulation. The success bar (8 of 21) is now 5 net URLs away, so the 2026-11-10 reading is very likely to close failed - read it honestly rather than extending it."
+      ]
+    },
+    {
+      "id": "lopp-link-effect",
+      "opened": "2026-11-09",
+      "what": "Measure the first merged, followed external link: jlopp/lopp.net#1267 (merged 2026-11-07T20:20:30Z, merge commit 4585231c, 1 file, +1/-0) points at /bitcoin-500-day-cycle from https://www.lopp.net/bitcoin-information/trading.html with rel=\"noopener\" and no nofollow (verified by fetching the page 2026-11-09).",
+      "hypothesis": "One followed link from a domain with established crawl demand is enough to make Google recrawl /bitcoin-500-day-cycle after 2026-11-07T20:20:30Z and either index it or move its coverage state; if it is not enough, the problem is the domain, not the page, and the next lever is a second destination.",
+      "success": "A crawl of /bitcoin-500-day-cycle dated after 2026-11-07T20:20:30Z with coverage changed from 'Crawled - currently not indexed', or one GA4 referral session from lopp.net, by 2026-11-28.",
+      "inconclusive": "No post-merge crawl, or a post-merge crawl that still reports 'Crawled - currently not indexed', on 2026-11-28. Then one followed link did not move the gate: record 'authority hypothesis falsified for one followed link' and name a second destination; do not reopen the copy line.",
+      "next_reading": "2026-11-28",
+      "status": "open",
+      "verdict": null,
+      "progress": [
+        "2026-11-09 opened by the results review. At open: pillar lastCrawl 2026-11-07T03:42:34Z (16h38m before the merge), inspection 2026-11-09T04:03:40Z still shows 'Crawled - currently not indexed', indexed 1/21 for the sixth consecutive inspection, 0 lopp.net referral sessions in the 7d GA4 window ending 2026-11-08 (the window covers ~27h post-merge; not yet a zero verdict)."
       ]
     }
   ]

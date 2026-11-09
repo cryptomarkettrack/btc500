@@ -227,6 +227,22 @@ work (idea menu A–D) may not resume; the cycle's permitted output is the
 mandate-named action or an archive-only reading, and any future content bet waits
 for the gate.
 
+**2026-11-09 (this review): `externalReferringDomains > 0` is MET — 1, lopp.net.**
+`jlopp/lopp.net#1267` merged 2026-11-07T20:20:30Z (merge commit `4585231c`, 1 file,
++1/−0, 0 comments); the review fetched
+`https://www.lopp.net/bitcoin-information/trading.html` on 2026-11-09 and read
+`<a href="https://btc500.net/bitcoin-500-day-cycle" title="BTC500" target="_blank"
+rel="noopener">BTC500</a>` — no `nofollow`. The old gate is satisfied and the
+freeze does **not** lift on it, because a followed link is an input, not a result:
+indexed is still 1/21 and no post-merge crawl exists. The gate becomes two-step:
+
+1. **still frozen on copy** until `/bitcoin-500-day-cycle` is indexed, or one GA4
+   referral session arrives from a non-github domain;
+2. **2026-11-28 falsification date.** If there is no post-merge crawl by then, or
+   the crawl still reports `Crawled - currently not indexed`, write "authority
+   hypothesis falsified for one followed link" and name a **second destination**.
+   Do not reopen the copy line and do not reinterpret the date.
+
 PERFORMANCE must open with these three lines, every cycle:
 
 ```
@@ -284,9 +300,21 @@ forever. From today:
   in the rendered `awesome-bitcoin` README).** A merged GitHub line is a discovery
   and referral-traffic bet, never an authority fix. Do not promise indexation from
   it, and do not describe a GitHub list as a "followed link".
-- **Retired: X.** Do not prepare, restate or re-issue an X post until the owner
-  records an account that exists in `outreach/STATUS.md`. 0 sessions from x.com in
-  every reading, no post in six days, no public trace of the handle.
+- **X is live — corrected 2026-11-09. The "retired: X" line was false.** The
+  results review opened https://x.com/btc500halving in a real browser on
+  2026-11-09 and read: display name `BTC500 | Halving Cycle Rule`,
+  **206 followers**, profile URL field `btc500.net`, bio "Buy BTC 500d before the
+  halving. Sell 500d after. Now: countdown to Nov 30, 2026 buy. Then: public $50k
+  PnL tracking.", and posts at `2026-11-09T04:06:07Z` (`status/2119642667181089200`)
+  and `2026-11-08T06:43:04Z` (`status/2119319777025888395`). The earlier "no such
+  account" finding was wrong; six days of asks were built on it.
+  **The defect is the click path, not the account:** none of the five posts
+  visible on the profile (pinned 2026-08-09 through 2026-11-09T04:06:07Z) contains
+  a `btc500.net` link, and GA4 has recorded **0 x.com referral sessions in 18
+  readings**. Every post this cycle publishes must carry
+  `https://btc500.net/bitcoin-500-day-cycle` (≤280 chars with the link), and the
+  PERFORMANCE block must print the post URL and `x.com referrals 7d: N`. A post
+  without a link is not distribution; it is a diary entry.
 - Also retired after 2026-11-10: the bitcoin-only listing issue, if unmerged with
   0 comments.
 - Verify each live ask against its channel every cycle: `contact@coindesk.com`
@@ -296,6 +324,11 @@ forever. From today:
 - **No new experiment may be opened before 2026-12-01**, and none at all while
   `indexed` is under 5. Six experiments have opened and six have closed without a
   result; a seventh reading on an unserved site measures the same wall.
+  **One exception, opened 2026-11-09:** `lopp-link-effect` in `experiments.json`,
+  reading 2026-11-28. It is allowed because it is the first experiment that has
+  the input it needs — one merged, followed external link (lopp.net, merged
+  2026-11-07T20:20:30Z) — and the ban above was written when
+  `externalReferringDomains` was 0. No second exception.
 
 A cycle that has no due mandate and no due reading prints the three PERFORMANCE
 lines plus these two ask states and stops. It does **not** prepare a new
