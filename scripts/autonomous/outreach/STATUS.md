@@ -29,7 +29,8 @@ zero.
 | `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources                     | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21                                                                   | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2                                                                                                                                                                                                                                                                                                                                     |
 | `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                        | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | **withdrawn 2026-11-04, never sent** (`q=author:cryptomarkettrack` → 0 results); `github.com` nofollow cannot move `indexed`. Replaced by `github-lopp-net-charts`                                                                                                                                                                                                                                                                                                                 |
 | `github-lopp-net-charts`         | GitHub PR            | `jlopp/lopp.net` → `bitcoin-information/trading.html` → Charts & Metrics | 2026-11-04  | 2026-11-09 | yes  | 2026-11-06 | PR #1267 state via `q=author:cryptomarkettrack+repo:jlopp/lopp.net`; merge + 1 GA4 session from lopp.net in 14d                                          | **MERGED 2026-11-07T20:20:30Z by jlopp** (merge commit `4585231c`, 1 file, +1/−0, `comments: 0`, `review_comments: 0`). The live destination carries the anchor: `https://www.lopp.net/bitcoin-information/trading.html` → 200, `<a href="https://btc500.net/bitcoin-500-day-cycle" … rel="noopener">BTC500</a> - 500-day cycle dashboard`, **0 `rel="nofollow"`**. First followed external link. Sent 2026-11-06T18:54:00Z, merged 25h26m later; no send-side follow-up is needed |
-| `x-pinned-post-with-link-1116`   | X post               | @btc500halving (206 followers, profile URL field `btc500.net`)           | 2026-11-09  | 2026-11-16 | no   | —          | GA4 referral sessions from x.com / t.co / twitter.com in the 7d window ending 2026-11-16                                                                 | **channel-verified unsent 2026-11-10T04:04Z** — the profile's pinned post is still `status/2086452446076002492` (2026-08-09T14:00:02Z) and no visible post 08-09 → 11-09 contains a `btc500.net` link. The cycle's own 11-10 post does carry the link (`status/2120004886423388255`), which is not the pinned ask                                                                                                                                                                  |
+| `x-pinned-post-with-link-1116`   | X post               | @btc500halving (206 followers, profile URL field `btc500.net`)           | 2026-11-09  | 2026-11-16 | no   | —          | GA4 referral sessions from x.com / t.co / twitter.com in the 7d window ending 2026-11-16                                                                 | **channel-verified unsent 2026-11-10T04:04Z** — the profile's pinned post is still `status/2086452446076002492` (2026-08-09T14:00:02Z) and no visible post 08-09 → 11-09 contains a `btc500.net` link. The cycle's own 11-10 post does carry the link (`status/2120004886423388255`), which is not the pinned ask. **MOVED 2026-11-10** from an owner ask to the cycle mandate `pin-linked-post-1111`: the cycle posts from this account with its own browser session, so the owner is no longer asked to touch X. |
+| `github-awesome-blockchain-line-1124` | GitHub PR (`github`) | `yjjnls/awesome-blockchain` → `## Releated Tools`, one line | 2026-11-10  | 2026-11-24 | no   | —          | PR state via `q=repo:yjjnls/awesome-blockchain+btc500` (open = sent, merged = accepted) + GA4 `github.com` referral sessions with the user count (positive only above 1 user, §10(b)) | **issued 2026-11-10, one-step browser form.** Route re-verified via the GitHub API today: repo pushed 2026-11-03, 3,643 stars, `master` not archived, `## Releated Tools` holds exactly one line, and five outside PRs were merged 2026-11-03 (#147, #149, #150, #151, #146). This replaces the withdrawn 2026-11-03 `github-awesome-blockchain-pr`, whose withdrawal reason was "never sent", not a failed test. Ceiling stated: GitHub links are `rel="nofollow"` (measured 2026-11-03), so this is a discovery/referral bet, never an indexation fix. |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -96,6 +97,27 @@ channel nobody uses is not a strategy.
 Copy-paste text for the three 2026-10-27 asks lives in `<state>/owner-asks.txt`
 and in `review-latest.json` → `asks[].content`. The GitHub issue text is in
 `2026-10-27-bitcoin-only-listing.txt`. Do not retype it.
+
+**2026-11-10 (results review, streak 16): X stops being an owner channel, and the
+only new ask is a one-step GitHub line.** Two facts decide it. (a) The cycle has a
+working browser session on `@btc500halving` and posted twice on 2026-11-10 —
+`status/2120004886423388255` at 04:05:27Z carrying
+`https://btc500.net/bitcoin-500-day-cycle`, and a reply at 04:06:57Z — while both X
+asks handed to the owner (2026-10-27, lapsed; 2026-11-09, unsent) produced 0
+sends. Asking the owner for something the automation does itself is a delay
+wearing the costume of delegation, so the pin moved to the cycle mandate
+`pin-linked-post-1111`. (b) The only channel with a 100% send record is
+one-page GitHub: `#1009` (sent 2026-10-27) and `#1267` (sent 2026-11-06, merged
+2026-11-07T20:20:30Z in 25h26m). The new ask
+`github-awesome-blockchain-line-1124` is therefore one page, one paste, two
+clicks, and its destination was verified today rather than assumed — repo pushed
+2026-11-03, 5 outside PRs merged that day, `## Releated Tools` holding one line.
+Do not re-issue it in a different shape before 2026-11-24; read the PR state.
+
+**Ask send rate, stated so it stops being re-litigated:** 11 asks handed over
+since 2026-10-27, 2 sent (both GitHub), 6 lapsed or withdrawn, 1 moved to the
+cycle, 1 live (the GitHub line). Zero sessions have arrived from any asked
+channel. A twelfth ask that is not one-page GitHub is not evidence of initiative.
 
 ## Pitches prepared by the cycle (same rule: owner sends)
 

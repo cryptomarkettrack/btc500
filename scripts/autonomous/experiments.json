@@ -91,7 +91,8 @@
       "status": "open",
       "verdict": null,
       "progress": [
-        "2026-11-09 opened by the results review. At open: pillar lastCrawl 2026-11-07T03:42:34Z (16h38m before the merge), inspection 2026-11-09T04:03:40Z still shows 'Crawled - currently not indexed', indexed 1/21 for the sixth consecutive inspection, 0 lopp.net referral sessions in the 7d GA4 window ending 2026-11-08 (the window covers ~27h post-merge; not yet a zero verdict)."
+        "2026-11-09 opened by the results review. At open: pillar lastCrawl 2026-11-07T03:42:34Z (16h38m before the merge), inspection 2026-11-09T04:03:40Z still shows 'Crawled - currently not indexed', indexed 1/21 for the sixth consecutive inspection, 0 lopp.net referral sessions in the 7d GA4 window ending 2026-11-08 (the window covers ~27h post-merge; not yet a zero verdict).",
+        "2026-11-10: 68h44m after the merge, still no crawl (lastCrawl 2026-11-07T03:42:34Z, read from the raw urlInspection API) and 0 lopp.net referral sessions (GA4 7d 2026-11-03 → 2026-11-09: referrals 3, all github.com, 1 user). Indexed 1/21 for the seventh consecutive inspection, 0 URLs changed state. The review excluded the competing explanations against production on the same day, so this experiment now tests link volume alone: the pillar is 200 / 3,007 words, canonical self-referential, robots and indexing ALLOWED, linked from `/`, titles distinct from the homepage, and only 2 of its 105 sentences over 60 characters are shared with `/` (both nav/consent boilerplate). Reading date unchanged at 2026-11-28 — the input exists, so the date does not move."
       ]
     }
   ]

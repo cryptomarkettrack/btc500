@@ -54,6 +54,59 @@ not a result: the followed link is live and nothing downstream of it has moved.
 
 **Review verdict: `failing`.** 15th consecutive non-improving review.
 
+## Results review — 2026-11-10 (daily) — verdict `failing`, streak 16
+
+**No measurable result. The page-quality explanations for indexation are now
+excluded by measurement; link volume is what is left.**
+
+- **Indexation 1/21, seventh consecutive inspection**, 0 URLs changed state. The
+  numerator is a real loss, not a denominator story: on 2026-10-29 the indexed set
+  was `/`, `/articles/bip-110-rejection`, `/articles/bear-market-accumulation`;
+  today only `/`. `bip-110` is `Crawled - currently not indexed` (lastCrawl
+  2026-08-11) and `bear-market-accumulation` is `Soft 404` (lastCrawl 2026-08-08) —
+  neither has been read by Google since August, so nothing done in October was
+  ever evaluated. 5 more URLs are unknown to Google and are linked from `/`
+  (1–6 anchors each), so discovery is not the cause either.
+- **Causes excluded today, against production.** `/bitcoin-500-day-cycle`: 200,
+  **3,007 words** rendered, canonical self-referential, robots/indexing `ALLOWED`,
+  linked from the indexed homepage. Not a homepage duplicate: distinct titles and
+  only **2 of its 105** sentences over 60 chars appear verbatim on `/`, both
+  nav/consent boilerplate. Pillar `lastCrawl` 2026-11-07T03:42:34Z is 16h37m56s
+  **before** #1267 merged and 68h44m before today's read — still no post-merge crawl.
+- **Non-brand clicks 0 in 19 readings.** 7d is 1 click / 10 impressions / 10.0% /
+  pos 17.8, and the click is brand (`btc500` 1/4 @1.50). The only non-brand row is
+  `bitcoin 500` 0/1 @67.00; `positions4to20 = 0`. 28d 17 clicks / 76 impressions
+  against the 2026-10-22 baseline 28d of 25 / 90.
+- **Sessions down again, and 77.6% of them are ours.** GA4 7d 67 / 21 users / 81
+  views / 29.9% engaged / 50s against 82 / 41 / 154 / 46.3% / 2m27s: **−18.3%
+  sessions, −48.8% users, −47.4% views**. 52 of 67 sessions are Direct from 14
+  users. The runner's `green` compares to 46 on 2026-10-27, not to the previous
+  window. Referrals 3, **3 of 3 `github.com`, 1 user** — self-referral, §10(b);
+  0 non-github in 19 readings; lopp.net 0 in 68h44m.
+- **The X click path exists as of today and is untagged.** The cycle posted
+  `status/2120004886423388255` at 2026-11-10T04:05:27Z with the pillar URL — the
+  first visible post with a link. The **pinned** post is still
+  `status/2086452446076002492` (2026-08-09) with no link. GA4's window ends
+  2026-11-09, so none of this is measurable yet.
+- **Input vs output: 9 runs / 8 `shipped` / 1 failure, `git log --since=2026-11-03
+  -- src public/sitemap.xml` EMPTY** — 0 site changes, 7 of the 8 ships being the
+  runner's own price-archive CSV. 0 new indexed pages, 0 non-brand clicks, 0
+  non-github referrals.
+- **Ask ledger: 11 handed over since 2026-10-27, 2 sent** (`#1009`, open 14 days,
+  0 comments, no listing; `#1267`, merged in 25h26m). Both X asks were unsent while
+  the cycle posted to that account twice today — so X is now a cycle channel and the
+  review no longer asks the owner to touch it.
+- **Machinery:** 2026-11-07 still has no status row; `dirty_paths_note()` still at
+  `run-growth-cycle.sh:111/:197/:345`; review run `5040414` committed 85 lines of
+  growth automation (`.opencode/agents/growth-cycle.md` +13/−3,
+  `scripts/autonomous/x/post-daily.mjs` +75) through `git add -A` (:439, :446).
+
+**Review verdict: `failing`.** 16th consecutive non-improving review. Mandates:
+`pin-linked-post-1111`, `utm-on-every-outbound-link-1118`,
+`post-merge-crawl-watch-1128`, `runner-record-repair-1112` (owner),
+`review-run-staging-1112` (owner). Ask: one GitHub line on
+`yjjnls/awesome-blockchain` (verified merge record 2026-11-03), by 2026-11-24.
+
 ## Latest measurement — 2026-11-10 (04:03Z)
 
 - **indexed 1/21, sitemap 21** (inspection 2026-11-10T04:02:47Z, 21 rows, 0 failed
@@ -148,6 +201,7 @@ with N=20 read from the site — still no link in the post.
 
 | date       | mode  | verdict | what it forced                                                                                                                                                                                                                                                                                                                                          |
 | ---------- | ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-10 | daily | failing | Page-quality causes excluded by measurement (pillar 200 / 3,007 words / canonical match / robots allowed / 2 of 105 sentences shared with `/`); index lost both October articles by name; 1/21 seventh. Mandates: `pin-linked-post-1111`, `utm-on-every-outbound-link-1118`, `post-merge-crawl-watch-1128`, `runner-record-repair-1112` (owner), `review-run-staging-1112` (owner). Ask: one GitHub line, `yjjnls/awesome-blockchain`. Streak 16 |
 | 2026-11-09 | daily | failing | `externalReferringDomains` 0 → 1 (lopp.net merged 2026-11-07T20:20:30Z, followed); indexation 1/21 sixth; no post-merge crawl. Mandates: `post-merge-crawl-1128`, `x-link-every-post-1116`, `referral-and-site-change-line-1116`, `runner-record-repair-1109` (owner), `review-commit-guard-1109` (owner). Ask: one X post carrying the link. Streak 15 |
 | 2026-11-07 | daily | failing | `runner-mid-run-edit-1108` (owner); `cluster-read-1108`; `lopp-merge-watch-1114`; `sessions-honest-1109`. Streak 14                                                                                                                                                                                                                                     |
 | 2026-11-06 | daily | failing | `lopp-net-pr-current-lines-1108` (owner); `outreach-stop-1107`; `dirty-tree-guard-1107`; `runner-honesty-1108` (owner). `shipped` redefined as a diff touching `src/`/sitemap (streak 13)                                                                                                                                                               |

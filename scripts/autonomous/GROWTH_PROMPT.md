@@ -74,6 +74,17 @@ Reports are written to `scripts/search-console/output/` and
 3 days; GA4 standard reports lag 24–48 hours, so a window can legitimately be
 empty right after a change — write "too early", not zero.
 
+**Set by the 2026-11-10 review — do not re-collect what the runner already
+collected.** The runner fetches the 7d Search Console report, the sitemap
+inspection and the 7d GA4 report every morning (the 2026-11-10 set was timestamped
+04:02–04:03) and writes the numbers into `review-input.json` / `preflight.json`.
+Re-running all six commands above to reach the same numbers is what produced 9
+runs / 8 `shipped` / **0 site changes** in the 7 days to 2026-11-10 — seven of the
+eight commits were the runner's own price-archive CSV. A cycle reads the numbers
+the runner wrote and spends its run on the mandate. Collect a report only when
+(a) preflight marks it missing or older than 36h, or (b) a mandate names a reading
+the runner does not take — today, only the raw `lastCrawlTime` with seconds.
+
 Look for: clicks/impressions/CTR/position change vs the previous period, queries
 in positions 4–20, high-impression low-CTR pages, new queries, pages that lost
 visibility, and indexing status changes. GA4 adds sessions, engagement,
@@ -243,6 +254,31 @@ indexed is still 1/21 and no post-merge crawl exists. The gate becomes two-step:
    hypothesis falsified for one followed link" and name a **second destination**.
    Do not reopen the copy line and do not reinterpret the date.
 
+**2026-11-10 (this review): the page-quality explanations are now excluded by
+measurement, so copy work is not merely frozen — it is answered.** Seven
+inspections of the same `Crawled - currently not indexed` verdict never checked
+the causes the playbook names, so this review checked them against production:
+`/bitcoin-500-day-cycle` returns **200** with **3,007 words** of rendered text; its
+canonical is self-referential; `robots` and `indexing` are `ALLOWED`; it is linked
+from the indexed homepage; and it is not a duplicate of the homepage — the titles
+differ and only **2 of its 105** sentences over 60 characters appear verbatim on
+`/`, both of them nav/consent boilerplate. Thin content, duplication, canonical,
+robots and orphan status are therefore excluded, and what remains is a
+three-month-old domain with one external link. **No cycle may offer copy, title,
+meta, merge, redirect or "thin content" work as an indexation fix before
+2026-11-28**; the permitted outputs under the freeze are exactly three:
+
+1. the raw `lastCrawlTime` read (with seconds) against 2026-11-07T20:20:30Z;
+2. the pinned linked post (`pin-linked-post-1111`);
+3. one UTM-tagged post per run (`utm-on-every-outbound-link-1118`).
+
+Also record what the index actually lost: on 2026-10-29 the indexed set was
+`/`, `/articles/bip-110-rejection` and `/articles/bear-market-accumulation`; today
+only `/` remains, `bip-110` is `Crawled - currently not indexed` (lastCrawl
+2026-08-11) and `bear-market-accumulation` is `Soft 404` (lastCrawl 2026-08-08).
+Both URLs must be named in every review until they are classified after a crawl
+dated later than 2026-11-07.
+
 PERFORMANCE must open with these three lines, every cycle:
 
 ```
@@ -315,6 +351,27 @@ forever. From today:
   `https://btc500.net/bitcoin-500-day-cycle` (≤280 chars with the link), and the
   PERFORMANCE block must print the post URL and `x.com referrals 7d: N`. A post
   without a link is not distribution; it is a diary entry.
+  **Set by the 2026-11-10 review — X is a channel the CYCLE operates, and the
+  cycle stops asking the owner to touch it.** The cycle has a working browser
+  session on the account and posted twice on 2026-11-10
+  (`status/2120004886423388255` at 04:05:27Z with the pillar link, and a reply at
+  04:06:57Z). The owner was asked for an X post on 2026-10-27 (lapsed) and again
+  on 2026-11-09 (still unsent at the 2026-11-10T04:04Z channel read, pinned post
+  still `status/2086452446076002492` from 2026-08-09 with no link). Two asks, zero
+  sends, while the automation did it itself. From today:
+  - **no review may put an X post, reply or pin in `owner_asks[]`.** It becomes a
+    cycle mandate. An ask is only for a channel the automation cannot operate
+    (a GitHub write, an email from the owner's address).
+  - the cycle **pins its own linked post** (`pin-linked-post-1111`, due
+    2026-11-11) and records the pinned URL; if the session cannot pin, it records
+    which screen refuses it instead of asking the owner again.
+  - **every outbound `btc500.net` link carries UTM tags** —
+    `?utm_source=x&utm_medium=social&utm_campaign=<slug>` — and the commit body
+    prints the exact tagged URL. With 52 of 67 sessions Direct from 14 users and
+    0 x.com referral sessions in 19 readings, an untagged link cannot distinguish
+    a stripped referrer from a non-click; an untagged post therefore does not
+    count as distribution.
+  - one post per run. Replies stay conversational and do not each need the link.
 - Also retired after 2026-11-10: the bitcoin-only listing issue, if unmerged with
   0 comments.
 - Verify each live ask against its channel every cycle: `contact@coindesk.com`

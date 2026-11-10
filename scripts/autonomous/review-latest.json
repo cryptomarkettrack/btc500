@@ -1,146 +1,151 @@
 {
   "schema": 1,
-  "generated": "2026-11-09",
+  "generated": "2026-11-10",
   "mode": "daily",
-  "window": { "start": "2026-11-02", "end": "2026-11-09" },
+  "window": { "start": "2026-11-03", "end": "2026-11-10" },
   "verdict": "failing",
   "signals": [
     {
       "id": "indexation",
       "state": "regressed",
-      "note": "1/21 at the 2026-11-09T04:03:40Z inspection (21 rows): 1 indexed (`/`), 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404. Sixth consecutive 1/21 and no URL changed state. Series 6/25 (2026-10-22) -> 5/22 -> 3/21 -> 2/21 -> 1/21. jlopp/lopp.net#1267 merged 2026-11-07T20:20:30Z; the pillar's lastCrawl is still 2026-11-07T03:42:34Z, 16h38m BEFORE the merge, so the 04:03:40Z inspection 31h43m after the merge records zero post-merge crawl."
+      "note": "1/21 at the 2026-11-10T07:32:30Z inspection: 1 indexed (`/`), 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404. Seventh consecutive 1/21 and 0 URLs changed state against 2026-11-09. The series is a real loss, not a denominator change: on 2026-10-29 the index held 3 URLs (`/`, `/articles/bip-110-rejection`, `/articles/bear-market-accumulation`); both articles have since fallen out — bip-110 is now 'Crawled - currently not indexed' (lastCrawl 2026-08-11) and bear-market-accumulation is 'Soft 404' (lastCrawl 2026-08-08). Pillar `/bitcoin-500-day-cycle`: coverage 'Crawled - currently not indexed', lastCrawl 2026-11-07T03:42:34Z — 16h37m56s BEFORE lopp.net#1267 merged (2026-11-07T20:20:30Z), so 68h44m after the merge there is still no post-merge crawl."
     },
     {
       "id": "non-brand-clicks",
       "state": "stalled",
-      "note": "0 non-brand clicks in 18 readings (2026-10-22 -> 2026-11-09). 7d (2026-10-31 -> 11-06): 1 click / 11 impressions; the click is brand (`btc500` 1/4 @1.50). nonBrandClicks 0, nonBrandImpressions 1 (`bitcoin 500` 0/1 @67.00). The 28d table holds 5 query rows and none of the four closed-cluster queries."
+      "note": "0 non-brand clicks in 19 readings (2026-10-22 → 2026-11-10). 7d 2026-11-01 → 11-07: 1 click / 10 impressions / 10.0% / avg position 17.8; the click is brand (`btc500` 1/4 @1.50). The only non-brand row is `bitcoin 500` 0/1 @67.00. positions4to20 = 0 (query rows are anonymised, so this is a floor): nothing sits in the band a title change could lift."
     },
     {
       "id": "impressions",
       "state": "flat",
-      "note": "7d 11 impressions (2026-10-31 -> 11-06), under the 100-impression noise floor. 28d 78 impressions / 19 clicks (window ending 11-06) against 95 on 2026-11-01, 84 on 11-03 and 90 in the 2026-09-22 baseline 28d — a 17-impression decline in five readings, recorded as drift not as a verdict."
-    },
-    {
-      "id": "positions-4-to-20",
-      "state": "stalled",
-      "note": "positions4to20 = 0 today (query rows are anonymised, so this is a floor). Only two 7d query rows exist: `btc500` @1.50 (brand) and `bitcoin 500` @67.00. Nothing sits in the 4-20 band that a title change could lift."
+      "note": "7d 10 impressions (2026-11-01 → 11-07), 6 pages with impressions — below the 100-impression noise floor, so the 11 → 10 move is not a trend. 28d (2026-10-11 → 11-07, printed in the 2026-11-10 cycle commit): 17 clicks / 76 impressions / 22.4% / avg pos 13.4 against the 2026-10-22 baseline 28d of 25 clicks / 90 impressions / 27.8% / pos 9.8."
     },
     {
       "id": "sessions",
       "state": "regressed",
-      "note": "GA4 7d 2026-11-02 -> 11-08: 50 sessions / 18 users / 10 new / 59 views / 17 engaged (34.0%) / 37.9s average. Previous 7d: 93 sessions / 43 users / 196 views / 43 engaged (46.2%) / 164.4s = -46.2% sessions, -58.1% users, -69.9% views, -60.5% engaged. Against 103 on 2026-10-30: -51.5%. The runner's green compares to the 12-session week GA4 was created in (2026-10-24) and is a first-row artifact."
+      "note": "GA4 7d 2026-11-03 → 11-09: 67 sessions / 21 users / 12 new / 81 views / 20 engaged (29.9%) / 50s against 82 / 41 / 32 new / 154 / 38 (46.3%) / 2m27s the week before: -18.3% sessions, -48.8% users, -62.5% new users, -47.4% views. The runner's `green` compares 67 to 46 on 2026-10-27, a 14-day-old low, not to the previous window. 52 of 67 sessions (77.6%) are Direct, from 14 users; organic is 5."
     },
     {
       "id": "referral-sessions",
       "state": "stalled",
-      "note": "3 referral sessions in 7d, 3 of 3 from github.com, 1 user — this repository and the owner's browser, per §10(b), not a mention. 0 sessions from any non-github domain in 18 readings. lopp.net produced 0 in the window ending 2026-11-08 (~27h after merge), which is too early to read as a failure."
-    },
-    {
-      "id": "ask-effect",
-      "state": "flat",
-      "note": "PR jlopp/lopp.net#1267 merged 2026-11-07T20:20:30Z by jlopp (merge commit 4585231c, 1 file, +1/-0, comments 0); the destination page carries `<a href=\"https://btc500.net/bitcoin-500-day-cycle\" ... rel=\"noopener\">` with 0 nofollow (fetched 2026-11-09). 0 lopp.net referral sessions. Send half is closed: 4 of 10 asks handed over since 2026-10-27 have been executed."
+      "note": "3 referral sessions in 7d, 3 of 3 from github.com, 1 user — this repository and the owner's browser, per §10(b), not a mention. 0 sessions from any non-github domain in 19 readings. lopp.net has produced 0 sessions in the 68h44m since its link merged (2026-11-07T20:20:30Z, verified followed again today: 200, `<a href=\"https://btc500.net/bitcoin-500-day-cycle\" title=\"BTC500\" target=\"_blank\" rel=\"noopener\">`, 0 nofollow)."
     },
     {
       "id": "x-channel",
+      "state": "flat",
+      "note": "The click path finally exists but is unmeasured. The cycle posted https://x.com/btc500halving/status/2120004886423388255 at 2026-11-10T04:05:27Z carrying the pillar URL — the first visible post in the profile's history with a btc500.net link. The profile's PINNED post is still status/2086452446076002492 (2026-08-09T14:00:02Z) with no link (channel read 2026-11-10T04:04Z). x.com/t.co referral sessions: 0 in 19 readings. The GA4 7d window ends 2026-11-09, so today's post cannot be judged yet."
+    },
+    {
+      "id": "ask-effect",
       "state": "stalled",
-      "note": "@btc500halving exists and is worked: read in a browser 2026-11-09, 206 followers, profile URL field `btc500.net`, bio dated by the account itself, posts at 2026-11-09T04:06:07Z (status/2119642667181089200) and 2026-11-08T06:43:04Z. None of the five posts visible on the profile (2026-08-09 pinned through 2026-11-09) contains a btc500.net link, and GA4 has 0 x.com referral sessions in 18 readings. The 2026-11-02 'no such account' finding was false."
+      "note": "11 asks handed over since 2026-10-27; 2 sent. Sent: bitcoin-only/bitcoin-only#1009 (open since 2026-10-27T05:34:46Z, 0 comments after 14 days) and jlopp/lopp.net#1267 (opened 2026-11-06T18:54:00Z, merged 2026-11-07T20:20:30Z, 25h26m). Unsent: the X pinned-post ask (handed over 2026-11-09, still unsent at the 2026-11-10T04:04Z channel read), and 6 lapsed/withdrawn asks before it. 0 sessions from any asked channel."
     },
     {
       "id": "cycle-yield",
-      "state": "stalled",
-      "note": "9 runs / 8 `shipped` / 1 failure (dirty-tree) in 7d, but `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty: 0 site changes. The 8 ships are the price archive, docs, review files and one runner edit. 0 new indexed pages, 0 non-brand clicks — a week of commits that could not touch a page."
+      "state": "regressed",
+      "note": "9 runs / 8 `shipped` / 1 failure (dirty-tree) in 7d, but `git log --since=2026-11-03 --oneline -- src public/sitemap.xml` is EMPTY: 0 site changes in 7 days, and `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is also empty. 7 of the 8 `shipped` entries are the runner's own price-archive CSV commits (3a7339c, 10f53fe, c461189, ae867a5, 38b1cda, 82776de, 31cff9c). 0 new indexed pages, 0 non-brand clicks, 0 non-github referrals against 8 ships."
     },
     {
       "id": "deploy-health",
       "state": "regressed",
-      "note": "1 failed run in 7d (dirty-tree, 2026-11-05T06:20:26). The owner mandate runner-mid-run-edit-1108, due today, is unexecuted: dirty_paths_note() is still inside scripts/autonomous/run-growth-cycle.sh (lines 111, 197, 345), there is no scripts/autonomous/status-note.sh, and status-history.csv has 0 rows for 2026-11-07. Separately the 2026-11-08 review run was verdict-invalid (generated 2026-11-07, mode daily where deep was expected) and its failure path ran `git add -A`, committing .opencode/agents/growth-cycle.md (+32 lines, 0db1e04) — a protected file — as 'review: rejected verdict preserved by the runner (fail)'. The tree is dirty again right now: `git status --short` at 2026-11-09T07:5x shows `.opencode/agents/growth-cycle.md` modified (10 insertions, 3 deletions, mtime 2026-11-08 15:25) with five uncommitted weekday post templates — none carrying a link — plus an untracked `scripts/autonomous/x/post-daily.mjs`."
+      "note": "1 failed run in 7d: `dirty-tree` 2026-11-05T06:20:26. The owner mandate is still unexecuted — `grep -n dirty_paths_note scripts/autonomous/*.sh` returns run-growth-cycle.sh:111, :197, :345; there is no scripts/autonomous/status-note.sh; status-history.csv has 0 rows for 2026-11-07 (last rows: 2026-11-06T20:46:25 then 2026-11-08T06:16:42). Separately, review run 5040414 (2026-11-09T10:00:50+0200) committed, under 'review: failing — collected by the runner', `.opencode/agents/growth-cycle.md` (+13/−3) and `scripts/autonomous/x/post-daily.mjs` (+75) — 85 lines of growth automation shipped by a review run's `git add -A`, which is still at run-review-cycle.sh:439 and :446."
     },
     {
       "id": "data-freshness",
       "state": "green",
-      "note": "All three source reports fetched within 3.5h: GSC performance 2026-11-09T04:08:18Z, inspection 04:03:40Z, GA4 04:00:57Z. GSC reconciles byProperty 1 click / 11 impressions = byPage 1/11. The inspection has 21 rows against 21 sitemap locs, so this is not a --limit artifact."
+      "note": "All three sources fetched within 3.5h: GSC performance 2026-11-10T04:03:19Z, inspection 2026-11-10T07:32:30Z, GA4 2026-11-10T04:02:55Z. GSC reconciles byProperty 1 click / 10 impressions; the inspection has 21 rows against 21 sitemap `<loc>`s, so the denominator is the sitemap and not a --limit artifact."
     }
   ],
   "why": [
-    "Indexation is the regression and the stage is 'crawled and declined', still an authority verdict. 1/21 for six inspections; the crawler is alive (pillar lastCrawl 2026-11-07T03:42:34Z) and declines an unchanged page. What is new and testable is the input: one merged, followed link exists since 2026-11-07T20:20:30Z and Google has not crawled the pillar since. Test: a crawl dated after the merge that changes coverage, by 2026-11-28. If the next crawl still says 'Crawled - currently not indexed', one followed link did not move the gate and the domain — not the page — is the problem; then name a second destination and never reopen the copy line.",
-    "Non-brand clicks are zero because the site is not served for any query with volume. The 7d table has two rows: `btc500` (our own name, 1 click / 4 impressions @1.50) and `bitcoin 500` (0/1 @67.00). The 28d table has five rows and none of the four 500-day cluster queries, which the 2026-11-08 read closed as unservable at 1/21 indexed. This is the indexation gate counted a second way, not a title problem: a page that is not indexed cannot rank, and a page with no external link is not indexed.",
-    "The input/output mismatch is total. 9 runs, 8 `shipped`, 1 failure, and the 7-day site diff is empty: 0 site changes, 0 new indexed pages, 0 non-brand clicks. Every one of the 8 ships is the price archive, a doc, a review file or a runner edit. The freeze is correct — it stopped the copy churn that made the index fall 3 -> 2 on 2026-10-30 — but a frozen cycle that produces only maintenance commits is not 'work that gained something'; it is waiting. The only defensible output for a cycle this week is a measurement of the one new input or a distribution asset that carries a link.",
-    "Distribution has been failing at the click path, not at the account. The X profile we have been calling retired is live — 206 followers, a `btc500.net` profile link, posts at 2026-11-09T04:06:07Z — and none of its five visible posts contains a link to the site, while GA4 has recorded 0 x.com referral sessions in 18 readings. 775 posts cannot produce a click if a reader has nothing to click. Test: one post carrying the pillar URL, then the x.com referral line within 7 days. The same defect applies to the daily countdown the cycle now publishes.",
-    "Referral traffic is still only self-referral. 3 sessions in 7d, 3 of 3 github.com, 1 user. The first real external input landed 2026-11-07T20:20:30Z (lopp.net, followed) and has produced 0 sessions in ~27h of coverage — not a verdict yet, but a merge is not a visit and this review will not count it as one until `npm run referrals` shows a lopp.net line.",
-    "Sessions fell 46.2% and the runner calls it green. 50 sessions / 18 users / 59 views / 37.9s against 93 / 43 / 196 / 164.4s in the previous 7d; direct is 37 of 50 and the engaged rate fell 46.2% -> 34.0%. The green comes from comparing to the 12-session week the property was created in. The direction has been the same since 2026-10-30 and belongs in the record as a regression.",
-    "The machinery is still losing its own record. The 2026-11-07 run aborted mid-script and left no status row; the owner fix that would stop it (split dirty_paths_note out of the executing script) was ordered for today and is absent. On 2026-11-08 a review run failed validation and its failure path committed the working tree with `git add -A`, landing a 32-line edit to a protected agent file. A rejected verdict is acceptable evidence to keep; a rejected verdict that also ships an instruction is not. And the instruction that is actually shaping today's posts is not in any commit at all: `.opencode/agents/growth-cycle.md` is modified in the working tree (10 insertions, mtime 2026-11-08 15:25) with five weekday templates, none containing a link. The record cannot be audited when the behaviour lives in an uncommitted diff.",
-    "The ask loop is no longer blocked on the owner's willingness: the one-step browser version of the lopp.net PR was sent 18 minutes after it was handed over, ten asks after the five-step version failed. The lesson is that an ask must be one page, one paste, one button and must have a click path at the end. The X post in this review is written to that shape; the bio edit and the second destination are not asked for until this one is measured."
+    "Indexation is the regression and the stage is now proven to be 'crawled and declined for authority', not page quality — three alternative causes were excluded by measurement today and none had been checked in seven inspections. The pillar returns 200 with 3,007 words of rendered text, its canonical is self-referential (`https://btc500.net/bitcoin-500-day-cycle`), robots and indexing are ALLOWED, and it is linked from the indexed homepage. It is not a duplicate of the homepage either: the titles differ ('BTC500 — The Bitcoin 500-Day Halving Rule' vs 'November 29, 2026: 500 Days Before the Next Bitcoin Halving') and only 2 of the pillar's 105 sentences longer than 60 characters appear verbatim on the homepage, both of them nav/consent boilerplate. So thin content, duplication, canonical, robots and orphan status are all excluded; what is left is a 3-month-old domain with one external link. Test, already dated: a crawl of the pillar after 2026-11-07T20:20:30Z that changes coverage, read on 2026-11-28. If it still says 'Crawled - currently not indexed', the answer is link volume, not page work.",
+    "The index lost both articles that carried it and nobody recorded it as a loss. On 2026-10-29 the indexed set was `/`, `/articles/bip-110-rejection` and `/articles/bear-market-accumulation`; today only `/` is indexed, bip-110 is 'Crawled - currently not indexed' with lastCrawl 2026-08-11, and bear-market is 'Soft 404' with lastCrawl 2026-08-08. The denominator moved 25 → 21, but the numerator moved 3 → 1, and the two URLs that fell were never re-examined — they have not been crawled since August, so nothing we did in October was ever read. Test: re-inspect those two URLs after the next crawl that post-dates 2026-11-07 and print them by name in every review until they are classified.",
+    "Non-brand clicks are zero because the site is not served, not because a title is wrong. The 7d query table holds 2 rows: `btc500` (our own name, 1 click / 4 impressions @1.50) and `bitcoin 500` (0/1 @67.00). positions4to20 = 0 with 10 impressions across 6 pages, which means there is literally nothing in the band a snippet edit could lift. This is the indexation gate counted a second way: 20 of 21 URLs are not served.",
+    "Sessions fell again and the runner's green is a comparison artifact. 67 sessions / 21 users / 81 views / 29.9% engaged / 50s against 82 / 41 / 154 / 46.3% / 2m27s: -18.3% sessions, -48.8% users, -47.4% views. 52 of 67 sessions are Direct from 14 users, i.e. 3.7 sessions per direct user — the owner's browser, the automation and the dashboard, not an audience. The `green` compares to 46 on 2026-10-27. The honest series is the previous 7d, and it is down for the third consecutive week (103 on 10-30 → 50 on 11-08 → 67 now, with users 43 → 18 → 21).",
+    "Referral traffic is still only self-referral, and the first real link has now had enough time to produce nothing. 3 sessions, 3 of 3 github.com, 1 user. The lopp.net link has been live and followed for 68h44m and has produced 0 sessions and no recrawl. Two explanations remain and they are distinguishable: readers are not clicking, or clicks are being attributed to Direct (52 sessions / 14 users) because the post links carry no UTM and in-app browsers strip the referrer. Test: from 2026-11-11 every btc500.net link the cycle posts carries utm_source=x&utm_medium=social&utm_campaign=<slug>. If GA4 shows source=x sessions by 2026-11-18 the attribution was the problem; if it is still 0 while Direct stays above 40 sessions, the audience is not clicking and 206 followers is not an audience.",
+    "The input/output mismatch is total and it is now structural. 9 runs, 8 `shipped`, 1 failure, and `git log --since=2026-11-03 -- src public/sitemap.xml` is empty: 0 site changes. Seven of the eight ships are the runner's own price-archive CSV. The freeze is not wrong — copy churn correlated with 6/25 → 3/21 — but a frozen cycle that spends its run re-running reports the runner already collects, to re-record a crawl timestamp that has not changed, produces nothing a stranger can see. The week's only externally visible output was one X post at 2026-11-10T04:05:27Z, after 8 days of asking the owner for it.",
+    "The ask loop is failing on shape, not on willingness, and the ledger now says exactly which shape works. 11 asks since 2026-10-27, 2 sent. Both sends were one-page browser GitHub actions (issue #1009, PR #1267) and the PR was merged in 25h26m. Every email, community and X ask to the owner is unsent: X was asked twice (2026-10-27, lapsed; 2026-11-09, unsent), and the cycle went on to post to that same account twice on 2026-11-10 with the browser session it already has. Asking the owner to do something the automation itself did an hour later is not an ask; it is a delay.",
+    "The machinery is still losing its own record and shipping code through the review path. 2026-11-07 still has no status row, so `activity.runs = 9` cannot see the day the cycle killed itself by writing dirty_paths_note() into the script that was executing. And on 2026-11-09 a review run's `git add -A` committed 85 lines of growth automation (`.opencode/agents/growth-cycle.md` +13/−3, `scripts/autonomous/x/post-daily.mjs` +75) under a 'failing' review subject. A rejected or collected verdict must be evidence; it may not be a delivery mechanism."
   ],
   "questions": [
-    "206 followers, a live profile and daily posts produced 0 x.com referral sessions in 18 readings. Is any channel we work actually instrumented, or is Consent Mode v2 hiding the referrals we do get?",
-    "The ask that got sent was sent within 18 minutes of becoming one browser step. What else in this repository is still written for the cycle's conscience rather than the owner's hands — and how many are there?",
-    "If one followed link from lopp.net does not trigger a recrawl of the pillar by 2026-11-28, is a second list entry the right lever, or does a three-month-old domain need a mention with an audience (newsletter, writer) rather than another directory line?",
-    "The X bio says $50k and Nov 30; the site says $10,000 and 29 November. Which is the product, and why is the largest audience we have reading a different number from the one the site computes?"
+    "Three alternative causes of the decline were excluded by measurement today (3,007 words, distinct titles, 2 of 105 shared sentences, canonical match, robots allowed, 1 internal link). If the pillar is not thin, not duplicated, not blocked and not orphaned, what in the last 90 days was ever meant to make Google trust a 3-month-old domain with 1 link — and why did that plan start on 2026-10-30 rather than at launch?",
+    "The cycle has a working browser session on @btc500halving and posted two times today. How many of the 11 asks since 2026-10-27 were addressed to channels the automation could have operated itself, and why is the owner still the one being asked?",
+    "52 of 67 sessions are Direct from 14 users, and 3.7 sessions per user. Is any of the traffic we report as growth actually a stranger? Until UTM tags exist on our own outbound links, we cannot answer, and we have been writing 'sessions up' for three weeks.",
+    "The lopp.net entry has been live for 68h44m with 0 sessions. What is the smallest measurement that would tell us whether a resource-page listing can move anything at all, before we spend a second destination on the same bet?"
   ],
   "mandates": [
     {
+      "id": "pin-linked-post-1111",
+      "action": "Pin https://x.com/btc500halving/status/2120004886423388255 to the @btc500halving profile using the same browser session that posted it, then verify by reading the profile's pinned post URL and record that URL in BTC500_GROWTH.md and outreach/STATUS.md. If the session cannot pin, record exactly which screen refuses it and leave the profile otherwise untouched — do not re-post and do not edit the bio.",
+      "because": "The profile's pinned post is still status/2086452446076002492 (2026-08-09T14:00:02Z) and contains no btc500.net link (channel read 2026-11-10T04:04Z). The owner ask to pin a linked post was handed over 2026-11-09 and was still unsent at that same read, while the cycle itself posted twice on 2026-11-10 (status/2120004886423388255 at 04:05:27Z, reply status/2120005265051300228 at 04:06:57Z). The pinned post is the one every profile visitor sees first and GA4 has recorded 0 x.com referral sessions in 19 readings.",
+      "due": "2026-11-11",
+      "owner": "cycle"
+    },
+    {
+      "id": "utm-on-every-outbound-link-1118",
+      "action": "From the 2026-11-11 run, every btc500.net link the cycle publishes to X (post, reply or quote) ends with `?utm_source=x&utm_medium=social&utm_campaign=<slug for that post>` and the commit body prints the exact URL used. Publish one linked post on 2026-11-11 with the tag and none without it. Do not add a second post per run.",
+      "because": "GA4 7d is 67 sessions but 52 are Direct from 14 users, and x.com/t.co referral sessions are 0 in 19 readings — while the account has 206 followers, a btc500.net profile link and, since 2026-11-10T04:05:27Z, a post that ends at the site. Without a UTM, a click inside an in-app browser (which strips the referrer) is indistinguishable from no click, so the next review cannot tell whether the channel fails or the attribution does. This is the difference between a verdict and a guess.",
+      "due": "2026-11-18",
+      "owner": "cycle"
+    },
+    {
       "id": "post-merge-crawl-watch-1128",
-      "action": "Every cycle through 2026-11-28: re-inspect https://btc500.net/bitcoin-500-day-cycle, record coverageState and lastCrawlTime in BTC500_GROWTH.md and outreach/STATUS.md, and state explicitly whether a crawl exists dated after 2026-11-07T20:20:30Z. On 2026-11-28, if there is no post-merge crawl or the coverage is still 'Crawled - currently not indexed', write 'authority hypothesis falsified for one followed link' and name one second destination in the backlog — write no copy, no title and no meta.",
-      "because": "PR jlopp/lopp.net#1267 merged 2026-11-07T20:20:30Z (merge commit 4585231c, 1 file, +1/-0) and the live page carries a followed anchor (rel=\"noopener\", 0 nofollow, fetched 2026-11-09). The pillar's lastCrawl is 2026-11-07T03:42:34Z — 16h38m before the merge — and the 2026-11-09T04:03:40Z inspection repeats it 31h43m after; indexed is 1/21 for the sixth inspection. This is the first time the site has ever had the input the authority hypothesis requires, so the next crawl is the measurement, not another argument.",
+      "action": "Every cycle through 2026-11-28: read the pillar's raw `lastCrawlTime` (with seconds, from the urlInspection API, not the date-truncated collector) and print it next to the merge time 2026-11-07T20:20:30Z. On the first crawl dated after the merge, print coverage for all 21 URLs before and after by name and stop the daily read. On 2026-11-28, if there is no post-merge crawl or the coverage is still 'Crawled - currently not indexed', write 'authority hypothesis falsified for one followed link', name one second destination, and write no copy, title or meta.",
+      "because": "Restated unchanged in substance: pillar coverage is still 'Crawled - currently not indexed' with lastCrawl 2026-11-07T03:42:34Z, 16h37m56s before #1267 merged and 68h44m before today's read; indexed is 1/21 for the seventh consecutive inspection and the two article URLs that were indexed on 2026-10-29 have both dropped out. The link is the only new input the domain has ever had, so the next crawl is the measurement.",
       "due": "2026-11-16",
       "owner": "cycle"
     },
     {
-      "id": "x-link-every-post-1116",
-      "action": "From this cycle on, every post the cycle publishes to @btc500halving carries https://btc500.net/bitcoin-500-day-cycle inside the 280-character limit, and the commit body records the post URL plus `x.com referrals 7d: N`. Also record in BTC500_GROWTH.md the date and URL of the first post that carried a link. Do not post more than once per run and do not reply in bulk.",
-      "because": "@btc500halving read in a browser on 2026-11-09: 206 followers, profile URL field btc500.net, posts at 2026-11-09T04:06:07Z and 2026-11-08T06:43:04Z — and none of the five posts visible on the profile contains a btc500.net link. GA4 has 0 x.com referral sessions in 18 readings, so the channel we work hardest has never had a click path. The 2026-11-02 'X retired — no account' line was false and has been corrected in GROWTH_PROMPT.md.",
-      "due": "2026-11-16",
-      "owner": "cycle"
-    },
-    {
-      "id": "referral-and-site-change-line-1116",
-      "action": "Until a non-github referral session lands, every PERFORMANCE block prints these three lines verbatim from the data: `site changes: N` (from `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml`), `referrals 7d: github.com N (M users) / lopp.net N / x.com N / t.co N / other N`, and `non-github referral sessions in 7d: N`. Stop citing `sessions` or github.com referrals as positive signals in the commit subject, the TL;DR or the notification.",
-      "because": "GA4 7d is 50 sessions / 18 users / 59 views / 37.9s against 93 / 43 / 196 / 164.4s the week before (-46.2% sessions, -58.1% users) and -51.5% against 103 on 2026-10-30. The runner's `sessions` green compares to the 12-session week the property was created in. Referral sessions are 3, 3 of 3 github.com, 1 user — this repository and the owner's browser, not a mention (§10(b)). And 8 `shipped` commits produced 0 site changes, so the two numbers the cycle reports are both inflated.",
-      "due": "2026-11-16",
-      "owner": "cycle"
-    },
-    {
-      "id": "runner-record-repair-1109",
-      "action": "OWNER ONLY, two steps: (1) append the missing 2026-11-07 row to ~/.local/state/btc500-growth/status-history.csv from ~/.local/state/btc500-growth/2026-11-07.log with status `aborted` and note `syntax-error-mid-run-line-339`; (2) move `dirty_paths_note()` out of scripts/autonomous/run-growth-cycle.sh (lines 111, 197, 345) into a new scripts/autonomous/status-note.sh that is sourced once before the attempt loop, so a note helper can never again change the file bash is reading. Restated from runner-mid-run-edit-1108, narrowed to the two steps that are still absent.",
-      "because": "Due 2026-11-09 and not done: `grep -n dirty_paths_note scripts/autonomous/*.sh` still returns run-growth-cycle.sh:111, :197 and :345, there is no status-note.sh, and `grep -c 2026-11-07 status-history.csv` returns 0. The 2026-11-07 run died at 06:17:24 with `line 339: syntax error near unexpected token ')'` one line after `HEAD advanced: ae867a5 -> bb358e3`, so `activity.runs = 9` cannot see the day and this review had to reconstruct it from the log.",
+      "id": "runner-record-repair-1112",
+      "action": "OWNER ONLY, two steps: (1) append the missing 2026-11-07 row to ~/.local/state/btc500-growth/status-history.csv from ~/.local/state/btc500-growth/2026-11-07.log with status `aborted` and note `syntax-error-mid-run-line-339`; (2) move `dirty_paths_note()` out of scripts/autonomous/run-growth-cycle.sh (lines 111, 197, 345) into a new scripts/autonomous/status-note.sh sourced once before the attempt loop. Restated a third time from runner-mid-run-edit-1108 / runner-record-repair-1109.",
+      "because": "Due 2026-11-09 and due 2026-11-12, still absent: `grep -n dirty_paths_note scripts/autonomous/*.sh` returns run-growth-cycle.sh:111, :197 and :345 today, `ls scripts/autonomous/status-note.sh` is missing, and status-history.csv has 0 rows for 2026-11-07 (the file jumps 2026-11-06T20:46:25 → 2026-11-08T06:16:42). Every review since 2026-11-07 has had to reconstruct that day from logs, and `activity.runs = 9` still cannot see it.",
       "due": "2026-11-12",
       "owner": "owner"
     },
     {
-      "id": "review-commit-guard-1109",
-      "action": "OWNER ONLY — change scripts/autonomous/run-review-cycle.sh so a failed verdict check cannot publish anything: (1) run `node scripts/autonomous/validate-review.mjs --today \"$TODAY\" --mode \"$MODE\"` before the commit and, on non-zero exit, restore scripts/autonomous/review-latest.json to HEAD and commit nothing; (2) never `git add -A` on the failure path — stage only the files the review is allowed to write (review-latest.json, BTC500_GROWTH.md, scripts/autonomous/GROWTH_PROMPT.md, scripts/autonomous/experiments.json, scripts/autonomous/outreach/); (3) decide explicitly what to do with `.opencode/agents/growth-cycle.md`: commit 0db1e04 added 32 lines to it under a rejected review, and the working tree now carries a further 10 uncommitted insertions of weekday post templates (none with a link). Revert both or keep them deliberately — they may not keep arriving as side effects of a failed run.",
-      "because": "2026-11-08 is the third verdict-invalid review run in the series (2026-10-26, 2026-10-31, 2026-11-08), and this one did more than leave a stale file: the run's `git add -A` committed .opencode/agents/growth-cycle.md (+32 lines, 0db1e04, 'review: rejected verdict preserved by the runner (fail)') — a file the reviewer is forbidden to edit — and that commit is what instructed the growth cycle to post to X every run, which it now does. A rejected verdict should be preserved as evidence; it should not ship changes.",
+      "id": "review-run-staging-1112",
+      "action": "OWNER ONLY — finish review-commit-guard-1109 to the part still missing: in scripts/autonomous/run-review-cycle.sh replace `git add -A` at lines 439 and 446 with an explicit path list (scripts/autonomous/review-latest.json, BTC500_GROWTH.md, scripts/autonomous/GROWTH_PROMPT.md, scripts/autonomous/experiments.json, scripts/autonomous/outreach/), and refuse to commit anything outside that list from a review run. The verdict check at line 349 already runs; keep it.",
+      "because": "The validator now runs before the commit (run-review-cycle.sh:349), but both commit paths still stage the whole tree. Commit 5040414 (2026-11-09T10:00:50+0200), subject 'review: failing — collected by the runner (agent exited without committing)', contains `.opencode/agents/growth-cycle.md` (+13/−3) and `scripts/autonomous/x/post-daily.mjs` (+75) — 85 lines of growth automation that a review run was never allowed to write, and the script that posted to X today arrived that way. A review run may leave a stale verdict behind; it may not leave a new machine behind.",
       "due": "2026-11-12",
       "owner": "owner"
     }
   ],
   "mandate_compliance": [
     {
-      "id": "cluster-read-1108",
-      "status": "executed-late",
-      "evidence": "Due 2026-11-08, marked closed on 2026-11-08 in BTC500_GROWTH.md: all four queries absent in both windows at indexed 1/21, with the 28d rows printed (`btc500` 5/27 @3.00, `bit 500` 0/1 @95.00, `bitcoin 500` 0/2 @54.00, `bitcoin plus 500` 0/2 @20.50, `btc 500` 0/1 @63.00). The 500-day cluster is closed as unservable through 2026-12-31. Not restated."
-    },
-    {
-      "id": "lopp-merge-watch-1114",
+      "id": "post-merge-crawl-watch-1128",
       "status": "executed",
-      "evidence": "GET https://api.github.com/repos/jlopp/lopp.net/pulls/1267 returns state closed, merged true, merged_at 2026-11-07T20:20:30Z, merge_commit_sha 4585231c..., changed_files 1, additions 1, deletions 0; comments 0. The live destination page was fetched today and carries the BTC500 anchor with rel=\"noopener\" and no nofollow. No post-merge crawl and 0 lopp.net sessions are recorded. The remainder of the mandate (first crawl after merge) continues as post-merge-crawl-watch-1128."
+      "evidence": "The 2026-11-10 cycle printed the raw `lastCrawlTime` 2026-11-07T03:42:34Z, computed 16h37m56s before the 2026-11-07T20:20:30Z merge, stated 'no crawl exists dated after 2026-11-07T20:20:30Z', and recorded coverageState plus lastCrawlTime in BTC500_GROWTH.md and outreach/STATUS.md (commit ace5ddd). Continued as the same mandate id, due 2026-11-16."
     },
     {
-      "id": "sessions-honest-1109",
+      "id": "x-link-every-post-1116",
       "status": "executed",
-      "evidence": "The 2026-11-09 cycle's PERFORMANCE block in BTC500_GROWTH.md prints 50 sessions / 18 users / 10 new / 59 views / 34.0% engaged, states -46.2% against the previous window and -51.5% against 103 on 2026-10-30, and says `sessions` is not a positive signal. The commit subject contains no sessions claim. Folded into referral-and-site-change-line-1116 so the referral source split and user counts are printed too."
+      "evidence": "Commit ace5ddd body prints post URL https://x.com/btc500halving/status/2120004886423388255 (2026-11-10T04:05:27Z) and `x.com referrals 7d: 0`. The post carries the pillar URL inside 280 characters and the link card was verified on the profile. Superseded by pin-linked-post-1111 and utm-on-every-outbound-link-1118 — the link exists, but it is unpinned and untagged."
     },
     {
-      "id": "runner-mid-run-edit-1108",
+      "id": "referral-and-site-change-line-1116",
+      "status": "executed",
+      "evidence": "ace5ddd's PERFORMANCE block prints `site changes: 0` (with the `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` command), `referrals 7d: github.com 3 (1 user) / lopp.net 0 / x.com 0 / t.co 0 / other 0` and `non-github referral sessions in 7d: 0`, and the commit subject makes no sessions claim. Dropped as a mandate because it is now a standing PERFORMANCE rule in GROWTH_PROMPT.md; I re-verified the diff myself today and it is empty."
+    },
+    {
+      "id": "runner-record-repair-1109",
       "status": "not-executed",
-      "evidence": "Due 2026-11-09, owner. dirty_paths_note() is still in run-growth-cycle.sh:111/:197/:345, no status-note.sh exists, and status-history.csv has 0 rows for 2026-11-07. Restated narrower as runner-record-repair-1109 (two steps), not silently dropped."
+      "evidence": "Owner, due 2026-11-12 and still absent on 2026-11-10: dirty_paths_note() remains at run-growth-cycle.sh:111/:197/:345, no status-note.sh, 0 rows for 2026-11-07. Restated as runner-record-repair-1112, not dropped."
+    },
+    {
+      "id": "review-commit-guard-1109",
+      "status": "partially-executed",
+      "evidence": "The verdict check at run-review-cycle.sh:349 now runs before the commit, so a failed verdict cannot be published silently — that half is done. The staging half is not: `git add -A` remains at :439 and :446, and commit 5040414 shows the result (85 lines of growth automation committed under a review subject). Restated narrower as review-run-staging-1112."
     }
   ],
-  "mandates_dropped": [],
+  "mandates_dropped": [
+    {
+      "id": "referral-and-site-change-line-1116",
+      "reason": "Executed on 2026-11-10 and absorbed into GROWTH_PROMPT.md as a standing PERFORMANCE rule, so repeating it as a mandate would spend one of five slots on a line the cycle already prints. Re-verified independently today: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty."
+    }
+  ],
   "asks_dropped": [
     {
-      "id": "github-lopp-net-policy-comment-1113",
-      "reason": "Superseded by the event it was written to unblock: #1267 was merged by jlopp on 2026-11-07T20:20:30Z before the comment date, with 0 comments and no owner action. Nothing to comment on; the next step on that route is measurement (post-merge-crawl-watch-1128), not a second comment."
+      "id": "x-pinned-post-with-link-1116",
+      "reason": "Dropped as an OWNER ask, not as a goal, and moved to the cycle as pin-linked-post-1111. Evidence: it was handed over 2026-11-09, was still unsent at the 2026-11-10T04:04Z channel read (pinned post still status/2086452446076002492 from 2026-08-09), and the cycle posted to the same account twice on 2026-11-10 with its own browser session. X is a channel the automation operates; asking the owner to operate it produced 2 X asks and 0 sends in 14 days."
     }
   ],
   "targets": [
@@ -150,23 +155,23 @@
       "target": "2/21",
       "by": "2026-11-28",
       "status": "miss-so-far",
-      "note": "The previous 3/21-by-2026-11-10 target is missed at 1/21 (sixth inspection). Series kept: 6/25 (2026-10-22) -> 5/22 -> 3/21 -> 2/21 -> 1/21. The in-repo line stays retired; the only new input is the merged lopp.net link, so the target is now a single URL: /bitcoin-500-day-cycle indexed as a result of the first post-merge crawl."
+      "note": "Seventh consecutive 1/21, and the numerator fell 3 → 1 since 2026-10-29 while the denominator fell 25 → 21. The target is one URL: /bitcoin-500-day-cycle leaving 'Crawled - currently not indexed' after a crawl dated later than 2026-11-07T20:20:30Z. Page quality is excluded as a cause by today's measurements (200, 3,007 words, canonical match, robots allowed, distinct from the homepage), so a miss on 2026-11-28 means link volume, not copy."
     },
     {
       "metric": "nonBrandClicks",
-      "current": "0 (7d) / 0 in 18 readings",
+      "current": "0 (7d) / 0 in 19 readings",
       "target": "1 in 7d",
       "by": "2026-11-23",
       "status": "miss-so-far",
-      "note": "The one 7d click is brand (`btc500` 1/4 @1.50). The only non-brand row is `bitcoin 500` 0/1 @67.00."
+      "note": "The single 7d click is brand (`btc500` 1/4 @1.50). The only non-brand row is `bitcoin 500` 0/1 @67.00, and positions4to20 = 0. Nothing is within a snippet edit of the click."
     },
     {
       "metric": "referralSessions",
-      "current": "3 in 7d, 3 of 3 github.com (1 user); 0 non-github in 18 readings",
+      "current": "3 in 7d, 3 of 3 github.com (1 user); 0 non-github in 19 readings",
       "target": "1 in 7d from a non-github referrer",
       "by": "2026-11-23",
       "status": "miss-so-far",
-      "note": "§10(b): the github.com share is a self-referral and cannot satisfy this. The candidates now have a live route: lopp.net (merged, followed) and x.com/t.co (post with a link). Either one counts."
+      "note": "§10(b): github.com is the repository and the owner's browser and cannot satisfy this. lopp.net has been live and followed for 68h44m with 0 sessions. The second live candidate is x.com — now carrying a link and a UTM rule from 2026-11-11."
     },
     {
       "metric": "externalReferringDomains",
@@ -174,52 +179,61 @@
       "target": "1",
       "by": "2026-11-17",
       "status": "met",
-      "note": "The only target met in this series, and the first external referring domain in the site's history. Verified from the destination page itself (rel=\"noopener\", 0 nofollow, fetched 2026-11-09), not from an SEO tool. A second domain is required only if the 2026-11-28 falsification fires."
+      "note": "Still the only target ever met in this series. Re-verified today by fetching https://www.lopp.net/bitcoin-information/trading.html (200): the anchor is present in the #charts list with rel=\"noopener\" and 0 nofollow. A second domain is not promised here; it is what the ask buys. Note that a followed link with 0 sessions is an input, not a result."
     },
     {
       "metric": "askEffectReferrals",
-      "current": "0 from lopp.net (merge 31h43m old at the 2026-11-09T04:03:40Z inspection)",
+      "current": "0 from lopp.net (68h44m after merge)",
       "target": "1 session from lopp.net",
       "by": "2026-11-21",
       "status": "on-track",
-      "note": "The precondition finally exists: a merged, followed link. A referral session cannot precede a merge. If it is still 0 on 2026-11-21, the line is delivered-but-unclicked and the destination is not worth a second request."
+      "note": "Unchanged in substance. A referral session cannot precede a merge; the merge is 3 days old. If this is still 0 on 2026-11-21 the listing is delivered-but-unclicked and a second resource-page listing is not worth the owner's time."
     },
     {
       "metric": "asksExecuted",
-      "current": "4 of 10 handed over since 2026-10-27 (2 sent since 2026-10-27: issue #1009, PR #1267; 2 July PRs closed unmerged)",
-      "target": "4 of 10",
-      "by": "2026-11-16",
-      "status": "met",
-      "note": "Unchanged this week. 'Executed' means sent, never 'produced a session'. The live ask (X post) is the 11th."
+      "current": "4 of 11 handed over since 2026-10-27 (2 sent since 2026-10-27: issue #1009, PR #1267; 2 July PRs closed unmerged)",
+      "target": "5 of 11",
+      "by": "2026-11-24",
+      "status": "miss-so-far",
+      "note": "'Executed' means sent, never 'produced a session'. The 11th ask is the GitHub line in owner_asks below, written in the shape that actually gets sent (one page, one paste, two clicks). Issue #1009 has now been open 14 days with 0 comments and no listing, so it is closed as failed, not live."
     },
     {
       "metric": "sessions7",
-      "current": "50 (7d), -51.5% vs 103 on 2026-10-30; 37 direct / 4 organic / 3 referral / 4 AI Assistant / 3 unassigned",
+      "current": "67 (7d, 2026-11-03 → 11-09)",
       "target": "60 in 7d",
       "by": "2026-11-23",
+      "status": "met",
+      "note": "Met on the literal number and still a loss: -18.3% against the previous 7d (82), -48.8% users (41 → 21), and 52 of 67 sessions are Direct from 14 users. The target measured the wrong thing when it was set at 50; do not read this 'met' as growth. Replaced in practice by organicSessions7 below."
+    },
+    {
+      "metric": "organicSessions7",
+      "current": "5 (7d)",
+      "target": "8",
+      "by": "2026-11-24",
       "status": "miss-so-far",
-      "note": "Honest baseline is 103 (2026-10-30), not the 12-session GA4 creation week. Also -46.2% against the previous 7d (93) and users 18 vs 43."
+      "note": "New target because `sessions7` can be satisfied by the owner's browser. Organic Search is 5 sessions / 1 user in the 7d window ending 2026-11-09, against 5 sessions in the previous window — flat, and consistent with 1/21 indexed."
     }
   ],
   "owner_asks": [
     {
-      "id": "x-pinned-post-with-link-1116",
-      "channel": "x",
-      "action": "Open https://x.com/compose/post in the browser logged in as @btc500halving, paste the text below verbatim, press Post — one page, one paste, one button — then pin the post to the profile. Do not edit the bio or the existing posts today; this is the only change.",
-      "content": "Buy 500 days before the halving. Sell 500 days after. Four completed windows. Worst drawdown after entry: -83.65%. Median: -11.72%. All four were underwater before they worked. Free, no signup: https://btc500.net/bitcoin-500-day-cycle",
+      "id": "github-awesome-blockchain-line-1124",
+      "channel": "github",
+      "action": "In the browser already logged in to your GitHub account, open https://github.com/yjjnls/awesome-blockchain/edit/master/README.md and paste the line below as the second item under `## Releated Tools` (directly after the 0xArchive line), then press \"Propose changes\" and \"Create pull request\" — one page, one paste, two clicks, no clone, no branch, no script. Title the PR `Add BTC500 to Releated Tools`.",
+      "content": "- [BTC500](https://btc500.net/bitcoin-500-day-cycle) - Bitcoin 500-day halving rule dashboard: buy/sell windows, per-cycle entry, exit and drawdown for all four completed halvings.",
       "url": "https://btc500.net/bitcoin-500-day-cycle",
-      "because": "@btc500halving is live (read in a browser 2026-11-09: 206 followers, profile URL field btc500.net, posts at 2026-11-09T04:06:07Z) and none of the five posts visible on the profile contains a btc500.net link. GA4 has recorded 0 x.com referral sessions in 18 readings while the site sits at 1/21 indexed and 0 non-brand clicks in 18 readings. The account has the audience; the posts have no click path. This is the first post that ends at the site.",
-      "measure": "GA4 referral sessions whose source contains x.com, t.co or twitter.com within 7 days of the post (report window to 2026-11-16), printed with the user count. The next review reads the source table, not the post's likes.",
-      "referrers": ["x.com", "t.co", "twitter.com"],
-      "by": "2026-11-16"
+      "because": "0 GA4 referral sessions from any non-github domain in 19 readings (2026-10-22 → 2026-11-10) and 0 non-brand clicks; the one followed external link (lopp.net, merged 2026-11-07T20:20:30Z) has produced 0 sessions and no recrawl in 68h44m. This destination is qualified by its own merge record, verified via the GitHub API today: five outside PRs merged 2026-11-03 (#147 Papaya, #149 18btc, #150 FreezeRadar, #151 Oath Wallet, #146 provably-fair-verifier), repo pushed 2026-11-03, 3,643 stars, `## Releated Tools` currently holds exactly one line so the format is one line. State the ceiling honestly: GitHub links are rel=\"nofollow\" (measured 2026-11-03), so this is a discovery and referral bet, not an indexation fix — it is asked for the referral signal, not for the crawl.",
+      "measure": "PR state via GET /search/issues?q=repo:yjjnls/awesome-blockchain+btc500 — open means sent, merged means accepted, empty means never sent — plus GA4 referral sessions with source github.com, printed with the user count and read as positive only above 1 user (§10(b)). Secondary: whether /bitcoin-500-day-cycle is crawled after the merge.",
+      "referrers": ["github.com"],
+      "by": "2026-11-24"
     }
   ],
   "self_changes": [
-    "GROWTH_PROMPT.md §Full freeze: `externalReferringDomains > 0` is recorded as MET (1, lopp.net, merged 2026-11-07T20:20:30Z, followed anchor verified 2026-11-09). The freeze no longer lifts on that gate — a followed link is an input, not a result — and is replaced by a two-step gate: still frozen on copy until the pillar is indexed or a non-github referral session lands, with a hard falsification date of 2026-11-28 after which the answer is a second destination.",
-    "GROWTH_PROMPT.md: deleted the 2026-11-02 'Retired: X — no such account' rule and replaced it with the measured facts (206 followers, profile URL field btc500.net, posts at 2026-11-09T04:06:07Z, 0 links in the five visible posts, 0 x.com referral sessions in 18 readings) plus a mechanical rule that every post the cycle publishes carries the pillar URL and prints the post URL and x.com referral count. Six days of asks were built on a false premise.",
-    "experiments.json: opened `lopp-link-effect` (next_reading 2026-11-28) — the first experiment whose required input exists — and amended the 'no experiment before 2026-12-01' rule to permit exactly this one, because the ban was written when externalReferringDomains was 0. Success: a post-merge crawl that changes coverage, or 1 lopp.net referral session; inconclusive: no post-merge crawl or a crawl that still declines.",
-    "BTC500_GROWTH.md: added the 2026-11-09 review block (merge verified, no post-merge crawl, indexation 1/21 sixth, 28d impressions 78 vs 95, sessions -46.2%, X click-path defect, the unexecuted owner item and the 0db1e04 protected-file commit) and updated the review-history table.",
-    "BTC500_GROWTH.md ranked backlog: demoted the CryptoQuant Quicktake (prepared 11-04, never sent, account unverified) below the X click path, because we already own a live channel with 206 followers that has never carried a link — a second unverified account is not a better bet than instrumenting the one we have."
+    "GROWTH_PROMPT.md §X: X is now written as a channel the CYCLE operates, not the owner. Deleted the line that generated owner asks for X posts; added the mechanical rule that the cycle pins the linked post itself and that no review asks the owner to post, reply or pin on @btc500halving again. Evidence: 2 X asks handed over (2026-10-27 lapsed, 2026-11-09 unsent at the 2026-11-10T04:04Z channel read) while the cycle posted twice on 2026-11-10.",
+    "GROWTH_PROMPT.md: every outbound btc500.net link the cycle publishes must carry `utm_source`, `utm_medium` and `utm_campaign`. A post without a UTM does not count as distribution, because with 52 of 67 sessions Direct from 14 users and 0 x.com referrals in 19 readings we cannot tell a stripped referrer from a non-click. This becomes a PERFORMANCE line: print the exact tagged URL and the GA4 source table.",
+    "GROWTH_PROMPT.md §Full freeze: recorded the three measured exclusions (pillar 200 / 3,007 words / canonical match / robots allowed / linked from `/`; titles distinct; 2 of 105 shared sentences, both boilerplate) so no future cycle may offer copy, title, meta, merge or 'thin content' work as an indexation fix before 2026-11-28. The permitted outputs under the freeze are now exactly three: the raw lastCrawlTime read, the pin, and one UTM-tagged post.",
+    "GROWTH_PROMPT.md §Measure: the cycle no longer re-runs the 7d/28d Search Console and 28d GA4 reports, which the runner already collects into review-input.json every morning. It reads preflight's numbers and spends the run on the mandate instead. Evidence: 9 runs / 8 `shipped` in 7d produced 0 site changes and 7 of the 8 commits were the runner's own price-archive CSV.",
+    "experiments.json: appended a progress entry to `lopp-link-effect` (2026-11-10: 68h44m after the 2026-11-07T20:20:30Z merge, lastCrawl still 2026-11-07T03:42:34Z, 0 lopp.net sessions, coverage unchanged) and left the reading date at 2026-11-28 — the input exists, so the date does not move. Also recorded that thin content, duplication, canonical, robots and orphan status are excluded as causes, so the experiment now tests link volume alone.",
+    "BTC500_GROWTH.md: added the 2026-11-10 review block (1/21 seventh, the two lost article URLs by name, sessions -18.3% with the Direct share, the first tagged-post rule, the ask ledger 4 of 11, the 5040414 staging defect) and the review-history row."
   ],
-  "next_review_focus": "2026-11-10: did a post-merge crawl of /bitcoin-500-day-cycle appear (lastCrawl > 2026-11-07T20:20:30Z) and did the pillar leave 'Crawled - currently not indexed'; did the cycle's posts carry a link and did x.com referrals move off 0; is the 2026-11-07 status row present and is dirty_paths_note() out of run-growth-cycle.sh. 2026-11-16: the X post and its referral line. 2026-11-21: lopp.net delivered-but-unclicked verdict. 2026-11-28: the falsification date — one followed link either moved the crawl or the authority hypothesis is dead for one link."
+  "next_review_focus": "2026-11-11: is the linked post pinned, and did the 2026-11-11 post carry a UTM. 2026-11-12: are the two owner runner items done (2026-11-07 status row, dirty_paths_note out of run-growth-cycle.sh, no git add -A in the review runner). 2026-11-17: does the GA4 source table show any non-github referral session, and did the X post produce a source=x line. 2026-11-18: the UTM verdict — attribution or audience. 2026-11-21: lopp.net delivered-but-unclicked. 2026-11-24: the GitHub ask's PR state. 2026-11-28: the falsification date — one followed link either moved the crawl or the answer is link volume for a three-month-old domain."
 }
