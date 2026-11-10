@@ -29,6 +29,7 @@ zero.
 | `github-awesome-bitcoin-pr`      | GitHub PR            | `igorbarinov/awesome-bitcoin` → Additional Resources                     | 2026-11-02  | 2026-11-06 | no   | —          | 1 GA4 referral session from github.com that is not the repo, plus indexed 2/21 → ≥3/21                                                                   | **withdrawn 2026-11-03** — no open PR, and the list already closed two BTC500 PRs unmerged (#201 07-27, #202 08-02, 0 comments): record 0 of 2                                                                                                                                                                                                                                                                                                                                     |
 | `github-awesome-blockchain-pr`   | GitHub PR            | `yjjnls/awesome-blockchain` → `## Releated Tools`                        | 2026-11-03  | 2026-11-06 | no   | —          | PR state via `q=author:cryptomarkettrack+repo:yjjnls/awesome-blockchain`; GA4 sessions landing on `/bitcoin-500-day-cycle` from github.com after a merge | **withdrawn 2026-11-04, never sent** (`q=author:cryptomarkettrack` → 0 results); `github.com` nofollow cannot move `indexed`. Replaced by `github-lopp-net-charts`                                                                                                                                                                                                                                                                                                                 |
 | `github-lopp-net-charts`         | GitHub PR            | `jlopp/lopp.net` → `bitcoin-information/trading.html` → Charts & Metrics | 2026-11-04  | 2026-11-09 | yes  | 2026-11-06 | PR #1267 state via `q=author:cryptomarkettrack+repo:jlopp/lopp.net`; merge + 1 GA4 session from lopp.net in 14d                                          | **MERGED 2026-11-07T20:20:30Z by jlopp** (merge commit `4585231c`, 1 file, +1/−0, `comments: 0`, `review_comments: 0`). The live destination carries the anchor: `https://www.lopp.net/bitcoin-information/trading.html` → 200, `<a href="https://btc500.net/bitcoin-500-day-cycle" … rel="noopener">BTC500</a> - 500-day cycle dashboard`, **0 `rel="nofollow"`**. First followed external link. Sent 2026-11-06T18:54:00Z, merged 25h26m later; no send-side follow-up is needed |
+| `x-pinned-post-with-link-1116`   | X post               | @btc500halving (206 followers, profile URL field `btc500.net`)           | 2026-11-09  | 2026-11-16 | no   | —          | GA4 referral sessions from x.com / t.co / twitter.com in the 7d window ending 2026-11-16                                                                 | **channel-verified unsent 2026-11-10T04:04Z** — the profile's pinned post is still `status/2086452446076002492` (2026-08-09T14:00:02Z) and no visible post 08-09 → 11-09 contains a `btc500.net` link. The cycle's own 11-10 post does carry the link (`status/2120004886423388255`), which is not the pinned ask                                                                                                                                                                  |
 
 `lapsed` is not `failed`: the by-date passed with `sent: no`, so the channel was
 never tested. The row stays so the next review cannot read it as "sent and
@@ -455,3 +456,41 @@ answer yet: the pillar's `lastCrawl` in the 2026-11-09T04:03:40Z inspection (21
 rows) is still **2026-11-07**, and the last crawl of record (03:42:34Z that day)
 precedes the merge by 16h38m. Google has not re-read the page since the link
 existed.
+
+## 2026-11-10 — `post-merge-crawl-watch-1128` (no post-merge crawl, 68h44m after the merge)
+
+Channel first, ledger second. Raw `urlInspection` for
+`https://btc500.net/bitcoin-500-day-cycle`, read 2026-11-10T04:04Z →
+`coverageState: "Crawled - currently not indexed"`, `lastCrawlTime:
+2026-11-07T03:42:34Z`, `robotsTxtState: ALLOWED`, `indexingState:
+INDEXING_ALLOWED`, `verdict: NEUTRAL`. The timestamp comes from the API directly
+because `scripts/search-console/inspect-urls.ts` slices the field to a date.
+
+- **16h37m56s before** the merge (`merged_at 2026-11-07T20:20:30Z`) and
+  **68h44m before this reading**: there is still **no crawl dated after the
+  merge**. The authority hypothesis has not been tested yet; nothing about the
+  link's effect can be concluded from today.
+- The destination still carries the anchor: `https://lopp.net/bitcoin-information/trading.html`
+  → 301 → `www` (200), `<a href="https://btc500.net/bitcoin-500-day-cycle"
+title="BTC500" target="_blank" rel="noopener">`, **0 `rel="nofollow"`** (fetched
+  2026-11-10).
+- Referrals: `referrals 7d: github.com 3, x.com 0, reddit.com 0,
+bitcoinmagazine.com 0, bitcointalk.org 0 (window 2026-11-03 → 2026-11-09)`;
+  GA4 7d referral table is `github.com` 3 sessions / 1 user and nothing else.
+  **0 lopp.net, 0 x.com.**
+- `#1267` is merge-limited and resolved: not resubmitted, edited, commented on or
+  duplicated. No second destination prepared — the review has named none and the
+  merge is still the open measurement.
+
+### The live ask, channel-verified (2026-11-10T04:04Z)
+
+`x-pinned-post-with-link-1116` — **not sent**. Read on
+https://x.com/btc500halving in the browser: the pinned post is still
+`status/2086452446076002492` dated **2026-08-09T14:00:02Z**, and none of the posts
+visible on the profile (2026-08-09 → 2026-11-09T04:06:07Z) contains a `btc500.net`
+link. The cycle's own daily post now does carry the pillar URL —
+`status/2120004886423388255`, published 2026-11-10T04:05:27Z — which is a separate
+post, not the pinned one the ask describes.
+
+Proof metric unchanged: GA4 referral sessions whose source contains `x.com`, `t.co`
+or `twitter.com` within 7 days of the post, read on or after 2026-11-16.

@@ -26,169 +26,134 @@ since 2026-10-23.
 
 ## Results review — 2026-11-09 (daily) — verdict `failing`, streak 15
 
-**One target met for the first time: `externalReferringDomains` 0 → 1.** That is
-an input, not a result: a followed link is now live and nothing downstream of it
-has moved.
+**One target met for the first time: `externalReferringDomains` 0 → 1.** An input,
+not a result: the followed link is live and nothing downstream of it has moved.
 
 - **Indexation 1/21, sixth consecutive inspection** (2026-11-09T04:03:40Z, 21
-  rows): 1 indexed, 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404. No
-  URL changed state. Series 6/25 (2026-10-22) → 5/22 → 3/21 → 2/21 → 1/21.
-  `#1267` merged **2026-11-07T20:20:30Z** (merge commit `4585231c`, 1 file,
-  +1/−0, 0 comments, merged by jlopp). **No post-merge crawl**: the pillar's
-  `lastCrawl` is still 2026-11-07T03:42:34Z — 16h38m *before* the merge — and
-  the 2026-11-09T04:03:40Z inspection repeats it 31h43m *after* the merge. The
-  link is verified live and followed: `rel="noopener"`, 0 `nofollow`.
-- **Non-brand clicks 0 in 18 readings.** 7d 1 click / 11 impressions; the click
-  is brand (`btc500` 1/4 @1.50); `bitcoin 500` 0/1 @67.00. 28d has five query
-  rows and none of the four closed-cluster queries.
-- **Impressions: 28d 78 (2026-10-10 → 11-06), down from 95 on 2026-11-01 and 90
-  in the 2026-09-22 baseline 28d; clicks 19 vs 25.** 7d is 11, under the
-  100-impression noise floor.
-- **Sessions are down, not green.** GA4 7d 50 sessions / 18 users / 59 views /
-  17 engaged (34.0%) / 37.9s average, against the previous 7d of 93 / 43 / 196 /
-  43 (46.2%) / 164.4s: **−46.2% sessions, −58.1% users, −69.9% views**, and
-  −51.5% against 103 on 2026-10-30. The runner's green compares to the 12-session
-  week GA4 was created in.
-- **Referrals: 3 in 7d, 3 of 3 `github.com` (1 user)** — this repository and the
-  owner's browser (§10(b)). 0 from any non-github domain in 18 readings. 0 from
-  lopp.net; the 7d window ends 2026-11-08 and covers ~27h post-merge.
-- **The X channel exists and is being worked with no click path.** The 2026-11-02
-  "no such account" finding was false: https://x.com/btc500halving read in a
-  browser today shows 206 followers, profile URL field `btc500.net`, and posts at
-  2026-11-09T04:06:07Z and 2026-11-08T06:43:04Z. **None of the five visible posts
-  contains a `btc500.net` link**, and GA4 has 0 x.com referral sessions in 18
-  readings. The channel is a diary, not distribution.
+  rows): 1 indexed, 14 crawled-not-indexed, 5 unknown, 1 Soft 404, no URL changed
+  state. Series 6/25 (10-22) → 5/22 → 3/21 → 2/21 → 1/21. `#1267` merged
+  **2026-11-07T20:20:30Z** (merge commit `4585231c`, 1 file, +1/−0, 0 comments);
+  **no post-merge crawl** — `lastCrawl` 2026-11-07T03:42:34Z is 16h38m _before_
+  the merge. The anchor is live and followed: `rel="noopener"`, 0 `nofollow`.
+- **Non-brand clicks 0 in 18 readings.** 7d 1 click / 11 impressions, and the click
+  is brand (`btc500` 1/4 @1.50). 28d impressions 78 (10-10 → 11-06) vs 95 on
+  11-01; 7d is 11, under the 100-impression noise floor.
+- **Sessions are down, not green.** GA4 7d 50 / 18 / 59 views / 34.0% against
+  93 / 43 / 196 / 46.2%: −46.2% sessions, −58.1% users, −69.9% views, −51.5% vs
+  103 on 10-30. Referrals 3 in 7d, 3 of 3 `github.com` (1 user = this repo and the
+  owner's browser); 0 non-github in 18 readings; lopp.net 0.
+- **The X channel exists and had no click path.** 206 followers, profile URL field
+  `btc500.net`, posts at 2026-11-09T04:06:07Z and 11-08T06:43:04Z — and **none of
+  the five visible posts contained a `btc500.net` link**, with 0 x.com referral
+  sessions in 18 readings. The 2026-11-02 "no such account" line was false.
 - **Input vs output: 9 runs, 8 `shipped`, 1 failure in 7d, and
-  `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty.** Zero site
-  changes, zero new indexed pages, zero non-brand clicks. The 8 "ships" are the
-  price archive, docs, review files and one runner edit.
-- **Machinery:** `runner-mid-run-edit-1108` (owner, due today) is **not
-  executed** — `dirty_paths_note()` is still in `run-growth-cycle.sh` (111, 197,
-  345), there is no `status-note.sh`, and `status-history.csv` has **0 rows for
-  2026-11-07**. The 2026-11-08 review run was `verdict-invalid` (`generated`
-  2026-11-07, `mode: daily` where deep was expected) and its failure path ran
-  `git add -A`, committing `.opencode/agents/growth-cycle.md` (+32 lines,
-  `0db1e04`) — a file the reviewer may not touch — under "review: rejected
-  verdict preserved by the runner (fail)".
+  `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` empty** — zero site
+  changes, zero new indexed pages, zero non-brand clicks. **Machinery (owner):**
+  `runner-mid-run-edit-1108` unexecuted (`dirty_paths_note()` still in
+  `run-growth-cycle.sh` 111/197/345, no `status-note.sh`, no 2026-11-07 row).
 
 **Review verdict: `failing`.** 15th consecutive non-improving review.
 
+## Latest measurement — 2026-11-10 (04:03Z)
 
-## Latest measurement — 2026-11-09 (04:03Z)
+- **indexed 1/21, sitemap 21** (inspection 2026-11-10T04:02:47Z, 21 rows, 0 failed
+  to inspect): 1 indexed, 14 crawled-not-indexed, 5 unknown to Google, 1 Soft 404.
+  **Seventh consecutive 1/21, and no URL changed state** against the
+  2026-11-09T07:33:28Z inspection (21 rows both, 0 diffs).
+- **The pillar: `coverageState` "Crawled - currently not indexed", `lastCrawlTime`
+  2026-11-07T03:42:34Z** — read from the raw `urlInspection` API at
+  2026-11-10T04:04Z, because `inspect-urls.ts` truncates the field to a date. That
+  crawl is **16h37m56s before** #1267 merged (2026-11-07T20:20:30Z): **still no
+  post-merge crawl**, 68h44m after the merge. The destination page still carries
+  the followed anchor (fetched 2026-11-10: `rel="noopener"`, 0 `nofollow`).
+- GSC, both windows end 2026-11-07 (3-day lag): **28d 2026-10-11 → 11-07: 17
+  clicks / 76 impressions / 22.4% / avg pos 13.4** (previous reading 19 / 78 on a
+  window ending 11-06 — one day shorter, not a regression). **7d 2026-11-01 →
+  11-07: 1 click / 10 impressions / 10.0% / 17.8**; query rows `btc500` 1/4 @1.50,
+  `bitcoin 500` 0/1 @67.00; 6 page rows. Non-brand clicks: **0** (18th reading).
+- GA4 7d 2026-11-03 → 11-09: **67 sessions / 21 users / 12 new / 81 views / 29.9%
+  engaged / 50s** against 82 / 41 / 154 / 46.3% / 2m27s the week before:
+  **−18.3% sessions, −48.8% users, −47.4% views**. Channels 52 direct / 5 AI
+  Assistant / 5 organic / 3 referral / 2 unassigned. **Referral sources:
+  `github.com` 3 sessions (1 user); lopp.net 0, x.com 0, t.co 0.** The pillar is
+  the landing page of 15 sessions (9 in the 11-08 reading) — every one direct,
+  organic or AI, so it is not a referral signal.
+- **X click path: the first visible post that carries a link.** Published
+  2026-11-10T04:05:27Z, `status/2120004886423388255`, with
+  `https://btc500.net/bitcoin-500-day-cycle` inside the 280 chars; verified on the
+  profile, where the pinned 2026-08-09 post and the 11-04 → 11-09 posts carry no
+  `btc500.net` link. `x.com referrals 7d: 0` — that window ends 2026-11-09, so the
+  reading for this post is 2026-11-11 or later, not today.
+- **Buy date read from the site today: 29 November 2026, 19 days out** (homepage
+  "19 days to buy", block height 975,253, pillar `<title>November 29, 2026: …`).
+  The owner ask text and the X bio still say Nov 30. Production 200s: `/`,
+  `/bitcoin-500-day-cycle`, `/sitemap.xml` (21 locs), `/robots.txt`,
+  `/data/500-day-cycles.json`, `/btc-usd-max.csv`. At 04:03Z the dataset and CSV
+  still ended **2026-11-08** (the runner's 2026-11-09 archive commit `31cff9c` was
+  unpushed); this cycle pushes it and the manifest checks the 2026-11-09 row.
 
-**The buy date moved one day with no deploy: Nov 28 → Nov 29, 2026.** The
-2026-11-08 manifest asserted `/bitcoin-500-day-cycle` contained "November 28,
-2026" and passed; today the same URL serves `<title>November 29, 2026: 500 Days
-Before the Next Bitcoin Halving</title>` and `/` reads "29 November 2026 / 20 DAYS
-TO BUY" — with no push since `dc7d2d0`. Both pages render the date per request
-from the live block height (975,127 today), so the date is a live estimate by
-design (the homepage says so) but it cannot be a manifest token. Every check in
-`last-deploy.json` is now date-free.
+## Session 2026-11-10 (04:00Z) — archive-only: no post-merge crawl, link in the post
 
-- **indexed 1/21, sitemap 21** (inspection 2026-11-09T04:03:40Z, 21 rows, 0 failed
-  to inspect): **sixth consecutive 1/21** — 1 indexed, 14 crawled-not-indexed,
-  5 unknown to Google, 1 Soft 404. **No URL changed state** since the
-  2026-11-08T04:03:35Z inspection. **The pillar's `lastCrawl` is still 2026-11-07
-  (03:42:34Z) — 16h38m before the merge** (2026-11-07T20:20:30Z): no post-merge
-  crawl, so Google has not yet read the new link.
-- GSC, both windows end 2026-11-06 (3-day lag): **28d 2026-10-10 → 11-06: 19
-  clicks / 78 impressions / 24.4% / avg pos 13.1** (previous reading 20 / 82 /
-  24.4% / 12.70 on a window one day earlier — not a regression). **7d 2026-10-31 →
-  11-06: 1 click / 11 impressions / 9.1% / 16.3**; query rows `btc500` 1/4 @1.50,
-  `bitcoin 500` 0/1 @67.00; page rows `/` 1/11 @16.3, `/articles/bip-110-rejection`
-  0/3 @2.0, `/bitcoin-500-day-cycle` 0/2 @1.5.
-- **Cluster rows (`cluster-read-1108`, closed 2026-11-08):** none of the four
-  target queries appears in either window — 7d has 2 query rows, 28d has 5
-  (`btc500` 5/27 @3.00 · `bit 500` 0/1 @95.00 · `bitcoin 500` 0/2 @54.00 ·
-  `bitcoin plus 500` 0/2 @20.50 · `btc 500` 0/1 @63.00). Closure stands.
-- GA4 7d 2026-11-02 → 11-08: **50 sessions / 18 users / 10 new / 59 views / 34.0%
-  engaged**; channels 37 direct / 4 AI Assistant / 4 organic / 3 referral /
-  3 unassigned. Referral = `github.com` 3, **lopp.net 0**. −46.2% against the
-  previous 7d window and −51.5% against 103 on 2026-10-30. `sessions` is not a
-  positive signal (`sessions-honest-1109`). The pillar's 9 landing sessions are
-  not new traffic: the 11-08 reading had 6 and the 28d window 21.
-- Production 200s: `/`, `/bitcoin-500-day-cycle`, `/articles/bip-110-rejection`,
-  `/articles/bear-market-accumulation`, `/sitemap.xml` (21 locs), `/robots.txt`,
-  `/data/500-day-cycles.json`, `/btc-usd-max.csv`. At 04:05Z the CSV still ended
-  2026-11-07 and the dataset reported `lastDate: "2026-11-07"`, because the
-  runner's 2026-11-08 archive commit (`82776de`) was unpushed; pushed 06:08Z, the
-  deploy landed **06:11:56Z** and both now read **2026-11-08** — `last-deploy.json`
-  replayed against production: 5 of 5 checks pass.
+Preflight: archive refreshed to 2026-11-09 (1 row appended, 0 dropped, overlap
+median 0%), 1 experiment open (`lopp-link-effect`, reading 2026-11-28, not due),
+review 2026-11-09 `failing` (streak 16), site 200/200. **Freeze held, provably:
+`git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty.**
+
+- `post-merge-crawl-watch-1128` — **executed**: `lastCrawlTime` is unchanged at
+  2026-11-07T03:42:34Z, so no crawl exists after the 2026-11-07T20:20:30Z merge.
+  Written to `outreach/STATUS.md` in this commit.
+- `x-link-every-post-1116` — **executed**: today's post carries the pillar URL
+  (`status/2120004886423388255`, 2026-11-10T04:05:27Z). Tuesday rotation, with the
+  buy date read from the live model (29 Nov 2026), not the template's Nov 28.
+- Growth engagement (one action): reply to @HODLmemecoins' Cointelegraph "the
+  halving may have lost its punch" quote with the drawdown fact — four completed
+  windows, all underwater first, median low −11.72%, worst −83.65%, all closed
+  above entry — `status/2120005265051300228` at 2026-11-10T04:06:57Z, plus a like.
+  Logged in `X-ENGAGEMENT-LOG.md`.
+- **No site change, no new destination, no new experiment.** #1267 is 2d 8h old;
+  its only measurable output is the next crawl, and a second prepared destination
+  would repeat the prepared-but-unsent substitution the 2026-11-06 review deleted.
+- Owner-only mandates `runner-record-repair-1109` and `review-commit-guard-1109`
+  are still open and untouched: a cycle that writes a runner file is the defect
+  that aborted the 2026-11-07 run.
 
 ## Session 2026-11-09 (04:00Z) — archive-only: no post-merge crawl, date moved
 
-Preflight: archive refreshed to 2026-11-08 (1 row appended, 0 dropped, overlap
-median 0%), 0 experiments open, review 2026-11-07 `failing` (streak 15), site
-200/200. Freeze held, provable: `git diff --stat 62e3a8a..HEAD -- src
-public/sitemap.xml` → **empty**.
-
-- **`lopp-merge-watch-1114` — executed (daily channel check).**
-  `GET /repos/jlopp/lopp.net/pulls/1267` → `state: closed`, `merged: true`,
-  `merged_at 2026-11-07T20:20:30Z`, `comments: 0`. The live page still carries
-  `<a href="https://btc500.net/bitcoin-500-day-cycle" … rel="noopener">BTC500</a>`
-  with **0 `rel="nofollow"`**. First crawl after the merge: **none** (pillar
-  `lastCrawl` 2026-11-07). lopp.net referral sessions: **0** in the 7d window,
-  which covers ~27h post-merge — too early, not a zero verdict.
-- **`sessions-honest-1109` — printed above**; no positive claim about sessions.
-- **`cluster-read-1108`** — closed 2026-11-08; re-read today, still absent, not
-  reopened.
-- **`runner-mid-run-edit-1108` — skipped, owner-only.** A cycle writing
-  `run-*.sh` mid-run is exactly what aborted 2026-11-07; the split of
-  `dirty_paths_note()` and the missing 2026-11-07 status row are the owner's.
-- **No site change, no new destination.** #1267 merged 32h ago; its effect is the
-  only thing that can move the gate, and a second pack now would repeat the
-  prepared-but-unsent substitution and contaminate the one clean measurement.
-- **X (distribution, not a site change):** the Monday countdown was published
-  from the live model — `20 Days until 500 days before halving #Bitcoin…buy Nov
-  29, 2026 — the current block-height estimate`, verified on the profile at
-  2026-11-09T04:06:07Z. Yesterday's post also read "20 Days" because the estimate
-  itself slid one day: N must be read from the site at post time, never copied
-  from the previous post.
-
-## Session 2026-11-08 (04:00Z) — archive-only: the link merged; the cluster closes
-
-#1267 verified **merged 2026-11-07T20:20:30Z** (merge commit `4585231c`, 1 file,
-+1/−0, 0 comments) and the destination page verified to carry the followed anchor
-— the first followed external link in the site's history. `cluster-read-1108`
-executed: all four target queries absent at indexed 1/21 → **the 500-day cluster is
-closed as unservable** (no copy edit to `/` or the pillar through 2026-12-31).
-
-## Session 2026-11-05 — `indexed-decision-1105`: the indexation line closes
-
-No in-repo indexation work without an external referring link; `indexed` target
-retired, backlog rows 5–7 deleted. Freeze held (docs only, `257a504`).
+**The buy date moved one day with no deploy: Nov 28 → Nov 29, 2026** (rendered per
+request from live block height, 975,127 then). Freeze held. `lopp-merge-watch-1114`
+executed: #1267 `merged: true`, `merged_at 2026-11-07T20:20:30Z`, 0 comments; the
+destination carried the anchor with 0 `nofollow`; no crawl after the merge. X: the
+Monday countdown was published at 2026-11-09T04:06:07Z (`status/2119642667181089200`)
+with N=20 read from the site — still no link in the post.
 
 ### History
 
-- **11-06** — archive-only: ask re-verified unsent at 18:38Z; PR #1267 appeared at
-  18:54Z, after that commit. Insertion point corrected to `BitInfoCharts`/`CME
-Futures`; apex→www 301 documented.
-- **11-04** — two destinations qualified; lopp.net the only followed one.
-- **11-03** — awesome-bitcoin withdrawn (0 of 2 closed unmerged).
-- **11-02** — X retired (no account); CoinDesk re-routed to `contact@coindesk.com`.
-- **11-01** — CoinDesk (08-05), Yahoo Finance (06-24) and Investing.com (08-06) all
-  ran the 500-day rule with our date; the declined pillar serves 3,004 raw-HTML
-  words, so the gap is authority, not markup.
-- **10-30 → 10-31** — `5aad29f` changed the homepage and pillar title/meta/H1/copy
-  after three mandates forbade it → **full freeze**; the index fell 3 → 2 with
-  nothing in the repo changing.
+- **11-08** — #1267 verified merged with a followed anchor (first external link in
+  the site's history); `cluster-read-1108` executed, the 500-day cluster closed as
+  unservable; no site change.
+- **11-06 → 11-04** — PR #1267 appeared 11-06T18:54Z after that cycle's commit;
+  insertion point corrected to `BitInfoCharts`/`CME Futures`; two destinations
+  qualified, lopp.net the only followed one.
+- **11-05** — `indexed-decision-1105`: no in-repo indexation work without an
+  external referring link; `indexed` target retired (`257a504`).
+- **11-03 → 10-30** — awesome-bitcoin withdrawn (0 of 2 closed unmerged); X
+  "retired" on a false "no account" finding (corrected 11-09); CoinDesk re-routed
+  to `contact@coindesk.com` and later lapsed (429); `5aad29f` changed title/meta/
+  H1/copy after three mandates forbade it → **full freeze**.
 - **10-22 → 10-29** — declined articles 308 → `/articles`;
   `/data/500-day-cycles.json` + citation block + `Dataset` JSON-LD; drawdown study
   (−11.7% median, −83.65% worst); GA4; the 10-29 retarget was the violation.
 
 ### Review history
 
-| date       | mode  | verdict | what it forced                                                                                                                                                                                                 |
-| ---------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| date       | mode  | verdict | what it forced                                                                                                                                                                                                                                                                                                                                          |
+| ---------- | ----- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | 2026-11-09 | daily | failing | `externalReferringDomains` 0 → 1 (lopp.net merged 2026-11-07T20:20:30Z, followed); indexation 1/21 sixth; no post-merge crawl. Mandates: `post-merge-crawl-1128`, `x-link-every-post-1116`, `referral-and-site-change-line-1116`, `runner-record-repair-1109` (owner), `review-commit-guard-1109` (owner). Ask: one X post carrying the link. Streak 15 |
-| 2026-11-07 | daily | failing | `runner-mid-run-edit-1108` (owner); `cluster-read-1108` (due today); `lopp-merge-watch-1114` (read #1267 every cycle); `sessions-honest-1109`. Streak 14                                                       |
-| 2026-11-06 | daily | failing | `lopp-net-pr-current-lines-1108` (owner); `outreach-stop-1107`; `cluster-read-1108`; `dirty-tree-guard-1107`; `runner-honesty-1108` (owner). `shipped` redefined as a diff touching `src/`/sitemap (streak 13) |
-| 2026-11-05 | daily | failing | `lopp-net-pr-send-1106` (owner); `ask-gate-1107`; `cluster-read-1108`; `runner-honesty-1108` (owner). Lift condition retired — `externalReferringDomains > 0` is the only gate (streak 12)                     |
-| 2026-11-04 | daily | failing | Indexation line closed on 11-05 (1/21); lopp.net ask; CoinDesk lapsed (429); awesome-blockchain withdrawn; #1009 failed; collector must not quote `--limit` inspections                                        |
-| 2026-11-03 | daily | failing | CoinDesk email at 60 words; awesome-bitcoin withdrawn (0/2); destination needs a merge record; GitHub links are nofollow                                                                                       |
-| 2026-11-02 | daily | failing | CoinDesk re-routed to `contact@coindesk.com`; X retired; cluster read 11-08; indexation decision; runner guard re-issued                                                                                       |
-| 2026-11-01 | deep  | failing | CoinDesk email + X restated; inspection; soft-404 diagnosis; channel-verified ask line; owner mandate for the runner                                                                                           |
-| 2026-10-30 | daily | failing | Full freeze (no site change at all), cluster read 11-08, `distribution-test` closed VOID                                                                                                                       |
+| 2026-11-07 | daily | failing | `runner-mid-run-edit-1108` (owner); `cluster-read-1108`; `lopp-merge-watch-1114`; `sessions-honest-1109`. Streak 14                                                                                                                                                                                                                                     |
+| 2026-11-06 | daily | failing | `lopp-net-pr-current-lines-1108` (owner); `outreach-stop-1107`; `dirty-tree-guard-1107`; `runner-honesty-1108` (owner). `shipped` redefined as a diff touching `src/`/sitemap (streak 13)                                                                                                                                                               |
+| 2026-11-05 | daily | failing | `lopp-net-pr-send-1106` (owner); `ask-gate-1107`; `runner-honesty-1108` (owner). Lift condition retired — `externalReferringDomains > 0` is the only gate (streak 12)                                                                                                                                                                                   |
+| 2026-11-04 | daily | failing | Indexation line closed (1/21); lopp.net ask; CoinDesk lapsed (429); awesome-blockchain withdrawn; #1009 failed; collector must not quote `--limit` inspections                                                                                                                                                                                          |
+| 2026-10-30 | daily | failing | Full freeze (no site change at all), cluster read 11-08, `distribution-test` closed VOID. (10-31 → 11-03 rows: `BTC500_GROWTH.md` history in the 11-04 commit.)                                                                                                                                                                                         |
 
 ---
 
@@ -211,51 +176,44 @@ Futures`; apex→www 301 documented.
    title, meta or section edit to `/` or `/bitcoin-500-day-cycle` through
    2026-12-31. Reopening needs a measured change — a cluster query reappearing or
    the pillar being indexed — not a new argument.
-3. **The buy-window peg is a live estimate, now 29 November 2026** (it read 28
-   November on 2026-11-08 at height 974,836; today 29 November at 975,127). `/` and
-   `/bitcoin-500-day-cycle` agree and both answer 200. Re-read the date from the
-   site every cycle — never from this log, and never from an older post. Article
-   bodies date body copy to 30 November 2026 and the X bio says Nov 30: a one-day
-   gap, not fixed while the freeze holds.
+3. **The buy-window peg is a live estimate — 29 November 2026 today, 19 days
+   out** (28 November on 11-08 at height 974,836; 29 November on 11-10 at 975,253).
+   Re-read it from the site every cycle, never from this log or an older post.
+   Article bodies and the X bio still say 30 Nov: a one-day gap, not fixed while
+   the freeze holds.
 4. **Owner mandates, not cycle work:** `runner-mid-run-edit-1108` (split
    `dirty_paths_note()`, restore the missing 2026-11-07 status row).
 
 ## Ranked backlog
 
-Only rows 0–2 are permitted work. Rows 3–4 are readings. Rows 5–7 were deleted on
-2026-11-05 (`indexed-decision-1105`).
+Only rows 0–1b are permitted work under the freeze; everything else is a reading.
 
-| #   | Bet                                                                 | Why it can move the needle                                                                                                                      | I   | E   |
-| --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
-| 0   | `lopp.net` → Charts & Metrics (**MERGED 2026-11-07T20:20:30Z**)     | **First followed external link**, pointing at the declined pillar. Effect measurable only as a post-merge crawl and a lopp.net referral session | 10  | 0   |
-| 1   | ~~CryptoQuant Quicktake~~ **demoted 2026-11-09**                   | Prepared 11-04, never sent; needs an account; followed status unverified. Demoted below the X click path because we already own a live channel with 206 followers and it has never carried a link — a second account is a second unverified queue | 4   | 3   |
-| 1b  | **X click path (live, 2026-11-09)**                                 | @btc500halving: 206 followers, daily posts, **0 links in the 5 visible posts, 0 x.com referral sessions in 18 readings**. Every post carries the pillar URL; measured by GA4 x.com/t.co referrals | 9   | 1   |
-| 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~ | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), retired (no account). None restated                                            | —   | —   |
-| 3   | Cluster query reading (**done 2026-11-08 — closed**)                | All four queries absent in both windows at indexed 1/21 → framing closed, not restated                                                          | —   | —   |
+| #   | Bet                                                                 | Why it can move the needle                                                                                                                                                                                                   | I   | E   |
+| --- | ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| 0   | `lopp.net` → Charts & Metrics (**MERGED 2026-11-07T20:20:30Z**)     | **First followed external link**, pointing at the declined pillar. Its effect is measurable only as a post-merge crawl and a lopp.net referral session — neither exists yet                                                  | 10  | 0   |
+| 1b  | **X click path (live since 2026-11-10)**                            | @btc500halving: 206 followers, daily posts, **0 links in the five posts before 2026-11-10 and 0 x.com referral sessions in 18 readings**. From 11-10 every post carries the pillar URL; measured by GA4 x.com/t.co referrals | 9   | 1   |
+| 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                                                                       | 4   | 3   |
+| 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~ | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), false premise (no account). None restated                                                                                                                   | —   | —   |
 
 ## Open issues
 
 - **The pillar has never been crawled with an incoming external link.** Crawl
-  history: 2026-10-22, 11-05, then **2026-11-07T03:42:34Z** — every one declined,
-  every one before the merge. The next crawl is the first measurement of the
-  freeze hypothesis with the missing input present. Until it happens, "waiting
-  does not index a page nobody links to" is still unfalsified, not confirmed.
-- **Indexation: 6 (10-22) → 5 → 3 → 2 (10-31) → 1 (11-04) → 1/21 (11-05, 11-06
-  twice, 11-07, 11-08, 11-09)**, denominator 21 = sitemap locs. 5% coverage; 14
+  history: 2026-10-22, 11-05, **2026-11-07T03:42:34Z** — every one declined, every
+  one before the merge. The next crawl is the first measurement of the authority
+  hypothesis with its input present; until it happens "waiting does not index a
+  page nobody links to" is unfalsified, not confirmed.
+- **Indexation: 6 (10-22) → 5 → 3 → 2 (10-31) → 1/21 on 11-04, 11-05, 11-06 ×2,
+  11-07, 11-08, 11-09, 11-10**, denominator 21 = sitemap locs. 5% coverage; 14
   crawled-not-indexed, 5 unknown, 1 Soft 404. Only `/` is indexed.
-- **The buy date is live-derived and has moved Nov 28 → Nov 29 with no deploy.**
-  Nothing is wrong with that — the model projects from live block height and the
-  homepage says the date moves — but three surfaces now disagree by a day: site
-  (29 Nov), dated article bodies (30 Nov), X bio (30 Nov). The 11-08 manifest
-  check `contains "November 28, 2026"` would fail today; date-bearing manifest
-  tokens are now banned (they can only verify a deploy for the hours the estimate
-  holds).
-- **`lopp.net` is www-only from a scripted fetch** — `https://lopp.net/…/trading.html`
-  → 301 → `www` (200). Canonical-host redirect, not a removed page.
-- **Ask routes: the only live ask is resolved.** 10 asks handed over since
-  2026-10-27, 4 carried out, #1267 merged 2026-11-07. **0 sessions from any
-  non-github referrer in every reading.** A `sent` cell is verified against the
-  channel, never against this file.
+- **The buy date is live-derived (29 Nov 2026 today) and three surfaces disagree
+  by a day:** site (29 Nov), dated article bodies and the X bio (30 Nov). Date-
+  bearing manifest tokens are banned — they can only verify a deploy for the hours
+  the estimate holds.
+- **Ask routes:** 10 asks handed over since 2026-10-27, 4 carried out, #1267
+  merged 2026-11-07; the live ask is the owner's X post carrying the link
+  (channel-verified 2026-11-10: the pinned post is still the 2026-08-09 one).
+  **0 sessions from any non-github referrer in every reading.** A `sent` cell is
+  verified against the channel, never against this file.
 - **A destination needs a merge record, not stars** (awesome-bitcoin: 1,358 stars,
   0 of 2). #1267 satisfies this for the first time.
 - **`referral-sessions` green is a self-referral** — `github.com` is this repo and
@@ -263,13 +221,14 @@ Only rows 0–2 are permitted work. Rows 3–4 are readings. Rows 5–7 were del
 - **`/articles/bear-market-accumulation` — keep and leave alone.** Soft 404 set on
   a 2026-08-08 crawl; serves 200, 1,383 words, no pillar duplication.
 - **"0 non-brand" is a floor** — GSC anonymises query rows (28-day query table sums
-  to 33 of 132 byPage impressions).
-- **The homepage's GSC `referringUrls` includes `domainsc.com/page-…html`.** Fetched
-  2026-11-08: a parked "domain may be for sale" page, 0 occurrences of `btc500`.
-  Stale/disavowed — do not count it as a referring domain.
-- **A mandate was violated and reported as executed (2026-10-30).** `5aad29f` changed
-  title/meta/H1/copy hours after three mandates forbade it. A `MANDATES` line needs
-  a sha plus the diff.
+  to 33 of 130 byPage impressions). **`lopp.net` is www-only from a scripted
+  fetch** (301 → `www` 200): a canonical-host redirect, not a removed page. The
+  homepage's GSC `referringUrls` also lists `domainsc.com/page-…html`, fetched
+  2026-11-08 as a parked "domain for sale" page with 0 occurrences of `btc500` —
+  stale, not a referring domain.
+- **A mandate was violated and reported as executed (2026-10-30).** `5aad29f`
+  changed title/meta/H1/copy hours after three mandates forbade it. A `MANDATES`
+  line needs a sha plus the diff.
 - **Settled, do not reopen:** consent (Consent Mode v2 + truthful `/privacy`);
   omitting the hero price is not worth a TTFB risk on the one indexed URL; the
   10-31 `verdict-invalid` is the owner mandate `review-runner-refresh-guard`;

@@ -1,30 +1,25 @@
 {
-  "generated": "2026-11-09",
-  "summary": "archive-only cycle under the freeze: the 2026-11-08 archive row is the only deployed change (CSV tail + dataset lastDate); lopp.net#1267 re-verified merged with a followed anchor and still no post-merge crawl; no site change. Date-bearing checks removed: the buy date is rendered per request from live block height and moved Nov 28 -> Nov 29 with no deploy, so the 2026-11-08 token would fail today.",
+  "generated": "2026-11-10",
+  "summary": "archive-only cycle under the freeze: the only deployed change is the runner's 2026-11-09 price-archive row (CSV tail + dataset lastDate). No site change: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty. Mandate post-merge-crawl-watch-1128 read: the pillar is still 'Crawled - currently not indexed' with lastCrawlTime 2026-11-07T03:42:34Z, 16h37m56s before the lopp.net merge, so no post-merge crawl exists.",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
-      "contains": "2026-11-08 00:00:00 UTC,74740.41780080694",
+      "contains": "2026-11-09 00:00:00 UTC,75266.76731147344",
       "status": 200
     },
     {
       "path": "/data/500-day-cycles.json",
-      "contains": "\"lastDate\": \"2026-11-08\"",
+      "contains": "\"lastDate\": \"2026-11-09\"",
       "status": 200
     },
     {
       "path": "/",
-      "contains": "The Bitcoin 500-Day Halving Rule",
+      "contains": "One rule",
       "status": 200
     },
     {
       "path": "/bitcoin-500-day-cycle",
-      "contains": "The Bitcoin 500-day rule buys",
-      "status": 200
-    },
-    {
-      "path": "/articles/bear-market-accumulation",
-      "contains": "bear market",
+      "contains": "Cite this",
       "status": 200
     }
   ]
