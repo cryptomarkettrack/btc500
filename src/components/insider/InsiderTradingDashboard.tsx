@@ -54,8 +54,15 @@ function renderPieLabel(props: {
   percent?: number;
   name?: string;
 }) {
-  const { cx = 0, cy = 0, midAngle = 0, innerRadius = 0, outerRadius = 0, percent = 0, name = "" } =
-    props;
+  const {
+    cx = 0,
+    cy = 0,
+    midAngle = 0,
+    innerRadius = 0,
+    outerRadius = 0,
+    percent = 0,
+    name = "",
+  } = props;
 
   // Hide labels on tiny slices to avoid clutter
   if (percent < 0.06) return null;
@@ -464,8 +471,7 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
   const allTotal = groupBy === "ticker" ? allTickers.length : data.transactions.length;
 
   const countDenom = data.buys + data.sales + data.proposedSales || 1;
-  const volumeDenom =
-    data.buyTotalValue + data.saleTotalValue + data.proposedSaleTotalValue || 1;
+  const volumeDenom = data.buyTotalValue + data.saleTotalValue + data.proposedSaleTotalValue || 1;
 
   return (
     <div className="min-h-screen bg-background">
@@ -505,7 +511,7 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
               <button
                 onClick={handleCopyShareCard}
                 disabled={copying}
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50 whitespace-nowrap"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 press rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:shadow-[0_10px_30px_-12px_var(--primary)] disabled:opacity-50 whitespace-nowrap"
               >
                 {copying ? (
                   <>
@@ -527,7 +533,7 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
               <button
                 onClick={handleDownloadShareCard}
                 disabled={copying}
-                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-full border border-foreground/20 px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 whitespace-nowrap"
+                className="inline-flex w-full sm:w-auto items-center justify-center gap-2 press rounded-full border border-white/15 bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50 whitespace-nowrap"
               >
                 <Download className="h-4 w-4" />
                 Download PNG
@@ -1150,7 +1156,7 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
                   <button
                     onClick={handleCopyTxCard}
                     disabled={txCopying}
-                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition hover:opacity-90 disabled:opacity-50"
+                    className="inline-flex flex-1 items-center justify-center gap-2 press rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground hover:shadow-[0_10px_30px_-12px_var(--primary)] disabled:opacity-50"
                   >
                     {txCopying ? (
                       <>
@@ -1172,7 +1178,7 @@ export function InsiderTradingDashboard({ initialData }: { initialData: InsiderS
                   <button
                     onClick={handleDownloadTxCard}
                     disabled={txCopying}
-                    className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-foreground/20 px-5 py-2.5 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50"
+                    className="inline-flex flex-1 items-center justify-center gap-2 press rounded-full border border-white/15 bg-white/[0.03] px-5 py-2.5 text-sm font-semibold text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50"
                   >
                     <Download className="h-4 w-4" />
                     Download PNG

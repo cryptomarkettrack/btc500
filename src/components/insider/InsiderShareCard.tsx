@@ -8,7 +8,7 @@ interface Props {
 }
 
 const TYPE_COLORS: Record<string, string> = {
-  Buy: "#16a34a",
+  Buy: "#4ade80",
   Sale: "#dc2626",
   "Proposed Sale": "#ea580c",
   "Option Exercise": "#9333ea",
@@ -22,17 +22,16 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
   { data },
   ref,
 ) {
-  const accent = "#f97316";
-  const accentSoft = "#fef3e7";
-  const foreground = "#0f172a";
-  const muted = "#64748b";
+  const accent = "#f7931a";
+  const accentSoft = "rgba(247,147,26,0.16)";
+  const foreground = "#f7f4ef";
+  const muted = "#9c968c";
 
   const totalValue =
     data.buyTotalValue + data.saleTotalValue + data.proposedSaleTotalValue + data.optionTotalValue;
   const totalCount = data.buys + data.sales + data.proposedSales + data.options;
   const countDenom = data.buys + data.sales + data.proposedSales || 1;
-  const volumeDenom =
-    data.buyTotalValue + data.saleTotalValue + data.proposedSaleTotalValue || 1;
+  const volumeDenom = data.buyTotalValue + data.saleTotalValue + data.proposedSaleTotalValue || 1;
 
   const buyCountPct = Math.round((data.buys / countDenom) * 100);
   const saleCountPct = Math.round((data.sales / countDenom) * 100);
@@ -78,7 +77,8 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
     const end = angleCursor * 360;
     conicStops.push(`${s.color} ${start}deg ${end}deg`);
   }
-  const conic = conicStops.length > 0 ? `conic-gradient(${conicStops.join(", ")})` : "#f1f5f9";
+  const conic =
+    conicStops.length > 0 ? `conic-gradient(${conicStops.join(", ")})` : "rgba(255,255,255,0.07)";
 
   return (
     <div
@@ -86,14 +86,14 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
       style={{
         width: 1080,
         height: 1080,
-        fontFamily: "'Inter', system-ui, sans-serif",
-        background: "#fff",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
+        background: "#0f0d0c",
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
         color: foreground,
       }}
     >
@@ -208,7 +208,9 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
               {formatCompactNumber(data.total)}
             </div>
           </div>
-          <div style={{ width: 1, height: 64, background: "rgba(0,0,0,0.06)", marginBottom: 8 }} />
+          <div
+            style={{ width: 1, height: 64, background: "rgba(255,255,255,0.12)", marginBottom: 8 }}
+          />
           <div>
             <div
               style={{
@@ -263,14 +265,16 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
               position: "absolute",
               inset: 56,
               borderRadius: "50%",
-              background: "#fff",
+              background: "#0f0d0c",
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
             }}
           >
-            <div style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em" }}>
+            <div
+              style={{ fontSize: 12, fontWeight: 700, color: "#94a3b8", letterSpacing: "0.1em" }}
+            >
               BUY SHARE
             </div>
             <div style={{ fontSize: 32, fontWeight: 800, color: TYPE_COLORS.Buy, lineHeight: 1.1 }}>
@@ -308,8 +312,8 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
                   alignItems: "center",
                   padding: "14px 18px",
                   borderRadius: 14,
-                  background: "#f8fafc",
-                  border: "1px solid rgba(0,0,0,0.04)",
+                  background: "rgba(255,255,255,0.05)",
+                  border: "1px solid rgba(255,255,255,0.10)",
                 }}
               >
                 <div
@@ -380,7 +384,7 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
         style={{
           marginTop: "auto",
           padding: "22px 48px 32px",
-          borderTop: "1px solid rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(255,255,255,0.10)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -424,7 +428,7 @@ function ShareRatioBar({
         style={{
           fontSize: 12,
           fontWeight: 700,
-          color: "#64748b",
+          color: "#9c968c",
           marginBottom: 6,
         }}
       >

@@ -70,6 +70,26 @@ node .agents/skills/design-taste-frontend/scripts/moments.mjs pick --page softwa
 - `Footer.tsx` — dark, four columns, and a large `BTC500` wordmark that closes
   the page.
 
+## Follow-up — the surfaces the redesign missed (2026-11-11, same day)
+
+The first pass left two things on the old design, both spotted in the browser:
+
+- **The share surfaces.** `Copy cycle card` copied a card that was still cream, Inter and
+  `#f97316` on white — an old-brand image on a new-brand site. All eight cards
+  (`CycleShareCard`, `ShareCard`, `ChartShareCard`, `SimulatorShareCard`, `EtfShareCard`,
+  `InsiderShareCard`, `InsiderTransactionShareCard`, `BearMarketShareCard`) now use the
+  site's dark ground, Bitcoin orange, Space Grotesk + IBM Plex Mono and hairline borders.
+  The chart halos in `ChartShareCard` were repointed at the new ground so the callout
+  rings still read.
+- **The embed kit.** The page was a two-column form on the old token set; it is now a
+  dark page with the new panel, button and type system, and the three embed themes
+  (`light`, `dark`, `orange`) were re-cut from the site's palette with a mono data
+  face and a real progress track. The widgets themselves were re-typed to match.
+
+The `bg-foreground` / `text-background` white pill that survived on the simulator and the
+insider dashboard was replaced with the primary button, and the share buttons on every
+page now use the one outline style.
+
 ## What was deliberately not changed
 
 - The H1 text, the lead paragraph, the `id`s the speakable schema points at

@@ -973,7 +973,7 @@ function ShareBar({
         <button
           type="button"
           onClick={() => copy("text")}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 py-3 text-sm font-medium text-background transition hover:opacity-90 sm:w-auto"
+          className="inline-flex w-full items-center justify-center gap-2 press rounded-full bg-primary px-5 py-3 text-sm font-semibold text-primary-foreground hover:shadow-[0_10px_30px_-12px_var(--primary)] sm:w-auto"
         >
           {copied === "text" ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
           {copied === "text" ? "Copied results" : "Copy results"}

@@ -11,12 +11,20 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
 
-  const primaryColor = "#f97316";
-  const sellColor = "#16a34a";
-  const completeColor = "#2563eb";
+  const primaryColor = "#f7931a";
+  const sellColor = "#4ade80";
+  const completeColor = "#7cc4ff";
   const accent = buy ? primaryColor : sell ? sellColor : completeColor;
-  const accentSoft = buy ? "#fef3e7" : sell ? "#e6f7ed" : "#f1f5f9";
-  const accentBg = buy ? "#fff7ed" : sell ? "#f0fdf4" : "#eff6ff";
+  const accentSoft = buy
+    ? "rgba(247,147,26,0.16)"
+    : sell
+      ? "rgba(74,222,128,0.14)"
+      : "rgba(255,255,255,0.07)";
+  const accentBg = buy
+    ? "rgba(247,147,26,0.10)"
+    : sell
+      ? "rgba(74,222,128,0.10)"
+      : "rgba(124,196,255,0.14)";
 
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -29,14 +37,14 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
       style={{
         width: 1080,
         height: 1350,
-        fontFamily: "'Inter', system-ui, sans-serif",
-        background: "#fff",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
+        background: "#0f0d0c",
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
       }}
     >
       {/* Full-height accent stripe on the left */}
@@ -61,7 +69,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
           opacity: 0.05,
         }}
       >
-        <BtcLogo size={440} color="#000" />
+        <BtcLogo size={440} color="#ffffff" />
       </div>
 
       {/* ========== TOP SECTION ========== */}
@@ -94,7 +102,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
                   fontSize: 30,
                   fontWeight: 800,
                   letterSpacing: "-0.03em",
-                  color: "#0f172a",
+                  color: "#f7f4ef",
                 }}
               >
                 BTC 500
@@ -103,7 +111,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
                 style={{
                   fontSize: 13,
                   fontWeight: 500,
-                  color: "#64748b",
+                  color: "#9c968c",
                   marginTop: 2,
                 }}
               >
@@ -178,7 +186,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
         <div
           style={{
             fontSize: 17,
-            color: "#64748b",
+            color: "#9c968c",
             marginBottom: 24,
           }}
         >
@@ -217,7 +225,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
               width: "100%",
               overflow: "hidden",
               borderRadius: 999,
-              background: "#f1f5f9",
+              background: "rgba(255,255,255,0.07)",
             }}
           >
             <div
@@ -250,7 +258,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
       <div
         style={{
           padding: "32px 48px 36px",
-          borderTop: "1px solid rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(255,255,255,0.10)",
           position: "relative",
           zIndex: 1,
         }}
@@ -269,7 +277,7 @@ export const ShareCard = forwardRef<HTMLDivElement, Props>(function ShareCard({ 
             >
               Next Halving
             </div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: "#0f172a" }}>
+            <div style={{ fontSize: 24, fontWeight: 700, color: "#f7f4ef" }}>
               {formatDate(cycle.nextHalving)}
             </div>
             <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 2 }}>
@@ -311,7 +319,7 @@ function MiniStat({ label, value }: { label: string; value: string }) {
       >
         {label}
       </div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: "#0f172a" }}>{value}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "#f7f4ef" }}>{value}</div>
     </div>
   );
 }

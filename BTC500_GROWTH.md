@@ -193,6 +193,12 @@ the freeze for this one change; it is a skin, not a copy or structure rewrite.
   referral number moved because of this and none was measured. What it can do
   is make the one URL Google already serves worth staying on, and make the
   share card and the embed kit look like the brand they claim to be.
+- **Follow-up, same day:** the owner pointed at two leftovers — the `Copy cycle card`
+  button and the embed kit. Both were still on the old design. Fixed: all eight share
+  cards re-cut on the dark ground with Bitcoin orange and the site's type pair, the
+  share buttons unified to one outline style, the embed kit page rebuilt in the new
+  system, and the three embed themes re-cut from the site palette. The white
+  `bg-foreground` pill left on the simulator and insider pages is gone too.
 - **Tooling note:** the installed skill lives in `.agents/` (1,603 vendored
   files, 43 MB) and the skill's own scratch in `.taste-skill/`. Both are now
   gitignored — `skills-lock.json` stays tracked as the manifest. The repository

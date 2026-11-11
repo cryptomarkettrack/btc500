@@ -17,10 +17,10 @@ interface Props {
 }
 
 function getStatusColorHex(status: string): string {
-  if (status.includes("✅")) return "#16a34a";
+  if (status.includes("✅")) return "#4ade80";
   if (status.includes("⚠️")) return "#d97706";
   if (status.includes("❌")) return "#dc2626";
-  return "#64748b";
+  return "#9c968c";
 }
 
 export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function BearMarketShareCard(
@@ -29,7 +29,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
 ) {
   const accent =
     compositeScore >= 15
-      ? "#16a34a"
+      ? "#4ade80"
       : compositeScore >= 10
         ? "#d97706"
         : compositeScore >= 5
@@ -37,7 +37,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
           : "#dc2626";
   const accentSoft =
     compositeScore >= 15
-      ? "#e6f7ed"
+      ? "rgba(74,222,128,0.14)"
       : compositeScore >= 10
         ? "#fef3c7"
         : compositeScore >= 5
@@ -59,14 +59,14 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
       style={{
         width: 1080,
         height: 1080,
-        fontFamily: "'Inter', system-ui, sans-serif",
-        background: "#fff",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
+        background: "#0f0d0c",
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
       }}
     >
       {/* Left accent stripe */}
@@ -123,7 +123,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                   fontSize: 30,
                   fontWeight: 800,
                   letterSpacing: "-0.03em",
-                  color: "#0f172a",
+                  color: "#f7f4ef",
                 }}
               >
                 BTC 500
@@ -132,7 +132,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                 style={{
                   fontSize: 13,
                   fontWeight: 500,
-                  color: "#64748b",
+                  color: "#9c968c",
                   marginTop: 2,
                 }}
               >
@@ -227,7 +227,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
           </div>
 
           {/* Divider */}
-          <div style={{ width: 1, height: 72, background: "rgba(0,0,0,0.06)" }} />
+          <div style={{ width: 1, height: 72, background: "rgba(255,255,255,0.12)" }} />
 
           {/* Verdict */}
           <div style={{ flex: 1 }}>
@@ -265,7 +265,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
               width: "100%",
               overflow: "hidden",
               borderRadius: 999,
-              background: "#f1f5f9",
+              background: "rgba(255,255,255,0.07)",
             }}
           >
             <div
@@ -322,7 +322,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
             label="Tier 3"
             triggered={triggeredTier3}
             total={tier3.length}
-            color="#2563eb"
+            color="#7cc4ff"
             points="1pt"
           />
         </div>
@@ -342,8 +342,12 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                   alignItems: "center",
                   padding: "7px 14px",
                   borderRadius: 10,
-                  background: triggered ? "#f0fdf4" : caution ? "#fffbeb" : "#f8fafc",
-                  border: `1px solid ${triggered ? "rgba(22,163,74,0.12)" : caution ? "rgba(217,119,6,0.10)" : "rgba(0,0,0,0.04)"}`,
+                  background: triggered
+                    ? "rgba(74,222,128,0.10)"
+                    : caution
+                      ? "#fffbeb"
+                      : "rgba(255,255,255,0.05)",
+                  border: `1px solid ${triggered ? "rgba(22,163,74,0.12)" : caution ? "rgba(217,119,6,0.10)" : "rgba(255,255,255,0.08)"}`,
                 }}
               >
                 {/* Status dot */}
@@ -363,7 +367,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                     marginLeft: 10,
                     fontSize: 13,
                     fontWeight: 600,
-                    color: "#0f172a",
+                    color: "#f7f4ef",
                   }}
                 >
                   {ind.name}
@@ -373,7 +377,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
                   style={{
                     fontSize: 10,
                     fontWeight: 600,
-                    color: ind.tier === 1 ? "#dc2626" : ind.tier === 2 ? "#d97706" : "#2563eb",
+                    color: ind.tier === 1 ? "#dc2626" : ind.tier === 2 ? "#d97706" : "#7cc4ff",
                     marginRight: 10,
                     letterSpacing: "0.05em",
                   }}
@@ -403,7 +407,7 @@ export const BearMarketShareCard = forwardRef<HTMLDivElement, Props>(function Be
         style={{
           marginTop: "auto",
           padding: "18px 48px 28px",
-          borderTop: "1px solid rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(255,255,255,0.10)",
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
@@ -469,7 +473,7 @@ function TierBadge({
         }}
       />
       <span style={{ fontSize: 12, fontWeight: 700, color }}>{label}</span>
-      <span style={{ fontSize: 12, color: "#64748b" }}>
+      <span style={{ fontSize: 12, color: "#9c968c" }}>
         {triggered}/{total}
       </span>
       <span style={{ fontSize: 10, color: "#94a3b8" }}>({points})</span>

@@ -15,13 +15,13 @@ export const SimulatorShareCard = forwardRef<HTMLDivElement, Props>(function Sim
   { run },
   ref,
 ) {
-  const primary = "#f97316";
-  const success = "#16a34a";
-  const foreground = "#0f172a";
-  const muted = "#64748b";
-  const border = "#e2e8f0";
-  const mutedBg = "#f8fafc";
-  const cardBg = "#ffffff";
+  const primary = "#f7931a";
+  const success = "#4ade80";
+  const foreground = "#f7f4ef";
+  const muted = "#9c968c";
+  const border = "rgba(255,255,255,0.14)";
+  const mutedBg = "rgba(255,255,255,0.05)";
+  const cardBg = "#0f0d0c";
   const completed = run.cycles.filter((c) => c.complete);
 
   return (
@@ -30,14 +30,14 @@ export const SimulatorShareCard = forwardRef<HTMLDivElement, Props>(function Sim
       style={{
         width: 1080,
         height: 1350,
-        fontFamily: "'Inter', system-ui, sans-serif",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
         background: cardBg,
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
       }}
     >
       <div

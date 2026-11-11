@@ -53,7 +53,7 @@ function Embed() {
         margin: 0,
         minHeight: "100%",
         background: tokens.bg,
-        fontFamily: "'Inter', system-ui, sans-serif",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
       }}
     >
       {widget === "badge" && <BadgeWidget cycle={cycle} theme={theme} />}
@@ -67,7 +67,7 @@ function BadgeWidget({ cycle, theme }: { cycle: CycleInfo; theme: EmbedTheme }) 
   const t = themeTokens(theme);
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
-  const accent = buy ? t.primary : sell ? t.success : "#2563eb";
+  const accent = buy ? t.primary : sell ? t.success : t.muted;
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const label = buy ? "to buy" : sell ? "to sell" : "done";
 
@@ -91,7 +91,7 @@ function BadgeWidget({ cycle, theme }: { cycle: CycleInfo; theme: EmbedTheme }) 
       }}
     >
       <BtcLogo size={22} color={t.primary} />
-      <span style={{ fontWeight: 800, fontSize: 14, letterSpacing: "-0.02em" }}>
+      <span style={{ fontWeight: 700, fontSize: 14, letterSpacing: "-0.02em" }}>
         BTC<span style={{ color: t.primary }}>500</span>
       </span>
       <span
@@ -120,7 +120,7 @@ function CountdownWidget({
   const t = themeTokens(theme);
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
-  const accent = buy ? t.primary : sell ? t.success : "#2563eb";
+  const accent = buy ? t.primary : sell ? t.success : t.muted;
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const progress = buy ? cycle.buyProgress : sell ? cycle.sellProgress : 1;
 
@@ -132,7 +132,7 @@ function CountdownWidget({
         margin: "0 auto",
         background: t.card,
         border: `1px solid ${t.border}`,
-        borderRadius: 20,
+        borderRadius: 16,
         padding: 20,
         boxSizing: "border-box",
         color: t.text,
@@ -147,8 +147,9 @@ function CountdownWidget({
         </div>
         <span
           style={{
+            fontFamily: '"IBM Plex Mono", monospace',
             fontSize: 10,
-            fontWeight: 700,
+            fontWeight: 500,
             letterSpacing: "0.12em",
             textTransform: "uppercase",
             color: accent,
@@ -164,8 +165,9 @@ function CountdownWidget({
       <div style={{ textAlign: "center", marginTop: 18 }}>
         <div
           style={{
+            fontFamily: '"IBM Plex Mono", monospace',
             fontSize: 11,
-            fontWeight: 700,
+            fontWeight: 500,
             letterSpacing: "0.16em",
             textTransform: "uppercase",
             color: t.muted,
@@ -192,7 +194,7 @@ function CountdownWidget({
           marginTop: 16,
           height: 8,
           borderRadius: 999,
-          background: theme === "dark" ? "#1f2937" : "#f1f5f9",
+          background: t.track,
           overflow: "hidden",
         }}
       >
@@ -241,7 +243,7 @@ function FullWidget({
   const t = themeTokens(theme);
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
-  const accent = buy ? t.primary : sell ? t.success : "#2563eb";
+  const accent = buy ? t.primary : sell ? t.success : t.muted;
   const accentSoft = t.soft;
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -256,7 +258,7 @@ function FullWidget({
         margin: "0 auto",
         background: t.card,
         border: `1px solid ${t.border}`,
-        borderRadius: 20,
+        borderRadius: 16,
         padding: 24,
         boxSizing: "border-box",
         color: t.text,
@@ -293,8 +295,9 @@ function FullWidget({
               padding: "6px 14px",
               borderRadius: 100,
               background: accentSoft,
+              fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 12,
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: "uppercase",
               letterSpacing: "0.1em",
               color: accent,
@@ -325,7 +328,7 @@ function FullWidget({
           <span
             style={{
               fontSize: 96,
-              fontWeight: 800,
+              fontWeight: 700,
               lineHeight: 0.9,
               letterSpacing: "-0.07em",
               color: accent,
@@ -345,7 +348,7 @@ function FullWidget({
               width: "100%",
               overflow: "hidden",
               borderRadius: 999,
-              background: theme === "dark" ? "#1f2937" : "#f1f5f9",
+              background: t.track,
             }}
           >
             <div
@@ -385,8 +388,9 @@ function FullWidget({
         <div>
           <div
             style={{
+              fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 10,
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: "uppercase",
               letterSpacing: "0.14em",
               color: t.muted,
@@ -403,8 +407,9 @@ function FullWidget({
         <div>
           <div
             style={{
+              fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 10,
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: "uppercase",
               letterSpacing: "0.14em",
               color: t.muted,
@@ -418,8 +423,9 @@ function FullWidget({
         <div>
           <div
             style={{
+              fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 10,
-              fontWeight: 700,
+              fontWeight: 500,
               textTransform: "uppercase",
               letterSpacing: "0.14em",
               color: t.muted,

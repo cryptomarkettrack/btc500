@@ -12,15 +12,15 @@ interface Props {
  * Inline styles so html-to-image does not depend on CSS variables.
  */
 export const EtfShareCard = forwardRef<HTMLDivElement, Props>(function EtfShareCard({ data }, ref) {
-  const primary = "#f97316";
-  const foreground = "#0f172a";
-  const muted = "#64748b";
-  const border = "#e2e8f0";
-  const cardBg = "#ffffff";
+  const primary = "#f7931a";
+  const foreground = "#f7f4ef";
+  const muted = "#9c968c";
+  const border = "rgba(255,255,255,0.14)";
+  const cardBg = "#0f0d0c";
   const latest = data.latest;
   const etfBtc = latest.netFlowBtc ?? 0;
   const squeeze = etfBtc >= latest.issuanceBtc;
-  const accent = squeeze ? "#16a34a" : etfBtc < 0 ? "#dc2626" : primary;
+  const accent = squeeze ? "#4ade80" : etfBtc < 0 ? "#dc2626" : primary;
   const copy = regimeCopy(data.dayRegime);
   const ratio =
     latest.absorptionRatio != null ? `${latest.absorptionRatio.toFixed(1)}× issuance` : "—";
@@ -31,14 +31,14 @@ export const EtfShareCard = forwardRef<HTMLDivElement, Props>(function EtfShareC
       style={{
         width: 1080,
         height: 1350,
-        fontFamily: "'Inter', system-ui, sans-serif",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
         background: cardBg,
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
         color: foreground,
       }}
     >

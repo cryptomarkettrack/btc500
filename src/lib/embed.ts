@@ -89,41 +89,50 @@ export interface EmbedThemeTokens {
   primary: string;
   success: string;
   soft: string;
+  /** Track colour behind the progress bar. */
+  track: string;
 }
 
+/**
+ * The three embed themes, in the site's 2026-11 art direction: warm paper,
+ * near-black (the site's own ground) and an orange-tinted paper.
+ */
 export function themeTokens(theme: EmbedTheme): EmbedThemeTokens {
   if (theme === "dark") {
     return {
-      bg: "#0b0f14",
-      card: "#111827",
-      text: "#f8fafc",
-      muted: "#94a3b8",
-      border: "#1f2937",
-      primary: "#f97316",
-      success: "#22c55e",
-      soft: "#1c1917",
+      bg: "#0f0d0c",
+      card: "#171513",
+      text: "#f7f4ef",
+      muted: "#9c968c",
+      border: "rgba(255,255,255,0.14)",
+      primary: "#f7931a",
+      success: "#4ade80",
+      soft: "rgba(247,147,26,0.16)",
+      track: "rgba(255,255,255,0.10)",
     };
   }
   if (theme === "orange") {
     return {
-      bg: "#fff7ed",
+      bg: "#fff3e6",
       card: "#ffffff",
-      text: "#0f172a",
-      muted: "#9a3412",
-      border: "#fdba74",
-      primary: "#ea580c",
-      success: "#16a34a",
-      soft: "#ffedd5",
+      text: "#1a120a",
+      muted: "#8a6a4b",
+      border: "#f0d3b2",
+      primary: "#c2410c",
+      success: "#15803d",
+      soft: "#ffe9d2",
+      track: "#f6e4d2",
     };
   }
   return {
-    bg: "#ffffff",
-    card: "#ffffff",
-    text: "#0f172a",
-    muted: "#64748b",
-    border: "#e2e8f0",
-    primary: "#f97316",
-    success: "#16a34a",
-    soft: "#fef3e7",
+    bg: "#f7f4ef",
+    card: "#fffdf9",
+    text: "#14120f",
+    muted: "#6f6a63",
+    border: "#e4ded4",
+    primary: "#c2410c",
+    success: "#15803d",
+    soft: "#fdeedd",
+    track: "#ece6dc",
   };
 }

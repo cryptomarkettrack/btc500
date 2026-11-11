@@ -16,11 +16,15 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
 
-  const primaryColor = "#f97316";
-  const sellColor = "#16a34a";
-  const completeColor = "#2563eb";
+  const primaryColor = "#f7931a";
+  const sellColor = "#4ade80";
+  const completeColor = "#7cc4ff";
   const accent = buy ? primaryColor : sell ? sellColor : completeColor;
-  const accentSoft = buy ? "#fef3e7" : sell ? "#e6f7ed" : "#f1f5f9";
+  const accentSoft = buy
+    ? "rgba(247,147,26,0.16)"
+    : sell
+      ? "rgba(74,222,128,0.14)"
+      : "rgba(255,255,255,0.07)";
 
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -83,14 +87,14 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
       style={{
         width: 1080,
         height: 1350,
-        fontFamily: "'Inter', system-ui, sans-serif",
-        background: "#fff",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
+        background: "#0f0d0c",
         borderRadius: 32,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        boxShadow: "none",
       }}
     >
       {/* Full-height accent stripe on the left */}
@@ -115,7 +119,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
           opacity: 0.05,
         }}
       >
-        <BtcLogo size={440} color="#000" />
+        <BtcLogo size={440} color="#ffffff" />
       </div>
 
       {/* ========== TOP SECTION ========== */}
@@ -148,7 +152,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                   fontSize: 30,
                   fontWeight: 800,
                   letterSpacing: "-0.03em",
-                  color: "#0f172a",
+                  color: "#f7f4ef",
                 }}
               >
                 BTC 500
@@ -157,7 +161,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 style={{
                   fontSize: 13,
                   fontWeight: 500,
-                  color: "#64748b",
+                  color: "#9c968c",
                   marginTop: 2,
                 }}
               >
@@ -218,9 +222,30 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
             </defs>
 
             {/* Subtle horizontal grid */}
-            <line x1="0" y1="100" x2="900" y2="100" stroke="#e2e8f0" strokeWidth="1" />
-            <line x1="0" y1="220" x2="900" y2="220" stroke="#e2e8f0" strokeWidth="1" />
-            <line x1="0" y1="340" x2="900" y2="340" stroke="#e2e8f0" strokeWidth="1" />
+            <line
+              x1="0"
+              y1="100"
+              x2="900"
+              y2="100"
+              stroke="rgba(255,255,255,0.14)"
+              strokeWidth="1"
+            />
+            <line
+              x1="0"
+              y1="220"
+              x2="900"
+              y2="220"
+              stroke="rgba(255,255,255,0.14)"
+              strokeWidth="1"
+            />
+            <line
+              x1="0"
+              y1="340"
+              x2="900"
+              y2="340"
+              stroke="rgba(255,255,255,0.14)"
+              strokeWidth="1"
+            />
 
             {/* Realistic-ish BTC path */}
             <path
@@ -258,7 +283,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
               y1="30"
               x2="460"
               y2="430"
-              stroke="#64748b"
+              stroke="#9c968c"
               strokeWidth="1.5"
               strokeDasharray="2 5"
             />
@@ -271,7 +296,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 fontWeight: 600,
                 fontSize: "12px",
                 letterSpacing: "0.18em",
-                fill: "#64748b",
+                fill: "#9c968c",
               }}
             >
               Halving
@@ -341,7 +366,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
               cy="332"
               r="8"
               fill={primaryColor}
-              stroke="#fff"
+              stroke="#0f0d0c"
               strokeWidth="3"
               opacity="0.2"
             >
@@ -353,7 +378,14 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 repeatCount="indefinite"
               />
             </circle>
-            <circle cx="310" cy="332" r="6" fill={primaryColor} stroke="#fff" strokeWidth="2.5" />
+            <circle
+              cx="310"
+              cy="332"
+              r="6"
+              fill={primaryColor}
+              stroke="#0f0d0c"
+              strokeWidth="2.5"
+            />
             <line
               x1="310"
               y1="332"
@@ -363,7 +395,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
               strokeWidth="2"
               opacity="0.7"
             />
-            <circle cx="310" cy="415" r="38" fill="#fef3e7" opacity="0.3" />
+            <circle cx="310" cy="415" r="38" fill="rgba(247,147,26,0.16)" opacity="0.3" />
             <circle cx="310" cy="415" r="38" fill="none" stroke={primaryColor} strokeWidth="2.5" />
             <text
               x="310"
@@ -373,7 +405,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 fontFamily: "Space Grotesk, sans-serif",
                 fontWeight: 700,
                 fontSize: "19px",
-                fill: "#0f172a",
+                fill: "#f7f4ef",
               }}
             >
               Buy
@@ -399,7 +431,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
               cy="60"
               r="8"
               fill={primaryColor}
-              stroke="#fff"
+              stroke="#0f0d0c"
               strokeWidth="3"
               opacity="0.2"
             >
@@ -411,7 +443,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 repeatCount="indefinite"
               />
             </circle>
-            <circle cx="670" cy="60" r="6" fill={primaryColor} stroke="#fff" strokeWidth="2.5" />
+            <circle cx="670" cy="60" r="6" fill={primaryColor} stroke="#0f0d0c" strokeWidth="2.5" />
             <line
               x1="670"
               y1="60"
@@ -421,7 +453,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
               strokeWidth="2"
               opacity="0.7"
             />
-            <circle cx="740" cy="55" r="38" fill="#fef3e7" opacity="0.3" />
+            <circle cx="740" cy="55" r="38" fill="rgba(247,147,26,0.16)" opacity="0.3" />
             <circle cx="740" cy="55" r="38" fill="none" stroke={primaryColor} strokeWidth="2.5" />
             <line
               x1="670"
@@ -440,7 +472,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 fontFamily: "Space Grotesk, sans-serif",
                 fontWeight: 700,
                 fontSize: "19px",
-                fill: "#0f172a",
+                fill: "#f7f4ef",
               }}
             >
               Sell
@@ -480,7 +512,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
           <div
             style={{
               fontSize: 17,
-              color: "#64748b",
+              color: "#9c968c",
               marginBottom: 24,
             }}
           >
@@ -525,7 +557,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
                 width: "100%",
                 overflow: "hidden",
                 borderRadius: 999,
-                background: "#f1f5f9",
+                background: "rgba(255,255,255,0.07)",
               }}
             >
               <div
@@ -559,7 +591,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
       <div
         style={{
           padding: "32px 48px 36px",
-          borderTop: "1px solid rgba(0,0,0,0.06)",
+          borderTop: "1px solid rgba(255,255,255,0.10)",
           position: "relative",
           zIndex: 1,
         }}
@@ -578,7 +610,7 @@ export const ChartShareCard = forwardRef<HTMLDivElement, Props>(function ChartSh
             >
               Next Halving
             </div>
-            <div style={{ fontSize: 24, fontWeight: 700, color: "#0f172a" }}>
+            <div style={{ fontSize: 24, fontWeight: 700, color: "#f7f4ef" }}>
               {formatDate(cycle.nextHalving)}
             </div>
             <div style={{ fontSize: 13, color: "#94a3b8", marginTop: 2 }}>
@@ -620,7 +652,7 @@ function MiniStat({ label, value }: { label: string; value: string }) {
       >
         {label}
       </div>
-      <div style={{ fontSize: 22, fontWeight: 700, color: "#0f172a" }}>{value}</div>
+      <div style={{ fontSize: 22, fontWeight: 700, color: "#f7f4ef" }}>{value}</div>
     </div>
   );
 }

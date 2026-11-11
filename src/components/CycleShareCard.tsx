@@ -10,9 +10,12 @@ interface Props {
 }
 
 /**
- * Fixed-size social card for the Cycle Command Center.
- * Dual focus: strategy chart + giant centered days-left number below it.
- * Secondary: progress, key dates, footer. Inline colors for html-to-image.
+ * Fixed-size social card for the cycle.
+ *
+ * Art direction matches the site (2026-11): near-black warm ground, Bitcoin
+ * orange as the only saturated colour, Space Grotesk for the display and IBM
+ * Plex Mono for the data. Inline colours only — html-to-image cannot read
+ * custom properties from a stylesheet.
  */
 export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleShareCard(
   { cycle, price },
@@ -21,23 +24,22 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
 
-  // Brand tokens aligned with UI-GUIDELINES (hex approximations of oklch)
-  const primaryColor = "#f97316";
-  const successColor = "#16a34a";
-  const infoColor = "#2563eb";
-  const foreground = "#0f172a";
-  const muted = "#64748b";
-  const border = "#e2e8f0";
-  const mutedBg = "#f1f5f9";
-  const cardBg = "#ffffff";
+  // Brand tokens — the dark counterparts of the site's oklch palette
+  const primaryColor = "#f7931a";
+  const successColor = "#4ade80";
+  const infoColor = "#7cc4ff";
+  const foreground = "#f7f4ef";
+  const muted = "#9c968c";
+  const border = "rgba(255,255,255,0.14)";
+  const mutedBg = "rgba(255,255,255,0.05)";
+  const cardBg = "#0f0d0c";
 
-  const primarySoft = "#fef3e7";
-  const successSoft = "#e6f7ed";
-  const infoSoft = "#eff6ff";
+  const primarySoft = "rgba(247,147,26,0.16)";
+  const successSoft = "rgba(74,222,128,0.14)";
+  const infoSoft = "rgba(124,196,255,0.14)";
 
   const phaseAccent = buy ? primaryColor : sell ? successColor : infoColor;
   const phaseSoft = buy ? primarySoft : sell ? successSoft : infoSoft;
-  const phaseDeep = buy ? "#9a3412" : sell ? "#14532d" : "#1e3a8a";
 
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -50,7 +52,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
     : sell
       ? "Days until sell window"
       : "Cycle complete";
-  const statusLabel = buy ? "Waiting to Buy" : sell ? "Waiting to Sell" : "Cycle Complete";
+  const statusLabel = buy ? "Waiting to buy" : sell ? "Waiting to sell" : "Cycle complete";
   const targetDate = buy ? cycle.buyDate : sell ? cycle.sellDate : cycle.nextHalving;
   const targetLabel = buy ? "Buy date" : sell ? "Sell date" : "Next cycle";
   const ruleLine = buy
@@ -65,26 +67,24 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
       style={{
         width: 1080,
         height: 1350,
-        fontFamily: "'Inter', system-ui, sans-serif",
+        fontFamily: '"Space Grotesk", system-ui, sans-serif',
         background: cardBg,
-        borderRadius: 32,
+        borderRadius: 28,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+        border: `1px solid ${border}`,
         color: foreground,
       }}
     >
-      {/* Full-height accent stripe */}
+      {/* the one ground: a warm glow behind the chart */}
       <div
         style={{
           position: "absolute",
-          left: 0,
-          top: 0,
-          bottom: 0,
-          width: 16,
-          background: phaseAccent,
+          inset: 0,
+          background:
+            "radial-gradient(70% 45% at 72% 26%, rgba(247,147,26,0.20) 0%, rgba(247,147,26,0) 68%)",
         }}
       />
 
@@ -98,11 +98,11 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           opacity: 0.05,
         }}
       >
-        <BtcLogo size={440} color="#000" />
+        <BtcLogo size={440} color="#ffffff" />
       </div>
 
       {/* Header — brand + status pill */}
-      <div style={{ padding: "32px 48px 0 56px", position: "relative", zIndex: 1 }}>
+      <div style={{ padding: "32px 48px 0 48px", position: "relative", zIndex: 1 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
             <div
@@ -114,6 +114,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                 height: 48,
                 borderRadius: "50%",
                 background: primarySoft,
+                border: `1px solid ${primaryColor}55`,
               }}
             >
               <BtcLogo size={26} color={primaryColor} />
@@ -122,7 +123,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               <div
                 style={{
                   fontSize: 28,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   letterSpacing: "-0.03em",
                   color: foreground,
                 }}
@@ -131,9 +132,10 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               </div>
               <div
                 style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
                   fontSize: 12,
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
+                  fontWeight: 500,
+                  letterSpacing: "0.16em",
                   textTransform: "uppercase",
                   color: muted,
                   marginTop: 2,
@@ -152,7 +154,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               padding: "10px 18px",
               borderRadius: 100,
               background: phaseSoft,
-              border: `2px solid ${phaseAccent}`,
+              border: `1px solid ${phaseAccent}66`,
             }}
           >
             <span
@@ -167,10 +169,11 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             />
             <span
               style={{
-                fontSize: 14,
-                fontWeight: 800,
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: 13,
+                fontWeight: 600,
                 textTransform: "uppercase",
-                letterSpacing: "0.12em",
+                letterSpacing: "0.14em",
                 color: phaseAccent,
               }}
             >
@@ -188,7 +191,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          padding: "8px 40px 0 48px",
+          padding: "8px 40px 0 40px",
           position: "relative",
           zIndex: 1,
           gap: 8,
@@ -199,16 +202,14 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           style={{
             width: "100%",
             fontFamily: '"Space Grotesk", system-ui, sans-serif',
-            ["--background" as string]: "#ffffff",
-            ["--foreground" as string]: "#0f172a",
+            ["--background" as string]: cardBg,
+            ["--foreground" as string]: foreground,
             ["--primary" as string]: primaryColor,
             ["--primary-soft" as string]: primarySoft,
             ["--muted" as string]: mutedBg,
             ["--muted-foreground" as string]: muted,
             ["--border" as string]: border,
-            // The site is dark; the share card is light. The chart label needs
-            // the card's own ink, not the page's.
-            ["--chart-ink" as string]: "#0f172a",
+            ["--chart-ink" as string]: foreground,
           }}
         >
           <Btc500Hero price={price} daysLeft={Math.max(0, cycle.daysUntilBuy)} compact />
@@ -227,8 +228,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
         >
           <div
             style={{
+              fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 15,
-              fontWeight: 800,
+              fontWeight: 600,
               letterSpacing: "0.22em",
               textTransform: "uppercase",
               color: phaseAccent,
@@ -239,7 +241,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           <div
             style={{
               fontSize: 15,
-              fontWeight: 600,
+              fontWeight: 500,
               color: muted,
               marginTop: 6,
             }}
@@ -259,7 +261,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             <span
               style={{
                 fontSize: 180,
-                fontWeight: 900,
+                fontWeight: 700,
                 lineHeight: 0.85,
                 letterSpacing: "-0.07em",
                 color: phaseAccent,
@@ -269,9 +271,10 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             </span>
             <span
               style={{
-                fontSize: 42,
-                fontWeight: 700,
-                color: phaseDeep,
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: 38,
+                fontWeight: 500,
+                color: foreground,
                 paddingBottom: 18,
                 letterSpacing: "-0.02em",
               }}
@@ -294,8 +297,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             <div style={{ textAlign: "center" }}>
               <div
                 style={{
+                  fontFamily: '"IBM Plex Mono", monospace',
                   fontSize: 12,
-                  fontWeight: 800,
+                  fontWeight: 500,
                   letterSpacing: "0.14em",
                   textTransform: "uppercase",
                   color: muted,
@@ -306,7 +310,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
               <div
                 style={{
                   fontSize: 22,
-                  fontWeight: 800,
+                  fontWeight: 700,
                   color: foreground,
                   marginTop: 4,
                   letterSpacing: "-0.03em",
@@ -331,8 +335,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                 borderRadius: 100,
                 background: phaseSoft,
                 border: `1px solid ${phaseAccent}55`,
-                fontSize: 15,
-                fontWeight: 800,
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: 14,
+                fontWeight: 600,
                 color: phaseAccent,
               }}
             >
@@ -344,7 +349,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           <div style={{ width: "100%", maxWidth: 720, marginTop: 22 }}>
             <div
               style={{
-                height: 14,
+                height: 12,
                 width: "100%",
                 overflow: "hidden",
                 borderRadius: 999,
@@ -367,16 +372,17 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
                 marginTop: 10,
                 display: "flex",
                 justifyContent: "space-between",
-                fontSize: 14,
-                fontWeight: 600,
+                fontFamily: '"IBM Plex Mono", monospace',
+                fontSize: 13,
+                fontWeight: 500,
                 color: muted,
               }}
             >
               <span>
-                <span style={{ color: foreground, fontWeight: 800 }}>{elapsed}</span> days elapsed
+                <span style={{ color: foreground, fontWeight: 600 }}>{elapsed}</span> days elapsed
               </span>
               <span>
-                <span style={{ color: foreground, fontWeight: 800 }}>{totalDays}</span> day window
+                <span style={{ color: foreground, fontWeight: 600 }}>{totalDays}</span> day window
               </span>
             </div>
           </div>
@@ -389,7 +395,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           display: "grid",
           gridTemplateColumns: "1fr 1fr 1fr",
           gap: 14,
-          padding: "8px 40px 0 48px",
+          padding: "8px 40px 0 40px",
           position: "relative",
           zIndex: 1,
         }}
@@ -398,7 +404,6 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           label="BTC price"
           value={price != null ? formatUsd(price) : "—"}
           accent={primaryColor}
-          soft={primarySoft}
           border={border}
           muted={muted}
           foreground={foreground}
@@ -407,7 +412,6 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           label="Next halving"
           value={formatDate(cycle.nextHalving)}
           accent={infoColor}
-          soft={infoSoft}
           border={border}
           muted={muted}
           foreground={foreground}
@@ -416,7 +420,6 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           label={buy ? "Sell date" : "Buy date"}
           value={formatDate(buy ? cycle.sellDate : cycle.buyDate)}
           accent={sell || buy ? successColor : infoColor}
-          soft={sell || buy ? successSoft : infoSoft}
           border={border}
           muted={muted}
           foreground={foreground}
@@ -427,7 +430,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
       <div
         style={{
           marginTop: 16,
-          padding: "18px 48px 28px 56px",
+          padding: "18px 48px 28px 48px",
           borderTop: `1px solid ${border}`,
           display: "flex",
           justifyContent: "space-between",
@@ -436,11 +439,20 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           zIndex: 1,
         }}
       >
-        <div style={{ fontSize: 16, color: muted, fontWeight: 600 }}>
-          Buy <span style={{ color: primaryColor, fontWeight: 800 }}>500</span> before · Sell{" "}
-          <span style={{ color: successColor, fontWeight: 800 }}>500</span> after
+        <div style={{ fontSize: 16, color: muted, fontWeight: 500 }}>
+          Buy <span style={{ color: primaryColor, fontWeight: 700 }}>500</span> before · Sell{" "}
+          <span style={{ color: successColor, fontWeight: 700 }}>500</span> after
         </div>
-        <div style={{ fontSize: 17, fontWeight: 800, color: primaryColor }}>btc500.net</div>
+        <div
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: 16,
+            fontWeight: 600,
+            color: primaryColor,
+          }}
+        >
+          btc500.net
+        </div>
       </div>
     </div>
   );
@@ -450,7 +462,6 @@ function FactTile({
   label,
   value,
   accent,
-  soft,
   border,
   muted,
   foreground,
@@ -458,7 +469,6 @@ function FactTile({
   label: string;
   value: string;
   accent: string;
-  soft: string;
   border: string;
   muted: string;
   foreground: string;
@@ -466,16 +476,17 @@ function FactTile({
   return (
     <div
       style={{
-        borderRadius: 18,
+        borderRadius: 16,
         border: `1px solid ${border}`,
-        background: soft,
+        background: "rgba(255,255,255,0.04)",
         padding: "14px 18px",
       }}
     >
       <div
         style={{
+          fontFamily: '"IBM Plex Mono", monospace',
           fontSize: 11,
-          fontWeight: 800,
+          fontWeight: 500,
           letterSpacing: "0.16em",
           textTransform: "uppercase",
           color: muted,
@@ -486,7 +497,7 @@ function FactTile({
       <div
         style={{
           fontSize: 22,
-          fontWeight: 800,
+          fontWeight: 700,
           color: foreground,
           marginTop: 6,
           letterSpacing: "-0.03em",

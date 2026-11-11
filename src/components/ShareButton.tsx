@@ -117,7 +117,9 @@ export function ShareButton({ captureRef }: Props) {
       const fileName = `btc500-${new Date().toISOString().slice(0, 10)}.png`;
 
       // Check if we're on iOS Safari
-      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as any).MSStream;
+      const isIOS =
+        /iPad|iPhone|iPod/.test(navigator.userAgent) &&
+        !(window as Window & { MSStream?: boolean }).MSStream;
 
       if (isIOS) {
         // For iOS Safari, show in-page modal with preview and share/download options
@@ -209,7 +211,7 @@ export function ShareButton({ captureRef }: Props) {
         <button
           onClick={copyToClipboard}
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:border-primary/50 hover:text-primary disabled:opacity-50 sm:w-auto"
+          className="press inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-medium text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50 sm:w-auto"
         >
           {busy ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -228,7 +230,7 @@ export function ShareButton({ captureRef }: Props) {
         <button
           onClick={download}
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+          className="press inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-medium text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50 sm:w-auto"
         >
           {busy ? (
             <Loader2 className="h-4 w-4 animate-spin" />
@@ -242,7 +244,7 @@ export function ShareButton({ captureRef }: Props) {
         <button
           onClick={copyIframeCode}
           disabled={busy}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-foreground/20 px-6 py-3 text-sm font-medium text-foreground transition hover:bg-foreground/5 disabled:opacity-50 sm:w-auto"
+          className="press inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-medium text-foreground hover:border-primary/50 hover:text-primary disabled:opacity-50 sm:w-auto"
         >
           {iframeCopied ? (
             <>
@@ -258,7 +260,7 @@ export function ShareButton({ captureRef }: Props) {
         </button>
         <Link
           to="/embed-kit"
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-6 py-3 text-sm font-medium text-primary transition hover:bg-primary/10 sm:w-auto"
+          className="press inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/15 bg-white/[0.03] px-6 py-3 text-sm font-medium text-foreground hover:border-primary/50 hover:text-primary sm:w-auto"
         >
           <LayoutTemplate className="h-4 w-4" />
           Embed kit
@@ -268,16 +270,16 @@ export function ShareButton({ captureRef }: Props) {
       {/* iOS Preview Modal */}
       {showPreview && previewUrl && (
         <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 p-4 backdrop-blur-sm"
           onClick={() => setShowPreview(false)}
         >
           <div
-            className="relative max-h-[90vh] max-w-[90vw] overflow-auto rounded-2xl bg-white p-4"
+            className="relative max-h-[90vh] max-w-[90vw] overflow-auto rounded-2xl border border-white/10 bg-[var(--panel)] p-4"
             onClick={(e) => e.stopPropagation()}
           >
             <button
               onClick={() => setShowPreview(false)}
-              className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-black/10 text-black hover:bg-black/20"
+              className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-foreground hover:bg-white/20"
             >
               <X className="h-5 w-5" />
             </button>
@@ -287,29 +289,29 @@ export function ShareButton({ captureRef }: Props) {
               className="max-w-full h-auto rounded-lg"
               style={{ WebkitTapHighlightColor: "transparent" }}
             />
-            <div className="mt-4 rounded-lg bg-blue-50 p-4">
-              <p className="text-sm font-semibold text-blue-900 mb-2">💾 To save this image:</p>
-              <ol className="text-xs text-blue-700 space-y-1.5">
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-sm font-semibold text-foreground mb-2">To save this image:</p>
+              <ol className="text-xs text-muted-foreground space-y-1.5">
                 <li className="flex items-start gap-2">
-                  <span className="font-semibold">1.</span>
+                  <span className="font-semibold text-foreground">1.</span>
                   <span>
                     <strong>Tap the image</strong> above to open it
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="font-semibold">2.</span>
+                  <span className="font-semibold text-foreground">2.</span>
                   <span>
                     <strong>Long-press</strong> on the image
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="font-semibold">3.</span>
+                  <span className="font-semibold text-foreground">3.</span>
                   <span>
                     Tap <strong>"Share"</strong> or <strong>"Add to Photos"</strong>
                   </span>
                 </li>
                 <li className="flex items-start gap-2">
-                  <span className="font-semibold">4.</span>
+                  <span className="font-semibold text-foreground">4.</span>
                   <span>Save to your device</span>
                 </li>
               </ol>

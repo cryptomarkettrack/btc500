@@ -11,9 +11,9 @@ const TYPE_META: Record<
   InsiderTransaction["type"],
   { color: string; soft: string; label: string }
 > = {
-  Buy: { color: "#16a34a", soft: "#e6f7ed", label: "BUY" },
+  Buy: { color: "#4ade80", soft: "rgba(74,222,128,0.14)", label: "BUY" },
   Sale: { color: "#dc2626", soft: "#fef2f2", label: "SALE" },
-  "Proposed Sale": { color: "#ea580c", soft: "#fff7ed", label: "PROPOSED SALE" },
+  "Proposed Sale": { color: "#ea580c", soft: "rgba(247,147,26,0.10)", label: "PROPOSED SALE" },
   "Option Exercise": { color: "#9333ea", soft: "#f5f3ff", label: "OPTION EXERCISE" },
 };
 
@@ -26,8 +26,8 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
     const meta = TYPE_META[t.type];
     const accent = meta.color;
     const accentSoft = meta.soft;
-    const foreground = "#0f172a";
-    const muted = "#64748b";
+    const foreground = "#f7f4ef";
+    const muted = "#9c968c";
 
     return (
       <div
@@ -35,14 +35,14 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
         style={{
           width: 1080,
           height: 1080,
-          fontFamily: "'Inter', system-ui, sans-serif",
-          background: "#fff",
+          fontFamily: '"Space Grotesk", system-ui, sans-serif',
+          background: "#0f0d0c",
           borderRadius: 32,
           overflow: "hidden",
           position: "relative",
           display: "flex",
           flexDirection: "column",
-          boxShadow: "0 1px 2px rgba(0,0,0,0.04), 0 20px 60px -20px rgba(0,0,0,0.08)",
+          boxShadow: "none",
           color: foreground,
         }}
       >
@@ -130,7 +130,9 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
         </div>
 
         {/* Ticker hero */}
-        <div style={{ padding: "48px 48px 0", position: "relative", zIndex: 1, textAlign: "center" }}>
+        <div
+          style={{ padding: "48px 48px 0", position: "relative", zIndex: 1, textAlign: "center" }}
+        >
           <div
             style={{
               fontSize: 14,
@@ -235,11 +237,7 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
           <DetailCell label="Trade Date" value={t.date || "—"} />
           <DetailCell label="Filing Date" value={t.filingDate || "—"} />
           {t.held > 0 && (
-            <DetailCell
-              label="Shares Held After"
-              value={formatCompactNumber(t.held)}
-              span
-            />
+            <DetailCell label="Shares Held After" value={formatCompactNumber(t.held)} span />
           )}
         </div>
 
@@ -248,7 +246,7 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
           style={{
             marginTop: "auto",
             padding: "22px 48px 32px",
-            borderTop: "1px solid rgba(0,0,0,0.06)",
+            borderTop: "1px solid rgba(255,255,255,0.10)",
             display: "flex",
             alignItems: "center",
             justifyContent: "space-between",
@@ -275,22 +273,14 @@ export const InsiderTransactionShareCard = forwardRef<HTMLDivElement, Props>(
   },
 );
 
-function DetailCell({
-  label,
-  value,
-  span,
-}: {
-  label: string;
-  value: string;
-  span?: boolean;
-}) {
+function DetailCell({ label, value, span }: { label: string; value: string; span?: boolean }) {
   return (
     <div
       style={{
         padding: "16px 18px",
         borderRadius: 14,
-        background: "#f8fafc",
-        border: "1px solid rgba(0,0,0,0.04)",
+        background: "rgba(255,255,255,0.05)",
+        border: "1px solid rgba(255,255,255,0.10)",
         gridColumn: span ? "1 / -1" : undefined,
       }}
     >
@@ -310,7 +300,7 @@ function DetailCell({
         style={{
           fontSize: 18,
           fontWeight: 700,
-          color: "#0f172a",
+          color: "#f7f4ef",
           lineHeight: 1.3,
           overflow: "hidden",
           textOverflow: "ellipsis",
