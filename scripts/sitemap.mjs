@@ -18,7 +18,7 @@
  * because they are served with `noindex, nofollow`.
  */
 import { execFileSync } from "node:child_process";
-import { existsSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync, statSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -99,12 +99,55 @@ function lastModified(paths) {
     }
     if (out > newest) newest = out;
   }
-  return newest || new Date().toISOString().slice(0, 10);
+  if (newest) return newest;
+  // No history for this path (new, uncommitted file): fall back to its mtime.
+  try {
+    return statSync(p).mtime.toISOString().slice(0, 10);
+  } catch {
+    return new Date().toISOString().slice(0, 10);
+  }
+}
+
+/**
+ * Whether git can answer "when did this path last change?" truthfully.
+ * A shallow clone (what Vercel builds from) only has the newest commit, so
+ * dates for older files would be wrong — never trust them, never let them
+ * break a build.
+ */
+function gitHistoryIsUsable() {
+  try {
+    execFileSync("git", ["rev-parse", "--git-dir"], { cwd: ROOT, stdio: "ignore" });
+  } catch {
+    return false;
+  }
+  try {
+    return (
+      execFileSync("git", ["rev-parse", "--is-shallow-repository"], {
+        cwd: ROOT,
+        encoding: "utf8",
+      }).trim() !== "true"
+    );
+  } catch {
+    return false;
+  }
+}
+
+/** lastmod values already in the committed sitemap, keyed by loc. */
+function committedLastmods() {
+  const map = new Map();
+  if (!existsSync(SITEMAP_PATH)) return map;
+  const xml = readFileSync(SITEMAP_PATH, "utf8");
+  for (const m of xml.matchAll(/<loc>([^<]+)<\/loc>\s*<lastmod>([^<]+)<\/lastmod>/gu)) {
+    map.set(m[1].trim(), m[2].trim());
+  }
+  return map;
 }
 
 function collect() {
   const routesDir = join(ROOT, "src", "routes");
   const archived = archivedSlugs();
+  const usable = gitHistoryIsUsable();
+  const committed = committedLastmods();
   const urls = [];
 
   for (const file of readdirSync(routesDir)) {
@@ -118,11 +161,11 @@ function collect() {
     }
     const routePath = join("src", "routes", file);
     const routeAbs = join(ROOT, routePath);
-    const urls2 = {
-      loc: `${SITE}${routeUrl(file)}`,
-      lastmod: lastModified([routeAbs, ...pageComponents(routeAbs)]),
-    };
-    urls.push(urls2);
+    const loc = `${SITE}${routeUrl(file)}`;
+    const lastmod = usable
+      ? lastModified([routeAbs, ...pageComponents(routeAbs)])
+      : (committed.get(loc) ?? new Date().toISOString().slice(0, 10));
+    urls.push({ loc, lastmod });
   }
 
   // Homepage first, then alphabetical, so the file is byte-stable across runs.
@@ -131,7 +174,7 @@ function collect() {
     if (b.loc === `${SITE}/`) return 1;
     return a.loc.localeCompare(b.loc);
   });
-  return urls;
+  return { urls, usable };
 }
 
 function render(urls) {
@@ -169,12 +212,18 @@ async function verify(urls) {
 const mode = process.argv[2] ?? "";
 
 if (mode === "--verify") {
-  const ok = await verify(collect());
+  const ok = await verify(collect().urls);
   process.exit(ok ? 0 : 1);
 } else {
-  const urls = collect();
+  const { urls, usable } = collect();
   const xml = render(urls);
   if (mode === "--check") {
+    if (!usable) {
+      console.log(
+        "public/sitemap.xml not checked: this checkout has no usable git history (shallow clone). Run `npm run sitemap` on a full checkout.",
+      );
+      process.exit(0);
+    }
     const current = existsSync(SITEMAP_PATH) ? readFileSync(SITEMAP_PATH, "utf8") : "";
     if (current === xml) {
       console.log(`public/sitemap.xml is up to date (${urls.length} URLs).`);
