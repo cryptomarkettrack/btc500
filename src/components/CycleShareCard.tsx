@@ -95,7 +95,7 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
           position: "absolute",
           right: -60,
           bottom: -60,
-          opacity: 0.05,
+          opacity: 0.03,
         }}
       >
         <BtcLogo size={440} color="#ffffff" />

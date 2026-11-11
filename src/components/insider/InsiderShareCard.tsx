@@ -116,7 +116,7 @@ export const InsiderShareCard = forwardRef<HTMLDivElement, Props>(function Insid
           position: "absolute",
           right: -60,
           bottom: -60,
-          opacity: 0.05,
+          opacity: 0.03,
         }}
       >
         <BtcLogo size={420} color="#000" />
