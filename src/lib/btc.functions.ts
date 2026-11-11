@@ -194,7 +194,8 @@ async function fetchObservedInterval(): Promise<BlockIntervalEstimate> {
     if (later && later.height > earlier.height) {
       return estimateBlockInterval(earlier, later);
     }
-  } catch {
+  } catch (err) {
+    console.warn("[halving] mempool interval sample failed:", err);
     // Fall through to the blockstream tip.
   }
 
@@ -204,7 +205,8 @@ async function fetchObservedInterval(): Promise<BlockIntervalEstimate> {
     if (later && later.height > earlier.height) {
       return estimateBlockInterval(earlier, later);
     }
-  } catch {
+  } catch (err) {
+    console.warn("[halving] blockstream interval sample failed:", err);
     // No observed sample.
   }
 

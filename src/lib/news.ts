@@ -22,29 +22,43 @@ const RSS_FEEDS = [
   "https://cointelegraph.com/rss/tag/ethereum",
 ];
 
-function extractImageUrl(item: Record<string, unknown>): string | null {
+/** Shape of an RSS item we actually read, incl. namespaced extensions. */
+interface RssItemRead {
+  title?: string | null;
+  link?: string | null;
+  pubDate?: string | null;
+  isoDate?: string | null;
+  contentSnippet?: string | null;
+  content?: string | null;
+  summary?: string | null;
+  enclosure?: { url?: string; type?: string };
+  "media:content"?: { $?: { url?: string }; url?: string };
+  "media:thumbnail"?: { $?: { url?: string }; url?: string };
+  "content:encoded"?: string | null;
+}
+
+function extractImageUrl(item: RssItemRead): string | null {
   // Try media:content or media:thumbnail
-  const mediaContent = item["media:content"] as { $?: { url?: string }; url?: string } | undefined;
+  const mediaContent = item["media:content"];
   if (mediaContent) {
     const url = mediaContent.$?.url || mediaContent.url;
     if (url) return url;
   }
 
-  const mediaThumbnail = item["media:thumbnail"] as
-    { $?: { url?: string }; url?: string } | undefined;
+  const mediaThumbnail = item["media:thumbnail"];
   if (mediaThumbnail) {
     const url = mediaThumbnail.$?.url || mediaThumbnail.url;
     if (url) return url;
   }
 
   // Try enclosure
-  const enclosure = item.enclosure as { url?: string; type?: string } | undefined;
+  const enclosure = item.enclosure;
   if (enclosure?.url && enclosure.type?.startsWith("image")) {
     return enclosure.url;
   }
 
   // Try to extract from content:encoded or content snippet
-  const content = (item["content:encoded"] as string) || (item.content as string) || "";
+  const content = item["content:encoded"] ?? item.content ?? "";
   const imgMatch = content.match(/<img[^>]+src="([^"]+)"/);
   if (imgMatch) return imgMatch[1];
 
@@ -109,7 +123,7 @@ async function fetchFeed(url: string): Promise<NewsItem[]> {
     .slice(0, 30)
     .map((item) => {
       const description = stripHtml(item.contentSnippet || item.content || item.summary || "");
-      const imageUrl = extractImageUrl(item as unknown as Record<string, unknown>);
+      const imageUrl = extractImageUrl(item as RssItemRead);
 
       return {
         title: item.title || "Untitled",
