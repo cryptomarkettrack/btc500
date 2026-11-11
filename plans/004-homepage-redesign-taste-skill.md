@@ -90,6 +90,27 @@ The `bg-foreground` / `text-background` white pill that survived on the simulato
 insider dashboard was replaced with the primary button, and the share buttons on every
 page now use the one outline style.
 
+## Follow-up 2 — the font that flashed (2026-11-11, same day)
+
+The owner reported a font jump on load: one font, then a switch for a moment, then back. Two
+real defects, both found by measuring the page in a real browser instead of guessing:
+
+- **`font-display: swap` on all three faces.** With `swap` the browser paints the fallback
+  and swaps the real face in mid-read — the visible jump. All three faces now use
+  `font-display: optional`: the browser paints the fallback and *keeps* it for that page
+  load if the face is not ready in time, so a swap can never happen. Because the fonts are
+  preloaded with `fetchPriority: "high"` and the display face (22 KB) is smaller than the
+  render-blocking CSS, the real face is normally ready before the first paint and is used
+  from the start. `optional` also does not delay first paint, so LCP is untouched.
+- **The fallback face only covered weight 400.** `Space Grotesk Fallback` had no
+  `font-weight` descriptor, so it defaulted to 400 and the browser skipped it for the
+  semibold headline and fell through to the generic sans — the headline changed family
+  *and* weight when Space Grotesk arrived. The face now declares `font-weight: 100 900`
+  and also resolves `local("Liberation Sans")` for Linux and Android.
+
+Measured after the change, on a throttled connection where the font lands long after the
+first paint: the headline renders identically before and after the font arrives — no swap.
+
 ## What was deliberately not changed
 
 - The H1 text, the lead paragraph, the `id`s the speakable schema points at

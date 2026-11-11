@@ -193,6 +193,13 @@ the freeze for this one change; it is a skin, not a copy or structure rewrite.
   referral number moved because of this and none was measured. What it can do
   is make the one URL Google already serves worth staying on, and make the
   share card and the embed kit look like the brand they claim to be.
+- **Font flash, fixed.** The owner saw the page jump to another font on load. Measured it
+  in a browser instead of guessing: `font-display: swap` was painting the fallback and
+  swapping the real face in mid-read, and the metric-matched fallback face only covered
+  weight 400, so the semibold headline fell through to the generic sans and changed family
+  *and* weight. All three faces now use `font-display: optional` (no swap can happen; the
+  preloaded face is normally ready before the first paint) and the fallback declares
+  `font-weight: 100 900`. No LCP cost: `optional` does not delay first paint.
 - **Follow-up, same day:** the owner pointed at two leftovers — the `Copy cycle card`
   button and the embed kit. Both were still on the old design. Fixed: all eight share
   cards re-cut on the dark ground with Bitcoin orange and the site's type pair, the

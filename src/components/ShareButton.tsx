@@ -92,6 +92,19 @@ function inlineComputedStyles(root: HTMLElement): () => void {
   };
 }
 
+/**
+ * The card's own ground, used as the PNG canvas background. The share cards are
+ * dark (the site's ground); capturing onto white left a white/transparent
+ * border around a dark card, which is what the exported PNG used to look like.
+ */
+function captureBackground(el: HTMLElement): string {
+  const computed = getComputedStyle(el).backgroundColor;
+  if (computed && computed !== "rgba(0, 0, 0, 0)" && computed !== "transparent") {
+    return computed;
+  }
+  return "#0f0d0c";
+}
+
 export function ShareButton({ captureRef }: Props) {
   const [busy, setBusy] = useState(false);
   const [copied, setCopied] = useState(false);
@@ -110,7 +123,7 @@ export function ShareButton({ captureRef }: Props) {
       const canvas = await toCanvas(el, {
         pixelRatio: 2,
         cacheBust: true,
-        backgroundColor: "#fff",
+        backgroundColor: captureBackground(el),
       });
 
       const dataUrl = canvas.toDataURL("image/png");
@@ -150,7 +163,7 @@ export function ShareButton({ captureRef }: Props) {
       canvas = await toCanvas(el, {
         pixelRatio: 2,
         cacheBust: true,
-        backgroundColor: "#fff",
+        backgroundColor: captureBackground(el),
       });
 
       if (!canvas) {

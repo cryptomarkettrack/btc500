@@ -20,7 +20,16 @@
   font-family: "Space Grotesk";
   font-style: normal;
   font-weight: 400 700;
-  font-display: swap;
+  /*
+   * `optional`, not `swap`: the browser gives the face a short block period
+   * and then paints the metric-matched fallback — permanently for that page
+   * load. The font is preloaded with high priority, so it is normally ready
+   * before the first paint and the real face is used from the start; if it is
+   * not, the page keeps the fallback instead of swapping fonts mid-read.
+   * `swap` caused a visible jump: the site painted in Arial, then swapped to
+   * Space Grotesk, and on a warm CSS / cold font cache that read as a flicker.
+   */
+  font-display: optional;
   src: url("./assets/fonts/space-grotesk-latin.woff2") format("woff2");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
@@ -34,10 +43,19 @@
  * so swapping to it after first paint reflowed headings and date cards and
  * pushed mobile CLS to 0.11. These overrides make the Arial fallback occupy the
  * same width and line box, so the swap is visually quiet.
+ *
+ * `font-weight: 100 900` matters: the face used to default to 400 only, so the
+ * browser skipped it for semibold headings and fell through to the generic
+ * sans — the headline then changed weight AND family when Space Grotesk
+ * arrived. This face now answers every weight the variable face covers.
  */
 @font-face {
   font-family: "Space Grotesk Fallback";
-  src: local("Arial");
+  /* Arial first, then its metric-compatible clone on Linux/Android, so the
+     fallback face exists everywhere instead of falling through to the generic
+     sans and changing the letterforms when the real face arrives. */
+  src: local("Arial"), local("Liberation Sans");
+  font-weight: 100 900;
   size-adjust: 108.8%;
   ascent-override: 98.4%;
   descent-override: 29.2%;
@@ -48,7 +66,7 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 500;
-  font-display: swap;
+  font-display: optional;
   src: url("./assets/fonts/ibm-plex-mono-500-latin.woff2") format("woff2");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
@@ -59,7 +77,7 @@
   font-family: "IBM Plex Mono";
   font-style: normal;
   font-weight: 600;
-  font-display: swap;
+  font-display: optional;
   src: url("./assets/fonts/ibm-plex-mono-600-latin.woff2") format("woff2");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,

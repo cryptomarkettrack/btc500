@@ -272,6 +272,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
+        // High priority: the display face is the brand. With
+        // font-display: optional the browser paints the fallback forever if
+        // the face is not ready in time, so the font has to win the race.
+        fetchPriority: "high",
       },
       // Both mono weights are above the fold: 500 is the body/data default,
       // 600 is used by the hero's SVG labels. Preloading only 600 left the 500
@@ -282,6 +286,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
+        fetchPriority: "high",
       },
       {
         rel: "preload",
@@ -289,6 +294,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         as: "font",
         type: "font/woff2",
         crossOrigin: "anonymous",
+        fetchPriority: "high",
       },
       { rel: "icon", href: "/favicon.ico", sizes: "any" },
       { rel: "icon", href: "/favicon.svg", type: "image/svg+xml" },

@@ -10,12 +10,12 @@ interface Props {
 }
 
 /**
- * Fixed-size social card for the cycle.
+ * The cycle card — the site's own command centre, as one image.
  *
- * Art direction matches the site (2026-11): near-black warm ground, Bitcoin
- * orange as the only saturated colour, Space Grotesk for the display and IBM
- * Plex Mono for the data. Inline colours only — html-to-image cannot read
- * custom properties from a stylesheet.
+ * Every value here comes from the site's palette (the 2026-11 dark theme) and
+ * its type pair, so a card posted on X looks like a frame of the site rather
+ * than a different product. Inline colours only: html-to-image cannot read a
+ * custom property from a stylesheet.
  */
 export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleShareCard(
   { cycle, price },
@@ -24,22 +24,22 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const buy = cycle.phase === "wait-buy";
   const sell = cycle.phase === "wait-sell";
 
-  // Brand tokens — the dark counterparts of the site's oklch palette
-  const primaryColor = "#f7931a";
-  const successColor = "#4ade80";
-  const infoColor = "#7cc4ff";
-  const foreground = "#f7f4ef";
+  // The site palette, as hex for the canvas renderer.
+  const ground = "#0f0d0c";
+  const panel = "#171513";
+  const ink = "#f7f4ef";
   const muted = "#9c968c";
-  const border = "rgba(255,255,255,0.14)";
-  const mutedBg = "rgba(255,255,255,0.05)";
-  const cardBg = "#0f0d0c";
+  const hairline = "rgba(255,255,255,0.12)";
+  const orange = "#f7931a";
+  const green = "#4ade80";
+  const blue = "#7cc4ff";
 
-  const primarySoft = "rgba(247,147,26,0.16)";
-  const successSoft = "rgba(74,222,128,0.14)";
-  const infoSoft = "rgba(124,196,255,0.14)";
-
-  const phaseAccent = buy ? primaryColor : sell ? successColor : infoColor;
-  const phaseSoft = buy ? primarySoft : sell ? successSoft : infoSoft;
+  const accent = buy ? orange : sell ? green : blue;
+  const accentSoft = buy
+    ? "rgba(247,147,26,0.16)"
+    : sell
+      ? "rgba(74,222,128,0.14)"
+      : "rgba(124,196,255,0.14)";
 
   const days = buy ? cycle.daysUntilBuy : sell ? cycle.daysUntilSell : 0;
   const totalDays = 500;
@@ -47,12 +47,8 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
   const elapsed = Math.max(0, Math.round(progress * totalDays));
   const progressPct = Math.max(0, Math.min(100, Math.round(progress * 100)));
 
-  const daysLabel = buy
-    ? "Days until buy window"
-    : sell
-      ? "Days until sell window"
-      : "Cycle complete";
-  const statusLabel = buy ? "Waiting to buy" : sell ? "Waiting to sell" : "Cycle complete";
+  const daysLabel = buy ? "days to buy" : sell ? "days to sell" : "cycle complete";
+  const statusLabel = buy ? "waiting to buy" : sell ? "waiting to sell" : "cycle complete";
   const targetDate = buy ? cycle.buyDate : sell ? cycle.sellDate : cycle.nextHalving;
   const targetLabel = buy ? "Buy date" : sell ? "Sell date" : "Next cycle";
   const ruleLine = buy
@@ -68,203 +64,109 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
         width: 1080,
         height: 1350,
         fontFamily: '"Space Grotesk", system-ui, sans-serif',
-        background: cardBg,
-        borderRadius: 28,
+        background: ground,
         overflow: "hidden",
         position: "relative",
         display: "flex",
         flexDirection: "column",
-        border: `1px solid ${border}`,
-        color: foreground,
+        color: ink,
       }}
     >
-      {/* the one ground: a warm glow behind the chart */}
+      {/* the site's ground: one warm glow over near-black */}
       <div
         style={{
           position: "absolute",
           inset: 0,
           background:
-            "radial-gradient(70% 45% at 72% 26%, rgba(247,147,26,0.20) 0%, rgba(247,147,26,0) 68%)",
+            "radial-gradient(62% 38% at 78% 6%, rgba(247,147,26,0.22) 0%, rgba(247,147,26,0) 70%)",
         }}
       />
 
-      {/* Watermark */}
+      {/* ---- window bar, as on the site's command centre ---- */}
       <div
         style={{
-          pointerEvents: "none",
-          position: "absolute",
-          right: -60,
-          bottom: -60,
-          opacity: 0.03,
-        }}
-      >
-        <BtcLogo size={440} color="#ffffff" />
-      </div>
-
-      {/* Header — brand + status pill */}
-      <div style={{ padding: "32px 48px 0 48px", position: "relative", zIndex: 1 }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                background: primarySoft,
-                border: `1px solid ${primaryColor}55`,
-              }}
-            >
-              <BtcLogo size={26} color={primaryColor} />
-            </div>
-            <div>
-              <div
-                style={{
-                  fontSize: 28,
-                  fontWeight: 700,
-                  letterSpacing: "-0.03em",
-                  color: foreground,
-                }}
-              >
-                BTC <span style={{ color: primaryColor }}>500</span>
-              </div>
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  letterSpacing: "0.16em",
-                  textTransform: "uppercase",
-                  color: muted,
-                  marginTop: 2,
-                }}
-              >
-                Halving cycle strategy
-              </div>
-            </div>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: 10,
-              padding: "10px 18px",
-              borderRadius: 100,
-              background: phaseSoft,
-              border: `1px solid ${phaseAccent}66`,
-            }}
-          >
-            <span
-              style={{
-                width: 10,
-                height: 10,
-                borderRadius: "50%",
-                background: phaseAccent,
-                // Solid ring only — soft glow shadows smear under html-to-image
-                boxShadow: `0 0 0 4px ${phaseSoft}`,
-              }}
-            />
-            <span
-              style={{
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: 13,
-                fontWeight: 600,
-                textTransform: "uppercase",
-                letterSpacing: "0.14em",
-                color: phaseAccent,
-              }}
-            >
-              {statusLabel}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main focus: chart + days left (stacked, centered) */}
-      <div
-        style={{
-          flex: 1,
-          display: "flex",
-          flexDirection: "column",
-          justifyContent: "center",
-          alignItems: "center",
-          padding: "8px 40px 0 40px",
           position: "relative",
           zIndex: 1,
-          gap: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          padding: "26px 44px",
+          borderBottom: `1px solid ${hairline}`,
         }}
       >
-        {/* Strategy chart */}
-        <div
-          style={{
-            width: "100%",
-            fontFamily: '"Space Grotesk", system-ui, sans-serif',
-            ["--background" as string]: cardBg,
-            ["--foreground" as string]: foreground,
-            ["--primary" as string]: primaryColor,
-            ["--primary-soft" as string]: primarySoft,
-            ["--muted" as string]: mutedBg,
-            ["--muted-foreground" as string]: muted,
-            ["--border" as string]: border,
-            ["--chart-ink" as string]: foreground,
-          }}
-        >
-          <Btc500Hero price={price} daysLeft={Math.max(0, cycle.daysUntilBuy)} compact />
-        </div>
-
-        {/* Giant centered days-left — co-primary focus under chart */}
-        <div
-          style={{
-            width: "100%",
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            textAlign: "center",
-            padding: "12px 0 8px",
-          }}
-        >
-          <div
+        <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+          <BtcLogo size={30} color={orange} />
+          <span
             style={{
               fontFamily: '"IBM Plex Mono", monospace',
               fontSize: 15,
               fontWeight: 600,
-              letterSpacing: "0.22em",
+              letterSpacing: "0.18em",
               textTransform: "uppercase",
-              color: phaseAccent,
+              color: ink,
+            }}
+          >
+            BTC<span style={{ color: orange }}>500</span>
+          </span>
+        </div>
+        <span
+          style={{
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: 13,
+            fontWeight: 600,
+            letterSpacing: "0.18em",
+            textTransform: "uppercase",
+            color: accent,
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+          }}
+        >
+          <span style={{ width: 9, height: 9, borderRadius: 999, background: accent }} />
+          {statusLabel}
+        </span>
+      </div>
+
+      {/* ---- the number ---- */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          padding: "52px 44px 0 44px",
+          display: "flex",
+          alignItems: "flex-end",
+          justifyContent: "space-between",
+          gap: 24,
+        }}
+      >
+        <div>
+          <div
+            style={{
+              fontFamily: '"IBM Plex Mono", monospace',
+              fontSize: 14,
+              fontWeight: 500,
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: muted,
             }}
           >
             {daysLabel}
           </div>
           <div
             style={{
-              fontSize: 15,
-              fontWeight: 500,
-              color: muted,
-              marginTop: 6,
-            }}
-          >
-            {ruleLine}
-          </div>
-
-          <div
-            style={{
               display: "flex",
               alignItems: "baseline",
-              justifyContent: "center",
-              gap: 16,
-              marginTop: 4,
+              gap: 18,
+              marginTop: 10,
             }}
           >
             <span
               style={{
-                fontSize: 180,
+                fontSize: 168,
                 fontWeight: 700,
-                lineHeight: 0.85,
-                letterSpacing: "-0.07em",
-                color: phaseAccent,
+                lineHeight: 0.86,
+                letterSpacing: "-0.06em",
+                color: accent,
               }}
             >
               {days}
@@ -272,220 +174,193 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             <span
               style={{
                 fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: 38,
+                fontSize: 34,
                 fontWeight: 500,
-                color: foreground,
-                paddingBottom: 18,
+                color: ink,
                 letterSpacing: "-0.02em",
               }}
             >
               days
             </span>
           </div>
+          <div style={{ fontSize: 19, color: muted, marginTop: 14 }}>{ruleLine}</div>
+        </div>
 
-          {/* Compact meta under the number */}
+        <div style={{ textAlign: "right" }}>
           <div
             style={{
-              marginTop: 18,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 20,
-              flexWrap: "wrap",
+              fontFamily: '"IBM Plex Mono", monospace',
+              fontSize: 12,
+              fontWeight: 500,
+              letterSpacing: "0.16em",
+              textTransform: "uppercase",
+              color: muted,
             }}
           >
-            <div style={{ textAlign: "center" }}>
-              <div
-                style={{
-                  fontFamily: '"IBM Plex Mono", monospace',
-                  fontSize: 12,
-                  fontWeight: 500,
-                  letterSpacing: "0.14em",
-                  textTransform: "uppercase",
-                  color: muted,
-                }}
-              >
-                {targetLabel}
-              </div>
-              <div
-                style={{
-                  fontSize: 22,
-                  fontWeight: 700,
-                  color: foreground,
-                  marginTop: 4,
-                  letterSpacing: "-0.03em",
-                }}
-              >
-                {formatDate(targetDate)}
-              </div>
-            </div>
-            <div
-              style={{
-                width: 1,
-                height: 36,
-                background: border,
-              }}
-            />
-            <div
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 8,
-                padding: "8px 16px",
-                borderRadius: 100,
-                background: phaseSoft,
-                border: `1px solid ${phaseAccent}55`,
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: 14,
-                fontWeight: 600,
-                color: phaseAccent,
-              }}
-            >
-              {progressPct}% of window
-            </div>
+            {targetLabel}
           </div>
-
-          {/* Progress track — full width, centered under number */}
-          <div style={{ width: "100%", maxWidth: 720, marginTop: 22 }}>
-            <div
-              style={{
-                height: 12,
-                width: "100%",
-                overflow: "hidden",
-                borderRadius: 999,
-                background: mutedBg,
-                border: `1px solid ${border}`,
-              }}
-            >
-              <div
-                style={{
-                  height: "100%",
-                  borderRadius: 999,
-                  width: `${progressPct}%`,
-                  // Flat fill — glow box-shadows blur under html-to-image capture
-                  background: phaseAccent,
-                }}
-              />
-            </div>
-            <div
-              style={{
-                marginTop: 10,
-                display: "flex",
-                justifyContent: "space-between",
-                fontFamily: '"IBM Plex Mono", monospace',
-                fontSize: 13,
-                fontWeight: 500,
-                color: muted,
-              }}
-            >
-              <span>
-                <span style={{ color: foreground, fontWeight: 600 }}>{elapsed}</span> days elapsed
-              </span>
-              <span>
-                <span style={{ color: foreground, fontWeight: 600 }}>{totalDays}</span> day window
-              </span>
-            </div>
+          <div
+            style={{
+              fontSize: 32,
+              fontWeight: 700,
+              letterSpacing: "-0.03em",
+              marginTop: 6,
+              color: accent,
+            }}
+          >
+            {formatDate(targetDate)}
           </div>
         </div>
       </div>
 
-      {/* Key facts strip */}
+      {/* ---- the cycle map ---- */}
       <div
         style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          gap: 14,
-          padding: "8px 40px 0 40px",
           position: "relative",
           zIndex: 1,
+          padding: "34px 20px 0 20px",
+          fontFamily: '"Space Grotesk", system-ui, sans-serif',
+          ["--background" as string]: ground,
+          ["--foreground" as string]: ink,
+          ["--primary" as string]: orange,
+          ["--primary-soft" as string]: accentSoft,
+          ["--muted" as string]: "rgba(255,255,255,0.05)",
+          ["--muted-foreground" as string]: muted,
+          ["--border" as string]: hairline,
+          ["--chart-ink" as string]: ink,
         }}
       >
-        <FactTile
-          label="BTC price"
-          value={price != null ? formatUsd(price) : "—"}
-          accent={primaryColor}
-          border={border}
-          muted={muted}
-          foreground={foreground}
-        />
-        <FactTile
+        <Btc500Hero price={price} daysLeft={Math.max(0, cycle.daysUntilBuy)} compact />
+      </div>
+
+      {/* ---- progress ---- */}
+      <div style={{ position: "relative", zIndex: 1, padding: "18px 44px 0 44px" }}>
+        <div
+          style={{
+            height: 10,
+            width: "100%",
+            overflow: "hidden",
+            borderRadius: 999,
+            background: "rgba(255,255,255,0.08)",
+          }}
+        >
+          <div
+            style={{
+              height: "100%",
+              borderRadius: 999,
+              width: `${progressPct}%`,
+              background: accent,
+            }}
+          />
+        </div>
+        <div
+          style={{
+            marginTop: 12,
+            display: "flex",
+            justifyContent: "space-between",
+            fontFamily: '"IBM Plex Mono", monospace',
+            fontSize: 14,
+            color: muted,
+          }}
+        >
+          <span>
+            <span style={{ color: ink, fontWeight: 600 }}>{elapsed}</span> days elapsed
+          </span>
+          <span>
+            <span style={{ color: ink, fontWeight: 600 }}>{totalDays}</span> day window
+          </span>
+        </div>
+      </div>
+
+      {/* ---- the three dated facts ---- */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 1,
+          marginTop: "auto",
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          borderTop: `1px solid ${hairline}`,
+        }}
+      >
+        <Fact
           label="Next halving"
           value={formatDate(cycle.nextHalving)}
-          accent={infoColor}
-          border={border}
+          ink={ink}
           muted={muted}
-          foreground={foreground}
+          hairline={hairline}
         />
-        <FactTile
-          label={buy ? "Sell date" : "Buy date"}
-          value={formatDate(buy ? cycle.sellDate : cycle.buyDate)}
-          accent={sell || buy ? successColor : infoColor}
-          border={border}
+        <Fact
+          label="Buy date"
+          value={formatDate(cycle.buyDate)}
+          ink={ink}
           muted={muted}
-          foreground={foreground}
+          hairline={hairline}
+          accent={orange}
+        />
+        <Fact
+          label="Sell date"
+          value={formatDate(cycle.sellDate)}
+          ink={ink}
+          muted={muted}
+          hairline={hairline}
+          accent={green}
         />
       </div>
 
-      {/* Footer — rule + site */}
+      {/* ---- footer ---- */}
       <div
         style={{
-          marginTop: 16,
-          padding: "18px 48px 28px 48px",
-          borderTop: `1px solid ${border}`,
+          position: "relative",
+          zIndex: 1,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          position: "relative",
-          zIndex: 1,
+          padding: "24px 44px 28px 44px",
+          borderTop: `1px solid ${hairline}`,
+          background: panel,
         }}
       >
-        <div style={{ fontSize: 16, color: muted, fontWeight: 500 }}>
-          Buy <span style={{ color: primaryColor, fontWeight: 700 }}>500</span> before · Sell{" "}
-          <span style={{ color: successColor, fontWeight: 700 }}>500</span> after
-        </div>
-        <div
+        <span style={{ fontSize: 17, color: muted }}>
+          Buy <span style={{ color: orange, fontWeight: 700 }}>500</span> before · Sell{" "}
+          <span style={{ color: green, fontWeight: 700 }}>500</span> after
+        </span>
+        <span
           style={{
             fontFamily: '"IBM Plex Mono", monospace',
             fontSize: 16,
             fontWeight: 600,
-            color: primaryColor,
+            color: orange,
           }}
         >
           btc500.net
-        </div>
+        </span>
       </div>
     </div>
   );
 });
 
-function FactTile({
+function Fact({
   label,
   value,
-  accent,
-  border,
+  ink,
   muted,
-  foreground,
+  hairline,
+  accent,
 }: {
   label: string;
   value: string;
-  accent: string;
-  border: string;
+  ink: string;
   muted: string;
-  foreground: string;
+  hairline: string;
+  accent?: string;
 }) {
   return (
-    <div
-      style={{
-        borderRadius: 16,
-        border: `1px solid ${border}`,
-        background: "rgba(255,255,255,0.04)",
-        padding: "14px 18px",
-      }}
-    >
+    <div style={{ padding: "24px 28px", borderRight: `1px solid ${hairline}` }}>
       <div
         style={{
           fontFamily: '"IBM Plex Mono", monospace',
-          fontSize: 11,
+          fontSize: 12,
           fontWeight: 500,
           letterSpacing: "0.16em",
           textTransform: "uppercase",
@@ -496,25 +371,15 @@ function FactTile({
       </div>
       <div
         style={{
-          fontSize: 22,
+          fontSize: 24,
           fontWeight: 700,
-          color: foreground,
-          marginTop: 6,
           letterSpacing: "-0.03em",
-          lineHeight: 1.1,
+          marginTop: 8,
+          color: accent ?? ink,
         }}
       >
         {value}
       </div>
-      <div
-        style={{
-          marginTop: 8,
-          height: 3,
-          width: 32,
-          borderRadius: 999,
-          background: accent,
-        }}
-      />
     </div>
   );
 }
