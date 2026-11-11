@@ -1,10 +1,22 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, readdirSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import { ARCHIVED_ARTICLE_SLUGS, isArchivedArticle } from "./article-archive.ts";
 
 const read = (path: string) => readFileSync(new URL(path, import.meta.url), "utf8");
+
+/** Every source file under a directory, relative to the repository root. */
+function sourceFiles(dir: string): string[] {
+  const out: string[] = [];
+  for (const entry of readdirSync(new URL(`../../${dir}`, import.meta.url), {
+    recursive: true,
+  })) {
+    if (!String(entry).endsWith(".ts") && !String(entry).endsWith(".tsx")) continue;
+    out.push(`${dir}/${entry}`);
+  }
+  return out;
+}
 
 const sitemap = read("../../public/sitemap.xml");
 const vercel = JSON.parse(read("../../vercel.json")) as {
@@ -64,6 +76,73 @@ describe("archived articles", () => {
         sitemap.includes(`/articles/${slug}<`),
         `live article missing from sitemap: ${slug}`,
       );
+    }
+  });
+
+  it("only offers indexable articles to internal links", () => {
+    // Archived articles are `noindex, nofollow`. A link to one passes no
+    // signal, so the homepage and the related-reading block must draw from
+    // the indexable set instead of the newest-articles list.
+    const homepage = read("../components/home/HomePage.tsx");
+    const endMatter = read("../components/ArticleEndMatter.tsx");
+
+    assert.ok(
+      homepage.includes("getIndexableArticles()"),
+      "homepage latest articles must use getIndexableArticles()",
+    );
+    assert.ok(
+      endMatter.includes("getIndexableArticles()"),
+      "related reading must use getIndexableArticles()",
+    );
+    assert.ok(
+      !homepage.includes("getArticlesSorted()"),
+      "homepage must not link the full article list",
+    );
+    assert.ok(
+      !endMatter.includes("getArticlesSorted()"),
+      "related reading must not link the full article list",
+    );
+  });
+
+  it("keeps the /articles list structured data on the indexable articles", () => {
+    const route = read("../routes/articles.tsx");
+    const listSchema = route.slice(
+      route.indexOf("articlesListSchema"),
+      route.indexOf("export const Route"),
+    );
+    assert.ok(
+      listSchema.includes("isArchivedArticle"),
+      "ItemList schema must skip archived articles",
+    );
+  });
+
+  it("never links an archived article from an indexable page", () => {
+    // An archived article is `noindex, nofollow`, so a link to it passes no
+    // internal-link signal. Only an archived article may link to another
+    // archived article; every indexable page has to link to indexable pages.
+    const archivedComponents = new Set<string>();
+    for (const slug of ARCHIVED_ARTICLE_SLUGS) {
+      const routePath = `src/routes/articles.${slug}.tsx`;
+      archivedComponents.add(routePath);
+      const route = read(`../routes/articles.${slug}.tsx`);
+      for (const m of route.matchAll(/from "@\/([^"]+)"/gu)) {
+        archivedComponents.add(`src/${m[1]}`);
+        archivedComponents.add(`src/${m[1]}.tsx`);
+      }
+    }
+
+    for (const file of sourceFiles("src")) {
+      if (archivedComponents.has(file)) continue;
+      // The generated route tree registers every route, including archived ones.
+      if (file.endsWith(".gen.ts")) continue;
+      const contents = read(`../../${file}`);
+      for (const slug of ARCHIVED_ARTICLE_SLUGS) {
+        // A real link target: `to="/articles/<slug>"`, `href='...'`,
+        // `to={`/articles/<slug>`}`. Bare slug strings (metadata, OG image
+        // paths) are not links.
+        const link = new RegExp(`["'\`]/articles/${slug}["'\`]`);
+        assert.ok(!link.test(contents), `${file} links to the archived (noindex) article: ${slug}`);
+      }
     }
   });
 });

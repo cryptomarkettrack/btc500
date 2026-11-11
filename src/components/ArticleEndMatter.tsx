@@ -1,10 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Calculator } from "lucide-react";
-import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
+import { getIndexableArticles, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
 
 export function ArticleEndMatter({ slug }: { slug: string }) {
-  const related = getArticlesSorted()
+  // Only indexable articles: a `noindex` page carries no internal-link signal,
+  // so pointing related reading at one wastes the only indexed page's equity.
+  const related = getIndexableArticles()
     .filter((article) => article.slug !== slug)
     .slice(0, 3);
 
@@ -17,8 +19,8 @@ export function ArticleEndMatter({ slug }: { slug: string }) {
           <Link to="/bitcoin-500-day-cycle" className="font-semibold text-primary hover:underline">
             500-day cycle
           </Link>{" "}
-          is the methodology. The simulator backtests that window across every completed
-          halving using the same historical prices.
+          is the methodology. The simulator backtests that window across every completed halving
+          using the same historical prices.
         </p>
         <Link
           to="/simulator"

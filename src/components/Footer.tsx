@@ -160,10 +160,10 @@ export function Footer() {
               </li>
               <li>
                 <Link
-                  to="/articles/bitcoin-week-ahead"
+                  to="/articles/why-btc500-exists"
                   className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
-                  Weekly Outlook
+                  Why BTC500 Exists
                 </Link>
               </li>
               <li>

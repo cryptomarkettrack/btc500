@@ -24,7 +24,7 @@ import { RuleDiagram } from "@/components/home/RuleDiagram";
 import { ClosingStatement } from "@/components/home/ClosingStatement";
 import { lazy, Suspense, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
+import { getIndexableArticles, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
 import { HOME_LAST_REVIEWED } from "@/lib/site";
 import { halvingQuery, btcPriceQuery, simulatorPreviewQuery } from "@/lib/queries";
@@ -73,7 +73,11 @@ export function HomePage() {
   const buyDays = Math.max(0, cycle.daysUntilBuy);
   const sellDays = cycle.daysUntilSell;
 
-  const latestArticles = getArticlesSorted().slice(0, 3);
+  // Archived articles are served with `noindex, nofollow`, so a link to one
+  // carries no signal and tells Google the page behind it should not be
+  // indexed. The homepage is the only indexed page on this site, so its
+  // article links have to point at pages that can actually rank.
+  const latestArticles = getIndexableArticles().slice(0, 3);
 
   const completedCycles =
     simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];

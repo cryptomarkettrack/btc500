@@ -1124,10 +1124,10 @@ function FinalCta() {
             Open the simulator
           </Link>
           <Link
-            to="/articles/bitcoin-week-ahead"
+            to="/articles/why-btc500-exists"
             className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold transition-all hover:border-primary/40 hover:text-primary"
           >
-            This week&apos;s outlook
+            Why the rule works
           </Link>
         </div>
       </div>

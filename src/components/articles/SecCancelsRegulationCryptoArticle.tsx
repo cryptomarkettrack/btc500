@@ -78,15 +78,9 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
           <div className="highlight-box">
             <p>
               <strong>Key takeaway:</strong> This is a delay, not a reversal. The proposal Atkins
-              outlined on March 17 still exists on paper. Congress still has the{" "}
-              <Link
-                to="/articles/clarity-act"
-                className="font-semibold text-primary underline"
-              >
-                CLARITY Act
-              </Link>{" "}
-              stalled until at least mid-September. Bitcoin&apos;s status as a digital commodity is
-              the most settled piece of the picture. The calendar does not move.
+              outlined on March 17 still exists on paper. Congress still has the CLARITY Act stalled
+              until at least mid-September. Bitcoin&apos;s status as a digital commodity is the most
+              settled piece of the picture. The calendar does not move.
             </p>
           </div>
 
@@ -248,17 +242,14 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
           </p>
           <p>
             The structural bid that <em>does</em> matter for the cycle is still the one we covered
-            this week: spot ETF demand and the newer income products that hold bitcoin rather than
-            trade it. Goldman&apos;s{" "}
-            <Link
-              to="/articles/goldman-vs-blackrock"
-              className="font-semibold text-primary underline"
-            >
-              $2.25 billion move into bitcoin income ETFs
+            this week:{" "}
+            <Link to="/bitcoin-etf" className="font-semibold text-primary underline">
+              spot ETF demand
             </Link>{" "}
-            and the mid-August inflow rebound sit in a different bucket from a cancelled
-            rulemaking. One is capital already allocated. The other is a process story about
-            capital that has not been raised yet.
+            and the newer income products that hold bitcoin rather than trade it. The mid-August
+            inflow rebound sits in a different bucket from a cancelled rulemaking. One is capital
+            already allocated. The other is a process story about capital that has not been raised
+            yet.
           </p>
           <p>
             For a long-term holder, the useful distinction is simple. Policy can change how new
@@ -403,31 +394,20 @@ export function SecCancelsRegulationCryptoArticle({ title, date, readTime }: Art
           <h2>Related Reading</h2>
           <ul>
             <li>
-              <a href="/articles/clarity-act" className="font-semibold text-primary underline">
-                CLARITY Act Explained
+              <a href="/bitcoin-etf" className="font-semibold text-primary underline">
+                Bitcoin ETF Flows
               </a>{" "}
-              — the Senate bill that would put the SEC/CFTC split into statute, now queued for
-              mid-September.
+              — where the institutional demand in this story actually shows up in the tape, and what
+              the flow data says about the cycle.
             </li>
             <li>
-              <a
-                href="/articles/bitcoin-week-ahead"
-                className="font-semibold text-primary underline"
-              >
-                Bitcoin This Week (Aug 24–31, 2026)
+              <a href="/articles/btc500-strategy" className="font-semibold text-primary underline">
+                The BTC500 Strategy
               </a>{" "}
-              — Jackson Hole, July Core PCE, ETF flows, and why institutional demand is still the tape.
+              — the rule this page keeps returning to: buy 500 days before the halving, sell 500
+              days after it.
             </li>
             <li>
-              <a
-                href="/articles/goldman-vs-blackrock"
-                className="font-semibold text-primary underline"
-              >
-                Goldman Sachs vs BlackRock
-              </a>{" "}
-              — the $2.25 billion bitcoin income ETF fight happening while Washington stalls.
-            </li>
-<li>
               <a
                 href="/articles/solar-eclipse-bitcoin-halving"
                 className="font-semibold text-primary underline"

@@ -323,6 +323,19 @@ export function getArticlesSorted(): ArticleMeta[] {
   );
 }
 
+/**
+ * The articles that are meant to be in the search index, newest first.
+ *
+ * Archived articles are published but served with `noindex, nofollow`, so a
+ * link to one passes no internal-link signal and tells Google the page behind
+ * it should stay out of the index. The homepage, the related-reading block on
+ * every article, and the /articles list all draw from this set so the site's
+ * internal links point at pages that can actually rank.
+ */
+export function getIndexableArticles(): ArticleMeta[] {
+  return getArticlesSorted().filter((article) => !isArchivedArticle(article.slug));
+}
+
 /** Lookup a single article by slug */
 export function getArticleBySlug(slug: string): ArticleMeta | undefined {
   return articles.find((a) => a.slug === slug);

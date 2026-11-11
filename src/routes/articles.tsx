@@ -1,6 +1,12 @@
 import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { ArticleEndMatter } from "@/components/ArticleEndMatter";
-import { getArticlesSorted, SITE_URL } from "@/lib/articles";
+import {
+  getArticlesSorted,
+  getIndexableArticles,
+  isArchivedArticle,
+  SITE_URL,
+  type ArticleMeta,
+} from "@/lib/articles";
 import { generatePageHead, generateWebPageSchema } from "@/lib/site";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
@@ -15,7 +21,8 @@ const articlesPageSchema = generateWebPageSchema({
     { name: "Home", path: "/" },
     { name: "Articles", path: "/articles" },
   ],
-  dateModified: getArticlesSorted()[0]?.dateModifiedISO,
+  dateModified: getArticlesSorted().find((article) => !isArchivedArticle(article.slug))
+    ?.dateModifiedISO,
 });
 
 const articlesListSchema = {
@@ -23,12 +30,17 @@ const articlesListSchema = {
   "@type": "ItemList",
   name: "BTC500 Articles",
   description: "Strategy guides and on-chain education from BTC500",
-  itemListElement: getArticlesSorted().map((article, index) => ({
-    "@type": "ListItem",
-    position: index + 1,
-    url: `${SITE_URL}/articles/${article.slug}`,
-    name: article.title,
-  })),
+  // Only the articles that are meant to be indexed. Archived, `noindex`
+  // commentary stays out of the list, so the structured data matches what
+  // the page actually promotes.
+  itemListElement: getArticlesSorted()
+    .filter((article) => !isArchivedArticle(article.slug))
+    .map((article, index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      url: `${SITE_URL}/articles/${article.slug}`,
+      name: article.title,
+    })),
 };
 
 export const Route = createFileRoute("/articles")({
@@ -62,18 +74,38 @@ function Articles() {
   const sortedArticles = getArticlesSorted();
   const [searchQuery, setSearchQuery] = useState("");
 
-  // Filter articles based on search query
-  const filteredArticles = useMemo(() => {
-    if (!searchQuery.trim()) return sortedArticles;
+  // Archived articles are published but served with `noindex, nofollow`.
+  // They stay reachable under their own heading, but the primary list is the
+  // set of pages this site actually wants in the index.
+  const publishedArticles = useMemo(() => getIndexableArticles(), []);
+  const archivedArticles = useMemo(
+    () => sortedArticles.filter((article) => isArchivedArticle(article.slug)),
+    [sortedArticles],
+  );
+
+  const matchesQuery = (article: ArticleMeta) => {
     const query = searchQuery.toLowerCase().trim();
-    return sortedArticles.filter(
-      (article) =>
-        article.title.toLowerCase().includes(query) ||
-        article.description.toLowerCase().includes(query) ||
-        article.keywords.toLowerCase().includes(query) ||
-        article.articleSection.toLowerCase().includes(query),
+    if (!query) return true;
+    return (
+      article.title.toLowerCase().includes(query) ||
+      article.description.toLowerCase().includes(query) ||
+      article.keywords.toLowerCase().includes(query) ||
+      article.articleSection.toLowerCase().includes(query)
     );
-  }, [sortedArticles, searchQuery]);
+  };
+
+  // Filter articles based on search query
+  const filteredPublished = useMemo(
+    () => publishedArticles.filter((article) => matchesQuery(article)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [publishedArticles, searchQuery],
+  );
+  const filteredArchived = useMemo(
+    () => archivedArticles.filter((article) => matchesQuery(article)),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [archivedArticles, searchQuery],
+  );
+  const filteredCount = filteredPublished.length + filteredArchived.length;
 
   // Check if we're on a child route (article page)
   const location = useLocation();
@@ -126,13 +158,13 @@ function Articles() {
           </div>
           {searchQuery && (
             <p className="mt-2 text-sm text-muted-foreground text-center">
-              Showing {filteredArticles.length} of {sortedArticles.length} articles
+              Showing {filteredCount} of {sortedArticles.length} articles
             </p>
           )}
         </div>
 
         <div className="grid gap-6">
-          {filteredArticles.map((article) => (
+          {filteredPublished.map((article) => (
             <Link
               key={article.id}
               to={`/articles/${article.slug}` as "/articles/btc500-strategy"}
@@ -170,7 +202,60 @@ function Articles() {
           ))}
         </div>
 
-        {filteredArticles.length === 0 && searchQuery && (
+        {filteredArchived.length > 0 && (
+          <section className="mt-16" aria-labelledby="archive-heading">
+            <h2 id="archive-heading" className="text-xl font-semibold">
+              Archive
+            </h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted-foreground">
+              Dated market commentary, kept for the record. These notes are tied to a past date, so
+              they are not in the search index — read them for the history, not for a current
+              signal.
+            </p>
+            <div className="mt-6 grid gap-6">
+              {filteredArchived.map((article) => (
+                <Link
+                  key={article.id}
+                  to={`/articles/${article.slug}` as "/articles/btc500-strategy"}
+                  className="group block rounded-2xl border border-border/60 bg-card p-6 transition-all hover:border-primary/50 hover:shadow-lg"
+                >
+                  <article className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3 text-xs text-muted-foreground">
+                      <time dateTime={article.dateISO}>{article.date}</time>
+                      <span>·</span>
+                      <span>{article.readTime}</span>
+                      <span>·</span>
+                      <span>{article.articleSection}</span>
+                    </div>
+                    <h3 className="text-xl font-semibold group-hover:text-primary">
+                      {article.title}
+                    </h3>
+                    <p className="text-muted-foreground">{article.description}</p>
+                    <div className="flex items-center gap-2 text-sm font-medium text-primary">
+                      Read article
+                      <svg
+                        className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
+        {filteredCount === 0 && searchQuery && (
           <div className="mt-8 rounded-2xl border border-border/60 bg-card p-8 text-center">
             <h2 className="text-lg font-semibold">No articles found</h2>
             <p className="mt-2 text-muted-foreground">
