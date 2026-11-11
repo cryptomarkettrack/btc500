@@ -1,15 +1,15 @@
 {
-  "generated": "2026-11-10",
-  "summary": "archive-only cycle under the freeze: the only deployed change is the runner's 2026-11-09 price-archive row (CSV tail + dataset lastDate). No site change: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty. Mandate post-merge-crawl-watch-1128 read: the pillar is still 'Crawled - currently not indexed' with lastCrawlTime 2026-11-07T03:42:34Z, 16h37m56s before the lopp.net merge, so no post-merge crawl exists.",
+  "generated": "2026-11-11",
+  "summary": "archive-only cycle under the freeze: the only deployed change is the runner's 2026-11-10 price-archive row (CSV tail + dataset lastDate). No site change: `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml` is empty. Mandate post-merge-crawl-watch-1128 read from the raw urlInspection API: the pillar is still 'Crawled - currently not indexed' with lastCrawlTime 2026-11-07T03:42:34Z, 3d 7h 43m before this reading and 16h37m56s before the lopp.net merge, so no post-merge crawl exists. Mandate pin-linked-post-1111 executed on the profile (pinned 2120367269997957126).",
   "checks": [
     {
       "path": "/btc-usd-max.csv",
-      "contains": "2026-11-09 00:00:00 UTC,75266.76731147344",
+      "contains": "2026-11-10 00:00:00 UTC,73721.18379734851",
       "status": 200
     },
     {
       "path": "/data/500-day-cycles.json",
-      "contains": "\"lastDate\": \"2026-11-09\"",
+      "contains": "\"lastDate\": \"2026-11-10\"",
       "status": 200
     },
     {
