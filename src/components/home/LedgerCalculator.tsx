@@ -22,7 +22,7 @@ export function LedgerCalculator({ cycle }: LedgerCalculatorProps) {
   const returnPercent = cycle?.returnPercent ?? null;
 
   return (
-    <div className="grid overflow-hidden rounded-[32px] border border-border/60 bg-card lg:grid-cols-2">
+    <div className="grid overflow-hidden rounded-2xl border border-white/10 bg-[var(--panel)] lg:grid-cols-2">
       <div className="p-8 sm:p-10">
         <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
           04 / Put a number on it
@@ -37,14 +37,14 @@ export function LedgerCalculator({ cycle }: LedgerCalculatorProps) {
         <Link
           to="/simulator"
           onClick={() => trackCta("ledger", "/simulator")}
-          className="mt-6 inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+          className="press mt-6 inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-foreground hover:border-primary/40 hover:text-primary"
         >
           Open the full simulator
           <ArrowRight className="h-4 w-4" />
         </Link>
       </div>
 
-      <div className="bg-muted/50 p-8 sm:p-10">
+      <div className="border-l border-white/10 bg-white/[0.02] p-8 sm:p-10">
         <label
           htmlFor="home-ledger-amount"
           className="font-data text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground"
@@ -62,13 +62,13 @@ export function LedgerCalculator({ cycle }: LedgerCalculatorProps) {
               autoComplete="off"
               value={amount}
               onChange={(event) => setAmount(event.target.value.replace(/[^0-9]/g, ""))}
-              className="font-data w-full rounded-xl border border-border bg-background py-3 pr-4 pl-8 text-xl font-semibold tracking-tight outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/20"
+              className="font-data w-full rounded-xl border border-white/12 bg-black/30 py-3 pr-4 pl-8 text-xl font-semibold tracking-tight outline-none transition-colors focus:border-primary focus:ring-2 focus:ring-primary/60 focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Hypothetical starting amount in dollars"
             />
           </div>
         </div>
 
-        <div className="mt-6 border-t border-border/60 pt-5">
+        <div className="mt-6 border-t border-white/10 pt-5">
           <p className="font-data text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
             Illustrative result{cycle ? ` · ${cycle.label} window` : ""}
           </p>

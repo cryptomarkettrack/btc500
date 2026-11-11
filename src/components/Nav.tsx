@@ -134,8 +134,8 @@ export function Nav() {
   const closeMobile = () => setIsMobileMenuOpen(false);
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
+    <nav className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/85 backdrop-blur-xl">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-3">
         {/* Logo */}
         <Link
           to="/"
@@ -179,7 +179,7 @@ export function Nav() {
         <button
           type="button"
           onClick={() => setIsMobileMenuOpen((o) => !o)}
-          className="inline-flex items-center justify-center rounded-full p-2 text-muted-foreground hover:bg-muted hover:text-foreground md:hidden"
+          className="inline-flex items-center justify-center rounded-full p-2 text-muted-foreground hover:text-foreground md:hidden"
           aria-label="Toggle menu"
           aria-expanded={isMobileMenuOpen}
         >
@@ -189,8 +189,8 @@ export function Nav() {
 
       {/* Mobile sheet — grouped accordion */}
       {isMobileMenuOpen && (
-        <div className="border-t border-border/60 bg-background/95 backdrop-blur-xl md:hidden">
-          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-4 py-3 sm:px-6">
+        <div className="border-t border-white/10 bg-background/95 backdrop-blur-xl md:hidden">
+          <div className="mx-auto flex max-w-6xl flex-col gap-1 px-6 py-3">
             <MobileLink
               to="/"
               label="Home"
@@ -271,10 +271,10 @@ function NavPill({
     <Link
       to={to}
       className={cn(
-        "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-all",
+        "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium transition-colors",
         active
-          ? "bg-primary text-primary-foreground shadow-sm"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+          ? "bg-primary text-primary-foreground"
+          : "text-muted-foreground hover:text-foreground",
       )}
     >
       <Icon className="h-4 w-4" />
@@ -300,11 +300,11 @@ function NavDropdown({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium outline-none transition-all",
+          "inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-medium outline-none transition-colors",
           "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
           active
-            ? "bg-primary text-primary-foreground shadow-sm"
-            : "text-muted-foreground hover:bg-muted hover:text-foreground",
+            ? "bg-primary text-primary-foreground"
+            : "text-muted-foreground hover:text-foreground",
         )}
       >
         <Icon className="h-4 w-4" />
@@ -314,7 +314,7 @@ function NavDropdown({
       <DropdownMenuContent
         align="end"
         sideOffset={8}
-        className="w-72 rounded-2xl border-border/60 p-2 shadow-lg"
+        className="w-72 rounded-2xl border border-white/10 bg-popover p-2 shadow-2xl"
       >
         <DropdownMenuLabel className="px-3 py-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-muted-foreground">
           {label}
@@ -374,7 +374,7 @@ function MobileGroup({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-2xl border border-border/50 bg-card/40">
+    <div className="rounded-2xl border border-white/10 bg-white/[0.02]">
       <button
         type="button"
         onClick={onToggle}
@@ -391,7 +391,7 @@ function MobileGroup({
         />
       </button>
       {open && (
-        <div className="flex flex-col gap-1 border-t border-border/40 px-2 pb-2 pt-1">
+        <div className="flex flex-col gap-1 border-t border-white/10 px-2 pb-2 pt-1">
           {children}
         </div>
       )}
@@ -421,11 +421,11 @@ function MobileLink({
       to={to}
       onClick={onNavigate}
       className={cn(
-        "inline-flex items-start gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-all",
+        "inline-flex items-start gap-3 rounded-2xl px-4 py-3 text-sm font-medium transition-colors",
         nested && "rounded-xl py-2.5",
         active
-          ? "bg-primary text-primary-foreground shadow-sm"
-          : "text-muted-foreground hover:bg-muted hover:text-foreground",
+          ? "bg-primary text-primary-foreground"
+          : "text-muted-foreground hover:text-foreground",
       )}
     >
       <Icon className={cn("mt-0.5 h-4 w-4 shrink-0", nested && "mt-0.5")} />

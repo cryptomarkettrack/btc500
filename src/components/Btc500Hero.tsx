@@ -51,7 +51,7 @@ const styleWeAreHere: CSSProperties = {
   fontFamily: FONT_GROTESK,
   fontSize: "11px",
   fontWeight: 700,
-  fill: "#000000",
+  fill: "var(--chart-ink, #000000)",
   letterSpacing: "0.06em",
 };
 

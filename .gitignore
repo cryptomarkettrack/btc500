@@ -49,3 +49,14 @@ scripts/analytics/output/
 # also matched scripts/search-console/, which silently excluded the Search
 # Console tooling from every commit.
 /search-console/
+
+# Agent skills installed with `npx skills add` (design-taste-frontend, improve,
+# ...). They are local tooling for the agent, thousands of vendored files that
+# must never enter the repository or a deploy. skills-lock.json stays tracked
+# as the manifest of what is installed.
+/.agents/
+
+# Scratch state written by the taste-skill scripts: the deal history, the
+# chrome profile used by the checker and the screenshots it takes.
+/.taste-skill/
+/taste-skill-consistency/

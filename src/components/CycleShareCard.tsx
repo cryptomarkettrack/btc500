@@ -206,6 +206,9 @@ export const CycleShareCard = forwardRef<HTMLDivElement, Props>(function CycleSh
             ["--muted" as string]: mutedBg,
             ["--muted-foreground" as string]: muted,
             ["--border" as string]: border,
+            // The site is dark; the share card is light. The chart label needs
+            // the card's own ink, not the page's.
+            ["--chart-ink" as string]: "#0f172a",
           }}
         >
           <Btc500Hero price={price} daysLeft={Math.max(0, cycle.daysUntilBuy)} compact />

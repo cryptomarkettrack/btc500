@@ -12,7 +12,6 @@ import { Link } from "@tanstack/react-router";
 import type { CycleInfo } from "@/lib/phase";
 import { formatDate, formatUsd, formatUtc } from "@/lib/format";
 import { Progress } from "@/components/ui/progress";
-import { BtcLogo } from "@/components/BtcLogo";
 
 interface CommandCenterProps {
   cycle: CycleInfo;
@@ -29,6 +28,13 @@ interface CommandCenterProps {
   blocksRemaining: number;
 }
 
+function cycleLabel(phase: string): string {
+  if (phase === "done") return "complete";
+  if (phase === "wait-buy") return "waiting to buy";
+  if (phase === "wait-sell") return "waiting to sell";
+  return phase;
+}
+
 function phaseLabel(cycle: CycleInfo, isBuyActive: boolean, isSellActive: boolean): string {
   if (isBuyActive) return "Buy window open";
   if (isSellActive) return "Hold → sell window";
@@ -37,6 +43,10 @@ function phaseLabel(cycle: CycleInfo, isBuyActive: boolean, isSellActive: boolea
   return "Cycle complete";
 }
 
+/**
+ * The product's own window: today's read of the cycle, the three dated facts
+ * and the block progress toward the next halving.
+ */
 export function CommandCenter({
   cycle,
   price,
@@ -58,31 +68,19 @@ export function CommandCenter({
       : cycle.phase === "done"
         ? "Cycle done"
         : "Days to buy";
-  const accent =
-    cycle.phase === "wait-sell"
-      ? { color: "var(--success)", soft: "var(--success-soft)" }
-      : cycle.phase === "done"
-        ? { color: "var(--muted-foreground)", soft: "var(--muted)" }
-        : { color: "var(--primary)", soft: "var(--primary-soft)" };
+  const accent = cycle.phase === "wait-sell" ? "var(--success)" : "var(--primary)";
 
   return (
-    <section className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card shadow-[0_1px_2px_rgba(0,0,0,0.04),0_20px_60px_-20px_rgba(0,0,0,0.08)]">
-      <div className="pointer-events-none absolute -right-20 -top-20 opacity-[0.05]">
-        <BtcLogo size={360} />
-      </div>
-
-      {/* Header strip */}
-      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-border/50 px-6 py-4 sm:px-8">
+    <section className="overflow-hidden rounded-2xl border border-white/10 bg-[var(--panel)]">
+      {/* header strip */}
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 px-5 py-3.5 sm:px-7">
         <div className="flex items-center gap-3">
-          <span
-            className="inline-flex h-9 w-9 items-center justify-center rounded-full"
-            style={{ background: accent.soft }}
-          >
-            <Activity className="h-4 w-4" style={{ color: accent.color }} />
+          <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-primary/30 bg-primary/10">
+            <Activity className="h-4 w-4" style={{ color: accent }} />
           </span>
           <div>
-            <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              Cycle command center
+            <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              btc500 / command center
             </div>
             <div className="text-sm font-semibold text-foreground">
               Today&apos;s read · {phaseLabel(cycle, isBuyActive, isSellActive)}
@@ -90,31 +88,23 @@ export function CommandCenter({
           </div>
         </div>
         {price != null && (
-          <span className="rounded-full bg-muted px-3 py-1 text-xs font-semibold text-foreground">
+          <span className="font-data rounded-full border border-white/10 px-3 py-1 text-xs font-semibold text-foreground">
             BTC {formatUsd(price)}
           </span>
         )}
       </div>
 
       <div className="grid gap-0 lg:grid-cols-[1.15fr_0.85fr]">
-        {/* Left: countdown */}
-        <div className="border-b border-border/50 p-6 sm:p-8 lg:border-b-0 lg:border-r">
+        {/* Left: the countdown */}
+        <div className="border-b border-white/10 p-6 sm:p-8 lg:border-r lg:border-b-0">
           <div className="mb-5 flex items-center gap-3">
-            <span
-              className="inline-flex h-10 w-10 items-center justify-center rounded-full"
-              style={{
-                background: isSellActive ? "var(--success-soft)" : "var(--primary-soft)",
-              }}
-            >
-              <Clock
-                className="h-5 w-5"
-                style={{ color: isSellActive ? "var(--success)" : "var(--primary)" }}
-              />
+            <span className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-white/10">
+              <Clock className="h-4 w-4" style={{ color: accent }} />
             </span>
             <div>
               <div
-                className="text-xs font-semibold uppercase tracking-[0.18em]"
-                style={{ color: isSellActive ? "var(--success)" : "var(--primary)" }}
+                className="font-data text-xs font-semibold uppercase tracking-[0.18em]"
+                style={{ color: accent }}
               >
                 {primaryLabel}
               </div>
@@ -129,37 +119,48 @@ export function CommandCenter({
           <div className="flex items-baseline gap-2">
             <span
               suppressHydrationWarning
-              className="text-[5.5rem] font-bold leading-[0.9] tracking-tighter sm:text-[7rem]"
-              style={{ color: isSellActive ? "var(--success)" : "var(--primary)" }}
+              className="font-data text-6xl leading-[0.9] font-semibold tracking-tighter sm:text-7xl"
+              style={{ color: accent }}
             >
               {primaryDays.toLocaleString()}
             </span>
-            <span className="pb-3 text-lg font-medium text-muted-foreground">days</span>
+            <span className="pb-2 text-lg font-medium text-muted-foreground">days</span>
           </div>
 
-          <div className="mt-5 h-2 w-full overflow-hidden rounded-full bg-muted">
+          <div className="mt-5 h-1.5 w-full overflow-hidden rounded-full bg-white/10">
             <div
               className="h-full rounded-full transition-[width] duration-1000 ease-out"
               style={{
-                background: isSellActive ? "var(--success)" : "var(--primary)",
+                background: accent,
                 width: `${(cycle.phase === "wait-sell" ? cycle.sellProgress : buyProgress) * 100}%`,
               }}
             />
           </div>
+
+          <dl className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <MiniStat icon={Clock} label="Days to sell" value={`${sellDays.toLocaleString()} d`} />
+            <MiniStat icon={Calendar} label="Next halving" value={formatDate(cycle.nextHalving)} />
+            <MiniStat icon={Activity} label="Cycle" value={cycleLabel(cycle.phase)} />
+          </dl>
+
+          <p className="mt-6 max-w-sm text-sm leading-relaxed text-muted-foreground">
+            The dates do not move with the price. They come from the block schedule — which is why
+            they can be checked before they are traded.
+          </p>
         </div>
 
         {/* Right: dates + block progress */}
         <div className="flex flex-col p-6 sm:p-8">
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
+          <dl className="grid grid-cols-1 gap-3 sm:grid-cols-3 lg:grid-cols-1">
             <MiniStat icon={Calendar} label="Next halving" value={formatDate(cycle.nextHalving)} />
             <MiniStat icon={Target} label="Buy date" value={formatDate(cycle.buyDate)} />
             <MiniStat icon={Shield} label="Sell date" value={formatDate(cycle.sellDate)} />
-          </div>
+          </dl>
 
-          <div className="mt-5 rounded-2xl bg-muted/60 px-4 py-3">
+          <div className="mt-5 rounded-xl border border-white/10 px-4 py-3">
             <div className="flex items-center gap-2">
               <Layers className="h-3.5 w-3.5 text-muted-foreground" />
-              <span className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              <span className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 Block progress
               </span>
             </div>
@@ -170,12 +171,12 @@ export function CommandCenter({
                 aria-label="Block progress toward next halving"
               />
             </div>
-            <div className="mt-2 flex justify-between text-[11px] text-muted-foreground">
-              <span className="font-mono">{height.toLocaleString()}</span>
+            <div className="font-data mt-2 flex justify-between text-[11px] text-muted-foreground">
+              <span>{height.toLocaleString()}</span>
               <span>{blocksRemaining.toLocaleString()} left</span>
-              <span className="font-mono">{nextHalvingBlock.toLocaleString()}</span>
+              <span>{nextHalvingBlock.toLocaleString()}</span>
             </div>
-            <div className="mt-1 text-[10px] text-muted-foreground">
+            <div className="font-data mt-1 text-[10px] text-muted-foreground">
               {formatUtc(cycle.nextHalving)} · last halving block{" "}
               {lastHalvingBlock.toLocaleString()}
             </div>
@@ -184,21 +185,21 @@ export function CommandCenter({
           <div className="mt-auto flex flex-wrap gap-2 pt-6">
             <Link
               to="/liquidation"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+              className="press inline-flex items-center gap-1.5 rounded-full border border-white/12 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary"
             >
               Liq heat
               <ArrowRight className="h-3 w-3" />
             </Link>
             <Link
               to="/bitcoin-etf"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+              className="press inline-flex items-center gap-1.5 rounded-full border border-white/12 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary"
             >
               ETF absorption
               <ArrowRight className="h-3 w-3" />
             </Link>
             <Link
               to="/embed-kit"
-              className="inline-flex items-center gap-1.5 rounded-full border border-border/60 px-3 py-1.5 text-xs font-semibold text-muted-foreground transition hover:border-primary/40 hover:text-primary"
+              className="press inline-flex items-center gap-1.5 rounded-full border border-white/12 px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:border-primary/40 hover:text-primary"
             >
               <Sparkles className="h-3 w-3" />
               Embed kit
@@ -220,14 +221,14 @@ function MiniStat({
   value: string;
 }) {
   return (
-    <div className="rounded-2xl bg-muted/50 px-3 py-2.5">
-      <div className="flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
+    <div className="rounded-xl border border-white/10 px-3 py-2.5">
+      <dt className="font-data flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground">
         <Icon className="h-3 w-3" />
         {label}
-      </div>
-      <div suppressHydrationWarning className="mt-1 text-sm font-semibold">
+      </dt>
+      <dd suppressHydrationWarning className="font-data mt-1 text-sm font-semibold">
         {value}
-      </div>
+      </dd>
     </div>
   );
 }

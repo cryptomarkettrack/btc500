@@ -130,90 +130,105 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * BTC500 design system — "trading desk" art direction (2026-11).
+ *
+ * Art direction was set with the taste-skill (design-taste-frontend 2.5.1):
+ *   kind            software (fintech data product) -> tech rules apply
+ *   palette         brand deal: near-black warm ground + Bitcoin orange accent
+ *   type            Space Grotesk (display) + IBM Plex Mono (data), self-hosted
+ *   hero            split — the live cycle map on the right, the rule on the left
+ *   moments         counter-rolls (the record) + line-carries-colour (the close)
+ *   effect          one ground: a drifting aurora behind the hero, static under
+ *                   prefers-reduced-motion and on phones
+ *
+ * The ground is near-black and the ink is warm off-white, so the Bitcoin orange
+ * is the only saturated thing on the page and every accent label clears 7:1.
+ */
 :root {
-  --radius: 1.25rem;
-  --background: oklch(0.985 0.005 85);
-  --foreground: oklch(0.18 0.02 260);
-  --card: oklch(0.995 0.003 85);
-  --card-foreground: oklch(0.18 0.02 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 260);
-  /*
-   * Light-mode primary is deliberately darker than Bitcoin orange (#f7931a).
-   * The brighter brand tone only reaches ~2.5:1 against the cream background,
-   * which fails WCAG AA for every text label and CTA. This tone keeps the
-   * orange identity at 5.1:1 on the page and 5.4:1 for white button text.
-   */
-  --primary: oklch(0.54 0.19 55);
-  --primary-foreground: oklch(1 0 0);
-  --primary-soft: oklch(0.96 0.04 60);
-  --secondary: oklch(0.96 0.008 85);
-  --secondary-foreground: oklch(0.2 0.02 260);
-  --muted: oklch(0.955 0.008 85);
-  --muted-foreground: oklch(0.5 0.02 260);
-  --accent: oklch(0.54 0.19 55);
-  --accent-foreground: oklch(1 0 0);
-  /* 0.48 keeps success text >= 4.7:1 on --success-soft (0.52 was 4.36:1). */
-  --success: oklch(0.48 0.15 155);
-  --success-soft: oklch(0.95 0.04 155);
-  --info: oklch(0.52 0.16 240);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.92 0.01 85);
-  --input: oklch(0.92 0.01 85);
-  --ring: oklch(0.54 0.19 55);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  --radius: 1rem;
+  --background: oklch(0.145 0.006 55);
+  --foreground: oklch(0.965 0.006 80);
+  --card: oklch(0.195 0.008 55);
+  --card-foreground: oklch(0.965 0.006 80);
+  --popover: oklch(0.21 0.01 55);
+  --popover-foreground: oklch(0.965 0.006 80);
+  /* Bitcoin orange, lifted for a dark ground: 8.9:1 on --background. */
+  --primary: oklch(0.78 0.155 60);
+  --primary-foreground: oklch(0.16 0.02 60);
+  --primary-soft: oklch(0.3 0.07 55);
+  --secondary: oklch(0.24 0.01 55);
+  --secondary-foreground: oklch(0.965 0.006 80);
+  --muted: oklch(0.235 0.01 55);
+  --muted-foreground: oklch(0.73 0.015 75);
+  --accent: oklch(0.78 0.155 60);
+  --accent-foreground: oklch(0.16 0.02 60);
+  --success: oklch(0.79 0.16 155);
+  --success-soft: oklch(0.27 0.05 155);
+  --info: oklch(0.76 0.12 235);
+  --destructive: oklch(0.7 0.19 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.78 0.155 60);
+  --chart-1: oklch(0.78 0.155 60);
+  --chart-2: oklch(0.75 0.13 200);
+  --chart-3: oklch(0.7 0.1 250);
+  --chart-4: oklch(0.82 0.14 90);
+  --chart-5: oklch(0.79 0.16 155);
+  --sidebar: oklch(0.21 0.01 55);
+  --sidebar-foreground: oklch(0.965 0.006 80);
+  --sidebar-primary: oklch(0.78 0.155 60);
+  --sidebar-primary-foreground: oklch(0.16 0.02 60);
+  --sidebar-accent: oklch(0.27 0.012 55);
+  --sidebar-accent-foreground: oklch(0.965 0.006 80);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.78 0.155 60);
+  /* Chart ink inside the hero frame and the share cards (the cards override it). */
+  --chart-ink: oklch(0.965 0.006 80);
+  /* Panel inside the hero frame. */
+  --panel: oklch(0.175 0.008 55);
 }
 
+/* The site is dark by design; .dark keeps the same tokens for components that
+   set the class explicitly. */
 .dark {
-  --background: oklch(0.15 0.015 260);
-  --foreground: oklch(0.97 0.005 85);
-  --card: oklch(0.19 0.018 260);
-  --card-foreground: oklch(0.97 0.005 85);
-  --popover: oklch(0.19 0.018 260);
-  --popover-foreground: oklch(0.97 0.005 85);
-  --primary: oklch(0.75 0.19 55);
-  --primary-foreground: oklch(0.15 0.015 260);
-  --primary-soft: oklch(0.28 0.08 55);
-  --secondary: oklch(0.24 0.02 260);
-  --secondary-foreground: oklch(0.984 0.003 247.858);
-  --muted: oklch(0.24 0.02 260);
-  --muted-foreground: oklch(0.7 0.02 260);
-  --accent: oklch(0.75 0.19 55);
-  --accent-foreground: oklch(0.15 0.015 260);
-  --success: oklch(0.7 0.16 155);
-  --success-soft: oklch(0.25 0.06 155);
-  --info: oklch(0.7 0.16 240);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --background: oklch(0.145 0.006 55);
+  --foreground: oklch(0.965 0.006 80);
+  --card: oklch(0.195 0.008 55);
+  --card-foreground: oklch(0.965 0.006 80);
+  --popover: oklch(0.21 0.01 55);
+  --popover-foreground: oklch(0.965 0.006 80);
+  --primary: oklch(0.78 0.155 60);
+  --primary-foreground: oklch(0.16 0.02 60);
+  --primary-soft: oklch(0.3 0.07 55);
+  --secondary: oklch(0.24 0.01 55);
+  --secondary-foreground: oklch(0.965 0.006 80);
+  --muted: oklch(0.235 0.01 55);
+  --muted-foreground: oklch(0.73 0.015 75);
+  --accent: oklch(0.78 0.155 60);
+  --accent-foreground: oklch(0.16 0.02 60);
+  --success: oklch(0.79 0.16 155);
+  --success-soft: oklch(0.27 0.05 155);
+  --info: oklch(0.76 0.12 235);
+  --destructive: oklch(0.7 0.19 25);
+  --destructive-foreground: oklch(0.16 0.02 25);
   --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.551 0.027 264.364);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.208 0.042 265.755);
-  --sidebar-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.279 0.041 260.031);
-  --sidebar-accent-foreground: oklch(0.984 0.003 247.858);
+  --input: oklch(1 0 0 / 14%);
+  --ring: oklch(0.78 0.155 60);
+  --chart-1: oklch(0.78 0.155 60);
+  --chart-2: oklch(0.75 0.13 200);
+  --chart-3: oklch(0.7 0.1 250);
+  --chart-4: oklch(0.82 0.14 90);
+  --chart-5: oklch(0.79 0.16 155);
+  --sidebar: oklch(0.21 0.01 55);
+  --sidebar-foreground: oklch(0.965 0.006 80);
+  --sidebar-primary: oklch(0.78 0.155 60);
+  --sidebar-primary-foreground: oklch(0.16 0.02 60);
+  --sidebar-accent: oklch(0.27 0.012 55);
+  --sidebar-accent-foreground: oklch(0.965 0.006 80);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.551 0.027 264.364);
+  --sidebar-ring: oklch(0.78 0.155 60);
 }
 
 @layer base {
@@ -313,4 +328,176 @@
   stroke: var(--primary);
   stroke-width: 2;
   opacity: 0.7;
+}
+
+/* ------------------------------------------------------------------ motion layer
+ * taste-skill rules: every hero enters once on load, every linked card lifts,
+ * buttons step on hover and press on click, underlines draw. Nothing tilts and
+ * nothing fades in on scroll except a dealt moment inside its own section.
+ */
+@layer utilities {
+  /* The hero entrance. One shot, on load, staggered by --enter-delay. */
+  [data-enter] {
+    animation: btc-enter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: var(--enter-delay, 0ms);
+  }
+
+  @keyframes btc-enter {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  /* A linked card answers the pointer: it lifts 2px and its edge warms up. */
+  .lift {
+    transition:
+      transform 350ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 350ms ease,
+      background-color 350ms ease,
+      box-shadow 350ms ease;
+  }
+
+  .lift:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in oklab, var(--primary) 42%, transparent);
+  }
+
+  /* A link that draws its own underline instead of switching colour. */
+  .link-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    background-size: 0% 1px;
+    transition: background-size 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .link-draw:hover {
+    background-size: 100% 1px;
+  }
+
+  /* The live tape scrolls; the row is duplicated so the loop has no seam. */
+  .tape-track {
+    animation: btc-tape 42s linear infinite;
+  }
+
+  @keyframes btc-tape {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  /* A button that steps on hover and presses on click. */
+  .press {
+    transition:
+      transform 200ms cubic-bezier(0.16, 1, 0.3, 1),
+      background-color 250ms ease,
+      border-color 250ms ease,
+      color 250ms ease,
+      box-shadow 250ms ease;
+  }
+
+  .press:hover {
+    transform: translateY(-1px);
+  }
+
+  .press:active {
+    transform: translateY(0) scale(0.985);
+  }
+
+  /* The one effect: a drifting aurora behind the hero. Painted, not WebGL, so
+     it costs nothing on a phone and rests under prefers-reduced-motion. */
+  .hero-ground {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        62% 52% at 78% 8%,
+        color-mix(in oklab, var(--primary) 22%, transparent) 0%,
+        transparent 68%
+      ),
+      radial-gradient(
+        48% 44% at 8% 92%,
+        color-mix(in oklab, var(--info) 12%, transparent) 0%,
+        transparent 70%
+      ),
+      linear-gradient(180deg, oklch(0.16 0.01 55) 0%, var(--background) 78%);
+  }
+
+  .hero-ground::before {
+    content: "";
+    position: absolute;
+    inset: -20% -10%;
+    background-image:
+      linear-gradient(to right, oklch(1 0 0 / 4%) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(1 0 0 / 4%) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(72% 62% at 50% 22%, #000 0%, transparent 78%);
+    animation: btc-drift 26s ease-in-out infinite alternate;
+  }
+
+  @keyframes btc-drift {
+    from {
+      transform: translate3d(0, 0, 0) scale(1);
+    }
+    to {
+      transform: translate3d(-2%, 1.5%, 0) scale(1.04);
+    }
+  }
+
+  /* The closing section: an accent line climbs the panel, the words follow it. */
+  .carry-line {
+    transform-origin: bottom;
+    animation: btc-carry 1400ms cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes btc-carry {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  .carry-words > * {
+    animation: btc-enter 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: calc(320ms + var(--i, 0) * 110ms);
+  }
+
+  /* A breathing dot for live values. */
+  .pulse-dot {
+    animation: btc-pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes btc-pulse {
+    0%,
+    100% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0.45;
+      transform: scale(0.82);
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ground::before,
+  .tape-track,
+  .carry-line,
+  .carry-words > *,
+  .pulse-dot {
+    animation: none !important;
+  }
 }

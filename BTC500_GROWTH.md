@@ -164,6 +164,42 @@ yet), plus a reply/like (`status/2120005265051300228`).
 
 ---
 
+## Session 2026-11-11 — owner-directed redesign: the site gets a face
+
+Owner instruction: *"use taste-skill to improve the website look, redesign if
+needed, we need super cool design."* This is an owner directive and overrides
+the freeze for this one change; it is a skin, not a copy or structure rewrite.
+
+- **Art direction was dealt, not chosen.** `design-taste-frontend` 2.5.1 was
+  installed (`npx skills add https://github.com/Leonxlnx/taste-skill`) and its
+  dealers picked the palette, the hero layout and the two moments: brand deal
+  (near-black warm ground + Bitcoin orange), `split` hero, `counter-rolls` +
+  `line-carries-colour`. Plan and rationale: `plans/004-homepage-redesign-taste-skill.md`.
+- **Shipped:** the ground flipped from cream to near-black across every route
+  (the site is token-driven, so this was a token change), a split hero where the
+  live cycle map is the picture and the hero fills the first screen alone, a
+  rule diagram with today's position on the rail, proof figures that roll once,
+  an accent line that climbs the closing panel, and a dark nav/footer with a
+  large wordmark. No new dependency, no WebGL, no change to the H1, the lead,
+  the AEO ids, the FAQ or the JSON-LD.
+- **Verified:** typecheck clean, lint clean on the changed files, `npm test`
+  green, production build green, browser pass at 1440/1024/768/390 with no
+  overflow and no clipped text. The taste-skill checker was run against the dev
+  server; its actionable findings (hero-fill, heading-scale, button-styles,
+  tap-size, focus-ring) were fixed. Left open on purpose: `no-visual` on the
+  text-only sections, the `run-on` H1 (one keyword H1 is the whole point) and
+  the off-viewport hit on the hidden share card.
+- **Not a growth bet, and not claimed as one.** No crawl, impression, click or
+  referral number moved because of this and none was measured. What it can do
+  is make the one URL Google already serves worth staying on, and make the
+  share card and the embed kit look like the brand they claim to be.
+- **Tooling note:** the installed skill lives in `.agents/` (1,603 vendored
+  files, 43 MB) and the skill's own scratch in `.taste-skill/`. Both are now
+  gitignored — `skills-lock.json` stays tracked as the manifest. The repository
+  must never carry the skill itself.
+
+---
+
 ## Next priorities
 
 0. **Full freeze stands, with one new exception: a defect fix, not copy.** Gate 2

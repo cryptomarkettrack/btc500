@@ -17,11 +17,11 @@ import {
 } from "lucide-react";
 import { computeCycle, daysBetween, formatUsd } from "@/lib/phase";
 import { buildHomeAnswer } from "@/lib/home-answer";
-import { BtcLogo } from "@/components/BtcLogo";
 import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
-import { Btc500Hero } from "@/components/Btc500Hero";
-import { CommandCenter } from "@/components/home/CommandCenter";
+import { HeroSplit } from "@/components/home/HeroSplit";
+import { RuleDiagram } from "@/components/home/RuleDiagram";
+import { ClosingStatement } from "@/components/home/ClosingStatement";
 import { lazy, Suspense, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { getArticlesSorted, type ArticleMeta } from "@/lib/articles";
@@ -34,6 +34,7 @@ import { DataTape } from "@/components/home/DataTape";
 import { ProofBand } from "@/components/home/ProofBand";
 import { LedgerCalculator } from "@/components/home/LedgerCalculator";
 import { StickyCta } from "@/components/home/StickyCta";
+import { CommandCenter } from "@/components/home/CommandCenter";
 
 // Loaded only when the preview dialog is opened. It pulls framer-motion +
 // AnimatePresence, which the landing page otherwise doesn't need.
@@ -48,7 +49,6 @@ export function HomePage() {
   const priceRes = useQuery(btcPriceQuery);
   const simulatorRes = useQuery(simulatorPreviewQuery);
   const now = useNow(60_000);
-  const heroRef = useRef<HTMLDivElement>(null);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
 
@@ -67,32 +67,17 @@ export function HomePage() {
     nowISO: now.toISOString(),
   });
 
-  // Section 1: "Waiting to Buy" — active during the 500-day pre-halving window (buyDate to nextHalving)
   const isBuyActive = now >= cycle.buyDate && now < cycle.nextHalving;
-  // Section 2: "Waiting to Sell" — active after halving until sellDate
   const isSellActive = now >= cycle.nextHalving && now < cycle.sellDate;
 
-  // Buy countdown: days until buyDate (or 0 if passed)
   const buyDays = Math.max(0, cycle.daysUntilBuy);
-  const buyProgress = cycle.buyProgress;
-
-  // Block progress: current block height vs target halving block
-  const blocksInCycle = halving.nextHalvingBlock - halving.lastHalvingBlock;
-  const blocksElapsed = halving.height - halving.lastHalvingBlock;
-  const blockProgress = Math.max(0, Math.min(1, blocksElapsed / blocksInCycle));
-  const blocksRemaining = halving.nextHalvingBlock - halving.height;
-
-  // Sell countdown: days until sellDate
   const sellDays = cycle.daysUntilSell;
 
-  // Get latest articles
   const latestArticles = getArticlesSorted().slice(0, 3);
 
-  // Calculate historical returns from simulator data for the preview
   const completedCycles =
     simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
 
-  // Outcome stat strip — computed from real cycle data, not hardcoded.
   const totalCompleted = completedCycles.length;
   const avgReturn =
     totalCompleted > 0
@@ -102,20 +87,7 @@ export function HomePage() {
   const bestReturn =
     totalCompleted > 0 ? Math.max(...completedCycles.map((c) => c.returnPercent ?? 0)) : null;
 
-  // Last completed cycle's buy price/date/sell date — used by the P&L preview modal.
   const lastCompletedCycle = simulatorRes.data?.cycles[simulatorRes.data.cycles.length - 1] ?? null;
-  const previewBuyPrice = lastCompletedCycle?.buyPrice ?? null;
-  const previewBuyDate = lastCompletedCycle?.buyDate ?? null;
-  const previewSellDate = lastCompletedCycle?.sellDate ?? null;
-
-  // Phase-aware hero line (growth redesign): the next dated action, always first.
-  const phaseTagline = isBuyActive
-    ? `Buy window is open — halving lands ${formatUtcDay(cycle.nextHalving)}.`
-    : isSellActive
-      ? `Sell window opens ${formatUtcDay(cycle.sellDate)} — ${sellDays} days from now.`
-      : cycle.phase === "done"
-        ? `Next cycle's buy window opens ${formatUtcDay(cycle.buyDate)} — ${cycle.daysUntilNextCycleBuy} days from now.`
-        : `Buy window opens ${formatUtcDay(cycle.buyDate)} — ${buyDays} days from now.`;
 
   // The single next dated action, surfaced above the fold instead of only in
   // the chart label and the sticky bar.
@@ -137,95 +109,119 @@ export function HomePage() {
 
   return (
     <div className="min-h-screen bg-background text-foreground">
-      <main className="mx-auto max-w-6xl px-6 pb-24 pt-6 sm:pt-10">
-        <div
-          ref={heroRef}
-          className="flex flex-col gap-6 p-0 sm:p-5"
-          style={{ background: "var(--background)" }}
-        >
-          {/* ===== HERO — positioning first (growth redesign): the rule in one line, then proof ===== */}
-          <section
-            aria-label="BTC500 strategy summary"
-            className="mx-auto w-full max-w-3xl text-center"
-          >
-            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-              {answer.eyebrow}
-            </p>
-            <p className="mx-auto mt-3 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
-              <strong className="font-semibold text-foreground">{answer.leadAnswer}</strong>{" "}
-              {answer.leadRest}
-            </p>
-          </section>
+      <HeroSplit
+        answer={answer}
+        cycle={cycle}
+        price={priceRes.data?.price ?? null}
+        countdownValue={countdownValue}
+        countdownLabel={countdownLabel}
+        isSellActive={isSellActive}
+        buyDays={buyDays}
+      />
 
-          <Btc500Hero
-            price={priceRes.data?.price ?? null}
-            daysLeft={buyDays}
-            title={`${answer.h1Html}<span class="mt-3 block text-base font-medium tracking-normal text-muted-foreground sm:text-lg">${answer.subline}</span>`}
-            srTitle="Bitcoin 500-Day Cycle — historical performance from 500 days before each halving through 500 days after"
-            tagline={<span className="font-semibold text-foreground">{phaseTagline}</span>}
-            countdown={
-              <div className="mx-auto flex w-full max-w-md flex-col items-center rounded-2xl border border-border/60 bg-card px-5 py-4">
-                <div className="flex items-baseline justify-center gap-2.5">
-                  <span
-                    suppressHydrationWarning
-                    className="font-data text-5xl font-bold leading-none tracking-tighter sm:text-6xl"
-                    style={{ color: isSellActive ? "var(--success)" : "var(--primary)" }}
-                  >
-                    {countdownValue.toLocaleString()}
-                  </span>
-                  <span className="text-sm font-semibold uppercase tracking-[0.12em] text-muted-foreground">
-                    {countdownLabel}
-                  </span>
-                </div>
-              </div>
-            }
-          />
+      <DataTape
+        price={priceRes.data?.price ?? null}
+        nextHalving={cycle.nextHalving}
+        height={halving.height}
+        buyDays={buyDays}
+        sellDays={sellDays}
+        isBuyActive={isBuyActive}
+        isSellActive={isSellActive}
+        phaseDone={cycle.phase === "done"}
+        daysUntilNextCycleBuy={cycle.daysUntilNextCycleBuy}
+      />
 
-          {/* ===== 1b. HERO DUAL CTAs ===== */}
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <Link
-              to="/simulator"
-              onClick={() => trackCta("hero", "/simulator")}
-              className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+      <main className="mx-auto max-w-6xl px-6">
+        {/* ===== 01. THE RULE ===== */}
+        <section className="pt-24 sm:pt-28" aria-labelledby="rule-heading">
+          <div className="max-w-2xl">
+            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+              01 / The rule
+            </p>
+            <h2
+              id="rule-heading"
+              className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
             >
-              <Calculator className="h-4 w-4" />
-              See what $10,000 would have done
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              to="/timeline"
-              onClick={() => trackCta("hero", "/timeline")}
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
-            >
-              <LineChart className="h-4 w-4" />
-              View the Timeline
-            </Link>
+              Three dates, four years apart
+            </h2>
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+              One 500-day window around each Bitcoin halving. Buy at T−500, hold through the event,
+              sell at T+500. Nothing needs interpreting — the calendar decides. The{" "}
+              <Link to="/bitcoin-500-day-cycle" className="link-draw font-semibold text-primary">
+                cycle explainer
+              </Link>{" "}
+              has every date and price.
+            </p>
           </div>
-          <p className="font-data text-center text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-            Free to use · No account · Calendar-fixed dates · Block + price data
-          </p>
 
-          {/* ===== LIVE DATA TAPE ===== */}
-          <DataTape
+          <div className="mt-10 grid gap-4 sm:grid-cols-3">
+            <HowItWorksCard
+              id="step-buy"
+              icon={Target}
+              step="01"
+              title="Buy 500 days before"
+              description="Put the buy order on the date the countdown names — 500 days before the next halving, whatever day that lands on."
+              accent="var(--primary)"
+              to="/halving-dates"
+              cta="See the halving schedule"
+            />
+            <HowItWorksCard
+              id="step-hold"
+              icon={Zap}
+              step="02"
+              title="Hold through the halving"
+              description="Hold the position as the event passes. Supply halves; the window does the waiting."
+              accent="var(--info)"
+              to="/simulator"
+              cta="Calculate your returns"
+            />
+            <HowItWorksCard
+              id="step-sell"
+              icon={Shield}
+              step="03"
+              title="Sell 500 days after"
+              description="Exit on the dated T+500 date, then wait for the next cycle. Two trades, every four years."
+              accent="var(--success)"
+              to="/timeline"
+              cta="Watch the timeline"
+            />
+          </div>
+
+          <RuleDiagram
+            cycle={cycle}
+            buyDays={buyDays}
+            sellDays={sellDays}
+            daysUntilHalving={daysToHalving}
+            isBuyActive={isBuyActive}
+            isSellActive={isSellActive}
+          />
+        </section>
+
+        {/* ===== THE WINDOW — the product's own live read ===== */}
+        <section className="pt-20 sm:pt-24" aria-label="The live cycle window">
+          <CommandCenter
+            cycle={cycle}
             price={priceRes.data?.price ?? null}
-            nextHalving={cycle.nextHalving}
             height={halving.height}
+            nextHalvingBlock={halving.nextHalvingBlock}
+            lastHalvingBlock={halving.lastHalvingBlock}
             buyDays={buyDays}
             sellDays={sellDays}
             isBuyActive={isBuyActive}
             isSellActive={isSellActive}
-            phaseDone={cycle.phase === "done"}
-            daysUntilNextCycleBuy={cycle.daysUntilNextCycleBuy}
+            buyProgress={cycle.buyProgress}
+            blockProgress={computeBlockProgress(halving)}
+            blocksRemaining={halving.nextHalvingBlock - halving.height}
           />
 
           <nav
             aria-label="BTC500 core pages"
-            className="mx-auto grid w-full max-w-3xl gap-2 sm:grid-cols-2"
+            className="mt-4 grid w-full gap-2 sm:grid-cols-2 lg:grid-cols-4"
           >
             <ClusterLink
               to="/bitcoin-500-day-cycle"
               label="Bitcoin 500-Day Cycle"
-              hint="How T-500 and T+500 are defined"
+              hint="How T−500 and T+500 are defined"
             />
             <ClusterLink
               to="/simulator"
@@ -239,233 +235,53 @@ export function HomePage() {
               hint="When the rule buys and sells"
             />
           </nav>
+        </section>
 
-          <section
-            aria-labelledby="definition-heading"
-            className="mx-auto w-full max-w-3xl rounded-2xl border border-border/60 bg-card px-5 py-5 sm:px-6"
-          >
-            <h2 id="definition-heading" className="text-sm font-semibold text-foreground">
-              What is the Bitcoin 500-day rule?
-            </h2>
-            <p
-              id="btc500-definition"
-              className="mt-2 text-sm leading-relaxed text-muted-foreground"
-            >
-              BTC500 measures one window: 500 days before each Bitcoin halving through 500 days
-              after it. The live countdown on this page is that window for the current cycle. The{" "}
-              <Link
-                to="/bitcoin-500-day-cycle"
-                className="font-semibold text-primary hover:underline"
+        {/* ===== THE ANSWERS (AEO) ===== */}
+        <section className="pt-20 sm:pt-24" aria-label="What the rule means">
+          <div className="grid gap-4 lg:grid-cols-2">
+            <article className="rounded-2xl border border-white/10 bg-[var(--panel)] p-6 sm:p-8">
+              <h3 className="text-lg font-semibold">What is the Bitcoin 500-day rule?</h3>
+              <p
+                id="btc500-definition"
+                className="mt-3 text-sm leading-relaxed text-muted-foreground"
               >
-                500-day cycle explainer
-              </Link>{" "}
-              is the full methodology. Nothing here is financial advice.
-            </p>
-            <div className="mt-4 border-t border-border/50 pt-4">
-              <h2 className="text-sm font-semibold text-foreground">
+                BTC500 measures one window: 500 days before each Bitcoin halving through 500 days
+                after it. The live countdown on this page is that window for the current cycle. The{" "}
+                <Link to="/bitcoin-500-day-cycle" className="link-draw font-semibold text-primary">
+                  500-day cycle explainer
+                </Link>{" "}
+                is the full methodology. Nothing here is financial advice.
+              </p>
+            </article>
+
+            <article className="rounded-2xl border border-white/10 bg-[var(--panel)] p-6 sm:p-8">
+              <h3 className="text-lg font-semibold">
                 When is 500 days before the next Bitcoin halving?
-              </h2>
+              </h3>
               <p
                 id="buy-date-answer"
-                className="mt-2 text-sm leading-relaxed text-muted-foreground"
+                className="mt-3 text-sm leading-relaxed text-muted-foreground"
               >
                 The BTC500 buy date is {formatUtcDay(cycle.buyDate)} — 500 days before the next
                 estimated halving on {formatUtcDay(cycle.nextHalving)}. That date moves if Bitcoin
                 blocks come in faster or slower than ten minutes. The record of that offset, window
                 by window, is in{" "}
-                <Link
-                  to="/bitcoin-500-day-cycle"
-                  className="font-semibold text-primary hover:underline"
-                >
+                <Link to="/bitcoin-500-day-cycle" className="link-draw font-semibold text-primary">
                   when is 500 days before the next bitcoin halving
                 </Link>
                 . Every cycle date is on the{" "}
-                <Link to="/halving-dates" className="font-semibold text-primary hover:underline">
+                <Link to="/halving-dates" className="link-draw font-semibold text-primary">
                   halving dates page
                 </Link>
                 .
               </p>
-            </div>
-          </section>
-
-          <CommandCenter
-            cycle={cycle}
-            price={priceRes.data?.price ?? null}
-            height={halving.height}
-            nextHalvingBlock={halving.nextHalvingBlock}
-            lastHalvingBlock={halving.lastHalvingBlock}
-            buyDays={buyDays}
-            sellDays={sellDays}
-            isBuyActive={isBuyActive}
-            isSellActive={isSellActive}
-            buyProgress={buyProgress}
-            blockProgress={blockProgress}
-            blocksRemaining={blocksRemaining}
-          />
-
-          {/* Preview after halving + Share + Embed */}
-          <div className="flex flex-col items-center gap-3 px-2">
-            <button
-              type="button"
-              onClick={() => setPreviewOpen(true)}
-              className="group inline-flex items-center gap-2.5 rounded-full border-2 border-primary/30 bg-primary-soft px-6 py-3 text-sm font-bold text-primary shadow-sm transition-all hover:border-primary hover:bg-primary hover:text-primary-foreground hover:shadow-md active:scale-95"
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
-              </span>
-              <Eye className="h-4 w-4 transition-transform group-hover:scale-110" />
-              Preview the homepage after the buy window
-              <Sparkles className="h-4 w-4 transition-transform group-hover:rotate-12" />
-            </button>
-            <ShareButton captureRef={cycleShareCardRef} />
-            <Link
-              to="/embed-kit"
-              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition hover:text-primary"
-            >
-              <LayoutTemplate className="h-3.5 w-3.5" />
-              Open Embed Kit — badges, countdown widgets & themes
-              <ArrowRight className="h-3.5 w-3.5" />
-            </Link>
-          </div>
-        </div>
-
-        {/* ===== HOW IT WORKS SECTION ===== */}
-        <section className="mt-20">
-          <div className="mb-10 text-center">
-            <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
-              01 / The rule
-            </p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
-              The rule, step by step
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-              One 500-day window around each Bitcoin halving. Buy at T-500, hold through the event,
-              sell at T+500. Nothing needs interpreting — the calendar decides. The{" "}
-              <Link
-                to="/bitcoin-500-day-cycle"
-                className="font-semibold text-primary hover:underline"
-              >
-                cycle explainer
-              </Link>{" "}
-              has the dates and prices.
-            </p>
-          </div>
-
-          <div className="grid gap-6 sm:grid-cols-3">
-            <HowItWorksCard
-              id="step-buy"
-              icon={Target}
-              step="1"
-              title="Buy 500 Days Before"
-              description="Set your buy order exactly 500 days before the next halving. The countdown above tells you exactly when."
-              accent="var(--primary)"
-              accentSoft="var(--primary-soft)"
-              to="/halving-dates"
-              cta="See the halving schedule"
-            />
-            <HowItWorksCard
-              id="step-hold"
-              icon={Zap}
-              step="2"
-              title="Hold Through Halving"
-              description="Hold your position as the halving event passes. This is where the magic happens — reduced supply meets sustained demand."
-              accent="var(--info)"
-              accentSoft="oklch(0.95 0.04 240)"
-              to="/simulator"
-              cta="Calculate your returns"
-            />
-            <HowItWorksCard
-              id="step-sell"
-              icon={Shield}
-              step="3"
-              title="Sell 500 Days After"
-              description="Exit exactly 500 days after halving. Lock in profits and wait for the next cycle. Rinse and repeat every ~4 years."
-              accent="var(--success)"
-              accentSoft="var(--success-soft)"
-              to="/timeline"
-              cta="Watch the timeline"
-            />
+            </article>
           </div>
         </section>
 
-        {/* ===== COMPARISON (AEO extractable table) ===== */}
-        <section className="mt-20" aria-labelledby="compare-heading">
-          <div className="mb-8 text-center">
-            <h2 id="compare-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
-              BTC500 vs buy-and-hold vs monthly DCA
-            </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-              Same asset. Different rules. BTC500 is for people who want a cycle window they can
-              audit — not a replacement for every strategy.
-            </p>
-          </div>
-          <div className="overflow-x-auto rounded-[24px] border border-border/60 bg-card">
-            <table className="w-full min-w-[36rem] text-left text-sm">
-              <caption className="sr-only">
-                Comparison of BTC500, buy-and-hold, and monthly dollar-cost averaging
-              </caption>
-              <thead>
-                <tr className="border-b border-border/60 text-xs uppercase tracking-wider text-muted-foreground">
-                  <th scope="col" className="px-5 py-3 font-semibold">
-                    Approach
-                  </th>
-                  <th scope="col" className="px-5 py-3 font-semibold">
-                    Rule
-                  </th>
-                  <th scope="col" className="px-5 py-3 font-semibold">
-                    Trades per cycle
-                  </th>
-                  <th scope="col" className="px-5 py-3 font-semibold">
-                    Best for
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr className="border-b border-border/40 bg-primary-soft/30">
-                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
-                    BTC500
-                  </th>
-                  <td className="px-5 py-4 text-muted-foreground">
-                    Buy 500 days before the halving, sell 500 days after
-                  </td>
-                  <td className="px-5 py-4 text-muted-foreground">2</td>
-                  <td className="px-5 py-4 text-muted-foreground">
-                    A dated window you can backtest
-                  </td>
-                </tr>
-                <tr className="border-b border-border/40">
-                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
-                    Buy and hold
-                  </th>
-                  <td className="px-5 py-4 text-muted-foreground">Never sell</td>
-                  <td className="px-5 py-4 text-muted-foreground">0</td>
-                  <td className="px-5 py-4 text-muted-foreground">Maximum time in market</td>
-                </tr>
-                <tr>
-                  <th scope="row" className="px-5 py-4 font-semibold text-foreground">
-                    Monthly DCA
-                  </th>
-                  <td className="px-5 py-4 text-muted-foreground">
-                    Buy a fixed amount every month
-                  </td>
-                  <td className="px-5 py-4 text-muted-foreground">~48</td>
-                  <td className="px-5 py-4 text-muted-foreground">Smoothing entry over years</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-4 text-center text-xs text-muted-foreground">
-            Compare lump-sum BTC500 dates against spreading buys on the{" "}
-            <Link to="/dca" className="font-semibold text-primary hover:underline">
-              DCA vs lump sum
-            </Link>{" "}
-            tool.
-          </p>
-        </section>
-
-        {/* ===== 02. THE RECORD — dark proof band with real archive stats ===== */}
-        <section className="mt-20" aria-labelledby="record-heading">
+        {/* ===== 02. THE RECORD ===== */}
+        <section className="pt-20 sm:pt-24" aria-labelledby="record-heading">
           <ProofBand
             totalCompleted={totalCompleted}
             profitable={profitableCycles}
@@ -474,173 +290,158 @@ export function HomePage() {
           />
         </section>
 
-        {/* ===== HISTORICAL RETURNS PREVIEW ===== */}
+        {/* ===== THE RECORD, CYCLE BY CYCLE ===== */}
         {completedCycles.length > 0 && (
-          <section className="mt-20">
-            <div className="mb-8 text-center">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                Historical Performance
+          <section className="pt-20 sm:pt-24" aria-labelledby="history-heading">
+            <div className="max-w-2xl">
+              <h2
+                id="history-heading"
+                className="text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
+              >
+                Every completed window
               </h2>
-              <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
-                The BTC<span className="text-primary">500</span> strategy has delivered exceptional
-                returns across every halving cycle since 2012.
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                The BTC<span className="text-primary">500</span> windows since 2012, with the buy
+                price, the sell price and the return each one produced.
               </p>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {completedCycles.map((cycle, i) => (
+            <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+              {completedCycles.map((c) => (
                 <div
-                  key={cycle.label}
-                  className="rounded-[24px] border border-border/60 bg-card p-5"
+                  key={c.label}
+                  className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-5"
                 >
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    {cycle.label}
+                  <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {c.label}
                   </div>
-                  <div className="mt-3 space-y-2 text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Buy Price</span>
-                      <span className="font-semibold">
-                        {cycle.buyPrice ? formatUsd(cycle.buyPrice) : "—"}
+                  <div className="mt-4 space-y-2 text-sm">
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Buy</span>
+                      <span className="font-data font-semibold">
+                        {c.buyPrice ? formatUsd(c.buyPrice) : "—"}
                       </span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-muted-foreground">Sell Price</span>
-                      <span className="font-semibold">
-                        {cycle.sellPrice ? formatUsd(cycle.sellPrice) : "—"}
+                    <div className="flex justify-between gap-3">
+                      <span className="text-muted-foreground">Sell</span>
+                      <span className="font-data font-semibold">
+                        {c.sellPrice ? formatUsd(c.sellPrice) : "—"}
                       </span>
                     </div>
-                    <div className="border-t border-border/40 pt-2">
-                      <div className="flex justify-between">
-                        <span className="text-muted-foreground">Return</span>
-                        <span
-                          className="font-bold"
-                          style={{
-                            color:
-                              cycle.returnPercent && cycle.returnPercent > 0
-                                ? "var(--success)"
-                                : "var(--destructive)",
-                          }}
-                        >
-                          {cycle.returnPercent !== null
-                            ? `${cycle.returnPercent > 0 ? "+" : ""}${cycle.returnPercent.toFixed(0)}%`
-                            : "—"}
-                        </span>
-                      </div>
+                    <div className="flex justify-between gap-3 border-t border-white/10 pt-2">
+                      <span className="text-muted-foreground">Return</span>
+                      <span
+                        className="font-data font-semibold"
+                        style={{
+                          color:
+                            c.returnPercent && c.returnPercent > 0
+                              ? "var(--success)"
+                              : "var(--destructive)",
+                        }}
+                      >
+                        {c.returnPercent !== null
+                          ? `${c.returnPercent > 0 ? "+" : ""}${c.returnPercent.toFixed(0)}%`
+                          : "—"}
+                      </span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 text-center">
+            <div className="mt-8">
               <Link
                 to="/simulator"
                 onClick={() => trackCta("historical_returns", "/simulator")}
-                className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
+                className="press inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
               >
                 <Calculator className="h-4 w-4" />
-                Calculate Your Returns
+                Calculate your returns
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </section>
         )}
 
-        {/* ===== 04. PUT A NUMBER ON IT — interactive what-if vs the last completed window ===== */}
-        <section className="mt-20" aria-label="What would your amount have done">
+        {/* ===== 04. PUT A NUMBER ON IT ===== */}
+        <section className="pt-20 sm:pt-24" aria-label="What would your amount have done">
           <LedgerCalculator cycle={lastCompletedCycle} />
         </section>
 
-        {/* ===== FEATURE CARDS — EXPLORE TOOLS ===== */}
-        <section className="mt-20">
-          <div className="mb-10 text-center">
+        {/* ===== 05. THE TOOLS ===== */}
+        <section className="pt-20 sm:pt-24" aria-labelledby="tools-heading">
+          <div className="max-w-2xl">
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               05 / Choose your depth
             </p>
-            <h2 className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2
+              id="tools-heading"
+              className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
+            >
               Go deeper when you&apos;re ready
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Every tool is free and instant. Start with the explainer, check the record in the
               simulator, or replay any day on the timeline.
             </p>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             <FeatureCard
               to="/bitcoin-500-day-cycle"
               icon={BookOpen}
               title="Bitcoin 500-Day Cycle"
-              description="The canonical explainer: T-500, T+500, and every completed window with real prices."
+              description="The canonical explainer: T−500, T+500, and every completed window with real prices."
               accent="var(--primary)"
-              accentSoft="var(--primary-soft)"
             />
             <FeatureCard
               to="/simulator"
               icon={Calculator}
               title="Investment Simulator"
-              description={
-                <>
-                  See exactly how much you'd have earned using the BTC
-                  <span className="text-primary">500</span> strategy across every halving cycle
-                  since 2012.
-                </>
-              }
+              description="See exactly how much you would have earned using the BTC500 strategy across every halving cycle since 2012."
               accent="var(--primary)"
-              accentSoft="var(--primary-soft)"
             />
             <FeatureCard
               to="/timeline"
               icon={LineChart}
               title="Time Machine"
-              description="Replay any day in Bitcoin's halving history. Watch prices evolve in real-time through an interactive timeline."
+              description="Replay any day in Bitcoin's halving history and watch prices evolve through the window."
               accent="var(--info)"
-              accentSoft="oklch(0.95 0.04 240)"
             />
             <FeatureCard
               to="/articles"
               icon={BookOpen}
               title="Strategy Articles"
-              description={
-                <>
-                  Deep dives into the BTC<span className="text-primary">500</span> strategy,
-                  NUPL/RUPL indicators, on-chain analysis, and more.
-                </>
-              }
+              description="Deep dives into the BTC500 strategy, NUPL/RUPL indicators, on-chain analysis, and more."
               accent="var(--success)"
-              accentSoft="var(--success-soft)"
             />
             <FeatureCard
               to="/insider-trading"
               icon={TrendingUp}
               title="Insider Trading Tracker"
-              description="Monitor insider transactions at major crypto companies. See who's buying and selling."
-              accent="oklch(0.48 0.15 155)"
-              accentSoft="oklch(0.95 0.04 155)"
+              description="Monitor insider transactions at major crypto companies. See who is buying and selling."
+              accent="var(--success)"
             />
             <FeatureCard
               to="/liquidation"
               icon={Flame}
               title="Liquidation Dashboard"
               description="Track real-time crypto liquidations across exchanges. See where leverage is getting wiped out."
-              accent="oklch(0.577 0.245 27.325)"
-              accentSoft="oklch(0.95 0.04 30)"
+              accent="var(--destructive)"
             />
             <FeatureCard
               to="/bitcoin-etf"
               icon={Landmark}
               title="ETF Absorption"
               description="US spot Bitcoin ETF inflows in BTC, stacked against miner issuance and the 500-day cycle."
-              accent="oklch(0.48 0.15 155)"
-              accentSoft="oklch(0.95 0.04 155)"
+              accent="var(--success)"
             />
             <FeatureCard
               to="/dca"
               icon={LineChart}
               title="DCA vs Lump Sum"
-              description="Compare spreading buys and sells over days versus going all-in at BTC500 dates."
-              accent="oklch(0.5 0.12 280)"
-              accentSoft="oklch(0.95 0.03 280)"
+              description="Compare spreading buys over days against going all-in on the BTC500 dates."
+              accent="var(--info)"
             />
             <FeatureCard
               to="/embed-kit"
@@ -648,58 +449,59 @@ export function HomePage() {
               title="Embed Kit"
               description="Drop live countdown badges and full widgets on blogs, newsletters, and dashboards."
               accent="var(--info)"
-              accentSoft="oklch(0.95 0.04 240)"
             />
           </div>
         </section>
 
         {/* ===== LATEST ARTICLES ===== */}
-        <section className="mt-20">
-          <div className="mb-8 flex items-center justify-between">
+        <section className="pt-20 sm:pt-24" aria-labelledby="articles-heading">
+          <div className="flex items-end justify-between gap-6">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Latest Articles</h2>
-              <p className="mt-2 text-muted-foreground">In-depth analysis and strategy guides.</p>
+              <h2
+                id="articles-heading"
+                className="text-3xl leading-tight font-semibold tracking-[-0.02em] sm:text-4xl"
+              >
+                Latest articles
+              </h2>
+              <p className="mt-3 text-muted-foreground">In-depth analysis and strategy guides.</p>
             </div>
             <Link
               to="/articles"
-              className="hidden items-center gap-1.5 text-sm font-semibold text-primary transition-colors hover:text-primary/80 sm:inline-flex"
+              className="link-draw hidden items-center gap-1.5 text-sm font-semibold text-primary sm:inline-flex"
             >
               View all
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
 
-          <div className="grid gap-4 sm:grid-cols-3">
-            {/* Pinned strategy primer — the entry point into the product */}
+          <div className="mt-10 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
             <Link
               to="/bitcoin-500-day-cycle"
-              className="group block rounded-[24px] border-2 border-primary/30 bg-primary-soft/40 p-6 transition-all hover:border-primary hover:bg-primary-soft/60"
+              className="group lift flex flex-col rounded-2xl border border-primary/30 bg-primary/[0.06] p-6"
             >
-              <div className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
+              <div className="mb-3 inline-flex w-fit items-center gap-1.5 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] text-primary-foreground">
                 <BookOpen className="h-3 w-3" />
                 Start here
               </div>
-              <h3 className="text-base font-semibold leading-snug group-hover:text-primary transition-colors">
-                Bitcoin 500-Day Cycle
-              </h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
-                How T-500 and T+500 are defined, what previous windows returned, and where the
+              <h3 className="text-base font-semibold leading-snug">Bitcoin 500-Day Cycle</h3>
+              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                How T−500 and T+500 are defined, what previous windows returned, and where the
                 current cycle sits.
               </p>
-              <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary">
+              <span className="mt-5 inline-flex items-center gap-1 text-xs font-semibold text-primary">
                 Read the cycle explainer
                 <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-              </div>
+              </span>
             </Link>
-            {latestArticles.map((article, i) => (
-              <ArticleCard key={article.id} article={article} index={i} />
+            {latestArticles.map((article) => (
+              <ArticleCard key={article.id} article={article} />
             ))}
           </div>
 
-          <div className="mt-6 text-center sm:hidden">
+          <div className="mt-8 sm:hidden">
             <Link
               to="/articles"
-              className="inline-flex items-center gap-2 rounded-full border border-border/60 px-5 py-2.5 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
+              className="press inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold text-foreground hover:border-primary/40 hover:text-primary"
             >
               View all articles
               <ArrowRight className="h-4 w-4" />
@@ -707,69 +509,66 @@ export function HomePage() {
           </div>
         </section>
 
-        {/* ===== FAQ (visible content mirrors FAQPage JSON-LD for rich results) ===== */}
-        <section className="mt-20" aria-labelledby="faq-heading">
-          <div className="mb-8 text-center">
+        {/* ===== FAQ ===== */}
+        <section className="pt-20 sm:pt-24" aria-labelledby="faq-heading">
+          <div className="max-w-2xl">
             <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
               06 / Skeptic&apos;s corner
             </p>
-            <h2 id="faq-heading" className="mt-2 text-3xl font-bold tracking-tight sm:text-4xl">
+            <h2
+              id="faq-heading"
+              className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
+            >
               Ask the hard questions
             </h2>
-            <p className="mx-auto mt-3 max-w-2xl text-muted-foreground">
+            <p className="mt-4 text-base leading-relaxed text-muted-foreground">
               Quick answers about the BTC<span className="text-primary">500</span> strategy, Bitcoin
-              halving dates, post-halving price behavior, and the free tools on this site.
+              halving dates, post-halving price behaviour, and the free tools on this site.
             </p>
           </div>
 
-          <div className="mx-auto max-w-3xl space-y-3">
+          <div className="mt-10 grid gap-2 lg:grid-cols-2 lg:items-start">
             {FAQ_ITEMS.map((item) => (
               <FaqItem key={item.question} question={item.question} answer={item.answer} />
             ))}
           </div>
         </section>
 
-        {/* ===== FINAL CTA ===== */}
-        <section className="mt-20">
-          <div className="relative overflow-hidden rounded-[32px] border border-border/60 bg-card p-10 text-center shadow-sm sm:p-16">
-            <div className="pointer-events-none absolute -left-16 -top-16 opacity-[0.04]">
-              <BtcLogo size={300} />
-            </div>
-            <div className="relative z-10">
-              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">
-                See What $10,000 Would Be Worth Today
-              </h2>
-              <p className="mx-auto mt-4 max-w-xl text-muted-foreground">
-                Enter any amount into the simulator and see how the BTC
-                <span className="text-primary">500</span> strategy would have performed across every
-                halving cycle since 2012 — using real historical prices.
-              </p>
-              <div className="mt-8 flex flex-wrap justify-center gap-3">
-                <Link
-                  to="/simulator"
-                  onClick={() => trackCta("final_cta", "/simulator")}
-                  className="inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-sm transition-all hover:bg-primary/90 active:scale-95"
-                >
-                  <Calculator className="h-4 w-4" />
-                  Simulate My Returns
-                </Link>
-                <Link
-                  to="/articles/btc500-strategy"
-                  className="inline-flex items-center gap-2 rounded-full border border-border/60 px-6 py-3 text-sm font-semibold text-foreground transition-all hover:border-primary/40 hover:text-primary active:scale-95"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  Read the Strategy
-                </Link>
-              </div>
-            </div>
+        {/* ===== PREVIEW / SHARE / EMBED ===== */}
+        <section className="pt-20 sm:pt-24">
+          <div className="flex flex-col items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setPreviewOpen(true)}
+              className="press inline-flex items-center gap-2.5 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground"
+            >
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+              </span>
+              <Eye className="h-4 w-4" />
+              Preview the homepage after the buy window
+              <Sparkles className="h-4 w-4" />
+            </button>
+            <ShareButton captureRef={cycleShareCardRef} />
+            <Link
+              to="/embed-kit"
+              className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground transition-colors hover:text-primary"
+            >
+              <LayoutTemplate className="h-3.5 w-3.5" />
+              Open Embed Kit — badges, countdown widgets & themes
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </section>
 
-        <p className="mt-16 text-center text-xs text-muted-foreground">
+        <p className="pt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
           Binance, CoinGecko, Coinbase & Kraken. Last reviewed {HOME_LAST_REVIEWED}.
         </p>
       </main>
+
+      <ClosingStatement />
 
       {/* Hidden share card for social media image generation */}
       <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
@@ -789,9 +588,9 @@ export function HomePage() {
             onOpenChange={setPreviewOpen}
             cycle={cycle}
             currentPrice={priceRes.data?.price ?? null}
-            buyPrice={previewBuyPrice}
-            buyDate={previewBuyDate}
-            sellDate={previewSellDate}
+            buyPrice={lastCompletedCycle?.buyPrice ?? null}
+            buyDate={lastCompletedCycle?.buyDate ?? null}
+            sellDate={lastCompletedCycle?.sellDate ?? null}
           />
         </Suspense>
       )}
@@ -810,6 +609,16 @@ export function HomePage() {
       />
     </div>
   );
+}
+
+function computeBlockProgress(halving: {
+  nextHalvingBlock: number;
+  lastHalvingBlock: number;
+  height: number;
+}): number {
+  const blocksInCycle = halving.nextHalvingBlock - halving.lastHalvingBlock;
+  const blocksElapsed = halving.height - halving.lastHalvingBlock;
+  return Math.max(0, Math.min(1, blocksElapsed / blocksInCycle));
 }
 
 function formatUtcDay(d: Date): string {
@@ -833,7 +642,7 @@ function ClusterLink({
   return (
     <Link
       to={to}
-      className="flex items-center justify-between gap-3 rounded-2xl border border-border/60 bg-card px-4 py-3 text-left transition-all hover:border-primary/40"
+      className="lift flex items-center justify-between gap-3 rounded-2xl border border-white/10 bg-[var(--panel)] px-4 py-3.5 text-left hover:bg-white/[0.03]"
     >
       <span>
         <span className="block text-sm font-semibold">{label}</span>
@@ -846,7 +655,7 @@ function ClusterLink({
 
 function FaqItem({ question, answer }: { question: string; answer: string }) {
   return (
-    <details className="group rounded-2xl border border-border/60 bg-card open:shadow-sm">
+    <details className="group rounded-2xl border border-white/10 bg-[var(--panel)] open:border-primary/30">
       <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 text-left marker:content-none [&::-webkit-details-marker]:hidden">
         <h3 className="flex-1 text-sm font-semibold text-foreground sm:text-base">{question}</h3>
         <ChevronDown
@@ -854,7 +663,7 @@ function FaqItem({ question, answer }: { question: string; answer: string }) {
           aria-hidden="true"
         />
       </summary>
-      <div className="px-5 pb-4">
+      <div className="px-5 pb-5">
         <p className="text-sm leading-relaxed text-muted-foreground">{answer}</p>
       </div>
     </details>
@@ -868,7 +677,6 @@ function HowItWorksCard({
   title,
   description,
   accent,
-  accentSoft,
   to,
   cta,
 }: {
@@ -878,20 +686,16 @@ function HowItWorksCard({
   title: string;
   description: string;
   accent: string;
-  accentSoft: string;
   to: string;
   cta: string;
 }) {
   return (
     <div
       id={id}
-      className="flex flex-col rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm"
+      className="lift flex flex-col rounded-2xl border border-white/10 bg-[var(--panel)] p-6"
     >
-      <div className="mb-4 flex items-center gap-3">
-        <span
-          className="inline-flex h-10 w-10 items-center justify-center rounded-full text-sm font-bold"
-          style={{ background: accentSoft, color: accent }}
-        >
+      <div className="mb-5 flex items-center justify-between">
+        <span className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           {step}
         </span>
         <Icon className="h-5 w-5" style={{ color: accent }} />
@@ -900,11 +704,11 @@ function HowItWorksCard({
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
       <Link
         to={to}
-        className="mt-4 inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wider transition-colors hover:opacity-80"
+        className="link-draw mt-4 inline-flex items-center gap-1 py-2 text-xs font-semibold uppercase tracking-wider"
         style={{ color: accent }}
       >
         {cta}
-        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
+        <ArrowRight className="h-3.5 w-3.5" />
       </Link>
     </div>
   );
@@ -916,29 +720,22 @@ function FeatureCard({
   title,
   description,
   accent,
-  accentSoft,
 }: {
   to: string;
   icon: React.ElementType;
   title: string;
   description: React.ReactNode;
   accent: string;
-  accentSoft: string;
 }) {
   return (
-    <Link to={to}>
-      <div className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:-translate-y-0.5 hover:shadow-sm">
-        <span
-          className="mb-4 inline-flex h-11 w-11 items-center justify-center rounded-full"
-          style={{ background: accentSoft }}
-        >
+    <Link to={to} className="group block">
+      <div className="lift h-full rounded-2xl border border-white/10 bg-[var(--panel)] p-6 hover:bg-white/[0.03]">
+        <span className="mb-5 inline-flex h-11 w-11 items-center justify-center rounded-xl border border-white/10">
           <Icon className="h-5 w-5" style={{ color: accent }} />
         </span>
-        <h3 className="text-base font-semibold group-hover:text-primary transition-colors">
-          {title}
-        </h3>
+        <h3 className="text-base font-semibold">{title}</h3>
         <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{description}</p>
-        <div className="mt-4 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary">
+        <div className="mt-5 flex items-center gap-1 text-xs font-semibold uppercase tracking-wider text-primary">
           Explore
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
         </div>
@@ -947,25 +744,23 @@ function FeatureCard({
   );
 }
 
-function ArticleCard({ article, index }: { article: ArticleMeta; index: number }) {
+function ArticleCard({ article }: { article: ArticleMeta }) {
   return (
-    <Link to={`/articles/${article.slug}` as "/articles/btc500-strategy"}>
-      <div className="group rounded-[24px] border border-border/60 bg-card p-6 transition-all hover:shadow-sm">
-        <div className="flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+    <Link to={`/articles/${article.slug}` as "/articles/btc500-strategy"} className="group block">
+      <div className="lift flex h-full flex-col rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
+        <div className="font-data flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
           <span>{article.articleSection}</span>
           <span>·</span>
           <span>{article.readTime}</span>
         </div>
-        <h3 className="mt-3 text-base font-semibold leading-snug group-hover:text-primary transition-colors">
-          {article.title}
-        </h3>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground line-clamp-2">
+        <h3 className="mt-3 text-base font-semibold leading-snug">{article.title}</h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">
           {article.description}
         </p>
-        <div className="mt-4 flex items-center gap-1 text-xs font-semibold text-primary">
+        <span className="mt-auto flex items-center gap-1 pt-5 text-xs font-semibold text-primary">
           Read article
           <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" />
-        </div>
+        </span>
       </div>
     </Link>
   );

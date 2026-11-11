@@ -4,20 +4,20 @@ import { SITE_URL } from "@/lib/site";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto max-w-6xl px-6 py-10">
-        <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
+    <footer className="border-t border-white/10 bg-[var(--panel)]">
+      <div className="mx-auto max-w-6xl px-6 pt-16 pb-10">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link to="/" className="text-lg font-bold tracking-tight text-foreground">
+          <div>
+            <Link to="/" className="text-lg font-semibold tracking-tight text-foreground">
               BTC<span className="text-primary">500</span>
             </Link>
-            <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
+            <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
               Bitcoin 500-day cycle tools. Track performance from 500 days before each halving
               through 500 days after.
             </p>
-            <p className="mt-3 text-[11px] text-muted-foreground">
-              <a href={SITE_URL} className="hover:text-foreground transition-colors" rel="home">
+            <p className="font-data mt-4 text-[11px] text-muted-foreground">
+              <a href={SITE_URL} className="link-draw" rel="home">
                 btc500.net
               </a>
             </p>
@@ -25,14 +25,14 @@ export function Footer() {
 
           {/* Tools */}
           <nav aria-label="Tools">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            <h2 className="font-data mb-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Tools
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   to="/"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Halving Countdown
                 </Link>
@@ -40,7 +40,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/bitcoin-500-day-cycle"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Bitcoin 500-Day Cycle
                 </Link>
@@ -48,7 +48,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/halving-dates"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Halving Dates
                 </Link>
@@ -56,7 +56,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/when-to-sell-bitcoin-after-halving"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   When to Sell Bitcoin
                 </Link>
@@ -64,7 +64,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/simulator"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Investment Simulator
                 </Link>
@@ -72,7 +72,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/dca"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   DCA vs Lump Sum
                 </Link>
@@ -80,7 +80,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/timeline"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Time Machine
                 </Link>
@@ -88,7 +88,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/liquidation"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Liquidation Dashboard
                 </Link>
@@ -96,7 +96,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/bitcoin-etf"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   ETF Flows
                 </Link>
@@ -104,7 +104,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/embed-kit"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Embed Kit
                 </Link>
@@ -114,14 +114,14 @@ export function Footer() {
 
           {/* Data */}
           <nav aria-label="Data and insights">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
-              Data & Insights
+            <h2 className="font-data mb-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+              Data &amp; Insights
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   to="/insider-trading"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Insider Trading
                 </Link>
@@ -129,7 +129,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/news"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Crypto News
                 </Link>
@@ -137,15 +137,15 @@ export function Footer() {
               <li>
                 <Link
                   to="/articles"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
-                  Articles & Strategy
+                  Articles &amp; Strategy
                 </Link>
               </li>
               <li>
                 <Link
                   to="/bitcoin-500-day-cycle"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   500-Day Cycle Explainer
                 </Link>
@@ -153,7 +153,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/articles/btc500-strategy"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   BTC500 Strategy
                 </Link>
@@ -161,7 +161,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/articles/bitcoin-week-ahead"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Weekly Outlook
                 </Link>
@@ -169,7 +169,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/articles/rupl"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   NUPL Guide
                 </Link>
@@ -179,22 +179,22 @@ export function Footer() {
 
           {/* Company */}
           <nav aria-label="Company">
-            <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-3">
+            <h2 className="font-data mb-4 text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
               Company
             </h2>
-            <ul className="space-y-2">
+            <ul className="space-y-2.5">
               <li>
                 <Link
                   to="/about"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
-                  About & methodology
+                  About &amp; methodology
                 </Link>
               </li>
               <li>
                 <Link
                   to="/privacy"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Privacy
                 </Link>
@@ -202,7 +202,7 @@ export function Footer() {
               <li>
                 <Link
                   to="/terms"
-                  className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                  className="link-draw inline-block py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Terms
                 </Link>
@@ -256,11 +256,19 @@ export function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 border-t border-border/40 pt-6 text-center">
+        {/* the wordmark closes the page */}
+        <p
+          aria-hidden="true"
+          className="mt-14 select-none text-center text-[clamp(3rem,13vw,9rem)] leading-none font-semibold tracking-[-0.05em] text-white/[0.04]"
+        >
+          BTC500
+        </p>
+
+        <div className="mt-10 border-t border-white/10 pt-6 text-center">
           <p className="text-xs text-muted-foreground">
             &copy; {new Date().getFullYear()} BTC<span className="text-primary">500</span>. All
             rights reserved.{" "}
-            <Link to="/terms" className="hover:text-foreground">
+            <Link to="/terms" className="link-draw">
               Not financial advice
             </Link>
             . Past performance does not guarantee future results.
