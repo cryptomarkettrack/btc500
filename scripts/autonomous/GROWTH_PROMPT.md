@@ -279,12 +279,60 @@ only `/` remains, `bip-110` is `Crawled - currently not indexed` (lastCrawl
 Both URLs must be named in every review until they are classified after a crawl
 dated later than 2026-11-07.
 
-PERFORMANCE must open with these three lines, every cycle:
+**2026-11-11 (this review): the channel that "distributes" has a measured ceiling,
+and the site is serving a stale number to the only channel that brings strangers.**
+
+- **X reach, read from the profile (211 followers, 900 posts): the five most recent
+  posts show 56, 56, 90, 83 and 110 views.** The pinned UTM-tagged post
+  `status/2120367269997957126` had 56 views / 1 reply / 0 reposts / 1 like in ~4h;
+  the untagged 11-10 post had 90 views / 3 likes. At ~100 views per post, a daily
+  post is single-digit sessions at best even at a 5% click rate — it is the
+  cheapest available distribution, not a growth channel. Record the views, do not
+  infer them from referrals.
+- **`AI Assistant` is the only channel in 20 readings where sessions equal users**
+  (3 sessions / 3 users / 33.3% engaged, GA4 7d 2026-11-04 → 11-10). It has no row
+  in the `referrals` table, so the source is unnamed; print the channel line every
+  cycle and the `sessionSource` dimension once the collector can return it.
+  robots.txt already allows GPTBot, OAI-SearchBot, ChatGPT-User, ClaudeBot,
+  Claude-SearchBot, Claude-User, anthropic-ai, PerplexityBot, Google-Extended,
+  Applebot-Extended and CCBot; `/llms.txt`, `/llms-full.txt` and
+  `/data/500-day-cycles.json` (200, schema + citation string) exist. This is the
+  one surface a stranger has arrived through; it is not decoration.
+- **The buy date is stated three different ways on three quoteable surfaces.**
+  `/bitcoin-500-day-cycle` and `/halving-dates` render "November 29, 2026";
+  `/llms.txt` says "the current block-height estimate is November 28, 2026" at
+  lines 32 and 82; the X bio says "Nov 30, 2026 buy". A cycle that finds them
+  disagreeing fixes the stale ones before any other work and prints all seven
+  values (`/`, the pillar, `/halving-dates`, `/data/500-day-cycles.json`,
+  `/llms.txt`, `/llms-full.txt`, the bio). This is a defect fix, not copy work:
+  it is the one number an answer engine is asked to quote.
+- **Request Indexing is a lever we have never pulled.** Across 17 reviews and ~50
+  runs the cycle has printed the raw `lastCrawlTime` almost every day and has never
+  used Search Console's own Request Indexing. Re-read the crawl timestamp *after*
+  the request, and treat a refusal or an unchanged crawl as evidence rather than an
+  error.
+- **Every GA4 number carries its window.** The 2026-11-11 cycle reported
+  `67 sessions / 21 users` as "unchanged" — that is the 2026-11-03 → 11-09 window,
+  while the runner's 07:32Z report for 2026-11-04 → 11-10 is 77 / 21 / 98 views /
+  28.6%. Quote `sessions / users / views / engagement` with `(window start → end)`
+  printed next to them, or the number cannot be compared to anything.
+- **Dated stop rule for the whole plan — 2026-11-20.** If on that date there is
+  still no crawl of `/bitcoin-500-day-cycle` dated after 2026-11-07T20:20:30Z
+  **and** no named non-github referral session, then: the daily post drops to
+  twice a week, no new owner ask is issued, and the cycle's only work is the weekly
+  measurement plus one link action. Reason: 17 non-improving reviews, 8 `shipped`
+  and 0 site changes in the 7 days to 2026-11-11, ~100 views per post, and a buy
+  date 18 days out (29 November 2026). The current cadence cannot produce a result
+  inside the only window that matters, so it stops pretending to.
+
+PERFORMANCE must open with these five lines, every cycle:
 
 ```
 - indexed X/21, sitemap N (inspection <timestamp>)
 - referrals 7d: <full line>
 - live ask: <id> — channel-verified: <what the channel itself says>, due <date>
+- X views 7d: <post, views, likes> (pinned post included)
+- channels 7d: <channel sessions/users, including AI Assistant>
 ```
 
 **The live-ask line must be verified against the channel, not the ledger.** This
@@ -374,6 +422,16 @@ forever. From today:
   - one post per run. Replies stay conversational and do not each need the link.
 - Also retired after 2026-11-10: the bitcoin-only listing issue, if unmerged with
   0 comments.
+- **2026-11-11 (this review): the live ask is `github-awesome-blockchain-line-1124`,
+  and its instruction changed while it was unsent.** Handover #1 named "second item,
+  directly after the 0xArchive line"; by 2026-11-11 that section had grown a
+  `### Tools Directory` block of outside submissions (18btc, 1000x Leverage,
+  Chain.Love) and the repo had been pushed 2026-11-10T11:53Z. The ask is now
+  paste-after-line-350 plus two clicks with **zero typing** (default commit message
+  and PR title accepted as pre-filled). Re-verify the instruction, not just the
+  route, on any ask older than 24 hours: a stale anchor fails exactly like a dead
+  email address, and the failure looks like indifference. `github.com` at 1 user is
+  still a self-referral and never a positive outcome signal (§10(b)).
 - Verify each live ask against its channel every cycle: `contact@coindesk.com`
   cannot be read, so the evidence is the GA4 `coindesk.com` referral count; the PR
   is readable — `GET /search/issues?q=author:cryptomarkettrack+repo:igorbarinov/awesome-bitcoin`
@@ -387,7 +445,7 @@ forever. From today:
   2026-11-07T20:20:30Z) — and the ban above was written when
   `externalReferringDomains` was 0. No second exception.
 
-A cycle that has no due mandate and no due reading prints the three PERFORMANCE
+A cycle that has no due mandate and no due reading prints the five PERFORMANCE
 lines plus these two ask states and stops. It does **not** prepare a new
 destination.
 
@@ -749,7 +807,12 @@ three lines of what you edited.
 
 ## 8. Finish
 
-- Leave the working tree clean.
+- Leave the working tree clean, and **print the proof**: `git status --short` must
+  output nothing at commit time. If it does not, revert your own edits before
+  committing rather than leaving them for the next run. Set by the 2026-11-11
+  review: the 2026-11-05 run was recorded `dirty-tree` with `vercel`, `tests` and
+  `manifest` all `skipped` and the site check `000`, because a previous cycle's
+  edits were still in the tree — the failure the runner reports as `deploy-health`.
 - End your final message with the same TL;DR in two or three sentences.
 - If you were blocked, say exactly what blocked you and what you did instead.
 - Never leave the repo on a branch other than `main`, never leave unpushed

@@ -587,3 +587,34 @@ cycle; the ask stays the owner's, due 2026-11-24.
 `merged_at 2026-11-07T20:20:30Z`, `merged_by: jlopp`, `comments: 0`. (The issues
 endpoint reports `merged_at: null` for a PR — the pulls endpoint is the one that
 carries the merge, and reading the wrong one is how a merged PR looks unmerged.)
+
+## 2026-11-11 — results review: the X channel has a measured ceiling; the live ask's anchor aged
+
+**X reach, read from the profile with the logged-in session (2026-11-11 ~05:30Z):**
+211 followers, 900 posts. The five most recent posts read **56, 56, 90, 83 and
+110 views** (`aria-label` = "56 views. View post analytics", etc.), with 1–5 likes
+and 0 reposts on each.
+
+| post                                   | published   | views | replies | reposts | likes | link                     |
+| -------------------------------------- | ----------- | ----- | ------- | ------- | ----- | ------------------------ |
+| `status/2120367269997957126` (PINNED)  | 2026-11-11T04:05Z | 56  | 1       | 0       | 1     | UTM-tagged pillar link  |
+| `status/2120172389442969779` (2nd poster) | 2026-11-10T~16:00Z | 56 | 0      | 0       | 2     | none                    |
+| `status/2120004886423388255`           | 2026-11-10T04:05Z | 90    | 0       | 0       | 3     | untagged pillar link    |
+| `status/2119642667181089200`           | 2026-11-09   | 83    | —       | —       | 3     | none                    |
+| `status/2119319777025888395`           | 2026-11-08   | 110   | —       | —       | 5     | none                    |
+
+At ~100 views per post the channel's ceiling is single-digit sessions even at a 5%
+click rate, and x.com/t.co referral sessions are still 0 in 20 readings. The daily
+post is the cheapest distribution available; it is not a growth channel. Cadence
+verdict 2026-11-18; stop test 2026-11-20 (see `review-latest.json`).
+
+**The live ask's instruction had aged within one day.** `## Releated Tools` in
+`yjjnls/awesome-blockchain` now carries a `### Tools Directory` block of outside
+submissions (18btc, 1000x Leverage, Chain.Love) under the 0xArchive bullet the
+2026-11-10 handover named, and the repo was pushed 2026-11-10T11:53Z (3,642 stars,
+not archived). The ask is re-issued with the anchor re-verified (paste after line
+350) and **zero typing**: the default commit message and PR title are accepted.
+§10(c) applies — verify the instruction, not only the route.
+
+**Ledger:** 12 handovers since 2026-10-27, **2 sent** (both one-page GitHub:
+bitcoin-only#1009, jlopp/lopp.net#1267), 0 sessions from any asked channel.
