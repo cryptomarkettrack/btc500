@@ -5,6 +5,30 @@ not record guesses as results.
 
 ---
 
+## Baseline — measured 2026-11-12 (Bing)
+
+Source: Bing Webmaster Tools API (site `https://btc500.net`), via `npm run bing`.
+
+| Measure | Value |
+| --- | --- |
+| Site | verified, sitemap submitted 2026-11-12, status Success, 21 URLs discovered |
+| IndexNow | push accepted, HTTP 200 (key validated) — Bing, Yandex, Seznam, Naver, Yep |
+| Crawler access | msnbot / bingbot / Googlebot / browser all get an identical 200 |
+| **Indexed in Bing** | **0/21** — Site Explorer: "No pages found" |
+| Crawled at least once | 10/21 (homepage last crawled 2026-11-12) |
+| Keywords | 0 rows |
+| Backlinks | 0 rows |
+| AI Performance (Copilot + partners) | 0 total citations, 0 cited pages |
+| Submission quota | 99 URL submissions/day, 1,899/month |
+
+Read: Bing is not blocked and not misconfigured — it crawls and keeps nothing,
+exactly like Google on a young domain with no inbound links. The Bing
+opportunity is the *AI citation* surface (AI Assistant is the only channel
+where sessions equal users), and that surface is at zero citations because
+the Bing index is empty. Tooling now measures this daily
+(`npm run bing:check`, `npm run bing`) and the review loop reads it as two
+signals: `bing-indexation` (outcome) and `bing-readiness` (process).
+
 ## Baseline — measured 2026-10-22
 
 Source: Google Search Console API (property `https://btc500.net/`), via

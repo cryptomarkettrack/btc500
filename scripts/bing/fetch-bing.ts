@@ -118,15 +118,15 @@ async function inspectUrls(
         const discovered = parseBingDate(info.DiscoveryDate);
         const anchors = pick<number>(info as never, ["AnchorCount"]) ?? null;
         // Bing has no GSC-style coverage vocabulary, so map onto it:
-        // a page Bing has crawled and can fetch is indexed; anything else is not.
+        // a URL Bing fetched with a 200 is indexed; a URL Bing crawled but did
+        // not keep (status 0) is crawled-but-not-indexed; anything else is
+        // unknown to Bing. Site Explorer's own count is the authority.
         const coverage =
-          httpStatus === 200 && lastCrawled
+          httpStatus === 200
             ? "Submitted and indexed"
-            : httpStatus === 200
-              ? "Discovered - currently not indexed"
-              : httpStatus
-                ? `HTTP ${httpStatus}`
-                : "Discovered - currently not indexed";
+            : lastCrawled
+              ? "Crawled - currently not indexed"
+              : "Unknown to Bing";
         rows.push({ url, coverage, lastCrawl: lastCrawled, httpStatus, discovered, anchors });
       }
     } catch (error) {
@@ -185,6 +185,7 @@ async function main(): Promise<void> {
 
   const { rows, errors } = await inspectUrls(site, urls, delay);
   const indexed = rows.filter((row) => row.coverage === "Submitted and indexed").length;
+  const crawled = rows.filter((row) => row.lastCrawl !== null).length;
   const keywords = asRows<BingKeyword>(keywordsRaw);
   const backlinks = asRows<Record<string, unknown>>(backlinksRaw);
   const feedsRows = asRows<Record<string, unknown>>(feeds);
@@ -196,6 +197,7 @@ async function main(): Promise<void> {
     source: "bing",
     total: rows.length,
     indexed,
+    crawled,
     rows: rows.map((row) => ({
       url: row.url,
       coverage: row.coverage,
@@ -226,7 +228,10 @@ async function main(): Promise<void> {
 
   lines.push("## Index state");
   lines.push("");
-  lines.push(`**${indexed}/${rows.length}** sitemap URLs are indexed in Bing.`);
+  lines.push(
+    `**${indexed}/${rows.length}** sitemap URLs are indexed in Bing. ` +
+      `Bing has crawled ${crawled} of them at least once.`,
+  );
   lines.push("");
   lines.push(
     table(
@@ -360,6 +365,7 @@ async function main(): Promise<void> {
     site,
     generated: new Date().toISOString(),
     indexed,
+    crawled,
     total: rows.length,
     keywords: keywords.length,
     backlinkRows: backlinks.length,
@@ -378,7 +384,7 @@ async function main(): Promise<void> {
 
   console.log("");
   console.log(
-    `Indexed: ${indexed}/${rows.length}   Keywords: ${keywords.length}   Backlink rows: ${backlinks.length}`,
+    `Indexed: ${indexed}/${rows.length}   Crawled: ${crawled}   Keywords: ${keywords.length}   Backlink rows: ${backlinks.length}`,
   );
   console.log(`Report:  ${resolvePath(OUTPUT_DIR, "bing-latest.md")}`);
   console.log(`Raw:     ${resolvePath(OUTPUT_DIR, "bing-latest.json")}`);

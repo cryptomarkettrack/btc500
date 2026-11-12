@@ -43,14 +43,18 @@ Step 1 — Add and verify the site
 
 Step 2 — Generate the API key (this is what makes the numbers automatic)
 -------------------------------------------------------------------------
-  1. In Bing Webmaster Tools: Settings -> API Access -> Generate API Key.
-     Accept the terms the first time.
-  2. Put it in .env.local at the project root (gitignored):
+  1. In Bing Webmaster Tools: Settings (the gear, top right) -> API access ->
+     API Key -> Generate API Key. The panel is an accordion on the Settings
+     flyout; the "Microsoft Service Agreement" link sits under it.
+  2. Put it in .env.local at the project root (gitignored by the `*.local`
+     pattern):
        BING_API_KEY=your-key-here
      or save it to scripts/bing/api-key.txt (also gitignored).
   3. One key per user, not per site. If it is regenerated, the old key stops
      working immediately for most calls and the new one can take up to 30
      minutes to activate everywhere.
+  4. The key is a credential: it can read every site on the account and spend
+     the submission quota. It belongs in .env.local and nowhere else.
 
 Step 3 — Run the tooling
 ------------------------
@@ -72,17 +76,40 @@ Output lands in scripts/bing/output/ (gitignored):
 Step 4 — The weekly routine (10 minutes, Monday)
 ------------------------------------------------
   1. Site Explorer -> Indexed pages. Compare with the previous week. This is
-     the Bing equivalent of Google's "indexed 1/21".
-  2. Search Performance -> Top queries. Look for non-brand queries, not
+     the Bing equivalent of Google's "indexed 1/21". Site Explorer is the
+     authority; the report's index state is derived from crawl data.
+  2. **AI Performance** (beta) -> Total Citations and Avg. Cited Pages. This
+     is the only first-party measure of whether the site is cited inside
+     Copilot and partner AI answers — the channel the growth log says is
+     already producing strangers. It was 0 citations on 2026-11-12.
+  3. Search Performance -> Top queries. Look for non-brand queries, not
      "btc500". Brand queries prove nothing.
-  3. URL Inspection on the homepage and one article. Note the crawl date.
+  4. URL Inspection on the homepage and one article. Note the crawl date.
      A URL whose last crawl predates its last commit was never revisited —
      that is the sitemap-lastmod bug class, and scripts/bing/check-health.mjs
      now catches it locally.
-  4. Backlinks -> "Top linked pages". Any link to a page is worth a mention.
-  5. Crawl Control -> Blocked URLs. If Bing blocked a URL we need, unblock it.
-  6. IndexNow report: submitted / received / status. "Received" must match
+  5. Backlinks -> "Top linked pages". Any link to a page is worth a mention.
+  6. Crawl Control -> Blocked URLs. If Bing blocked a URL we need, unblock it.
+  7. IndexNow report: submitted / received / status. "Received" must match
      "submitted"; a mismatch means the key file is not being served.
+
+Baseline — measured 2026-11-12
+-------------------------------
+  Site:      verified, https://btc500.net
+  Sitemap:   submitted, last crawl 2026-11-12, status Success, 21 URLs discovered
+  IndexNow:  push accepted (HTTP 200, key validated), reaching Bing, Yandex,
+             Seznam, Naver and Yep
+  Crawlers:  msnbot, bingbot, Googlebot and a normal browser all receive an
+             identical 200 response — Bing is not being blocked or challenged
+  Indexed:   0/21 — Bing has crawled 10 URLs (the homepage most recently on
+             2026-11-12) and kept none of them
+  Citations: 0 in AI Performance (Copilot and partners)
+  API key:   generated, stored in .env.local as BING_API_KEY (gitignored)
+
+Read that as: the technical setup is done, the index is empty. Bing behaves
+like Google here — a young domain with no inbound links is crawled and then
+not kept. The lever is not another setting; it is links, and the site needs
+the same thing it needs from Google.
 
 Rules
 -----
