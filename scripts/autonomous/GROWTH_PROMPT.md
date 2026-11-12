@@ -325,15 +325,77 @@ and the site is serving a stale number to the only channel that brings strangers
   date 18 days out (29 November 2026). The current cadence cannot produce a result
   inside the only window that matters, so it stops pretending to.
 
-PERFORMANCE must open with these five lines, every cycle:
+**2026-11-12 (this review): the traffic half of the gate is MET, the copy
+exclusion STAYS, and one URL is re-opened — plus the stop rule is replaced by a
+rule that can actually fire.**
+
+- **Gate, first half: MET.** The freeze's condition "one GA4 referral session
+  from a non-github domain" is satisfied and always was — 9 named non-github
+  sessions in the 7-day window ending 2026-11-11: `t.co 3 sessions / 3 users`
+  (Organic Social), `facebook.com 6 / 6` (Organic Social), `chatgpt.com 2 / 2`
+  (AI Assistant), all landing on `/` or on `/bitcoin-500-day-cycle`. Twenty-one
+  readings said "0 named non-github referral sessions" because the runner read
+  the Referral channel, where none of those sources appear.
+- **Copy exclusion: STAYS to 2026-11-28.** Page-quality causes were excluded
+  by measurement on 2026-11-10 (200, 3,007 words, canonical match, robots
+  allowed, linked from `/`, no duplication), so another title, section or
+  article cannot move the gate. A gate met by traffic does not make the site
+  good; it makes the traffic visible.
+- **Re-opened: `/` and the sitemap's entry for `/` — and nothing else.** The
+  homepage is the only URL in the index (13 impressions in 7 days; the landing
+  page of every named non-github session), so a change there can be measured.
+  `public/sitemap.xml` currently states something false about it:
+  `<lastmod>2026-10-29</lastmod>` for a page rewritten on 2026-11-11, because
+  `scripts/sitemap.mjs` excludes `src/components/home/` from the lastmod
+  derivation as "shared by every page" — those components are the homepage, and
+  `src/routes/index.tsx` was last touched on 2026-10-29. The generator's own
+  header says why this matters: "Google uses lastmod to decide what to recrawl,
+  so a stale date means a changed page is never revisited." **Fix the
+  derivation, regenerate, ship it alone in its commit, and never treat
+  `src/components/home/` as shared again.** `/` has not been crawled since
+  2026-11-05.
+- **The 2026-11-20 stop rule is superseded.** It required "no post-merge crawl
+  **and** no named non-github referral session"; the second half is now met, so
+  the rule could never fire, and a rule that cannot fire is decoration. The
+  replacement has one test: **if the homepage has no crawl dated after
+  2026-11-12 by 2026-11-19, the daily X post drops to twice a week, no new
+  owner ask is issued, and the cycle's only work is the weekly measurement plus
+  one link action.** The daily post's measured output is 3 sessions a week from
+  a 212-follower account, so it cannot be the thing that saves the window.
+- **Request Indexing is rationed, not broken.** It was used for the first time
+  ever on 2026-11-12 ~06:18Z and refused — "Quota Exceeded — exceeded your
+  daily quota, try again tomorrow", remaining quota 0, never submitted. Retry
+  once per day at first light; a second refusal at first attempt means the
+  quota is being spent elsewhere in the account and it becomes an owner item.
+  A refusal is evidence, not an error.
+- **One post per day, and check the profile first.** On 2026-11-12 two posts
+  went out 30 minutes apart with the same UTM slug (29 views and 24 views,
+  0 likes between them). Read the profile for a post carrying the same slug in
+  the previous 24 hours; if there is one, skip and print the skip.
+
+PERFORMANCE must open with these six lines, every cycle:
 
 ```
 - indexed X/21, sitemap N (inspection <timestamp>)
 - referrals 7d: <full line>
+- named sources 7d: <every sessionSource outside Direct and github.com, with sessions/users → landing page>
 - live ask: <id> — channel-verified: <what the channel itself says>, due <date>
 - X views 7d: <post, views, likes> (pinned post included)
 - channels 7d: <channel sessions/users, including AI Assistant>
 ```
+
+**Added 2026-11-12 by that day's review: the `named sources` line, because the
+`referrals` line is structurally blind.** The Referral channel is not where X,
+Facebook or ChatGPT traffic lands: GA4 files it under Organic Social and AI
+Assistant, so the Referral table reported 0 x.com in 21 readings while the
+`sessionSource` dimension shows `t.co 3 sessions / 3 users → /`, `facebook.com
+6 / 6 → /` and `chatgpt.com 2 / 2` in the same 7-day window (2026-11-05 →
+11-11), and `chatgpt.com 10 sessions / 8 users` in 28 days. The line must print
+the source, the sessions, the users and the landing page, because "a referral
+session" without its source and user count is how a self-referral (8 github.com
+sessions at 1 user) got scored as a positive outcome signal. Ask for the
+`sessionSource` dimension with `landingPage` whenever the line is not available;
+`scripts/analytics/output/ai-assistant-source.ts` is the shape to copy.
 
 **The live-ask line must be verified against the channel, not the ledger.** This
 rule exists because the ledger was wrong for four days: `outreach/STATUS.md`

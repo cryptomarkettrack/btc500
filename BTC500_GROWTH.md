@@ -24,6 +24,75 @@ since 2026-10-23.
 
 ---
 
+## Results review — 2026-11-12 (daily) — verdict `failing`, streak 19
+
+- **No result in the outcome sense; one measurement that changes the plan.** 9
+  runs / 8 `shipped` / 1 failure, and **10 commits touching `src/` or
+  `public/sitemap.xml` since the last review** (a3d5039 → 7046cc2). Those ten
+  bought: indexed **1/21 → 1/21** (9th consecutive reading), non-brand clicks
+  **0 → 0** (21st), impressions 13 → 13. Nine of the ten are the 2026-11-11
+  owner redesign + SEO pass, and **Google has not read the site since
+  2026-11-07** (homepage last crawl 2026-11-05, pillar 2026-11-07). The
+  redesign is not a result, and not yet an input Google has seen.
+- **The sitemap states something false about the only indexed URL.**
+  `public/sitemap.xml` says `<lastmod>2026-10-29</lastmod>` for `/`, because
+  `scripts/sitemap.mjs` excludes `src/components/home/` from the lastmod
+  derivation as "shared by every page" — it is the homepage, and all 11 of its
+  components changed on 2026-11-11. `src/routes/index.tsx` was last touched
+  2026-10-29, which is the date the sitemap publishes. The generator's own
+  header says why it matters: "Google uses `lastmod` to decide what to recrawl,
+  so a stale date means a changed page is never revisited." → mandate
+  `sitemap-lastmod-home-1113`.
+- **Request Indexing used for the first time ever (2026-11-12 ~06:18Z) and
+  refused**: "Quota Exceeded — exceeded your daily quota, try again tomorrow",
+  remaining quota **0**, never submitted. The quota is rationed and this
+  property has never used it — so a second refusal at first light means
+  something else in the account is spending it → mandate
+  `request-indexing-retry-1113`.
+- **The site's stranger traffic was invisible for 21 readings.** The runner's
+  referral table reads the GA4 **Referral** channel; X lands in Organic Social,
+  Facebook in Organic Social, ChatGPT in AI Assistant. The reviewer's own
+  `sessionSource` query (2026-11-12 ~09:55Z):
+
+  | source | sessions / users (7d, 2026-11-05 → 11-11) | landing page | 28d |
+  | ------ | ----------------------------------------- | ----------- | ---- |
+  | `facebook.com` | 6 / 6 | `/` | 6 / 6 |
+  | `t.co` | 3 / 3 | `/` | 4 / 4 |
+  | `chatgpt.com` (AI Assistant) | 2 / 2 | `/bitcoin-500-day-cycle` 5/5 | **10 / 8** |
+
+  `github.com` is 8 sessions at **1 user** — this repository, §10(b), never a
+  positive outcome signal even though the runner scored it as one. The freeze's
+  traffic gate was therefore met before today and nobody knew.
+- **Non-brand demand exists and is unrankable.** 28d query report
+  (2026-10-13 → 11-09): 6 rows — brand `btc500` 6/28 @2.86, `btc 500` 0/1 @63.0;
+  non-brand `500 days before next bitcoin halving` 0/1 @38.0, `bitcoin plus
+  500` 0/2 @20.5, `bitcoin 500` 0/2 @54.0, `bit 500` 0/1 @95.0 — **6 non-brand
+  impressions in 28 days, none in positions 4–20.** No snippet edit is
+  justifiable. The 90-day baseline of 3,370 impressions was earned before the
+  index was lost (the 480-day window to 2026-10-26 is 3,380 — the lifetime).
+- **X ceiling, measured on the profile (2026-11-12 ~09:45Z):** 212 followers,
+  909 posts; pinned post 89 views / 1 reply / 2 likes; today's post 24 views;
+  the second poster's near-duplicate 29 views / 0 likes / 0 replies;
+  motivational 99; design 79. Output: **t.co 3 sessions / 3 users in 7d**.
+- **All seven date surfaces agree (Nov 29, 2026)** — `/llms.txt` and
+  `/llms-full.txt` are live-rendered server routes (verified in production
+  today at lines 33 and 83) and the X bio reads "countdown to Nov 29, 2026
+  buy". `chatgpt.com` is the only source where sessions ≈ users: the site's
+  remaining growth is a **citation** problem, not a page problem.
+- **Ask ledger:** 13 handovers since 2026-10-27, 2 sent, 0 sessions from any
+  asked channel. The live GitHub ask is still unsent (`total_count` 0) with its
+  anchor re-verified today (line 350) and its deadline pulled to 2026-11-16.
+  `coindesk.com/contact` is a **404 in a real browser** → the email route is
+  closed as `unexecutable`; `theblock.co/contact` is a working news-tips form
+  → new ask issued today, due 2026-11-17.
+- **Owner items, 5th restatement:** 2026-11-07 status row still absent (5
+  days), `dirty_paths_note()` inline at run-growth-cycle.sh:111/:197/:345, no
+  `status-note.sh`, `git add -A` still at review-cycle.sh:439/:446.
+- **New rule (2026-11-19):** if the homepage has no crawl dated after
+  2026-11-12, the daily X post drops to twice a week and no new owner ask is
+  issued. The old 2026-11-20 stop rule required "no crawl **and** no named
+  non-github referral session" — the second half is met, so it could never fire.
+
 ## Results review — 2026-11-11 (daily) — verdict `failing`, streak 17
 
 - **No result, eighth week.** 9 runs / 8 `shipped` / 1 failure; `git log
@@ -61,6 +130,14 @@ since 2026-10-23.
   no new ask is issued, and the cycle keeps only the weekly measurement plus one link
   action. The buy date is **29 November 2026, 18 days out** — every other date in the
   plan (11-18, 11-21, 11-28) is at or after the window it is trying to win.
+
+### Compressed: 2026-11-11 review (`failing`, streak 17)
+
+Page-quality causes excluded by measurement (pillar 200 / 3,007 words / canonical
+match / robots allowed / linked from `/`, titles distinct, 2 of 105 sentences
+shared); the index lost both October articles by name; mandates were the pin, the
+UTM rule and the crawl watch. All three were executed on 2026-11-11 (pin verified
+by the reviewer on the profile).
 
 ### Compressed: 2026-11-10 review (`failing`, streak 16)
 
@@ -171,6 +248,7 @@ yet), plus a reply/like (`status/2120005265051300228`).
 
 | date       | mode  | verdict | what it forced                                                                                                                                                                                                                                                     |
 | ---------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-12 | daily | failing | 10 site commits, 0 result — indexed 1/21 (9th reading), 0 non-brand clicks (21st); the sitemap's false 2026-10-29 lastmod for the only indexed URL found and fixed by mandate; Request Indexing refused (quota 0); the first named non-github traffic ever measured (t.co 3/3, facebook.com 6/6, chatgpt.com 10/8) and the referral table's blindness to it; CoinDesk closed as unexecutable (404), The Block newsroom route opened; 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19 |
 | 2026-11-11 | daily | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews); owner runner repairs restated 4th; stop rule 2026-11-20. Streak 17 |
 | 2026-11-10 | daily | failing | Page-quality causes excluded by measurement; both October articles lost by name; 1/21 seventh. Mandates: pin, UTM, crawl-watch. Ask: one GitHub line. Streak 16 |
 | 2026-11-09 | daily | failing | `externalReferringDomains` 0 → 1 (lopp.net, followed); 1/21 sixth; no post-merge crawl. Streak 15 |
