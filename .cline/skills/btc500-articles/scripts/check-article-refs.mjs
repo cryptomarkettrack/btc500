@@ -110,7 +110,7 @@ for (const slug of slugs) {
 }
 
 // --- public/llms.txt ---------------------------------------------------------
-const llmsPath = resolve(root, "public/llms.txt");
+const llmsPath = resolve(root, "src/content/llms.txt");
 if (existsSync(llmsPath)) {
   const llms = read(llmsPath);
   for (const slug of slugs) {
@@ -125,7 +125,7 @@ if (existsSync(llmsPath)) {
 }
 
 // --- public/llms-full.txt -----------------------------------------------------
-const llmsFullPath = resolve(root, "public/llms-full.txt");
+const llmsFullPath = resolve(root, "src/content/llms-full.txt");
 if (existsSync(llmsFullPath)) {
   const full = read(llmsFullPath);
   for (const slug of slugs) {

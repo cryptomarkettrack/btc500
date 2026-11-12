@@ -46,8 +46,8 @@ const CONTRACTED_SLUGS = [
 ];
 
 const machineReadable = [
-  ["public/llms.txt", read("../../public/llms.txt")],
-  ["public/llms-full.txt", read("../../public/llms-full.txt")],
+  ["src/content/llms.txt", read("../content/llms.txt")],
+  ["src/content/llms-full.txt", read("../content/llms-full.txt")],
   ["public/feed.xml", read("../../public/feed.xml")],
 ] as const;
 

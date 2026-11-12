@@ -21,6 +21,8 @@ import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
+import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
+import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as NewsRouteImport } from './routes/news'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SimulatorRouteImport } from './routes/simulator'
@@ -103,6 +105,16 @@ const InsiderTradingRoute = InsiderTradingRouteImport.update({
 const LiquidationRoute = LiquidationRouteImport.update({
   id: '/liquidation',
   path: '/liquidation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsFullDottxtRoute = LlmsFullDottxtRouteImport.update({
+  id: '/llms-full.txt',
+  path: '/llms-full.txt',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
+  id: '/llms.txt',
+  path: '/llms.txt',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsRoute = NewsRouteImport.update({
@@ -239,6 +251,8 @@ export interface FileRoutesByFullPath {
   '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
@@ -275,6 +289,8 @@ export interface FileRoutesByTo {
   '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
@@ -312,6 +328,8 @@ export interface FileRoutesById {
   '/halving-dates': typeof HalvingDatesRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
+  '/llms-full.txt': typeof LlmsFullDottxtRoute
+  '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
@@ -350,6 +368,8 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/news'
     | '/privacy'
     | '/simulator'
@@ -386,6 +406,8 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/news'
     | '/privacy'
     | '/simulator'
@@ -422,6 +444,8 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/insider-trading'
     | '/liquidation'
+    | '/llms-full.txt'
+    | '/llms.txt'
     | '/news'
     | '/privacy'
     | '/simulator'
@@ -459,6 +483,8 @@ export interface RootRouteChildren {
   HalvingDatesRoute: typeof HalvingDatesRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
+  LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
+  LlmsDottxtRoute: typeof LlmsDottxtRoute
   NewsRoute: typeof NewsRoute
   PrivacyRoute: typeof PrivacyRoute
   SimulatorRoute: typeof SimulatorRoute
@@ -552,6 +578,20 @@ declare module '@tanstack/react-router' {
       path: '/liquidation'
       fullPath: '/liquidation'
       preLoaderRoute: typeof LiquidationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms-full.txt': {
+      id: '/llms-full.txt'
+      path: '/llms-full.txt'
+      fullPath: '/llms-full.txt'
+      preLoaderRoute: typeof LlmsFullDottxtRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/llms.txt': {
+      id: '/llms.txt'
+      path: '/llms.txt'
+      fullPath: '/llms.txt'
+      preLoaderRoute: typeof LlmsDottxtRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news': {
@@ -767,6 +807,8 @@ const rootRouteChildren: RootRouteChildren = {
   HalvingDatesRoute: HalvingDatesRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
+  LlmsFullDottxtRoute: LlmsFullDottxtRoute,
+  LlmsDottxtRoute: LlmsDottxtRoute,
   NewsRoute: NewsRoute,
   PrivacyRoute: PrivacyRoute,
   SimulatorRoute: SimulatorRoute,

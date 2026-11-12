@@ -1,4 +1,4 @@
-import { WINDOW_DAYS } from "./halvings";
+import { WINDOW_DAYS } from "./halvings.ts";
 
 export type Phase = "wait-buy" | "wait-sell" | "done";
 
@@ -65,4 +65,4 @@ export function computeCycle(now: Date, nextHalving: Date, lastHalving: Date): C
 }
 
 // Formatters live in format.ts; re-exported here for backward compatibility.
-export { formatUsd, formatDate, formatUtc } from "./format";
+export { formatUsd, formatDate, formatUtc } from "./format.ts";
