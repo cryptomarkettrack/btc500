@@ -243,6 +243,10 @@ if [[ "${BTC500_REVIEW_SKIP_FETCH:-0}" != "1" ]]; then
   fetch_one "search-console-7d" node "$REPO_ROOT/scripts/search-console/fetch-search-console.ts" --days=7
   fetch_one "ga4-7d" node "$REPO_ROOT/scripts/analytics/fetch-ga4.ts" --days=7
   fetch_one "url-inspection" node "$REPO_ROOT/scripts/search-console/inspect-urls.ts"
+  # Bing: the keyless readiness check always runs; the API report only runs
+  # when a Bing Webmaster API key is configured (it exits 0 without one).
+  fetch_one "bing-health" node "$REPO_ROOT/scripts/bing/check-health.mjs"
+  fetch_one "bing-index" node "$REPO_ROOT/scripts/bing/fetch-bing.ts"
 else
   log "SKIP_FETCH: using the reports already on disk"
 fi

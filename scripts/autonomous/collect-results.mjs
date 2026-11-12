@@ -40,6 +40,7 @@ const DEFAULT_STATE_DIR =
   process.env.BTC500_GROWTH_STATE_DIR || join(homedir(), ".local", "state", "btc500-growth");
 const GSC_OUT = join(REPO_ROOT, "scripts", "search-console", "output");
 const GA4_OUT = join(REPO_ROOT, "scripts", "analytics", "output");
+const BING_OUT = join(REPO_ROOT, "scripts", "bing", "output");
 
 /** Thresholds are deliberately conservative: this site's numbers are tiny, so
  * only moves that clear them count as signal. Documented in GROWTH_REVIEW.md. */
@@ -62,7 +63,8 @@ const THRESHOLDS = {
 
 const HISTORY_HEADER =
   "date,windowDays,ga4Days,clicks,impressions,ctr,position,brandClicks,nonBrandClicks," +
-  "nonBrandEnd,pagesWithImpressions,indexed,totalUrls,sessions,organicSessions,referralSessions";
+  "nonBrandEnd,pagesWithImpressions,indexed,totalUrls,sessions,organicSessions,referralSessions," +
+  "bingIndexed,bingTotalUrls";
 
 const BRAND_RE = /btc\s*500/i;
 
@@ -223,6 +225,17 @@ export function parseInspection(json) {
   };
 }
 
+/**
+ * Bing index state. The Bing report is written in the same shape as the Search
+ * Console inspection report (rows of {url, coverage, lastCrawl}), so the same
+ * parser reads both — one parser, one meaning of "indexed".
+ */
+export function parseBingInspection(json) {
+  const parsed = parseInspection(json);
+  if (!parsed) return null;
+  return { ...parsed, source: "bing" };
+}
+
 /** GA4 report -> sessions, the organic share, and referral evidence of links. */
 export function parseGa4(json) {
   if (!json || !json.totals?.current) return null;
@@ -359,8 +372,8 @@ export function datedReportIndex(dir, prefix, preferDays) {
   return best;
 }
 
-function rowFromReports(date, perf, insp, ga4) {
-  if (!perf && !insp && !ga4) return null;
+function rowFromReports(date, perf, insp, ga4, bing) {
+  if (!perf && !insp && !ga4 && !bing) return null;
   return {
     date,
     windowDays: perf?.windowDays ?? null,
@@ -378,6 +391,8 @@ function rowFromReports(date, perf, insp, ga4) {
     sessions: ga4?.sessions ?? null,
     organicSessions: ga4?.organicSessions ?? null,
     referralSessions: ga4?.referralSessions ?? null,
+    bingIndexed: bing?.indexed ?? null,
+    bingTotalUrls: bing?.total ?? null,
   };
 }
 
@@ -386,18 +401,27 @@ function rowFromReports(date, perf, insp, ga4) {
  * history already has the days that were fetched before it existed.
  * Existing rows always win; this only fills gaps.
  */
-export function backfillHistory({ gscDir, ga4Dir, today }) {
+export function backfillHistory({ gscDir, ga4Dir, bingDir, today }) {
   const perfIndex = datedReportIndex(gscDir, "performance", 7);
   const inspIndex = datedReportIndex(gscDir, "inspection", 0);
   const ga4Index = datedReportIndex(ga4Dir, "ga4", 7);
-  const dates = new Set([...perfIndex.keys(), ...inspIndex.keys(), ...ga4Index.keys()]);
+  const bingIndex = bingDir ? datedReportIndex(bingDir, "inspection", 0) : new Map();
+  const dates = new Set([
+    ...perfIndex.keys(),
+    ...inspIndex.keys(),
+    ...ga4Index.keys(),
+    ...bingIndex.keys(),
+  ]);
   const rows = [];
   for (const date of [...dates].sort()) {
     if (date >= today) continue;
     const perf = perfIndex.has(date) ? parsePerformance(readJson(perfIndex.get(date).path)) : null;
     const insp = inspIndex.has(date) ? parseInspection(readJson(inspIndex.get(date).path)) : null;
     const ga4 = ga4Index.has(date) ? parseGa4(readJson(ga4Index.get(date).path)) : null;
-    const row = rowFromReports(date, perf, insp, ga4);
+    const bing = bingIndex.has(date)
+      ? parseBingInspection(readJson(bingIndex.get(date).path))
+      : null;
+    const row = rowFromReports(date, perf, insp, ga4, bing);
     if (row) rows.push(row);
   }
   return rows;
@@ -467,6 +491,8 @@ export function computeSignals({
   perf,
   insp,
   ga4,
+  bing,
+  bingHealth,
   activity,
   sources,
   previousReview,
@@ -522,6 +548,100 @@ export function computeSignals({
         state: "regressed",
         evidence: `Indexed pages fell ${oldCount} -> ${nowCount} (${old.date} to ${today}).`,
         current: `${nowCount}/${insp.total}`,
+      });
+    }
+  }
+
+  // 1b. Bing indexation — the second engine. Bing's index feeds Copilot and
+  //     most answer engines, so a page indexed there is a page an AI answer
+  //     can cite. This is an outcome, not a process step.
+  if (!bing) {
+    // Not measured yet (the Bing API key is not configured). That is an
+    // instrumentation gap, not an outcome, so it must not be counted as one.
+    signals.push({
+      id: "bing-indexation",
+      kind: "process",
+      state: "unknown",
+      evidence: "No Bing indexation report; the Bing Webmaster API key is not configured yet.",
+    });
+  } else {
+    const old =
+      comparableRow(
+        rows,
+        today,
+        THRESHOLDS.indexStallDays,
+        "windowDays",
+        perf?.windowDays ?? null,
+      ) ?? (span > 0 ? oldest : null);
+    const nowCount = bing.indexed;
+    const oldCount = old?.bingIndexed ?? null;
+    if (oldCount == null) {
+      signals.push({
+        id: "bing-indexation",
+        kind: "outcome",
+        state: "flat",
+        evidence: `${nowCount}/${bing.total} URLs indexed in Bing; only ${span}d of history to compare against.`,
+        current: `${nowCount}/${bing.total}`,
+      });
+    } else if (nowCount > oldCount) {
+      signals.push({
+        id: "bing-indexation",
+        kind: "outcome",
+        state: "green",
+        evidence: `Bing indexed pages rose ${oldCount} -> ${nowCount} (${old.date} to ${today}).`,
+        current: `${nowCount}/${bing.total}`,
+      });
+    } else if (nowCount < oldCount) {
+      signals.push({
+        id: "bing-indexation",
+        kind: "outcome",
+        state: "regressed",
+        evidence: `Bing indexed pages fell ${oldCount} -> ${nowCount} (${old.date} to ${today}).`,
+        current: `${nowCount}/${bing.total}`,
+      });
+    } else {
+      signals.push({
+        id: "bing-indexation",
+        kind: "outcome",
+        state: "flat",
+        evidence: `${nowCount}/${bing.total} URLs indexed in Bing, unchanged for ${span}d of history.`,
+        current: `${nowCount}/${bing.total}`,
+      });
+    }
+  }
+
+  // 1c. Bing crawl readiness — the keyless health check. It cannot show a
+  //     result, but it can show that Bing is being locked out or told nothing.
+  if (!bingHealth) {
+    signals.push({
+      id: "bing-readiness",
+      kind: "process",
+      state: "unknown",
+      evidence: "No Bing health report; scripts/bing/check-health.mjs has not run.",
+    });
+  } else {
+    const fails = (bingHealth.findings ?? []).filter((f) => f.severity === "fail");
+    const warns = (bingHealth.findings ?? []).filter((f) => f.severity === "warn");
+    if (fails.length) {
+      signals.push({
+        id: "bing-readiness",
+        kind: "process",
+        state: "regressed",
+        evidence: `Bing readiness check failed: ${fails.map((f) => f.message).join("; ")}`,
+      });
+    } else if (warns.length) {
+      signals.push({
+        id: "bing-readiness",
+        kind: "process",
+        state: "flat",
+        evidence: `Bing readiness check: ${warns.map((w) => w.message).join("; ")}`,
+      });
+    } else {
+      signals.push({
+        id: "bing-readiness",
+        kind: "process",
+        state: "green",
+        evidence: `Bing readiness check passed (${bingHealth.sitemapUrls ?? 0} sitemap URLs, IndexNow accepted).`,
       });
     }
   }
@@ -923,21 +1043,31 @@ async function main(argv) {
   const perfPath = pickReport(GSC_OUT, "performance", 7);
   const inspPath = pickReport(GSC_OUT, "inspection", 0);
   const ga4Path = pickReport(GA4_OUT, "ga4", 7);
+  const bingPath = pickReport(BING_OUT, "inspection", 0);
+  const bingHealthPath = existsSync(join(BING_OUT, "health-latest.json"))
+    ? join(BING_OUT, "health-latest.json")
+    : null;
   const sources = [
     sourceInfo("search-console", perfPath ?? join(GSC_OUT, "performance-latest.json")),
     sourceInfo("indexation", inspPath ?? join(GSC_OUT, "inspection-latest.json")),
     sourceInfo("ga4", ga4Path ?? join(GA4_OUT, "ga4-latest.json")),
   ];
+  // Bing sources are optional: the API key is not configured yet, and a
+  // missing optional source must not make every report look stale.
+  if (bingPath) sources.push(sourceInfo("bing-indexation", bingPath));
+  if (bingHealthPath) sources.push(sourceInfo("bing-readiness", bingHealthPath));
 
   const perf = perfPath ? parsePerformance(readJson(perfPath)) : null;
   const insp = inspPath ? parseInspection(readJson(inspPath)) : null;
   const ga4 = ga4Path ? parseGa4(readJson(ga4Path)) : null;
+  const bing = bingPath ? parseBingInspection(readJson(bingPath)) : null;
+  const bingHealth = bingHealthPath ? readJson(bingHealthPath) : null;
 
   const historyPath = join(stateDir, "results-history.csv");
   const existing = readHistory(historyPath);
-  const backfill = backfillHistory({ gscDir: GSC_OUT, ga4Dir: GA4_OUT, today });
+  const backfill = backfillHistory({ gscDir: GSC_OUT, ga4Dir: GA4_OUT, bingDir: BING_OUT, today });
   const merged = mergeHistory(existing, backfill, today);
-  const todayRow = rowFromReports(today, perf, insp, ga4);
+  const todayRow = rowFromReports(today, perf, insp, ga4, bing);
   const rows = writeHistory(historyPath, todayRow ? [...merged, todayRow] : merged);
 
   const statusPath = join(stateDir, "status-history.csv");
@@ -952,6 +1082,8 @@ async function main(argv) {
     perf,
     insp,
     ga4,
+    bing,
+    bingHealth,
     activity,
     sources,
     previousReview,
@@ -969,6 +1101,8 @@ async function main(argv) {
     organicSessions7: ga4?.organicSessions ?? null,
     referralSessions7: ga4?.referralSessions ?? null,
     positions4to20: perf?.positions4to20 ?? null,
+    bingIndexed: bing ? bing.indexed : null,
+    bingTotalUrls: bing ? bing.total : null,
   };
 
   const input = {
@@ -976,7 +1110,7 @@ async function main(argv) {
     generated: new Date().toISOString(),
     today,
     sources: sources.map((s) => ({ ...s, path: s.path.replace(REPO_ROOT, ".") })),
-    metrics: { performance: perf, indexation: insp, ga4 },
+    metrics: { performance: perf, indexation: insp, ga4, bing },
     history: {
       file: historyPath,
       rows: rows.length,
@@ -1031,6 +1165,7 @@ async function main(argv) {
   console.log(
     `metrics=clicks:${value(perf?.clicks)} impressions:${value(perf?.impressions)} ` +
       `position:${value(perf?.position)} indexed:${value(insp ? `${insp.indexed}/${insp.total}` : null)} ` +
+      `bing:${value(bing ? `${bing.indexed}/${bing.total}` : null)} ` +
       `sessions:${value(ga4?.sessions)} organic:${value(ga4?.organicSessions)} referrals:${value(ga4?.referralSessions)}`,
   );
   console.log(

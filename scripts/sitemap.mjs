@@ -29,11 +29,18 @@ const SITEMAP_PATH = join(ROOT, "public", "sitemap.xml");
 /** Routes that are indexable but intentionally not advertised in the sitemap. */
 const EXCLUDED_ROUTES = new Set(["privacy", "terms", "embed"]);
 
-/** Component folders shared by every page — a change there is not a page change. */
+/**
+ * Component folders shared by every page — a change there is not a page change.
+ *
+ * src/components/home/ used to be listed here. It was wrong: those components
+ * are imported only by src/routes/index.tsx (the homepage), so excluding them
+ * hid the 2026-11-11 homepage redesign from the sitemap. The homepage then
+ * carried a lastmod of 2026-10-29 while its markup had changed, and both
+ * Google and Bing read that date as "nothing to revisit here".
+ */
 const SHARED_COMPONENT_PREFIXES = [
   "src/components/ui/",
   "src/components/route/",
-  "src/components/home/",
 ];
 
 /** Components shared across pages that still do not change a single page's content. */

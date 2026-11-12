@@ -1,0 +1,115 @@
+BING WEBMASTER TOOLS — SETUP AND ROUTINE
+======================================
+
+Why this exists
+---------------
+Google is one index. Bing is the other one that matters here, because Bing's
+index is what Copilot and most answer engines read, and the site's own growth
+log says the only strangers arriving through AI Assistant land where
+sessions == users. If the site is absent from Bing, it is absent from the
+channel that is already working.
+
+Everything below is free. Nothing here needs a paid tool.
+
+What is already deployed (checked 2026-11-12 by scripts/bing/check-health.mjs)
+-------------------------------------------------------------------------------
+  * Bing verification meta tag is live on every page:
+      <meta name="msvalidate.01" content="32EF2D70FCF8C7EF70C2E55E1F326804" />
+  * IndexNow key file is served:  public/017486fcf53e5887754b97cd9b2e0e89.txt
+  * IndexNow push is accepted by api.indexnow.org (HTTP 200 = key validated),
+    covering Bing, Yandex, Seznam, Naver and Yep
+  * /sitemap.xml is served with 21 URLs, all returning 200
+  * robots.txt names the sitemap and now names msnbot explicitly
+  * /llms.txt, /llms-full.txt and /feed.xml are served
+
+So the site is technically ready. What is missing is the *account* (so Bing
+can tell us what it knows) and the *loop* (so the number is read every day and
+cannot quietly rot).
+
+Step 1 — Add and verify the site
+--------------------------------
+  1. Sign in at https://www.bing.com/webmasters (a Microsoft, Google or
+     Facebook ID is enough).
+  2. "Add a site" -> https://btc500.net
+  3. Choose the "Import from GSC" option if offered — it copies the property
+     and gives you the sitemap for free — or verify manually with the
+     msvalidate.01 tag, which is already in the HTML. Bing checks the tag on
+     the homepage; if the tag is rejected, add the file method instead:
+       public/BingSiteAuth.xml  (download the file from Bing, commit it)
+  4. Sitemaps -> add https://btc500.net/sitemap.xml
+  5. URL Submission -> IndexNow status should read "verified". The key file is
+     already served; Bing verifies it by fetching
+     https://btc500.net/017486fcf53e5887754b97cd9b2e0e89.txt
+
+Step 2 — Generate the API key (this is what makes the numbers automatic)
+-------------------------------------------------------------------------
+  1. In Bing Webmaster Tools: Settings -> API Access -> Generate API Key.
+     Accept the terms the first time.
+  2. Put it in .env.local at the project root (gitignored):
+       BING_API_KEY=your-key-here
+     or save it to scripts/bing/api-key.txt (also gitignored).
+  3. One key per user, not per site. If it is regenerated, the old key stops
+     working immediately for most calls and the new one can take up to 30
+     minutes to activate everywhere.
+
+Step 3 — Run the tooling
+------------------------
+  bun run bing:check    # keyless health check: robots, sitemap, lastmod,
+                        # IndexNow push, verification tag, AI surfaces
+  bun run bing          # Bing Webmaster API report: index state per URL,
+                        # site stats, crawl stats, keywords, backlinks,
+                        # quota, submitted sitemaps
+  bun run bing:submit   # push every sitemap URL (IndexNow + Bing's URL
+                        # Submission API); --changed submits only URLs whose
+                        # lastmod moved
+
+Output lands in scripts/bing/output/ (gitignored):
+  inspection-latest.json   per-URL index state, same shape as the Search
+                           Console inspection report
+  bing-latest.md           the human report
+  health-latest.json       the keyless daily check
+
+Step 4 — The weekly routine (10 minutes, Monday)
+------------------------------------------------
+  1. Site Explorer -> Indexed pages. Compare with the previous week. This is
+     the Bing equivalent of Google's "indexed 1/21".
+  2. Search Performance -> Top queries. Look for non-brand queries, not
+     "btc500". Brand queries prove nothing.
+  3. URL Inspection on the homepage and one article. Note the crawl date.
+     A URL whose last crawl predates its last commit was never revisited —
+     that is the sitemap-lastmod bug class, and scripts/bing/check-health.mjs
+     now catches it locally.
+  4. Backlinks -> "Top linked pages". Any link to a page is worth a mention.
+  5. Crawl Control -> Blocked URLs. If Bing blocked a URL we need, unblock it.
+  6. IndexNow report: submitted / received / status. "Received" must match
+     "submitted"; a mismatch means the key file is not being served.
+
+Rules
+-----
+  * Push only what changed. Submitting unchanged URLs burns quota and trains
+    Bing to ignore us. `bun run bing:submit --changed` is the default habit;
+    a full push is for a redesign.
+  * A lastmod that is older than the page's last commit is a lie. The sitemap
+    generator must derive lastmod from every file that changes the page — the
+    homepage currently hides src/components/home, which is how the homepage
+    redesign shipped without moving its lastmod.
+  * IndexNow needs no key and no quota. Bing's URL Submission API needs a key
+    and has 10,000 URLs/day. Use IndexNow for freshness, the API for the
+    numbers and the crawl feedback.
+
+Troubleshooting
+---------------
+  "401/403"            Wrong key, or the site is not verified for this
+                       account. Regenerate the key and wait 30 minutes.
+  "no API key yet"     Expected until Step 2 is done. The rest of the tooling
+                       (IndexNow, health check) works without it.
+  IndexNow HTTP 202    Accepted, key validation pending. Run again in a minute.
+  IndexNow HTTP 4xx   The key file is missing or does not contain the key.
+  Health check FAIL    Fix before doing anything else: a broken sitemap or a
+                       blocked crawler is the cheapest thing to fix and the
+                       most expensive thing to ignore.
+
+Note on protocols
+-----------------
+Bing retired the legacy POX/SOAP protocols on 2026-08-31. Everything here
+uses the JSON/HTTP protocol on ssl.bing.com. Do not reintroduce POX calls.

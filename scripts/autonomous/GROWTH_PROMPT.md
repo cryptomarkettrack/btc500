@@ -109,6 +109,44 @@ Rules for interpreting data:
   wrong denominator before this rule existed; neither the cycle nor the review
   may quote one again.
 
+### Bing — the second engine
+
+Bing's index is what Copilot and most answer engines read. The site's own
+numbers say the only strangers arriving through `AI Assistant` are the ones
+who arrive as distinct users, so an absent-from-Bing site is absent from the
+one channel that works. The tooling lives in `scripts/bing/`:
+
+```
+node scripts/bing/check-health.mjs        # keyless: robots, sitemap, lastmod,
+                                          # IndexNow push, verification tag
+node scripts/bing/fetch-bing.ts           # API report (needs BING_API_KEY)
+node scripts/bing/submit-urls.ts --changed  # push only what moved
+```
+
+The runner fetches the health check and the Bing report every morning; both
+land in `review-input.json` as two signals:
+
+- `bing-indexation` — an **outcome** signal: how many sitemap URLs Bing has
+  indexed. Read it the way `indexation` is read, with the same denominator
+  rule (the sitemap count) and the same demand for a report timestamp.
+- `bing-readiness` — a **process** signal: the keyless health check. It
+  cannot show a result, but it can show that Bing is being locked out
+  (`robots.txt` blocking `msnbot`), that a sitemap URL is broken, or that a
+  page's `lastmod` is older than the commit behind it.
+
+Rules:
+
+- The Bing report's `coverage` column is **our mapping** of Bing's crawl
+  state onto Search Console's vocabulary, not Bing's own wording. Say
+  "indexed in Bing", not "submitted and indexed".
+- `bing-indexation` will read `unknown` until a Bing API key exists
+  (`Settings -> API Access -> Generate`, then `BING_API_KEY` in `.env.local`).
+  Unknown means not measured — never "zero indexed".
+- Never submit unchanged URLs. `--changed` submits only URLs whose `lastmod`
+  moved; a full push is for a redesign.
+- A `lastmod` older than the commit behind its page is a blocker, not a
+  detail: it is why Bing is not asked to look at a page that changed.
+
 ## 3. Decide — the goal is #1, not busier
 
 ### The bar

@@ -16,6 +16,7 @@ import {
   datedReportIndex,
   mergeHistory,
   parseActivity,
+  parseBingInspection,
   parseGa4,
   parseInspection,
   parsePerformance,
@@ -181,6 +182,65 @@ test("parseInspection counts only URLs that are actually indexed", () => {
   assert.equal(insp.notIndexed.length, 3);
   assert.equal(insp.coverage["Crawled - currently not indexed"], 1);
   assert.equal(parseInspection({ rows: null }), null);
+});
+
+test("parseBingInspection reads the Bing report with the same parser", () => {
+  const bing = parseBingInspection(
+    inspJson([
+      "Submitted and indexed",
+      "Submitted and indexed",
+      "Submitted and indexed",
+      "Unknown to Bing",
+    ]),
+  );
+  assert.equal(bing.total, 4);
+  assert.equal(bing.indexed, 3);
+  assert.equal(bing.source, "bing");
+  assert.equal(parseBingInspection(null), null);
+});
+
+test("a rising Bing index is a green outcome signal", () => {
+  const rows = [
+    row("2026-10-08", { bingIndexed: 2 }),
+    row("2026-10-16", { bingIndexed: 4 }),
+    row(TODAY),
+  ];
+  const signals = computeSignals({
+    rows,
+    today: TODAY,
+    perf: parsePerformance(perfJson()),
+    insp: parseInspection(inspJson(Array(6).fill("Submitted and indexed"))),
+    ga4: parseGa4(ga4Json()),
+    bing: parseBingInspection(inspJson(Array(6).fill("Submitted and indexed"))),
+    activity: null,
+    sources: freshSources(),
+  });
+  const bing = signalById(signals, "bing-indexation");
+  assert.equal(bing.state, "green");
+  assert.match(bing.evidence, /2 -> 6/);
+});
+
+test("a Bing health failure regresses and blocks an improving verdict", () => {
+  const signals = computeSignals({
+    rows: [row("2026-10-16"), row(TODAY)],
+    today: TODAY,
+    perf: parsePerformance(perfJson()),
+    insp: parseInspection(inspJson(Array(6).fill("Submitted and indexed"))),
+    ga4: parseGa4(ga4Json()),
+    bingHealth: {
+      verdict: "fail",
+      sitemapUrls: 21,
+      findings: [
+        { severity: "fail", id: "robots-blocks-msnbot", message: "robots.txt blocks msnbot" },
+      ],
+    },
+    activity: null,
+    sources: freshSources(),
+  });
+  const health = signalById(signals, "bing-readiness");
+  assert.equal(health.state, "regressed");
+  assert.match(health.evidence, /blocks msnbot/);
+  assert.equal(applyRule(signals).mayClaimImproving, false);
 });
 
 test("parseGa4 reads sessions, the organic channel and referrals", () => {

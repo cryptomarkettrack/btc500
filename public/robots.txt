@@ -12,6 +12,15 @@ Disallow: /api/
 Disallow: /embed/
 Disallow: /embed$
 
+# Bing's crawler, named explicitly. The wildcard group already allows it, but
+# Bing honours its own named group when one is present, and Bing's index is
+# what powers Copilot and most answer engines. Same exclusions as above.
+User-agent: msnbot
+Allow: /
+Disallow: /api/
+Disallow: /embed/
+Disallow: /embed$
+
 # Explicitly welcome answer-engine and AI crawlers. These are already covered by
 # the wildcard group, but named groups make the site's intent unambiguous for
 # operators that only honour their own user-agent. Keep the same exclusions.
