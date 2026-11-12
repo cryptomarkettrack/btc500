@@ -618,3 +618,55 @@ not archived). The ask is re-issued with the anchor re-verified (paste after lin
 
 **Ledger:** 12 handovers since 2026-10-27, **2 sent** (both one-page GitHub:
 bitcoin-only#1009, jlopp/lopp.net#1267), 0 sessions from any asked channel.
+
+## 2026-11-12 — gsc-request-indexing-1112 executed: Request Indexing refused, quota 0
+
+**Attempted 2026-11-12 ~06:18Z** in the logged-in browser session
+(search.google.com/search-console, property `https://btc500.net/`, property
+access confirmed — the overview rendered with data).
+
+- URL inspection for `https://btc500.net/bitcoin-500-day-cycle`: "URL is not on
+  Google — Crawled - currently not indexed", last crawl shown by the UI as
+  "Nov 7, 2026, 5:42:34 AM".
+- Clicked **REQUEST INDEXING** → live URL test ran ("Testing if live URL can be
+  indexed") → after the test, the exact response text:
+
+  > **Quota Exceeded** — "Sorry--we couldn't process this request because you've
+  > exceeded your daily quota. Please try submitting this again tomorrow."
+
+- **Remaining daily quota: 0.** The pillar request was therefore never submitted.
+  `/halving-dates` and `/simulator` were not attempted — the quota is
+  account/property-wide per day, so identical refusals are guaranteed, and the
+  mandate forbids retrying. Try again 2026-11-13 if a review reorders it; the
+  refusal is evidence about Google-side supply, not an error.
+- **Raw re-read immediately after (urlInspection API, 2026-11-12 ~06:25Z):**
+  `coverageState` "Crawled - currently not indexed", `lastCrawlTime
+  2026-11-07T03:42:34Z` — **unchanged**, 5d 2h 43m before this read and 12h 37m
+  56s before the lopp.net merge (`2026-11-07T20:20:30Z`). Still no post-merge
+  crawl. Referring urls unchanged (vercel.app alias + own unindexed article).
+
+**The t.co sessions are real, and the Referral table never saw them.** One-off
+`sessionSource` query (scripts/analytics/output/ai-assistant-source.ts,
+gitignored, run 2026-11-12T06:11Z):
+
+- `Organic Social | t.co — 3 sessions / 3 users` in **7d (2026-11-05 → 11-11)**;
+  facebook.com 6/6; `AI Assistant | chatgpt.com — 2 sessions / 2 users` in 7d.
+- 28d (2026-10-15 → 11-11): t.co 4/4, chatgpt.com **10/8**, facebook.com 6/6.
+- `AI Assistant` has a name now: **chatgpt.com** — 10 sessions / 8 users in 28d,
+  the only channel whose sessions equal users. The Referral channel table
+  (github.com 8/1 in 7d) misses t.co and chatgpt.com entirely because X and
+  ChatGPT land in Organic Social / AI Assistant channels.
+- **0 named non-github referral sessions in 20 readings is now false.** t.co 3
+  sessions / 3 users in the current 7d window is the first one. It coincides
+  with the first linked posts (11-10 untagged, 11-11 pinned+tagged). The freeze
+  gate condition "one GA4 referral session from a non-github domain" is met on
+  this evidence; the copy exclusion until 2026-11-28 (2026-11-10 review) still
+  stands and only the next review can lift it.
+
+### The live ask, channel-verified (2026-11-12 ~06:30Z)
+
+`github-awesome-blockchain-line-1124` — **not sent.** `GET /search/issues?q=
+repo:yjjnls/awesome-blockchain+btc500` → `total_count: 0`, so no PR exists under
+any author. The ask stays the owner's, due 2026-11-24, zero-typing instruction.
+`jlopp/lopp.net` re-verified: `https://www.lopp.net/bitcoin-information/
+trading.html` still renders the followed BTC500 anchor (0 nofollow).
