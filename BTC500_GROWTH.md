@@ -171,6 +171,38 @@ non-github referral sessions" while nine existed; and the 2026-11-19 crawl rule
 replaced the 2026-11-20 stop rule. Details: `review-latest.json` and the review
 history table below.
 
+## Results review — 2026-11-13 (daily) — the crawl answer arrived, and it was no
+
+Verdict `failing`, streak 20. **The decisive fact of the week is a negative:**
+Request Indexing was submitted (`2026-11-13T04:06:28Z`) and
+`/bitcoin-500-day-cycle` was fetched **48 seconds later** — `lastCrawlTime
+2026-11-13T04:07:16Z`, `pageFetchState SUCCESSFUL`, the first post-merge crawl and
+the first read of the 2026-11-11 redesign — and coverage is **still `Crawled -
+currently not indexed`**. `/halving-dates` moved `2026-10-22 → 2026-11-13` and also
+stayed declined. In the same week the sitemap's false `lastmod` for `/` was fixed
+(`2026-10-29 → 2026-11-11`, c0f71a9) and all 21 URLs were submitted to Bing's URL
+Submission API and IndexNow: Bing today is **0 indexed / 10 crawled / 11 unknown**.
+Two engines have taken delivery of the inventory and kept one URL (`/`).
+
+**The one number that moved:** named non-github sessions **9 → 13** in 7d
+(facebook.com 6/6 → `/`, t.co 3/3 → `/`, chatgpt.com 2/2 → pillar, x 1/1 → pillar,
+bitcointalk.org 1/1 → pillar) — the first week an *asked* channel produced a
+session, from the BitcoinTalk topic the owner sent by hand on 2026-11-12.
+Everything else: indexed 1/21 (tenth consecutive reading), non-brand clicks 0 in 23
+readings, positions4to20 = 0, impressions 14, sessions 99 of which 70 are Direct
+from 16 users. Lopp.net: 0 sessions 6 days after a merge that is still followed.
+
+**Consequences (mandates):** fix the collector's inspection denominator
+(`1/4` vs `1/21` in the same day's files); **close every indexation lever to
+2026-12-01** (sitemap, lastmod, Request Indexing, URL submission, merge, redirect,
+copy); read the pillar's coverage on 2026-11-16 and the GSC Sitemaps panel once;
+read Bing on 2026-11-18 and treat 0/21 as a second engine's decline; runner repairs
+7th statement (owner). **Asks:** The Block newsroom tip (kept, day 2), and a
+Facebook share from the owner's own account — the only channel in the record where
+sessions equal users. The `yjjnls/awesome-blockchain` route is **closed
+`unexecutable`** after three unsent handovers (`total_count: 0` on every check).
+Full file: `scripts/autonomous/review-latest.json`.
+
 ## Session 2026-11-12 — compressed
 
 `date-consistency-1112` (7046cc2): `/llms.txt` and `/llms-full.txt` became
@@ -201,6 +233,7 @@ Not a growth bet and not claimed as one.
 
 | date       | verdict | what it forced (one line each) |
 | ---------- | ------- | ------------------------------ |
+| 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20 |
 | 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19 |
 | 2026-11-11 | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews). Streak 17 |
 | 2026-11-10 | failing | Page-quality causes excluded by measurement (200 / 3,007 words / canonical / robots / linked / not duplicate); both October articles lost by name. Streak 16 |

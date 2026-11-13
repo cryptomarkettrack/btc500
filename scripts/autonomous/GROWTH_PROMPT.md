@@ -411,16 +411,52 @@ rule that can actually fire.**
   0 likes between them). Read the profile for a post carrying the same slug in
   the previous 24 hours; if there is one, skip and print the skip.
 
-PERFORMANCE must open with these six lines, every cycle:
+**2026-11-13 (this review): the indexation levers are CLOSED to 2026-12-01, because
+the last one was pulled and it answered no.**
+Request Indexing was finally accepted (`2026-11-13T04:06:28Z`, *"URL was added to a
+priority crawl queue"*) and `/bitcoin-500-day-cycle` was fetched **48 seconds later**
+— `lastCrawlTime 2026-11-13T04:07:16Z`, `crawledAs=MOBILE`,
+`pageFetchState=SUCCESSFUL`, the first post-merge crawl and the first read of the
+2026-11-11 redesign — and coverage is **still `Crawled - currently not indexed`**.
+`/halving-dates` moved `2026-10-22 → 2026-11-13` and also stayed declined;
+`/simulator` was submitted and was not recrawled. In the same week the sitemap's
+false `lastmod` for `/` was fixed (`2026-10-29 → 2026-11-11`, c0f71a9) and all 21
+URLs were submitted to Bing's URL Submission API and IndexNow: Bing today is
+**0 indexed / 10 crawled / 11 unknown**. Two engines have taken delivery of the
+inventory and kept one URL (`/`).
+
+- **From today until 2026-12-01 no cycle may offer sitemap, lastmod, Request
+  Indexing, URL submission, merge, redirect, canonical, internal-link or copy work
+  as an indexation fix.** All of them have been executed; none moved the numerator
+  (`indexed` is 1 for the tenth consecutive reading since 2026-11-04, while a
+  10-commit redesign shipped on 2026-11-11).
+- **A cycle's permitted output is one measurement plus one distribution action.**
+  Print the measurement, execute or prepare the distribution action, stop. If a
+  cycle believes a new in-repo indexation lever exists, it names it in the commit
+  body with evidence that the previous five failed for a different reason — or it
+  does not do the work.
+- The PERFORMANCE block must carry the lever line (see below), so the next review
+  can see whether a cycle invented indexation work anyway.
+
+PERFORMANCE must open with these seven lines, every cycle:
 
 ```
-- indexed X/21, sitemap N (inspection <timestamp>)
+- indexed X/21, sitemap N (inspection <timestamp>, rows N of M)
+- indexation lever: none left (crawl 2026-11-13T04:07:16Z declined; Bing 0/21 after 21 submitted) — or the new lever and its evidence
 - referrals 7d: <full line>
 - named sources 7d: <every sessionSource outside Direct and github.com, with sessions/users → landing page>
 - live ask: <id> — channel-verified: <what the channel itself says>, due <date>
 - X views 7d: <post, views, likes> (pinned post included)
 - channels 7d: <channel sessions/users, including AI Assistant>
 ```
+
+**The `indexed` line carries the row count, and a partial read is not a reading.**
+On 2026-11-13 `review-input.json` took indexation from a 4-URL file the cycle wrote
+at 04:09Z (`total: 4, indexed: 1`) while a 21-row inspection from 07:32Z sat beside
+it, so the runner compared `3/21` (2026-10-30) with `1/4` (2026-11-13) and called
+it a fall. Both readings said 1, which is luck. If the report has fewer rows than
+the sitemap has `<loc>`, print `rows N of M — not a coverage reading` and do not
+print a fraction; the collector fix is mandate `inspection-denominator-1114`.
 
 **Added 2026-11-12 by that day's review: the `named sources` line, because the
 `referrals` line is structurally blind.** The Referral channel is not where X,
@@ -452,6 +488,17 @@ Print what the channel says and the date it said it. If the ledger and the
 channel disagree, the channel wins and the ledger gets corrected in the same
 commit, with the evidence. Never report a send as pending or as done on the
 ledger's word alone — a status cell nobody checks is not evidence.
+
+**SUPERSEDED 2026-11-13 — the ask rules below this line are history, not
+instructions.** They name routes that are closed (`contact@coindesk.com` after
+coindesk.com/contact returned 404 in a real browser on 2026-11-12;
+`igorbarinov/awesome-bitcoin` after two PRs were closed unmerged; the
+`yjjnls/awesome-blockchain` line after three unsent handovers, `total_count: 0` on
+every check). The live asks are the entries in
+`scripts/autonomous/review-latest.json → owner_asks[]` and the rows in
+`scripts/autonomous/outreach/STATUS.md` whose `sent` cell is `no`. An ask that
+names a dead route is unexecutable under §10(a) of the review, and prose that does
+the same is worse than no prose: read the review file.
 
 **Set by the 2026-11-02 review — only two asks exist, and both are checkable.**
 The 2026-11-01 ask set was partly unexecutable: the CoinDesk ask named a personal
