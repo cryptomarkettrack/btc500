@@ -6,7 +6,20 @@ Send from : owner's BitcoinTalk account
 Prepared  : 2026-10-27
 Number quoted (one): -32.5%
 Link (one): https://btc500.net/bitcoin-500-day-cycle
-Status    : not sent
+Status    : sent — 2026-11-12 16:31 local, board 1, topic 5599692
+            https://bitcointalk.org/index.php?topic=5599692.0
+            COPY REWRITTEN BEFORE SENDING (the text below is the prepared
+            draft, superseded — do not re-paste it). The posted copy leads
+            with the record instead of the -32.5% number: all four completed
+            windows with entry price, exit multiple, lowest close vs entry and
+            days below entry before the halving; the ±120-day entry test as the
+            secondary point; the dated live call (next entry Nov 29, 2026);
+            and the public $10,000 paper buy that opens on that date.
+            Both outbound anchors render rel="ugc" — referral and mention,
+            not authority. Account was brand new at the time of the post.
+            Proof metric: GA4 referral sessions with source bitcointalk.org
+            in the 7d window ending 2026-11-19 or later, plus the thread's
+            own view/reply counts.
 
 WHY THEM
 Bitcoin Discussion is where halving-cycle threads already live; the finding here

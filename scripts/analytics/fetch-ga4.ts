@@ -200,54 +200,80 @@ async function main(): Promise<void> {
     endDate: `${days + 1}daysAgo`,
   };
 
-  const [currentReport, previousReport, channels, landing, returning, devices, referrals] =
-    await Promise.all([
-      runReport(propertyId, totalsBody(currentRange.startDate, currentRange.endDate)),
-      runReport(propertyId, totalsBody(previousRange.startDate, previousRange.endDate)),
-      runReport(propertyId, {
-        dateRanges: [currentRange],
-        dimensions: [{ name: "sessionDefaultChannelGroup" }],
-        metrics: [{ name: "sessions" }, { name: "totalUsers" }, { name: "engagementRate" }],
-        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 10,
-      }),
-      runReport(propertyId, {
-        dateRanges: [currentRange],
-        dimensions: [{ name: "landingPage" }],
-        metrics: [
-          { name: "sessions" },
-          { name: "engagementRate" },
-          { name: "averageSessionDuration" },
-        ],
-        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 15,
-      }),
-      runReport(propertyId, {
-        dateRanges: [currentRange],
-        dimensions: [{ name: "newVsReturning" }],
-        metrics: [{ name: "totalUsers" }, { name: "sessions" }],
-        orderBys: [{ metric: { metricName: "totalUsers" }, desc: true }],
-      }),
-      runReport(propertyId, {
-        dateRanges: [currentRange],
-        dimensions: [{ name: "deviceCategory" }],
-        metrics: [{ name: "sessions" }, { name: "engagementRate" }],
-        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-      }),
-      runReport(propertyId, {
-        dateRanges: [currentRange],
-        dimensions: [{ name: "sessionSource" }],
-        metrics: [{ name: "sessions" }, { name: "totalUsers" }],
-        orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
-        limit: 10,
-        dimensionFilter: {
-          filter: {
-            fieldName: "sessionDefaultChannelGroup",
-            stringFilter: { matchType: "EXACT", value: "Referral" },
-          },
+  const [
+    currentReport,
+    previousReport,
+    channels,
+    landing,
+    returning,
+    devices,
+    referrals,
+    namedSources,
+  ] = await Promise.all([
+    runReport(propertyId, totalsBody(currentRange.startDate, currentRange.endDate)),
+    runReport(propertyId, totalsBody(previousRange.startDate, previousRange.endDate)),
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "sessionDefaultChannelGroup" }],
+      metrics: [{ name: "sessions" }, { name: "totalUsers" }, { name: "engagementRate" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: 10,
+    }),
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "landingPage" }],
+      metrics: [
+        { name: "sessions" },
+        { name: "engagementRate" },
+        { name: "averageSessionDuration" },
+      ],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: 15,
+    }),
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "newVsReturning" }],
+      metrics: [{ name: "totalUsers" }, { name: "sessions" }],
+      orderBys: [{ metric: { metricName: "totalUsers" }, desc: true }],
+    }),
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "deviceCategory" }],
+      metrics: [{ name: "sessions" }, { name: "engagementRate" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+    }),
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "sessionSource" }],
+      metrics: [{ name: "sessions" }, { name: "totalUsers" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: 10,
+      dimensionFilter: {
+        filter: {
+          fieldName: "sessionDefaultChannelGroup",
+          stringFilter: { matchType: "EXACT", value: "Referral" },
         },
-      }),
-    ]);
+      },
+    }),
+    // Every named source, whatever channel GA4 files it under. The Referral
+    // table above is structurally blind to the traffic that actually arrives:
+    // X lands in Organic Social as `t.co`, Facebook in Organic Social, and
+    // ChatGPT in AI Assistant. Reading only the Referral channel is how 21
+    // readings reported "0 named non-github referral sessions" while nine such
+    // sessions had already happened (review of 2026-11-12, mandate
+    // named-source-ledger-1113).
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [
+        { name: "sessionDefaultChannelGroup" },
+        { name: "sessionSource" },
+        { name: "landingPage" },
+      ],
+      metrics: [{ name: "sessions" }, { name: "totalUsers" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: 40,
+    }),
+  ]);
 
   const current = readTotals(rowsOf(currentReport)[0]);
   const previous = rowsOf(previousReport)[0] ? readTotals(rowsOf(previousReport)[0]) : undefined;
@@ -387,6 +413,28 @@ async function main(): Promise<void> {
     "",
   );
 
+  lines.push("## Named sources (all channels)", "");
+  lines.push(
+    "Every `sessionSource` outside Direct, with the channel GA4 files it under",
+    "and the landing page it arrived on. The Referral table above cannot see",
+    "`t.co` (Organic Social), `facebook.com` (Organic Social) or `chatgpt.com`",
+    "(AI Assistant), which is why this table exists.",
+    "",
+  );
+  lines.push(
+    table(
+      ["Channel", "Source", "Landing page", "Sessions", "Users"],
+      rowsOf(namedSources).map((row) => [
+        dimensionValue(row, 0),
+        dimensionValue(row, 1),
+        dimensionValue(row, 2),
+        num(metricValue(row, 0)),
+        num(metricValue(row, 1)),
+      ]),
+    ),
+    "",
+  );
+
   const markdown = lines.join("\n");
   const { markdownPath, jsonPath } = writeReport("ga4", markdown, {
     propertyId,
@@ -398,6 +446,7 @@ async function main(): Promise<void> {
       returning: rowsOf(returning),
       devices: rowsOf(devices),
       referrals: rowsOf(referrals),
+      namedSources: rowsOf(namedSources),
     },
   });
 

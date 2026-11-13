@@ -89,6 +89,83 @@ export function referralLine(rows, window) {
 }
 
 /**
+ * Sources a named-source line never counts: Direct is not a referrer (GA4
+ * reports it as `(direct)`), and `github.com` is our own repository (the
+ * 2026-11-11 review's §10(b): a github.com referral is a self-referral and
+ * never a positive signal).
+ */
+export const EXCLUDED_SOURCES = ["direct", "(direct)", "github.com"];
+
+/**
+ * Reduce GA4 rows shaped `[channel, sessionSource, landingPage]` +
+ * `[sessions, users]` to `[{channel, source, landing, sessions, users}]`.
+ */
+export function namedSourceRows(table) {
+  const rows = Array.isArray(table) ? table : [];
+  const out = [];
+  for (const row of rows) {
+    const channel = row?.dimensionValues?.[0]?.value;
+    const source = row?.dimensionValues?.[1]?.value;
+    const landing = row?.dimensionValues?.[2]?.value;
+    const sessions = Number(row?.metricValues?.[0]?.value ?? 0);
+    const users = Number(row?.metricValues?.[1]?.value ?? 0);
+    if (!source || !Number.isFinite(sessions)) continue;
+    out.push({
+      channel: String(channel ?? ""),
+      source: String(source).toLowerCase(),
+      landing: landing ? String(landing) : "(not set)",
+      sessions,
+      users: Number.isFinite(users) ? users : 0,
+    });
+  }
+  return out;
+}
+
+/**
+ * `named sources 7d: t.co 3/3 → /, facebook.com 6/6 → /, chatgpt.com 2/2 → (not set)`
+ *
+ * Every source outside Direct and github.com, with sessions, users and the
+ * landing page that carried most of its sessions. This exists because the
+ * Referral-channel line is structurally blind: GA4 files X under Organic
+ * Social (`t.co`), Facebook under Organic Social, and ChatGPT under AI
+ * Assistant, so 21 readings printed "0 named non-github referral sessions"
+ * while nine such sessions were in the same 7-day window (review 2026-11-12).
+ */
+export function namedSourcesLine(rows, window) {
+  const bySource = new Map();
+  for (const row of rows) {
+    if (!(row.sessions > 0)) continue;
+    if (EXCLUDED_SOURCES.includes(row.source)) continue;
+    const entry = bySource.get(row.source) ?? { sessions: 0, users: 0, landings: new Map() };
+    entry.sessions += row.sessions;
+    entry.users += row.users;
+    entry.landings.set(row.landing, (entry.landings.get(row.landing) ?? 0) + row.sessions);
+    bySource.set(row.source, entry);
+  }
+
+  const days = reportDays({ window });
+  const label = days ? `named sources ${days}d:` : "named sources (window unknown):";
+  if (bySource.size === 0) {
+    let empty = `${label} none outside Direct and github.com`;
+    if (window?.start && window?.end) empty += ` (window ${window.start} → ${window.end})`;
+    return empty;
+  }
+
+  const parts = [...bySource.entries()]
+    .sort((a, b) => b[1].sessions - a[1].sessions || a[0].localeCompare(b[0]))
+    .map(([source, entry]) => {
+      const [landing] = [...entry.landings.entries()].sort(
+        (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+      )[0];
+      return `${source} ${entry.sessions}/${entry.users} → ${landing}`;
+    });
+
+  let line = `${label} ${parts.join(", ")}`;
+  if (window?.start && window?.end) line += ` (window ${window.start} → ${window.end})`;
+  return line;
+}
+
+/**
  * Window length in days, read from the report's own `window` — its `days` field
  * when present, otherwise counted inclusively from `start`/`end`. Returns null
  * when the report does not say, so the caller prints "unknown" instead of 7.
@@ -141,23 +218,46 @@ export function newestReport(dir, { days } = {}) {
   return { path: latest.path, report: latest.report };
 }
 
-function main(argv) {
-  const dirFlag = argv.indexOf("--dir");
-  const dir = resolve(dirFlag === -1 ? DEFAULT_DIR : argv[dirFlag + 1]);
-  const daysFlag = argv.find((arg) => arg.startsWith("--days="));
-  const requested = daysFlag ? Number(daysFlag.slice("--days=".length)) : 7;
-  const wanted = Number.isFinite(requested) && requested > 0 ? Math.round(requested) : 7;
+function resolveFlagged(argv, index, fallback) {
+  return resolve(index === -1 ? fallback : argv[index + 1]);
+}
+
+function printWindow(dir, wanted) {
   const found = newestReport(dir, { days: wanted });
   if (!found) {
     console.log(
       `referrals ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}. Run: npm run analytics -- --days=${wanted}`,
     );
-    return 1;
+    console.log(`named sources ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}.`);
+    return false;
   }
-  const table = found.report?.tables?.referrals;
-  const rows = referralRows(table);
-  console.log(referralLine(rows, found.report?.window));
-  return 0;
+  const window = found.report?.window;
+  console.log(referralLine(referralRows(found.report?.tables?.referrals), window));
+  console.log(namedSourcesLine(namedSourceRows(found.report?.tables?.namedSources), window));
+  return true;
+}
+
+function main(argv) {
+  const dirFlag = argv.indexOf("--dir");
+  const dir = resolveFlagged(argv, dirFlag, DEFAULT_DIR);
+  const daysFlag = argv.find((arg) => arg.startsWith("--days="));
+
+  // No --days: print both windows the review reads, so one command answers
+  // "what arrived, from where, and how many people" for 7 and 28 days.
+  const windows = daysFlag
+    ? [
+        (() => {
+          const requested = Number(daysFlag.slice("--days=".length));
+          return Number.isFinite(requested) && requested > 0 ? Math.round(requested) : 7;
+        })(),
+      ]
+    : [7, 28];
+
+  let ok = true;
+  for (const wanted of windows) {
+    if (!printWindow(dir, wanted)) ok = false;
+  }
+  return ok ? 0 : 1;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

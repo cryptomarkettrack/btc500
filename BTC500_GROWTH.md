@@ -5,6 +5,117 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-13 (04:00Z) — first successful Request Indexing; the crawl came back and still declined
+
+Three mandates executed, **no site change**. Buy date read from
+https://btc500.net/: **29 November 2026, 16 days out** ("16 days to buy" in the
+live countdown) — not the 20 days / 30 November in the prompt header.
+
+- **`request-indexing-retry-1113` — executed, SUBMITTED.** In the logged-in GSC
+  session at **04:06:28Z** the pillar's REQUEST INDEXING was clicked; response:
+  *"Indexing requested — URL was added to a priority crawl queue. Submitting a
+  page multiple times will not change its queue position or priority."*
+  Yesterday's refusal was a spent daily quota, not a broken lever. `/simulator`
+  submitted 04:08:27Z (same confirmation). `/halving-dates` clicked 04:07:50Z
+  but its toast expired before capture → **submitted state unconfirmed**.
+- **The crawl happened 48 seconds later, and the answer is no.** Raw
+  `urlInspection` at 04:09Z: `/bitcoin-500-day-cycle`
+  **lastCrawlTime 2026-11-13T04:07:16Z**, `crawledAs=MOBILE`,
+  `pageFetchState=SUCCESSFUL`, coverage **still `Crawled - currently not
+  indexed`**. First crawl since 2026-11-07T03:42:34Z and the **first
+  post-merge crawl** (merge 2026-11-07T20:20:30Z): it read the 2026-11-11
+  redesign and declined it. Caveat, stated rather than smoothed: 48s is fast
+  enough that this fetch may be the request's own priority fetch, not an
+  independent crawl — either way Google fetched the page today and the verdict
+  did not move.
+- **Raw crawl times (urlInspection API 04:09Z):** `/` **2026-11-05T07:50:37Z**
+  (unchanged, indexed) · pillar **2026-11-13T04:07:16Z** · `/halving-dates`
+  **2026-10-22T14:38:27Z** · `/simulator` **2026-11-07T06:25:39Z**. The homepage
+  crawl that the 2026-11-19 rule watches has not happened.
+- **`sitemap-lastmod-home-1113` — already executed 2026-11-12 (c0f71a9),
+  verified live today.** `<lastmod>` for `/` went **2026-10-29 → 2026-11-11**
+  (`git show a410672:public/sitemap.xml` vs the working tree and vs production);
+  `node scripts/sitemap.mjs --check` → "public/sitemap.xml is up to date (21
+  URLs)". Nothing to ship: the fix landed before this cycle, bundled with the
+  Bing tooling rather than alone in its commit as the mandate asked.
+- **`named-source-ledger-1113` — executed.** `fetch-ga4.ts` now collects a
+  `namedSources` table (`sessionDefaultChannelGroup × sessionSource ×
+  landingPage`, sessions + users, no channel filter); `referral-line.mjs` prints
+  a second line for 7d and 28d. `npm run referrals` today:
+  - `named sources 7d: (not set) 6/6 → (not set), facebook.com 6/6 → /,
+    google 5/2 → /, t.co 3/3 → /, chatgpt.com 2/2 → /bitcoin-500-day-cycle,
+    bitcointalk.org 1/1 → /bitcoin-500-day-cycle, x 1/1 → /bitcoin-500-day-cycle
+    (window 2026-11-06 → 2026-11-12)`
+  - `named sources 28d: chatgpt.com 10/10 → /bitcoin-500-day-cycle, google
+    10/3 → /, (not set) 7/6 → /, facebook.com 6/6 → /, t.co 4/4 → /,
+    bing 3/3 → /bitcoin-500-day-cycle, bitcointalk.org 1/1 →
+    /bitcoin-500-day-cycle, x 1/1 → /bitcoin-500-day-cycle`
+  - **The BitcoinTalk send has its first session**: `bitcointalk.org 1/1 →
+    /bitcoin-500-day-cycle`, the first session from an *asked* channel in 22
+    readings. One session is a floor, not a result.
+  - Tests: 4 new cases (Organic Social / AI Assistant source appears, landing
+    pick, empty case, window label). 222 pass / 0 fail.
+- **`x-post-dedup-1113` — executed.** Profile read first (04:02Z): no post
+  carrying `countdown-1113` (last two 2026-11-12T05:35Z and 06:05Z). One post
+  published: `status/2121091569650483649` **2026-11-13T04:03:32Z**, Friday
+  shape, live facts, tagged link `…?utm_source=x&utm_medium=social&
+  utm_campaign=countdown-1113`; verified on the profile. Views (aria-labels):
+  pinned `2120367269997957126` **107 views / 2 likes / 1 reply**,
+  `2120759802204983357` **56 / 1 / 0**, `2120752220010582146` **62 / 2 / 0** —
+  against t.co 3 sessions in the same 7 days.
+- **Engagement:** reply + like to @WelshBullTrader
+  (`status/2121088238379048989`, "below $70K … stick to your DCA") with the
+  four-window drawdown fact and the median 84.5 days to the low; reply
+  `status/2121091868972798203` at 04:04:44Z, logged in `X-ENGAGEMENT-LOG.md`.
+- **New defect signal, not fixed (freeze):** GSC's Discovery panel for all four
+  inspected URLs reads **"Sitemaps: No referring sitemaps detected"**, although
+  `sitemap.xml` holds all 21 locs and is submitted. Either the sitemap's
+  processing is stale or the property carries a second sitemap entry. This is
+  not a copy problem and cannot be fixed by copy — it needs a mandate.
+
+## Outbound — 2026-11-12 — BitcoinTalk topic posted (first non-GitHub, non-X send)
+
+Executed in the owner's logged-in browser session (account `btc500halving`,
+BitcoinTalk, board 1 "Bitcoin Discussion"):
+
+- **Live:** <https://bitcointalk.org/index.php?topic=5599692.0> — title
+  "500-day rule: entry Nov 29, 2026 - every completed window went underwater
+  first", published 2026-11-12 16:31 local, **read back on the board listing**
+  after posting (the topic is in the board's first page of topics).
+- **Not queued:** the topic rendered immediately in the thread view with no
+  moderation notice, so it is public now.
+- **Copy was rewritten before sending.** The prepared pitch in
+  `scripts/autonomous/outreach/2026-10-27-bitcointalk-timing-test.txt` was a
+  single-number timing test (median −32.5%). It was replaced by the record
+  itself: all four completed windows (entry price, exit multiple, lowest close
+  vs entry, days below entry before the halving) + the ±120-day entry test +
+  the dated live call (next entry **Nov 29, 2026**) + the public $10k paper buy
+  that opens on that date + the caveat that intraday lows were deeper.
+- **Date framing:** Nov 29, 2026 (live block-height model) in the title and the
+  body; Nov 30 is mentioned once as the consensus projection of an Apr 13, 2028
+  halving, so a reader who has seen the other date does not read the post as
+  wrong.
+- **Link status (measured, not assumed):** both outbound anchors render
+  `rel="ugc"` — BitcoinTalk does not pass authority, the same position as
+  GitHub README links. This is a **referral and mention** send, not an
+  indexation send. The only followed link BTC500 has is the lopp.net one
+  (merged 2026-11-07), and Google has still not recrawled since 2026-11-07.
+- **Proof metric:** GA4 referral sessions with source `bitcointalk.org` in the
+  7d window ending 2026-11-19 or later (the runner's window ends 2026-11-09, so
+  today's reading is "too early"), plus thread reply count and view count read
+  on the thread itself.
+  **First session 2026-11-13:** `bitcointalk.org 1/1 →
+  /bitcoin-500-day-cycle` in the 7d window 2026-11-06 → 11-12 — the first
+  session from any *asked* channel in 22 readings. One session, one user: a
+  floor, not a result.
+- **Account note (state of the sender, state it plainly):** the BitcoinTalk
+  account is brand new — the profile reads "Brand new", `Activity: 0`,
+  `Posts: 1` at the time of the post, and total logged-in time was 2 minutes.
+  A first post from a zero-reputation account is the weakest possible sender,
+  so this topic is a bet on the data, not on the account. If the thread is
+  removed or held, that is the reason to check, and the fix is participation,
+  not a re-post.
+
 ## Baseline — measured 2026-11-12 (Bing)
 
 Source: Bing Webmaster Tools API (site `https://btc500.net`), via `npm run bing`.
@@ -48,298 +159,80 @@ since 2026-10-23.
 
 ---
 
-## Results review — 2026-11-12 (daily) — verdict `failing`, streak 19
+## Results review — 2026-11-12 (daily) — compressed
 
-- **No result in the outcome sense; one measurement that changes the plan.** 9
-  runs / 8 `shipped` / 1 failure, and **10 commits touching `src/` or
-  `public/sitemap.xml` since the last review** (a3d5039 → 7046cc2). Those ten
-  bought: indexed **1/21 → 1/21** (9th consecutive reading), non-brand clicks
-  **0 → 0** (21st), impressions 13 → 13. Nine of the ten are the 2026-11-11
-  owner redesign + SEO pass, and **Google has not read the site since
-  2026-11-07** (homepage last crawl 2026-11-05, pillar 2026-11-07). The
-  redesign is not a result, and not yet an input Google has seen.
-- **The sitemap states something false about the only indexed URL.**
-  `public/sitemap.xml` says `<lastmod>2026-10-29</lastmod>` for `/`, because
-  `scripts/sitemap.mjs` excludes `src/components/home/` from the lastmod
-  derivation as "shared by every page" — it is the homepage, and all 11 of its
-  components changed on 2026-11-11. `src/routes/index.tsx` was last touched
-  2026-10-29, which is the date the sitemap publishes. The generator's own
-  header says why it matters: "Google uses `lastmod` to decide what to recrawl,
-  so a stale date means a changed page is never revisited." → mandate
-  `sitemap-lastmod-home-1113`.
-- **Request Indexing used for the first time ever (2026-11-12 ~06:18Z) and
-  refused**: "Quota Exceeded — exceeded your daily quota, try again tomorrow",
-  remaining quota **0**, never submitted. The quota is rationed and this
-  property has never used it — so a second refusal at first light means
-  something else in the account is spending it → mandate
-  `request-indexing-retry-1113`.
-- **The site's stranger traffic was invisible for 21 readings.** The runner's
-  referral table reads the GA4 **Referral** channel; X lands in Organic Social,
-  Facebook in Organic Social, ChatGPT in AI Assistant. The reviewer's own
-  `sessionSource` query (2026-11-12 ~09:55Z):
+Verdict `failing`, streak 19; 10 commits touching `src/` or `public/sitemap.xml`
+bought indexed 1/21 → 1/21 and 0 non-brand clicks (21st reading). Four findings
+set today's work: the sitemap's false `<lastmod>2026-10-29</lastmod>` for `/`
+(`scripts/sitemap.mjs` excluded `src/components/home/`); Request Indexing
+refused for the first time ever with quota 0; the Referral-channel table cannot
+see `t.co`/`facebook.com`/`chatgpt.com`, so 21 readings reported "0 named
+non-github referral sessions" while nine existed; and the 2026-11-19 crawl rule
+replaced the 2026-11-20 stop rule. Details: `review-latest.json` and the review
+history table below.
 
-  | source | sessions / users (7d, 2026-11-05 → 11-11) | landing page | 28d |
-  | ------ | ----------------------------------------- | ----------- | ---- |
-  | `facebook.com` | 6 / 6 | `/` | 6 / 6 |
-  | `t.co` | 3 / 3 | `/` | 4 / 4 |
-  | `chatgpt.com` (AI Assistant) | 2 / 2 | `/bitcoin-500-day-cycle` 5/5 | **10 / 8** |
+## Session 2026-11-12 — compressed
 
-  `github.com` is 8 sessions at **1 user** — this repository, §10(b), never a
-  positive outcome signal even though the runner scored it as one. The freeze's
-  traffic gate was therefore met before today and nobody knew.
-- **Non-brand demand exists and is unrankable.** 28d query report
-  (2026-10-13 → 11-09): 6 rows — brand `btc500` 6/28 @2.86, `btc 500` 0/1 @63.0;
-  non-brand `500 days before next bitcoin halving` 0/1 @38.0, `bitcoin plus
-  500` 0/2 @20.5, `bitcoin 500` 0/2 @54.0, `bit 500` 0/1 @95.0 — **6 non-brand
-  impressions in 28 days, none in positions 4–20.** No snippet edit is
-  justifiable. The 90-day baseline of 3,370 impressions was earned before the
-  index was lost (the 480-day window to 2026-10-26 is 3,380 — the lifetime).
-- **X ceiling, measured on the profile (2026-11-12 ~09:45Z):** 212 followers,
-  909 posts; pinned post 89 views / 1 reply / 2 likes; today's post 24 views;
-  the second poster's near-duplicate 29 views / 0 likes / 0 replies;
-  motivational 99; design 79. Output: **t.co 3 sessions / 3 users in 7d**.
-- **All seven date surfaces agree (Nov 29, 2026)** — `/llms.txt` and
-  `/llms-full.txt` are live-rendered server routes (verified in production
-  today at lines 33 and 83) and the X bio reads "countdown to Nov 29, 2026
-  buy". `chatgpt.com` is the only source where sessions ≈ users: the site's
-  remaining growth is a **citation** problem, not a page problem.
-- **Ask ledger:** 13 handovers since 2026-10-27, 2 sent, 0 sessions from any
-  asked channel. The live GitHub ask is still unsent (`total_count` 0) with its
-  anchor re-verified today (line 350) and its deadline pulled to 2026-11-16.
-  `coindesk.com/contact` is a **404 in a real browser** → the email route is
-  closed as `unexecutable`; `theblock.co/contact` is a working news-tips form
-  → new ask issued today, due 2026-11-17.
-- **Owner items, 5th restatement:** 2026-11-07 status row still absent (5
-  days), `dirty_paths_note()` inline at run-growth-cycle.sh:111/:197/:345, no
-  `status-note.sh`, `git add -A` still at review-cycle.sh:439/:446.
-- **New rule (2026-11-19):** if the homepage has no crawl dated after
-  2026-11-12, the daily X post drops to twice a week and no new owner ask is
-  issued. The old 2026-11-20 stop rule required "no crawl **and** no named
-  non-github referral session" — the second half is met, so it could never fire.
+`date-consistency-1112` (7046cc2): `/llms.txt` and `/llms-full.txt` became
+live-rendered server routes, so all seven quoteable surfaces read 29 November
+2026; the X bio was corrected by hand. Request Indexing refused (quota 0, never
+submitted) and the pillar's raw `lastCrawlTime` still 2026-11-07T03:42:34Z.
+GA4 7d 2026-11-05 → 11-11: 90 sessions / 29 users / 120 views / 36.7%, Direct
+61/15, Organic Social 9/9, Referral 8/1 (all github.com, 1 user), Organic Search
+7/2, AI Assistant 2/2. BitcoinTalk topic posted by the owner's session
+(5599692), both anchors `rel="ugc"`. Session 2026-11-11: pinned the tagged post,
+posted + replied, no site change; 11-10: first linked post on the profile.
 
-## Results review — 2026-11-11 (daily) — verdict `failing`, streak 17
-
-- **No result, eighth week.** 9 runs / 8 `shipped` / 1 failure; `git log
-  --since=2026-11-03 -- src public/sitemap.xml` empty (0 site changes); 7 of the 8
-  ships are the runner's price CSV. `indexed` **1/21 for the 8th consecutive
-  reading**, non-brand clicks 0 in **20** readings, named non-github referral
-  sessions 0 in 20.
-- **X has a measured ceiling now.** Profile read 2026-11-11: 211 followers, 900
-  posts, five most recent posts **56, 56, 90, 83, 110 views**; pinned tagged post
-  `status/2120367269997957126` = 56 views / 1 reply / 0 reposts / 1 like in ~4h.
-  At ~100 views/post a daily post is single-digit sessions at best. Verdict date on
-  the cadence: **2026-11-18**.
-- **The only strangers arrive through AI assistants.** GA4 7d 11-04 → 11-10: 77
-  sessions / 21 users, but 59 sessions Direct from 15 users and Referral = 5
-  sessions / 1 user (github.com). The exception is `AI Assistant` = **3 sessions /
-  3 users / 33.3% engaged** — the only channel where sessions equal users.
-- **And that surface is being served a stale number.** `/bitcoin-500-day-cycle` and
-  `/halving-dates` render **November 29, 2026**; `/llms.txt` says "the current
-  block-height estimate is November 28, 2026" (lines 32 and 82); the X bio says
-  "Nov 30, 2026 buy". Three surfaces, three dates, on the number the site exists to
-  state. Fix ordered as `date-consistency-1112`.
-- **A lever never pulled:** in 17 reviews the cycle printed `lastCrawlTime` every
-  day and never once used Search Console Request Indexing. Ordered for 2026-11-12
-  (`gsc-request-indexing-1112`); pillar raw crawl is still **2026-11-07T03:42:34Z**,
-  before the 2026-11-07T20:20:30Z merge, 3d 7h 43m after it.
-- **Ask ledger:** 12 handovers since 2026-10-27, **2 sent** (#1009 ignored 15 days,
-  #1267 merged 25h26m), 0 sessions from any asked channel. The live ask is
-  channel-verified unsent (`total_count` 0) and its anchor had aged within a day —
-  `## Releated Tools` grew a `### Tools Directory` block of outside submissions.
-- **Owner items, 4th restatement:** 2026-11-07 status row absent (5 days),
-  `dirty_paths_note()` inline at run-growth-cycle.sh:111/:197/:345, `git add -A` at
-  review-cycle.sh:439/:446. `deploy-health` regressed on the 2026-11-05 dirty-tree.
-- **Dated stop rule (new):** if on **2026-11-20** there is still no post-merge crawl
-  **and** no named non-github referral session, the daily post drops to twice a week,
-  no new ask is issued, and the cycle keeps only the weekly measurement plus one link
-  action. The buy date is **29 November 2026, 18 days out** — every other date in the
-  plan (11-18, 11-21, 11-28) is at or after the window it is trying to win.
-
-### Compressed: 2026-11-11 review (`failing`, streak 17)
-
-Page-quality causes excluded by measurement (pillar 200 / 3,007 words / canonical
-match / robots allowed / linked from `/`, titles distinct, 2 of 105 sentences
-shared); the index lost both October articles by name; mandates were the pin, the
-UTM rule and the crawl watch. All three were executed on 2026-11-11 (pin verified
-by the reviewer on the profile).
-
-### Compressed: 2026-11-10 review (`failing`, streak 16)
-
-Page-quality causes excluded by measurement (pillar 200 / 3,007 words / canonical
-match / robots allowed / linked from `/`, titles distinct, 2 of 105 sentences
-shared); the index lost both October articles by name; mandates were the pin, the
-UTM rule and the crawl watch. All three were executed on 2026-11-11 (pin verified
-by the reviewer on the profile).
-
-
-## Latest measurement — 2026-11-12 (06:10–06:35Z)
-
-- **`date-consistency-1112` executed (7046cc2, deploy verified).** `/llms.txt`
-  and `/llms-full.txt` are now server routes rendered from the live model
-  (templates in `src/content/`, tokens `{{BUY_DATE}}` etc., unknown token
-  throws). Found uncommitted in the tree from the prior cycle, completed,
-  tested (new `llms-dates.test.ts`), shipped. **All seven surfaces now agree:**
-  `/` Nov 29 · pillar Nov 29 · `/halving-dates` Nov 29 · `/llms.txt` Nov 29
-  (live-rendered) · `/llms-full.txt` Nov 29 (live-rendered) ·
-  `/data/500-day-cycles.json` states no next-buy date (historical only) ·
-  **X bio fixed on the profile → "countdown to Nov 29, 2026 buy"** (first save
-  garbled it at the 160-char cap; repaired with `fill()`, verified).
-- **`gsc-request-indexing-1112` executed — refused.** Request Indexing clicked
-  in the logged-in GSC session (property access confirmed); after the live URL
-  test the exact response was **"Quota Exceeded — exceeded your daily quota,
-  try again tomorrow"**; remaining quota **0**. Never submitted. Raw re-read
-  (urlInspection API 06:25Z): pillar still `Crawled - currently not indexed`,
-  `lastCrawlTime 2026-11-07T03:42:34Z` — **5d 2h 43m old, 12h 37m 56s before
-  the merge. Still no post-merge crawl.** Homepage last crawl 2026-11-05.
-- **`query-band-read-1112` executed — no snippet work justifiable.** 28d query
-  report (window 2026-10-13 → 11-09, generated 06:10Z): 6 query rows total,
-  **4 non-brand** (`500 days before next bitcoin halving` 0/1 @38.0,
-  `bitcoin plus 500` 0/2 @20.5, `bitcoin 500` 0/2 @54.0, `bit 500` 0/1 @95.0),
-  2 brand (`btc500` 6/28 @2.9, `btc 500` 0/1 @63.0). Fewer than 5 non-brand
-  rows, **none in positions 4–20** → per the mandate, no snippet edit can be
-  justified before the freeze lifts.
-- **`channel-reach-read-1112` executed.**
-  - **X views 7d (profile aria-labels, 2026-11-12):** pinned
-    `2120367269997957126` (11-11) **85 views** / 1 reply / 2 likes;
-    `2120759802204983357` (11-12 06:05Z, today's post) 7 views at 1m;
-    `2120752220010582146` (11-12 05:35Z, **second poster**, same Thursday
-    shape + same UTM slug — near-duplicate, no third post made) 15 views;
-    `2120593827601719689` (11-11 19:05Z, motivational, no link) 94 views;
-    `2120558611261014103` (11-11 16:45Z, design, btc500.net link) 76 views.
-    Profile: 212 followers, 908 posts.
-  - **GA4 channels 7d (2026-11-05 → 11-11, generated 06:10Z):** Direct 61/15 ·
-    Organic Social 9/9 (100% engaged) · Referral 8/1 (github.com 8/1) ·
-    Organic Search 7/2 · Unassigned 5/5 · **AI Assistant 2/2 (50%)**. Totals:
-    **90 sessions / 29 users / 120 views / 36.7% engaged** (vs 51/23/91/47.1%
-    prior window — sessions +76.5%, engagement rate down).
-  - **The unnamed channel has a name: `sessionSource` says chatgpt.com.**
-    AI Assistant = chatgpt.com **10 sessions / 8 users in 28d** (2026-10-15 →
-    11-11), 2/2 in 7d.
-  - **First named non-github referral sessions: `t.co 3 sessions / 3 users`
-    in 7d** (4/4 in 28d). t.co lands in **Organic Social**, not Referral —
-    which is why the Referral-only table read 0 x.com in 20 readings. It
-    coincides with the first linked posts (11-10/11-11). The 2026-11-09 gate
-    condition "one GA4 referral session from a non-github domain" is met on
-    this evidence; the copy exclusion to 2026-11-28 (11-10 review) stands
-    until a review lifts it.
-- **Engagement:** reply to @RonSwanonson ("cycle doesn't operate on a perfect
-  calendar") with the four-window drawdown fact, + like; logged in
-  `X-ENGAGEMENT-LOG.md`.
-- **Bootstrapping date read from the site: 29 November 2026, 17 days out**
-  (live estimate; read from https://btc500.net/ at 06:00Z — not the 30 Nov in
-  the prompt header nor any older log line).
-- Referrals 7d (Referral channel): github.com 8/1 — self-referral, never
-  positive. lopp.net still 0 sessions 4d+ after the merge; link re-verified
-  live and followed today.
-- Live ask `github-awesome-blockchain-line-1124`: **channel-verified unsent**
-  (`total_count` 0), due 2026-11-24.
-- IndexNow: 200, 21 URLs submitted (0746cc2 wait — commit is 7046cc2).
-
-## Session 2026-11-11 (04:00Z) — compressed
-
-Archive-only: pinned the 11-11 UTM-tagged post, tagged post + reply, raw crawl
-unchanged. Measurement defect noted: quoting GA4 without its window. Three
-mandates executed; no site change; `git diff --stat 62e3a8a..HEAD -- src
-public/sitemap.xml` empty.
-
-## Session 2026-11-10 (04:00Z) — archive-only: first linked post (compressed)
-
-Freeze held. First visible post on the profile carrying a `btc500.net` link
-(`status/2120004886423388255`, 04:05:27Z, untagged — the UTM rule did not exist
-yet), plus a reply/like (`status/2120005265051300228`).
-
-### History
-
-- **11-09 → 11-08** — the buy date moved one day with no deploy (Nov 28 → Nov 29,
-  from live block height); `lopp-merge-watch-1114` confirmed #1267 merged
-  2026-11-07T20:20:30Z with a followed anchor and no post-merge crawl; the Monday
-  post `status/2119642667181089200` went out **without a link** — the defect that
-  forced the 11-10 rule. `cluster-read-1108` closed the 500-day cluster as
-  unservable; no site change.
-- **11-06 → 11-04** — PR #1267 appeared 11-06T18:54Z after that cycle's commit;
-  insertion point corrected to `BitInfoCharts`/`CME Futures`; two destinations
-  qualified, lopp.net the only followed one. 11-05:
-  `indexed-decision-1105` retired the `indexed` target (`257a504`).
-- **11-03 → 10-30** — awesome-bitcoin withdrawn (0 of 2 closed unmerged); X
-  "retired" on a false "no account" finding (corrected 11-09); CoinDesk re-routed
-  to `contact@coindesk.com` and later lapsed (429); `5aad29f` changed title/meta/
-  H1/copy after three mandates forbade it → **full freeze**.
-- **10-22 → 10-29** — declined articles 308 → `/articles`;
-  `/data/500-day-cycles.json` + citation block + `Dataset` JSON-LD; drawdown study
-  (−11.7% median, −83.65% worst); GA4; the 10-29 retarget was the violation.
-
-### Review history
-
-| date       | mode  | verdict | what it forced                                                                                                                                                                                                                                                     |
-| ---------- | ----- | ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-12 | daily | failing | 10 site commits, 0 result — indexed 1/21 (9th reading), 0 non-brand clicks (21st); the sitemap's false 2026-10-29 lastmod for the only indexed URL found and fixed by mandate; Request Indexing refused (quota 0); the first named non-github traffic ever measured (t.co 3/3, facebook.com 6/6, chatgpt.com 10/8) and the referral table's blindness to it; CoinDesk closed as unexecutable (404), The Block newsroom route opened; 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19 |
-| 2026-11-11 | daily | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews); owner runner repairs restated 4th; stop rule 2026-11-20. Streak 17 |
-| 2026-11-10 | daily | failing | Page-quality causes excluded by measurement; both October articles lost by name; 1/21 seventh. Mandates: pin, UTM, crawl-watch. Ask: one GitHub line. Streak 16 |
-| 2026-11-09 | daily | failing | `externalReferringDomains` 0 → 1 (lopp.net, followed); 1/21 sixth; no post-merge crawl. Streak 15 |
-| older      | daily | failing | 11-07 runner mid-run edit (owner) + cluster read + merge watch; 11-06 `shipped` redefined as a src/sitemap diff; 11-05 lift condition retired → gate only; 10-30 **full freeze**. Streaks 14 → 12 |
-
----
-
-## Session 2026-11-11 (later) — owner-directed redesign: the site gets a face (compressed)
+## Session 2026-11-11 (later) — owner-directed redesign (compressed)
 
 Owner instruction: *"use taste-skill to improve the website look, redesign if
-needed, we need super cool design."* Owner directive; a skin, not a copy or
-structure rewrite. Art direction dealt by `design-taste-frontend` 2.5.1
-(plan: `plans/004-homepage-redesign-taste-skill.md`): near-black warm ground +
-Bitcoin orange across every route (token-driven), split hero with the live
-cycle map as the picture, rule diagram with today's position, rolling proof
-figures, dark nav/footer. No new dependency, no WebGL, no change to H1, lead,
-AEO ids, FAQ or JSON-LD. Verified: typecheck, tests, build, browser pass at
-1440/1024/768/390. Follow-ups same day: font flash fixed (`font-display:
-optional` + metric-matched fallback weight 100–900; measured, not guessed) and
-the share cards / share buttons / embed kit / white pill leftovers re-cut on
-the new system. The skill lives in `.agents/` (gitignored; repo must never
-carry it). Not a growth bet and not claimed as one.
-  `font-weight: 100 900`. No LCP cost: `optional` does not delay first paint.
-- **Follow-up, same day:** the owner pointed at two leftovers — the `Copy cycle card`
-  button and the embed kit. Both were still on the old design. Fixed: all eight share
-  cards re-cut on the dark ground with Bitcoin orange and the site's type pair, the
-  share buttons unified to one outline style, the embed kit page rebuilt in the new
-  system, and the three embed themes re-cut from the site palette. The white
-  `bg-foreground` pill left on the simulator and insider pages is gone too.
-- **Tooling note:** the installed skill lives in `.agents/` (1,603 vendored
-  files, 43 MB) and the skill's own scratch in `.taste-skill/`. Both are now
-  gitignored — `skills-lock.json` stays tracked as the manifest. The repository
-  must never carry the skill itself.
+needed."* A skin, not a copy or structure rewrite: near-black warm ground +
+Bitcoin orange across every route (token-driven), split hero with the live cycle
+map, rule diagram, rolling proof figures, dark nav/footer; share cards, share
+buttons and the embed kit re-cut on the same system. No new dependency, no
+WebGL, no change to H1, lead, AEO ids, FAQ or JSON-LD. Verified: typecheck,
+tests, build, browser pass at 1440/1024/768/390. The vendored skill lives in
+`.agents/` and `.taste-skill/` — both gitignored; the repo must never carry it.
+Not a growth bet and not claimed as one.
 
 ---
+
+## Review history
+
+| date       | verdict | what it forced (one line each) |
+| ---------- | ------- | ------------------------------ |
+| 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19 |
+| 2026-11-11 | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews). Streak 17 |
+| 2026-11-10 | failing | Page-quality causes excluded by measurement (200 / 3,007 words / canonical / robots / linked / not duplicate); both October articles lost by name. Streak 16 |
+| 2026-11-09 | failing | `externalReferringDomains` 0 → 1 (lopp.net, followed); no post-merge crawl. Streak 15 |
+| older      | failing | 11-07 runner mid-run edit (owner); 11-06 `shipped` redefined as a src/sitemap diff; 11-05 lift condition retired → gate only; 10-30 **full freeze** (a `5aad29f` copy change after three mandates forbade it). Streaks 14 → 12 |
 
 ## Next priorities
 
-0. **Full freeze stands — but its gate condition is now measured-met, pending
-   the next review's ruling.** The 2026-11-11 review's gate 2 was "one GA4
-   referral session from a non-github domain"; **t.co 3 sessions / 3 users in
-   7d (2026-11-05 → 11-11)** satisfies the letter of it, and
-   `AI Assistant = chatgpt.com 10/8` (28d) is the same shape. What still holds:
-   the 2026-11-10 copy exclusion to 2026-11-28 (only a review can lift it) and
-   the proof line `git diff --stat 62e3a8a..HEAD -- src public/sitemap.xml`
-   per cycle. The single permitted site change, `date-consistency-1112`, is
-   **done** (7046cc2, verified live).
-1. **Remaining mandates:** `runner-repairs-1112` (OWNER — status-history row
-   for 2026-11-07 + `dirty_paths_note()` out of run-growth-cycle.sh +
-   `git add -A` out of run-review-cycle.sh). Request Indexing refused on
-   quota 0 on 2026-11-12 — retry is the review's call.
-2. **Watch the merge work — the only live signal.** Each cycle to 2026-11-28:
-   re-read the pillar's raw `lastCrawlTime`; the first crawl after
-   2026-11-07T20:20:30Z is the test. No post-merge crawl by then, or still
-   `Crawled - currently not indexed` → write "authority hypothesis falsified
-   for one followed link", name a second destination, never reopen the copy
-   line.
-3. **The 2026-11-20 stop rule.** No post-merge crawl **and** no named
-   non-github referral session on that date → daily post drops to twice a
-   week, no new owner ask, weekly measurement plus one link action only. Note
-   the t.co sessions may already have changed this premise — the next review
-   decides.
-4. **2026-11-18: the X cadence verdict** — views-per-post against t.co/x.com
-   sessions side by side, CTR written.
-5. **The buy-window peg is a live estimate — 29 November 2026 today, 17 days
-   out.** Re-read it from the site every cycle; never from this log, an older
-   post, or the bio (bio now fixed).
+0. **The freeze stands; the copy exclusion runs to 2026-11-28.** Only a review
+   can lift it. Per cycle, prove compliance with
+   `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml`.
+1. **The post-merge crawl has now happened and did not move coverage**
+   (2026-11-13T04:07:16Z, still `Crawled - currently not indexed`). What is
+   left in the lopp-link experiment's window: a *second*, independent crawl (the
+   04:07:16Z fetch was 48s after the request, so it may be the priority fetch),
+   or one lopp.net session. Read it again on 2026-11-28; if both are still
+   absent, write "authority hypothesis falsified for one followed link" and name
+   a second destination.
+2. **`runner-repairs-1113` (OWNER, 6th restatement):** 2026-11-07 status row
+   absent, `dirty_paths_note()` inline at `run-growth-cycle.sh:111/:197/:345`,
+   no `status-note.sh`, `git add -A` at `run-review-cycle.sh:439/:446`.
+3. **The "No referring sitemaps detected" signal** (GSC Discovery panel, all
+   four URLs, 2026-11-13) needs a mandate: is the submitted sitemap processed,
+   or does the property carry two? Not a copy problem.
+4. **2026-11-19 crawl rule** (the live stop test): no homepage crawl dated after
+   2026-11-12 by then → daily post drops to twice a week, no new owner ask, and
+   the cycle keeps only the weekly measurement plus one link action.
+5. **2026-11-18 X cadence verdict** — views per post against t.co/x.com
+   sessions side by side. Today: 107 / 56 / 62 views against t.co 3 sessions in
+   7d.
+6. **The buy-window peg is a live estimate — 29 November 2026 today, 16 days
+   out.** Re-read it from the site every cycle, never from this log or a post.
 
 ## Ranked backlog
 
@@ -354,12 +247,18 @@ Only rows 0–1b are permitted work under the freeze; everything else is a readi
 
 ## Open issues
 
-- **The pillar has never been crawled with an incoming external link.** Crawl
-  history: 2026-10-22, 11-05, **2026-11-07T03:42:34Z** — every one declined, every
-  one before the merge. Until the next crawl, "waiting does not index a page nobody
-  links to" is unfalsified, not confirmed.
-- **Indexation: 6 (10-22) → 5 → 3 → 2 (10-31) → 1/21 on 11-04 → 11-10.**
-  Denominator 21 = sitemap locs. 14 crawled-not-indexed, 5 unknown, 1 Soft 404.
+- **The pillar HAS now been crawled with an incoming external link, and was
+  declined again.** Crawl history: 2026-10-22, 11-05, 2026-11-07T03:42:34Z (all
+  pre-merge, all declined), then **2026-11-13T04:07:16Z** — the first post-merge
+  crawl, `crawledAs=MOBILE`, `pageFetch=SUCCESSFUL`, coverage unchanged. One
+  followed link from lopp.net did not move the gate on its first read.
+- **Indexation 1/21** (inspection 2026-11-12T07:32:29Z, 21 rows = 21 sitemap
+  locs): 20 NEUTRAL, 1 PASS, 0 ERROR. Series: 6 (10-22) → 5 → 3 → 2 (10-31) →
+  1/21 since 11-04. Today's 4-URL read is not a 21-URL measurement and is never
+  quoted as one.
+- **GSC says "No referring sitemaps detected" for every inspected URL**
+  (2026-11-13), while `sitemap.xml` holds 21 locs and is submitted. Recorded as
+  a defect signal; fixing it is a mandate, not a cycle decision.
 - **The buy date is live-derived (29 Nov 2026 today) and now reads the same on
   all seven quoteable surfaces** (fixed 2026-11-12, 7046cc2 + bio). Keep it
   that way: the two llms files render live, the bio was corrected by hand —

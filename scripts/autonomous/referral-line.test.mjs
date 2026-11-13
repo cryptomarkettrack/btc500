@@ -4,7 +4,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import test from "node:test";
 
-import { newestReport, referralLine, referralRows, reportDays } from "./referral-line.mjs";
+import {
+  namedSourceRows,
+  namedSourcesLine,
+  newestReport,
+  referralLine,
+  referralRows,
+  reportDays,
+} from "./referral-line.mjs";
 
 const ga4Row = (source, sessions) => ({
   dimensionValues: [{ value: source }],
@@ -158,4 +165,63 @@ test("regression: a 28-day report generated after the 7-day one cannot print as 
   );
 
   rmSync(dir, { recursive: true, force: true });
+});
+
+// --- named sources (mandate named-source-ledger-1113) -----------------------
+//
+// The Referral table cannot see t.co, facebook.com or chatgpt.com: GA4 files
+// them under Organic Social and AI Assistant. 21 readings printed "0 named
+// non-github referral sessions" while nine of them were in the same window.
+
+const namedRow = (channel, source, landing, sessions, users) => ({
+  dimensionValues: [{ value: channel }, { value: source }, { value: landing }],
+  metricValues: [{ value: String(sessions) }, { value: String(users) }],
+});
+
+test("named sources counts a source filed under Organic Social (the regression)", () => {
+  const rows = namedSourceRows([
+    namedRow("Organic Social", "t.co", "/", 3, 3),
+    namedRow("Organic Social", "facebook.com", "/", 6, 6),
+    namedRow("AI Assistant", "chatgpt.com", "/bitcoin-500-day-cycle", 2, 2),
+    namedRow("Referral", "github.com", "/", 8, 1),
+    namedRow("Direct", "(direct)", "/", 70, 16),
+  ]);
+  const line = namedSourcesLine(rows, window7d);
+  assert.match(line, /^named sources 7d:/);
+  assert.match(line, /t\.co 3\/3 → \//);
+  assert.match(line, /facebook\.com 6\/6 → \//);
+  assert.match(line, /chatgpt\.com 2\/2 → \/bitcoin-500-day-cycle/);
+  assert.doesNotMatch(line, /github\.com/);
+  assert.doesNotMatch(line, /\(direct\)/);
+});
+
+test("named sources keeps the landing page that carried most sessions", () => {
+  const line = namedSourcesLine(
+    namedSourceRows([
+      namedRow("Organic Social", "t.co", "/bitcoin-500-day-cycle", 2, 2),
+      namedRow("Organic Social", "t.co", "/", 5, 5),
+    ]),
+    window7d,
+  );
+  assert.match(line, /t\.co 7\/7 → \//);
+});
+
+test("named sources says none instead of printing an empty list", () => {
+  assert.equal(
+    namedSourcesLine([], window7d),
+    "named sources 7d: none outside Direct and github.com (window 2026-10-27 → 2026-11-02)",
+  );
+  assert.match(
+    namedSourcesLine(namedSourceRows([namedRow("Referral", "github.com", "/", 8, 1)]), window7d),
+    /none outside Direct and github\.com/,
+  );
+});
+
+test("named sources carries the report's own window label", () => {
+  const line = namedSourcesLine(
+    namedSourceRows([namedRow("Organic Social", "t.co", "/", 1, 1)]),
+    window28d,
+  );
+  assert.match(line, /^named sources 28d:/);
+  assert.match(line, /\(window 2026-10-06 → 2026-11-02\)$/);
 });
