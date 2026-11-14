@@ -116,10 +116,27 @@ clicks, and its destination was verified today rather than assumed — repo push
 2026-11-03, 5 outside PRs merged that day, `## Releated Tools` holding one line.
 Do not re-issue it in a different shape before 2026-11-24; read the PR state.
 
-**Ask send rate, stated so it stops being re-litigated:** 11 asks handed over
-since 2026-10-27, 2 sent (both GitHub), 6 lapsed or withdrawn, 1 moved to the
-cycle, 1 live (the GitHub line). Zero sessions have arrived from any asked
-channel. A twelfth ask that is not one-page GitHub is not evidence of initiative.
+**Ask send rate, stated so it stops being re-litigated:** 12 asks handed over
+since 2026-10-27, 3 sent (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06,
+BitcoinTalk topic 5599692 2026-11-12), 6 lapsed or withdrawn, 1 moved to the
+cycle, 2 live unsent (`theblock-news-tip-1113` 2 days old, `facebook-share-1114`
+1 day old). One session has arrived from an asked channel in 23 readings
+(bitcointalk.org 1/1, measured 2026-11-13). A thirteenth ask that is not one page
+and one paste is not evidence of initiative.
+
+**2026-11-14 (results review, streak 21): both live asks are verified against
+their channels and both are unsent; neither is restated with new text.**
+`theblock-news-tip-1113` — 2 days old, `https://www.theblock.co/contact` returns
+200 with the news-tips inquiry type, **0 theblock.co sessions** in the 7d window
+2026-11-07 → 11-13 (referrals: github.com 8/1, bitcointalk.org 1/1). Kept, due
+2026-11-17; if it is still unsent on 2026-11-17 it goes `lapsed` and is not
+restated a third time. `facebook-share-1114` — 1 day old, baseline unchanged at
+**facebook.com 6 sessions / 6 users → `/`**, still the highest-yield named source
+in the record (t.co 3/3, x 2/2, chatgpt.com 2/2, bitcointalk.org 1/1). Kept, due
+2026-11-19; 0 new facebook.com sessions by 2026-11-19 closes the channel as a
+one-off. No third ask is issued: two unsent asks with 3 and 5 days left on their
+by-dates are not improved by a third.
+
 
 ## Pitches prepared by the cycle (same rule: owner sends)
 

@@ -55,6 +55,61 @@ not record guesses as results.
   pillar, bitcointalk.org 1/1 → pillar; **theblock.co 0**. Indexed **1/21**
   (inspection 2026-11-13T07:32:28Z, rows 21 of 21).
 
+---
+
+## Results review 2026-11-14 (daily, streak 21) — `failing`
+
+**The one result: the instrument is honest and the audience is 19 sessions a
+week.** `indexed` **1/21 (rows 21 of 21**, coverage: 1 indexed, 17 crawled-not-
+indexed, 1 soft 404, 1 discovered, 1 unknown) for the **11th consecutive daily
+reading** since 2026-11-04; non-brand clicks **0 in 24 readings** (2 clicks / 15
+impressions / 13.3% / pos 4.47, both clicks brand `btc500` 2/8 @1.375; the only
+non-brand impression is `500 days before next bitcoin halving` @38). Bing **0/21**
+— 14 crawled (up from 10), 7 unknown — and Bing crawled `/` at
+**2026-11-13T23:23:57Z** and kept nothing. Google's `/` lastCrawl is still
+**2026-11-05**, so the only indexed URL has never been read post-redesign.
+
+GA4 7d **2026-11-07 → 11-13: 108 sessions / 34 users / 26 new / 147 views /
+33.3% engaged / 67.5s**, against the previous 7d 41 / 18 / 10 / 67 / 51.2% /
+69.1s. The composition is the finding: **Direct 79 sessions / 17 users**, Organic
+Social 11/11, Referral 9/2 (github.com 8/1 = this repo), Organic Search 5/2, AI
+Assistant 2/2, Unassigned 3/3. Named non-github **14/14**: facebook.com 6/6 → `/`,
+t.co 3/3 → `/`, x 2/2 → pillar, chatgpt.com 2/2 → pillar, bitcointalk.org 1/1 →
+pillar (13/13 yesterday). External audience = **19 sessions / 16 users**.
+
+**Input vs output, same window:** 39 commits, 7 runs, 7 `shipped` statuses, 0
+failures — and the site diff is 46 files / +2,721 / −1,458 **all dated 2026-11-11
+and 11-12** (the redesign, llms.txt, sitemap rebuild). Since 11-12: 29 commits,
+**0 lines of site change**. The redesign produced 0 index changes and is not
+visible in Organic Search (5/2 before and after). `shipped` is a runner status,
+not an outcome.
+
+**Two engines, one answer.** Google took delivery of all 21 URLs and kept `/`;
+Bing took delivery of all 21 on 2026-11-12, crawled 14 by today — including the
+homepage 2026-11-13T23:23:57Z — and kept none. That pair is why the levers stay
+closed to 2026-12-01 and why the only open route is a link from a domain that is
+already crawled.
+
+**Measurement defects found today (both small, both real).** (a) The same file
+carries page impressions summed to **18** against a property total of **15**, and
+`reconciliation.ok = true` with no warning — the byPage/property gap is not
+checked. (b) `pagesWithImpressions` reads 6 → 2 in one day, which is a window
+shift (11-04→11-10 → 11-05→11-11), not a collapse; it must always be quoted with
+its window.
+
+**Compliance:** `inspection-denominator-1114` executed in code (30/30 tests,
+`review-input.json` total 21) — the first measurement mandate in 21 reviews that
+changed an instrument rather than prose. `indexation-levers-closed-1114` complied
+(`git diff --stat e77f624..HEAD -- src public/sitemap.xml` empty). `pillar-verdict-
+1116` due 11-16, `bing-verdict-1118` due 11-18 — carried. `runner-repairs-1114`
+(owner) **not executed, 8th statement**; narrowed to the `git add -A` repair and
+restated once.
+
+**Asks:** theblock-news-tip-1113 unsent, 2 days, **0 theblock.co sessions**;
+facebook-share-1114 unsent, 1 day, facebook.com 6/6 unchanged. Between them, 0
+sends.
+
+
 ## Session 2026-11-13 (04:00Z) — compressed — Request Indexing worked, the crawl still declined
 
 - Request Indexing clicked at **04:06:28Z** (_"URL was added to a priority crawl
@@ -179,6 +234,7 @@ Not a growth bet and not claimed as one.
 
 | date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21 |
 | 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20 |
 | 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19                                     |
 | 2026-11-11 | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews). Streak 17                                                                        |
@@ -194,7 +250,9 @@ Not a growth bet and not claimed as one.
    0b. **Due readings:** `pillar-verdict-1116` (2026-11-16) — pillar
    `lastCrawlTime`/`pageFetchState`/`crawledAs`/coverage next to
    2026-11-13T04:07:16Z plus one read of GSC → Sitemaps;
-   `bing-verdict-1118` (2026-11-18) — Bing indexed/crawled/unknown for 21 URLs.
+   `bing-verdict-1118` (2026-11-18) — Bing indexed/crawled/unknown for 21 URLs;
+   `external-audience-line-1114` and `nonbrand-query-table-1114` (2026-11-15) —
+   the PERFORMANCE block's new eighth line and the non-brand query table.
 1. **The post-merge crawl happened and did not move coverage.** What is left in
    the lopp window: a second, independent crawl (04:07:16Z was 48s after the
    request, so it may be the priority fetch) or one lopp.net session. Read on

@@ -458,6 +458,43 @@ it a fall. Both readings said 1, which is luck. If the report has fewer rows tha
 the sitemap has `<loc>`, print `rows N of M — not a coverage reading` and do not
 print a fraction; the collector fix is mandate `inspection-denominator-1114`.
 
+**2026-11-14 (review, streak 21): the external audience is the headline, and
+non-brand clicks are not a work item.** The instrument now works and it says the
+site's audience is 19 sessions a week: GA4 7d 2026-11-07 → 11-13 is **108
+sessions / 34 users**, of which **Direct 79 / 17 users** (73% of sessions, 4.6
+per user), Organic Social 11/11, Referral 9/2 (github.com 8/1 is this repo),
+Organic Search 5/2, AI Assistant 2/2, Unassigned 3/3. Named non-github sources are
+facebook.com 6/6 → `/`, t.co 3/3 → `/`, x 2/2 → pillar, chatgpt.com 2/2 → pillar,
+bitcointalk.org 1/1 → pillar = **14 sessions / 14 users**. Rules that follow:
+
+- **PERFORMANCE gains an eighth line, `external audience 7d`**, printed as
+  `external audience 7d: N sessions / M users (source s/u → landing, …)` where
+  "external" means every source that is neither Direct nor github.com. It is the
+  number the report leads with. A session total without it is not a result:
+  108 sessions read as growth and 19 do not.
+- **No cycle may offer title, meta, snippet, copy or internal-link work as an
+  action for non-brand clicks before `indexed` ≥ 5.** Today: 1/21 indexed, 2 clicks
+  in 7d both brand (`btc500` 2/8 @1.375), 1 non-brand impression (`500 days before
+  next bitcoin halving` @38), `positions4to20` = 0, and 2 pages with impressions.
+  A non-brand click needs a served URL in the top 20 first; until then the honest
+  action is a measurement.
+- **Print the non-brand query table every run** from the 28d report (query,
+  impressions, position, and the page it landed on). If the table is empty because
+  Search Console anonymised it, print `non-brand queries: none visible in 28d
+  (anonymised)` — never `0`, which reads as a measured zero.
+- **`pagesWithImpressions` is quoted with its window, and the two impression
+  numbers are never added.** On 2026-11-14 the page table summed to 18 impressions
+  while the property total was 15 (2 pages: `/` 15, `/articles/bip-110-rejection`
+  3) and `pagesWithImpressions` fell 6 → 2 purely because the window moved one day
+  (11-04 → 11-10 became 11-05 → 11-11). Quote the property total for the level and
+  the page table for the concentration; do not sum them.
+- **Between now and 2026-11-29 the only distribution channel the cycle controls is
+  the X account, and its measured yield is 5 sessions from ~316 views across four
+  posts in 7d** (t.co 3/3 + x 2/2; post views 93 / 68 / 72 / 83). Every daily post
+  carries the UTM-tagged link (already required) and the report prints
+  views-per-session, not views. A second poster's unlinked pinned post is still
+  the profile's first impression; the pin defect is recorded, not fixable here.
+
 **Added 2026-11-12 by that day's review: the `named sources` line, because the
 `referrals` line is structurally blind.** The Referral channel is not where X,
 Facebook or ChatGPT traffic lands: GA4 files it under Organic Social and AI

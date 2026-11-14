@@ -1,293 +1,285 @@
 {
   "schema": 1,
-  "generated": "2026-11-13",
+  "generated": "2026-11-14",
   "mode": "daily",
-  "window": { "start": "2026-11-06", "end": "2026-11-13" },
+  "window": { "start": "2026-11-07", "end": "2026-11-14" },
   "verdict": "failing",
   "signals": [
     {
       "id": "indexation",
       "state": "regressed",
-      "note": "1/21 indexed on the full inspection (2026-11-13T07-32-28Z, 21 rows = 21 sitemap <loc>): 1 'Submitted and indexed' ('/'), 17 'Crawled - currently not indexed', 1 'Soft 404' (/articles/bear-market-accumulation, lastCrawl 2026-08-08), 1 'URL is unknown to Google' (/insider-trading), 1 'Discovered - currently not indexed' (/news). Tenth consecutive reading at 1 (2026-11-04 → 2026-11-13); the numerator fell 6 (10-22) → 5 (10-28) → 3 (10-29) → 1 (11-04) and has not moved since. Read the denominator carefully: the runner took indexation from the cycle's 4-URL file (inspection-2026-11-13T04-09-18.json, totalUrls 4) while the runner's own 21-row file of the same day sits beside it, so `1/4` and `1/21` are both in today's record and only the 21-row number is a coverage reading."
+      "note": "1/21 indexed on the full inspection (2026-11-14T07:32:28Z, rows 21 of 21 = 21 sitemap <loc>): 1 'Submitted and indexed' ('/'), 17 'Crawled - currently not indexed', 1 'Soft 404' (/articles/bear-market-accumulation, lastCrawl 2026-08-08), 1 'Discovered - currently not indexed' (/insider-trading), 1 'URL is unknown to Google' (/news). The runner calls it a regression because 2/21 was the reading on 2026-10-31; the numerator actually last changed on 2026-11-04 and this is the 11th consecutive daily reading at 1 (series 6 → 5 → 3 → 2 → 1). Ten days without a change, with the denominator now trustworthy for the first time."
     },
     {
-      "id": "crawl",
-      "state": "regressed",
-      "note": "The crawl lever was finally pulled and the answer was no. Request Indexing was SUBMITTED at 2026-11-13T04:06:28Z ('Indexing requested — URL was added to a priority crawl queue'); /bitcoin-500-day-cycle was fetched 48s later at lastCrawlTime 2026-11-13T04:07:16Z, crawledAs=MOBILE, pageFetchState=SUCCESSFUL — the first crawl since 2026-11-07T03:42:34Z, the first post-merge crawl, and the first read of the 2026-11-11 redesign — and coverage is still 'Crawled - currently not indexed'. /halving-dates moved 2026-10-22 → 2026-11-13 and also stayed declined; /simulator was submitted at 04:08:27Z and its lastCrawl is still 2026-11-07. The homepage — the only indexed URL — has still not been crawled: lastCrawl 2026-11-05T07:50:37Z, while its sitemap lastmod now correctly reads 2026-11-11."
+      "id": "bing-indexation",
+      "state": "stalled",
+      "note": "0/21 indexed in Bing, 14 'Crawled - currently not indexed', 7 'Unknown to Bing' (2026-11-14T07:33:03Z). Two days after all 21 URLs were submitted (2026-11-12, URL Submission API + IndexNow, HTTP 200) Bing has crawled 4 more URLs than it had yesterday (10 → 14) and kept none — including the homepage, lastCrawl 2026-11-13T23:23:57Z, which is the only URL Google has indexed. Bing's readiness check is green (21 sitemap URLs 200, IndexNow accepted, msvalidate tag present), so this is a content/trust decision, not a plumbing failure."
     },
     {
       "id": "non-brand-clicks",
       "state": "stalled",
-      "note": "0 non-brand clicks in all 23 rows of results-history.csv (2026-10-22 → 2026-11-13). This window (2026-11-04 → 11-10): 2 clicks / 14 impressions / 14.3% / avg position 4.9 — both clicks are brand ('btc500' 2 clicks / 7 impressions @1.6); nonBrandImpressions 1 (query '500 days before next bitcoin halving' @38); positions4to20 = 0 across 6 pages with impressions. Six pages had impressions and exactly one of them is indexed."
+      "note": "0 non-brand clicks in all 24 rows of results-history.csv (2026-10-22 → 2026-11-14). 7d window 2026-11-05 → 11-11: 2 clicks / 15 impressions / 13.3% / avg position 4.47 — both clicks brand ('btc500' 2 clicks / 8 impressions @1.375, CTR 25%). The only non-brand impression in the whole property is '500 days before next bitcoin halving' at position 38 (1 impression). positions4to20 = 0. Two pages carry any impressions: '/' 15 and /articles/bip-110-rejection 3 — the second of which Google has never indexed."
     },
     {
       "id": "impressions",
-      "state": "flat",
-      "note": "14 impressions in 7d (2026-11-04 → 11-10) against 10 on 2026-10-30 and 13 on 2026-11-12; the 21-row read shows 6 pages with impressions, 5 of them unindexed. The level is the finding: at 14 impressions a week there is no query band to optimise and no title change that can produce a non-brand click before the 29 November buy date."
+      "state": "stalled",
+      "note": "15 impressions in 7d (2026-11-05 → 11-11) against 10 on 2026-10-31 and 14 on 2026-11-13 — the runner scores it green on a 10 → 15 move, which at this volume is 5 impressions. Concentration is the real reading: 2 pages with impressions today (6 yesterday), and the page table sums to 18 impressions against a property total of 15 in the same file. At 15 impressions a week there is no query band to optimise and no title change that can produce a non-brand click."
     },
     {
       "id": "sessions",
       "state": "stalled",
-      "note": "GA4 7d (2026-11-06 → 11-12): 99 sessions / 31 users / 25 new / 129 views / 31 engaged / 31.3% engagement / 71.5s average duration, against the previous window 45 / 20 / 10 / 81 / 57.8% / 125.7s. Sessions +120% and users +55%, engagement −46% and duration −43%: 70 of the 99 sessions are Direct from 16 users (4.4 sessions per direct user). More sessions, less attention, the same people — the owner and the repo watching their own dashboard."
+      "note": "GA4 7d (2026-11-07 → 11-13): 108 sessions / 34 users / 26 new / 147 views / 36 engaged / 33.3% / 67.5s, against the previous 7d 41 / 18 / 10 / 67 / 21 / 51.2% / 69.1s. Composition: Direct 79 sessions / 17 users (73% of sessions, 4.6 per user), Organic Social 11/11, Referral 9/2, Organic Search 5/2, AI Assistant 2/2, Unassigned 3/3. External audience — every source that is neither Direct nor github.com — is 19 sessions / 16 users. Sessions are up 163% week over week on a base of the owner's own browser, and engagement fell from 51.2% to 33.3%."
     },
     {
       "id": "referral-sessions",
       "state": "green",
-      "note": "Split, as §10(b) requires. Referral channel 7d: github.com 8 sessions / 1 user — this repository and the owner's browser, never a positive outcome signal. Named non-github sources 7d (the new namedSources table, `npm run referrals`): facebook.com 6/6 → '/', t.co 3/3 → '/', chatgpt.com 2/2 → /bitcoin-500-day-cycle, x 1/1 → /bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle = 13 sessions / 13 users, up from 9/9 on 2026-11-12. Plus google (Organic Search) 5/2 → '/'. The bitcointalk.org session is the first session from an asked channel in 22 readings."
+      "note": "Split, as §10(b) requires. Referral channel 7d: github.com 8 sessions / 1 user — this repository and the owner's browser, never a positive outcome signal. Named non-github sources 7d: facebook.com 6/6 → '/', t.co 3/3 → '/', x 2/2 → /bitcoin-500-day-cycle, chatgpt.com 2/2 → /bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle = 14 sessions / 14 users, up from 13/13 on 2026-11-13. Nothing from lopp.net, theblock.co, reddit.com or any publication."
     },
     {
       "id": "ask-effect",
       "state": "stalled",
-      "note": "The loop closed once, at the smallest possible size. The BitcoinTalk topic posted 2026-11-12 (topic 5599692, board 1) produced bitcointalk.org 1 session / 1 user → /bitcoin-500-day-cycle within a day — the first session from any asked channel in 22 readings, from a brand-new account (Activity 0, Posts 1) and a rel=\"ugc\" link. Against that: lopp.net#1267 merged 2026-11-07T20:20:30Z still has 0 sessions 6 days later; bitcoin-only/bitcoin-only#1009 has been open 17 days with 0 comments and no listing; github-awesome-blockchain-line-1124 is unsent after 3 handovers (GET /search/issues?q=repo:yjjnls/awesome-blockchain+btc500 → total_count 0 today); theblock-news-tip-1113 is 1 day old, unsent, 0 theblock.co sessions."
-    },
-    {
-      "id": "bing-indexation",
-      "state": "flat",
-      "note": "0/21 indexed in Bing, 10 'Crawled - currently not indexed', 11 'Unknown to Bing' (2026-11-13T07-32-59Z). This is the first reading after a full submission: all 21 sitemap URLs were sent to Bing's URL Submission API and IndexNow on 2026-11-12 (HTTP 200), and the site is verified in the account. Two engines have now fetched the inventory — Google 21 URLs/1 indexed, Bing 10 crawled/0 indexed — which is the strongest evidence in the record that the limit is not discovery."
-    },
-    {
-      "id": "measurement",
-      "state": "regressed",
-      "note": "The indexation reading silently changed its denominator today. scripts/autonomous/collect-results.mjs reads one inspection file per date and keeps the first it encounters in readdir order (datedReportIndex, lines 358-373), so it chose the cycle's 4-row inspection-2026-11-13T04-09-18.json over the runner's 21-row inspection-2026-11-13T07-32-28.json: review-input.json carries `indexation.total: 4, indexed: 1` and currentByMetric.totalUrls: 4, and the runner wrote 'Indexed pages fell 3 -> 1' by comparing 3/21 (2026-10-30) with 1/4 (2026-11-13). The 21-row file says 1 too, so today's count is right; the series is not comparable and the target has said 1/21 while the verdict said 1/4."
+      "note": "One session from any asked channel in 23 readings: bitcointalk.org 1/1 → /bitcoin-500-day-cycle, from the topic the owner sent by hand on 2026-11-12. Against that: lopp.net#1267 merged 2026-11-07T20:20:30Z, 7 days ago, 0 sessions and no second crawl; theblock-news-tip-1113 handed over 2026-11-12, unsent, 0 theblock.co sessions; facebook-share-1114 handed over 2026-11-13, unsent, facebook.com still 6/6 (the pre-existing share). 3 sends in 12 handovers since 2026-10-27."
     },
     {
       "id": "deploy-health",
       "state": "green",
-      "note": "8 runs / 8 'shipped' / 0 failures in 7d (2026-11-06 → 2026-11-13), last 2026-11-13T06:19:09+0200. Caveat carried from the 2026-11-06 rule: `shipped` is a status, not a diff — `git log --oneline --since=2026-11-06 -- src public/sitemap.xml` returns 10 commits, all dated 2026-11-11/11-12 (the redesign and the sitemap rebuild), and today's two commits (acd5a6d, 6be1549) touched no src/ and no sitemap. The runner repairs are still absent (7th statement, owner)."
+      "note": "7 runs / 7 'shipped' / 0 failures in 7d (2026-11-07 → 2026-11-14), last 2026-11-14T07:22:47+0200, tests pass, tsc pass, Vercel success, manifest 200. Caveat carried from the 2026-11-06 rule: `shipped` is a status, not a diff. 39 commits landed in the window and 46 files / +2,721 / −1,458 of site change, all of it dated 2026-11-11 and 11-12 (the redesign, llms.txt, sitemap rebuild). Since 2026-11-12: 29 commits, 0 lines of src/ or sitemap change."
     },
     {
       "id": "cycle-yield",
       "state": "stalled",
-      "note": "8 cycles shipped in 7d and the outcome deltas since the last review are: indexed 1/21 → 1/21, non-brand clicks 0 → 0 (23rd reading), impressions 13 → 14, sessions 90 → 99 of which 70 are Direct from 16 users and 13 are named non-github. Four of five mandates executed, including the first successful Request Indexing in the account's history — and the one result is 1 session from a forum post the owner sent. The automation is not idle; it is not producing."
+      "note": "7 cycles shipped, 2 of 5 mandates executed (the denominator fix and the levers ruling), 2 carried, 1 owner item ignored for the 8th time — and the outcome deltas are: indexed 1/21 → 1/21, non-brand clicks 0 → 0 (24th reading), impressions 14 → 15, named non-github sessions 13 → 14, sessions 99 → 108 of which 79 are Direct. The automation is not idle; it produced one measurement fix and one session."
+    },
+    {
+      "id": "measurement",
+      "state": "green",
+      "note": "The indexation reading is trustworthy for the first time in the series: `review-input.json` carries `indexation.total: 21`, and the 21-row inspection of 2026-11-14T07:32:28Z agrees with the sitemap's 21 <loc>. Mandate inspection-denominator-1114 was executed in code (datedReportIndex prefers the most-rows report, 30/30 tests pass). Two smaller defects remain and are named in why[]: the byPage impression sum (18) is not checked against the property total (15), and pagesWithImpressions (6 → 2) is being read across a shifted window."
     },
     {
       "id": "data-freshness",
       "state": "green",
-      "note": "GSC performance 2026-11-13T07:30:03Z, 21-row inspection 2026-11-13T07:32:28Z (and a 4-row one six hours earlier), GA4 2026-11-13T04:11:05Z, Bing inspection 2026-11-13T07:32:59Z, Bing health 2026-11-13. Every number in this review is quoted from those files or from a command printed in it."
+      "note": "GSC performance 2026-11-14T07:30:02Z, 21-row inspection 2026-11-14T07:32:28Z, GA4 2026-11-14T07:30:04Z, Bing inspection 2026-11-14T07:33:03Z, Bing health 2026-11-14T07:32:44Z. Every number in this review is quoted from those files or from a command printed in it; the live site and the lopp.net destination were re-fetched today."
     }
   ],
   "mandate_compliance": [
     {
-      "id": "sitemap-lastmod-home-1113",
-      "status": "executed-with-violation",
-      "evidence": "The fix shipped in c0f71a9 (2026-11-12 17:55) and is correct: public/sitemap.xml now reads <loc>https://btc500.net/</loc><lastmod>2026-11-11</lastmod>, SHARED_COMPONENT_PREFIXES no longer contains 'src/components/home/' (scripts/sitemap.mjs:41-44), and production https://btc500.net/sitemap.xml serves 2026-11-11. The violation is the one the mandate named: it was ordered 'alone in its commit' and it shipped bundled with the whole Bing tooling (scripts/bing/, fetch-bing.ts, a 477-line BTC500_GROWTH.md rewrite). The lastmod lever was real and correct and it moved nothing: the homepage's lastCrawl is still 2026-11-05T07:50:37Z."
-    },
-    {
-      "id": "request-indexing-retry-1113",
+      "id": "inspection-denominator-1114",
       "status": "executed",
-      "evidence": "Submitted 2026-11-13T04:06:28Z: 'Indexing requested — URL was added to a priority crawl queue. Submitting a page multiple times will not change its queue position or priority.' The pillar was fetched 48s later — lastCrawlTime 2026-11-13T04:07:16Z, crawledAs=MOBILE, pageFetchState=SUCCESSFUL — and coverage did not move. /simulator submitted 04:08:27Z, still lastCrawl 2026-11-07. /halving-dates's confirmation toast expired before capture, but its lastCrawl moved 2026-10-22 → 2026-11-13, so the fetch happened and it also stayed declined. Quota was the only thing blocking this lever yesterday; it was never the cause."
+      "evidence": "30e0e38 (2026-11-14T07:15). `datedReportIndex()` in scripts/autonomous/collect-results.mjs now takes the report with the most `rows` before its window-days rule and carries `rows` per entry; the regression test feeds the two real 2026-11-13 shapes in both readdir orders. I ran `node --test scripts/autonomous/collect-results.test.mjs` myself: tests 30 / pass 30 / fail 0. Today's review-input.json reads `indexation.total: 21, indexed: 1`, `currentByMetric.totalUrls: 21`, and the 21-row inspection agrees with the sitemap — the first coherent denominator in 11 readings."
     },
     {
-      "id": "named-source-ledger-1113",
+      "id": "indexation-levers-closed-1114",
       "status": "executed",
-      "evidence": "scripts/analytics/fetch-ga4.ts carries a namedSources table (sessionDefaultChannelGroup × sessionSource × landingPage, sessions + users, no channel filter); scripts/autonomous/referral-line.mjs prints the 7d and 28d lines; 4 new tests in referral-line.test.mjs, 222 pass / 0 fail. I read the table directly from scripts/analytics/output/ga4-2026-11-13T04-11-05.json and got the same split the line prints. This mandate fixed the instrument that had hidden 9 sessions for 21 readings, and it immediately showed a 10th–13th."
+      "evidence": "Recorded in BTC500_GROWTH.md → Open issues (levers closed to 2026-12-01) and complied: `git diff --stat e77f624..HEAD -- src public/sitemap.xml` is empty for the three commits since that review (30e0e38, dd7579c, 6f4c20e touch scripts/ and docs only), and the cycle's own commit body prints the lever line and marks the diff archive/measurement rather than shipped. No sitemap, lastmod, Request Indexing, URL submission, merge, redirect, canonical or copy work was attempted."
     },
     {
-      "id": "x-post-dedup-1113",
-      "status": "executed",
-      "evidence": "Profile read before posting; one post published 2026-11-13T04:03:32Z (status/2121091569650483649) with the UTM-tagged pillar link, verified on the profile. Views printed: pinned 2120367269997957126 107 / 2 likes / 1 reply, 2120759802204983357 56 / 1, 2120752220010582146 62 / 2 — against t.co 3 sessions / 3 users in 7d. At ~1 session per 100 views, the dedup saved half of nothing, correctly."
+      "id": "pillar-verdict-1116",
+      "status": "carried",
+      "evidence": "Due 2026-11-16 — 2 days away, not due yet. Today's inspection still shows /bitcoin-500-day-cycle lastCrawl 2026-11-13, coverage 'Crawled - currently not indexed', canonical match, robots ALLOWED. Restated unchanged."
     },
     {
-      "id": "runner-repairs-1113",
+      "id": "bing-verdict-1118",
+      "status": "carried",
+      "evidence": "Due 2026-11-18 — 4 days away. Bing today is 0 indexed / 14 crawled / 7 unknown, already a sharper reading than the 10/11 baseline the mandate named, because Bing crawled the homepage on 2026-11-13T23:23:57Z and kept it out. Restated with that number as the new baseline."
+    },
+    {
+      "id": "runner-repairs-1114",
       "status": "not-executed",
-      "evidence": "OWNER, unchanged and verified again today: `grep -c 2026-11-07` on ~/.local/state/btc500-growth/status-history.csv → 0; dirty_paths_note() still inline at scripts/autonomous/run-growth-cycle.sh:111, :197, :345; scripts/autonomous/status-note.sh does not exist; `grep -n 'git add' scripts/autonomous/run-review-cycle.sh` → 443 and 450, both `git add -A` (line numbers moved from 439/446, the defect did not). Restated as runner-repairs-1114."
+      "evidence": "OWNER, verified in this review rather than quoted: `grep -c 2026-11-07 ~/.local/state/btc500-growth/status-history.csv` → 0; `grep -n dirty_paths_note scripts/autonomous/*.sh` → run-growth-cycle.sh:111, :197, :345; `ls scripts/autonomous/status-note.sh` → No such file or directory; `grep -n 'git add' scripts/autonomous/run-review-cycle.sh` → 443 and 450, both `git add -A`. Eighth statement. Narrowed to the one repair with blast radius (the review runner's commit scope) and the other two dropped as unexecuted — see mandates_dropped."
     }
   ],
   "mandates_dropped": [
     {
-      "id": "runner-repairs-1113",
-      "reason": "Not dropped: re-stated as runner-repairs-1114 with the same three repairs, today's verification and the moved line numbers."
+      "id": "runner-repairs-1114 (repairs 1 and 2)",
+      "reason": "Dropped, not restated: the missing 2026-11-07 status row and the `dirty_paths_note()` extraction have been stated 8 times over 10 days and verified absent each time, and neither has changed a single number in this review — deploy-health is scored from 7 fresh runs, and the missing row is a record gap, not an outcome. Keeping them on the list while the site gets no results is the behaviour this review exists to stop. The one repair with blast radius (repair 3) is restated narrowly as runner-add-scope-1115."
     }
   ],
   "asks_dropped": [
     {
-      "id": "github-awesome-blockchain-line-1124",
-      "reason": "Dropped as unexecutable after three unsent handovers, per §10(c) rule 4 — this is the route the ladder was supposed to save. Handed over 2026-11-10, restated 2026-11-12, still unsent 2026-11-13: GET /search/issues?q=repo:yjjnls/awesome-blockchain+btc500 → total_count 0 today, so no PR exists under any author. The instruction had already been shrunk to the floor the rule allows (one page, one paste, two clicks, zero typing) and the anchor was re-verified today, so there is no smaller version left to hand over. The channel is recorded `unexecutable` in outreach/STATUS.md; the goal (externalReferringDomains > 0) does not move."
+      "id": "x-cycle-window-post-restated",
+      "reason": "Stays retired (2026-11-02): the cycle posts from @btc500halving itself, so asking the owner to post there is a delay dressed as delegation. Confirmed again today: the cycle published status/2121470416250368064 at 2026-11-14T05:08:56Z with the UTM-tagged pillar link."
     }
   ],
   "why": [
-    "The decisive event of the week is a negative, and it is the most useful fact in 22 readings: Google fetched the redesigned pillar and declined it. Request Indexing was submitted at 2026-11-13T04:06:28Z, the page was fetched 48 seconds later (lastCrawlTime 2026-11-13T04:07:16Z, pageFetchState SUCCESSFUL), and coverage is still 'Crawled - currently not indexed'. The caveat is real and stated: 48s may be the request's own priority fetch rather than an independent crawl. But the fetch read the 2026-11-11 redesign, which no crawler had read before, and the verdict did not change. Falsifiable test: if the pillar's coverage has not changed by 2026-11-19 — six days after a successful fetch of the final page — then no in-repo action (copy, title, sitemap, canonical, request) can index it, and every future cycle that offers one is lying to itself.",
-    "Indexation has no lever left inside this repository, and the evidence is now exhaustive rather than theoretical. The sitemap lastmod defect is fixed (`/` reads 2026-11-11 in production, was 2026-10-29). Request Indexing was refused once (quota) and accepted once (crawl, no index). The sitemap was contracted 25 → 22 → 21 URLs and the numerator fell 6 → 1 over the same period. All 21 URLs were submitted to Bing's URL Submission API and IndexNow on 2026-11-12, and Bing today is 0 indexed / 10 crawled / 11 unknown. Two independent engines have taken delivery of the inventory and kept one URL. What is left is site-level trust, which is bought by links from crawled publications and by time, not by a diff.",
-    "The only indexed URL is '/' and the only thing it can win is a brand click. It has 14 impressions and 2 clicks in 7d, both for 'btc500' @1.6; the single non-brand impression is at position 38. The five URLs that answer non-brand questions (pillar, /halving-dates, /simulator, /timeline, /when-to-sell-bitcoin-after-halving) have impressions but are not indexed, so there is no snippet to rewrite and no title to test. positions4to20 = 0. Test: if `/`'s 7d non-brand impressions are still ≤1 on 2026-11-27 while the pillar is declined, then search cannot produce a non-brand click before the 29 November buy date and the plan must say search is a 2027 channel.",
-    "Sessions are up 120% and that is not growth. 99 sessions / 31 users, but 70 sessions are Direct from 16 users (4.4 per user), engagement fell 31.3% from 57.8% and average duration 71.5s from 125.7s. 13 sessions out of 99 came from anywhere that is not us or google — facebook 6, t.co 3, chatgpt 2, x 1, bitcointalk 1 — and that 13 is the week's only positive movement (9 → 13). Test: while Direct stays above 60 sessions from under 20 users, no session total may be quoted without its named-source split, because the number is measuring the owner's dashboard.",
-    "Distribution has a measured ceiling of roughly thirteen sessions a week, and it is spread across five channels. facebook.com 6/6 from one unknown share of '/', t.co 3/3 from a 212-follower X account whose posts read 107 / 62 / 56 views, chatgpt.com 2/2 (10/10 in 28d), bitcointalk.org 1/1 from a rel=\"ugc\" forum post by a zero-activity account, x 1/1. None of these produces a link. The one followed link (lopp.net, merged 2026-11-07T20:20:30Z, re-verified today: anchor present, 0 nofollow) has produced 0 sessions in 6 days and one crawl that ended in a decline. Test: 0 lopp.net sessions on 2026-11-21 closes the followed-link route as a strategy, and the remaining links must come from a publication that writes.",
-    "The ask ledger now has a working example and a dead one, and the contrast is mechanical. The BitcoinTalk post the owner actually sent on 2026-11-12 produced its first session within a day; the GitHub listing ask handed over three times produced nothing because it was never sent, and three handovers is the point at which §10(c) says the route is dead, not the owner. Meanwhile 4 of 5 cycle mandates executed and the site produced 1 session. The bottleneck is not the cycle's willingness; it is that everything the cycle can touch (sitemap, copy, crawl requests) has been proven not to move the number, and everything that could (a send, a link from a publication) sits with the owner.",
-    "The measurement instrument failed again, quietly, in a way the next cycle would have acted on. collect-results.mjs keeps one inspection file per date and takes whichever readdir returns first, so the 4-row file the cycle wrote at 04:09Z beat the 21-row file written at 07:32Z: review-input.json says `total: 4, indexed: 1` and the runner reported 'Indexed pages fell 3 -> 1' across two different populations. The count was right by luck (the 21-row read also says 1). A verdict that reads 1/4 and a target that reads 1/21 on the same day is how a series loses its meaning — and this is the same class of defect as the Referral-channel blindness fixed yesterday.",
-    "This is the twentieth consecutive non-improving review and the site is 16 days from the buy date it exists to serve ('16 days to buy' in the live countdown, 29 November 2026). The honest summary of 7 days: 8 runs, 4 of 5 mandates executed, 10 site commits, and the result is one forum session. Activity is not the constraint. The constraint is that a three-month-old domain with one followed link is not being served, and no cycle can change that by writing code."
+    "The site's whole result for the week is one honest instrument and 19 strangers. 108 sessions in 7d sounds like growth until it is split: Direct 79 sessions / 17 users (4.6 per user — the owner and the repo), github.com 8/1 (this repository), and 19 sessions / 16 users from anywhere else (Organic Social 11/11, Organic Search 5/2, AI Assistant 2/2, bitcointalk.org 1/1). Against that, 39 commits landed in 7 days and 46 files worth of site change shipped on 11-11/11-12 — all of it read by no crawler that kept a page: Google has not fetched '/' since 2026-11-05 (nine days, and six days before the redesign), Bing fetched it 2026-11-13T23:23:57Z and kept nothing. Test: if the external audience is still under 25 sessions in the 7d window ending 2026-11-29, the redesign and the X cadence produced nothing measurable and the plan must say distribution is the only 2027 item.",
+    "Indexation has been at 1/21 for 11 consecutive readings and both engines have now given the same answer on the same inventory. Google: 21 URLs known, 17 crawled and declined, 1 soft 404, 1 discovered, 1 unknown — and the one success is the homepage, whose last crawl is 2026-11-05, i.e. before the redesign. Bing: all 21 submitted 2026-11-12, 14 crawled by today, 0 indexed, including a fresh crawl of '/' on 2026-11-13T23:23:57Z. Every in-repo lever has been pulled and none moved the numerator (lastmod fixed, Request Indexing accepted and answered with a fetch 48s later that still declined, sitemap contracted 25 → 21). The cause is no longer ambiguous: a domain with one followed external link, 7 days old, has no crawl priority and no trust. Test: the pillar-verdict read on 2026-11-16 and the Bing read on 2026-11-18 are the last two readings that can change this before the buy date; if both are unchanged, no cycle may spend a line on indexation before 2026-12-01.",
+    "Non-brand clicks are not stalled for a reason any cycle can fix: there is no served page and no query band. positions4to20 = 0, the only non-brand impression sits at position 38 ('500 days before next bitcoin halving', 1 impression), and the two pages that receive impressions are '/' (indexed, brand-only queries) and /articles/bip-110-rejection (3 impressions, never indexed, position 2 on queries Google anonymised). 24 readings at 0 is not a title problem; it is the arithmetic of 1/21. Test: print the 28d non-brand query table every run; the first non-brand click can only appear after a URL that answers a non-brand query is indexed, and the cycle must name that URL before it is allowed to propose a snippet change.",
+    "Distribution has a measured yield of one session per 63 X views and the owner's send rate is 3 of 12. The cycle's own channel: four posts at 93 / 68 / 72 / 83 views produced t.co 3/3 and x 2/2 — 5 sessions from ~316 views in 7 days, which is the entire controllable distribution budget. The owner's: facebook.com 6/6 from one share (still the best single channel in the record, and still unexplained), bitcointalk.org 1/1 from a hand-sent forum post, and 9 other handovers that were never sent. The pattern is not indifference to a good ask — it is that every ask that requires more than a page and a paste has failed, and both live asks (The Block contact form, a Facebook share) are at that floor. Test: 0 new facebook.com sessions by 2026-11-19 closes Facebook as a one-off; 0 theblock.co sessions by 2026-11-17 lapses that route and it is not restated a third time.",
+    "The followed-link hypothesis is now 7 days old and its traffic half is already zero. lopp.net#1267 merged 2026-11-07T20:20:30Z, the anchor is live today (re-fetched: `<a href=\"https://btc500.net/bitcoin-500-day-cycle\" … rel=\"noopener\">BTC500</a>`, no nofollow), and the measured effect is: one crawl 6 days later, 48 seconds after our own Request Indexing (so not classifiable as organic), coverage unchanged, 0 GA4 sessions from lopp.net in the 7d window. One link is not authority; it is one link. Test: the lopp-link-effect reading on 2026-11-28 is already written by its own inconclusive branch — 'authority hypothesis falsified for one followed link' — unless a second, independent crawl appears before then.",
+    "Two measurement defects survived today's fix, and both would be quoted as facts tomorrow. (a) In the same GSC file, the page table sums to 18 impressions while the property total is 15, and `reconciliation.ok` is `true` with no warning about it — the byPage/property gap is not checked at all. (b) `pagesWithImpressions` fell 6 → 2 in one day and that is a window shift (2026-11-04 → 11-10 became 2026-11-05 → 11-11), not a collapse; quoted without its window it reads as a 67% loss of visibility. Yesterday's review produced the first instrument fix in 21 reviews; these are the next two, and they are small.",
+    "This is the 21st consecutive non-improving review and the 15th day before the buy date the site exists to serve (the live countdown reads 15 days, buy date 29 November 2026 — verified on production today, and llms.txt states 29 November with the 30 November consensus beside it). The honest summary of the week: 7 runs, 0 failures, 2 of 5 mandates executed, 39 commits, 46 files of redesign, 2 clicks (both our own name), 1 non-brand impression, 1 new indexed page (none), and 14 sessions from strangers, of which 6 came from one Facebook share nobody can explain. Activity has never been the constraint; the site has no standing, and standing is bought outside this repository."
   ],
   "questions": [
-    "Google fetched the redesigned pillar 48 seconds after we asked it to and declined it. What is left in the repo that could plausibly change that verdict, and if the answer is 'nothing', why is the next cycle still allowed to work on indexation?",
-    "All 21 URLs were submitted to Bing on 2026-11-12 and Bing crawled 10 and indexed 0. Two engines, same answer, same week — at what point does 'crawl budget' stop being a hypothesis and become an excuse?",
-    "The only session any asked channel has ever produced came from a forum post sent by hand, and the GitHub route died after three handovers that were never sent. Which is the more useful conclusion: the owner will not send asks, or our asks are written for a reader who has time?",
-    "The homepage has not been crawled since 2026-11-05 while its lastmod now says 2026-11-11. If the 2026-11-19 rule fires and the daily post drops to twice a week, what exactly is the cycle supposed to do with its remaining 400 lines of daily output?",
-    "13 named non-github sessions in 7 days is the site's all-time record. Is that a floor we can build on, or the sum of one share, one forum post and 100-view X posts — and can any of those be repeated inside 16 days?"
+    "Google has not crawled '/' since 2026-11-05 and Bing crawled it on 2026-11-13 and kept nothing. If a fresh crawl of the redesigned homepage is declined by the engine that had already indexed it, what in the repository could possibly matter next — and why is any cycle still allowed to write code?",
+    "The external audience is 19 sessions / 16 users a week and one Facebook share produced 6 of them. If the owner sends nothing for the next 15 days, what is the honest forecast for 29 November — and should the daily cycle keep posting to an account whose four posts produced 5 sessions?",
+    "The Block tip has been unsent for 2 days and the Facebook share for 1, and both are at the one-page/one-paste floor. At what point does the reviewer stop issuing asks and state in one line that the site's growth is owner-blocked?",
+    "pagesWithImpressions reads 6 → 2 while impressions read 14 → 15 in the same week. Which of those two numbers is the site's visibility, and why does the reconciliation pass when the page table and the property total disagree by 20%?",
+    "The lopp link has produced one crawl, in the same minute as our own indexing request, and zero sessions in 7 days. Is one followed link a strategy, or is the next destination the whole question?"
   ],
   "mandates": [
     {
-      "id": "inspection-denominator-1114",
-      "action": "Fix the collector so a day's indexation reading is always the full-sitemap inspection and always prints its row count. In scripts/autonomous/collect-results.mjs, datedReportIndex() (lines 358-373) keeps the first file readdir returns for a given date; make it prefer the report with the most `rows` (and, on a tie, the one produced without --urls), add a regression test that feeds today's two real shapes — a 4-row inspection-2026-11-13T04-09-18.json and a 21-row inspection-2026-11-13T07-32-28.json — and asserts the 21-row one wins, run `node --test scripts/autonomous/collect-results.test.mjs`, paste the output in the commit body, and regenerate review-input.json so `indexation.total` is 21. In the PERFORMANCE block print `indexed 1/21 (rows 21 of 21)`; if rows < locs, print `rows N of M — not a coverage reading` instead of a fraction.",
-      "because": "Today's review-input.json took indexation from the cycle's 4-URL file (`total: 4, indexed: 1`) while the runner's own 21-row file of the same morning (07:32:28Z) sat beside it, so the runner wrote 'Indexed pages fell 3 -> 1' by comparing 3/21 with 1/4 and the target said 1/21 in the same file. Both readings happen to say 1, which is why this is a measurement defect and not a wrong number — the next 4-row day will not be so lucky, and every target in this review is written against a 21-URL series.",
-      "due": "2026-11-14",
-      "owner": "cycle"
-    },
-    {
-      "id": "indexation-levers-closed-1114",
-      "action": "Record in BTC500_GROWTH.md → Open issues and comply for every run until 2026-12-01: no cycle may offer sitemap, lastmod, Request Indexing, URL submission, merge, redirect, canonical or copy work as an indexation fix. Print one line in PERFORMANCE — `indexation lever: none left (crawl 2026-11-13T04:07:16Z declined; Bing 0/21 after 21 submitted)` — and spend the cycle on exactly one measurement and one distribution action. If a cycle believes a new in-repo indexation lever exists, it must name it in the commit body with the evidence that the previous five failed for a different reason, or not do the work.",
-      "because": "Every lever has now been executed and none moved the numerator: lastmod fixed (c0f71a9, `/` 2026-10-29 → 2026-11-11), Request Indexing submitted 2026-11-13T04:06:28Z and the pillar fetched 48s later with pageFetchState SUCCESSFUL and still 'Crawled - currently not indexed', sitemap contracted 25 → 22 → 21 while indexed fell 6 → 1, and all 21 URLs submitted to Bing and IndexNow on 2026-11-12 with 0/21 indexed today. Indexed has been 1 for ten consecutive readings since 2026-11-04 while the site shipped a 10-commit redesign on 2026-11-11. Continuing to spend cycles here is the exact failure mode 19 non-improving reviews describe.",
-      "due": "2026-11-14",
-      "owner": "cycle"
-    },
-    {
       "id": "pillar-verdict-1116",
-      "action": "On 2026-11-16, read https://btc500.net/bitcoin-500-day-cycle through the URL Inspection API and print four values with seconds: lastCrawlTime, pageFetchState, crawledAs and coverage, next to the 2026-11-13T04:07:16Z crawl. If coverage is still 'Crawled - currently not indexed', write in BTC500_GROWTH.md: 'a successful Google fetch of the redesigned pillar produced no index' and stop describing the pillar as a page waiting to be served. In the same run, open Search Console → Sitemaps once and print the submitted sitemap's status line, the number of discovered URLs and any error, because the cycle reported 'No referring sitemaps detected' for all four inspected URLs today; if the panel shows Success, record that discovery is not the cause and close the question.",
-      "because": "This is the first time in 22 readings that Google fetched the page after a successful request and after the redesign, and the answer was no. The remaining ambiguity is timing — 48 seconds is fast enough to be the request's own priority fetch, and an index decision may land later — so a second read at 3 days is the cheapest way to distinguish 'declined' from 'not yet processed'. 2026-11-16 is also before the 2026-11-19 homepage-crawl rule fires, so the cycle still has one cycle in which the answer can change.",
+      "action": "On 2026-11-16, read https://btc500.net/bitcoin-500-day-cycle through the URL Inspection API and print four values with seconds — lastCrawlTime, pageFetchState, crawledAs, coverage — next to the 2026-11-13T04:07:16Z crawl, and print the homepage's lastCrawl in the same line. If coverage is still 'Crawled - currently not indexed', write in BTC500_GROWTH.md exactly: 'a successful Google fetch of the redesigned pillar produced no index' and stop describing the pillar as a page waiting to be served. In the same run, open Search Console → Sitemaps once and print the submitted sitemap's status line, the number of discovered URLs and any error, because the cycle reported 'No referring sitemaps detected' for all four inspected URLs on 2026-11-13.",
+      "because": "This is the last cheap read that can still change the story before the buy date: 3 days after a successful fetch of the redesigned pillar the answer was no, and 2026-11-16 is before the 2026-11-19 homepage-crawl rule fires. Today's inspection still shows lastCrawl 2026-11-13 and coverage unchanged, so the expected outcome is a decline — but a measured decline is the only thing that closes the question for good.",
       "due": "2026-11-16",
       "owner": "cycle"
     },
     {
       "id": "bing-verdict-1118",
-      "action": "On 2026-11-18, read the Bing index state for all 21 sitemap URLs and print indexed / crawled / unknown next to the 2026-11-12 submission (all 21 URLs, URL Submission API + IndexNow, HTTP 200) and today's baseline (0 indexed, 10 crawled, 11 unknown). If indexed is still 0 at 6 days, write in BTC500_GROWTH.md: 'Bing fetched 10 of 21 URLs and indexed none after a full submission' and delete Bing from the list of untested surfaces — no more Bing submissions before 2026-11-25. If any URL has become indexed, print which, and treat Bing as the live second engine and re-run the IndexNow push for the remaining 11 unknown URLs.",
-      "because": "Bing is the only engine that has never had a fair test: the Webmaster account was connected 2026-11-12, all 21 URLs were submitted the same day, and today's state is 0 indexed / 10 crawled / 11 never fetched. A second engine declining the same inventory decides whether this is a Google-specific problem or a site-level one, and it is the difference between spending 2026 on engine plumbing and spending it on links. The reading costs one command and closes a question that would otherwise be reopened by every future cycle.",
+      "action": "On 2026-11-18, read the Bing index state for all 21 sitemap URLs and print indexed / crawled / unknown next to the 2026-11-12 submission (all 21 URLs, HTTP 200) and today's baseline (0 indexed, 14 crawled, 7 unknown, homepage lastCrawl 2026-11-13T23:23:57Z). If indexed is still 0 at 6 days, write in BTC500_GROWTH.md: 'Bing fetched 14 of 21 URLs including the homepage and indexed none after a full submission', delete Bing from the list of untested surfaces, and allow no Bing or IndexNow submission before 2026-11-25. If any URL has become indexed, print which and treat Bing as the live second engine.",
+      "because": "Bing crawled four more URLs in the last 24 hours, including '/', and kept none — so the day-6 read is now a formality on the indexation question and a decision on where 2026 is spent. A second engine declining the same inventory is what turns 'crawl budget' into an excuse and makes links the only item left.",
       "due": "2026-11-18",
       "owner": "cycle"
     },
     {
-      "id": "runner-repairs-1114",
-      "action": "OWNER ONLY — three runner repairs, now stated for the 7th time and verified absent again today: (1) append the missing 2026-11-07 row to ~/.local/state/btc500-growth/status-history.csv from ~/.local/state/btc500-growth/2026-11-07.log with status `aborted` and note `syntax-error-mid-run-line-339`; (2) move dirty_paths_note() out of scripts/autonomous/run-growth-cycle.sh (lines 111, 197, 345) into a new scripts/autonomous/status-note.sh sourced once before the attempt loop; (3) in scripts/autonomous/run-review-cycle.sh replace `git add -A` at lines 443 and 450 with an explicit path list (review-latest.json, BTC500_GROWTH.md, scripts/autonomous/GROWTH_PROMPT.md, scripts/autonomous/experiments.json, scripts/autonomous/outreach/) and refuse to commit anything outside it from a review run. Keep the verdict check at line 349.",
-      "because": "Verified in this review, not quoted from the last one: `grep -c 2026-11-07` on status-history.csv → 0; `grep -n dirty_paths_note scripts/autonomous/*.sh` → run-growth-cycle.sh:111/:197/:345; `ls scripts/autonomous/status-note.sh` → No such file or directory; `grep -n 'git add' scripts/autonomous/run-review-cycle.sh` → 443 and 450, both `git add -A`. The line numbers moved from 439/446 because the file grew — the defect did not. This is why deploy-health is scored on a record that is missing a day, and why a review commit can ship unrelated automation.",
-      "due": "2026-11-14",
+      "id": "external-audience-line-1114",
+      "action": "Add an `external audience 7d` line to the daily PERFORMANCE block and to the referral-line script: sessions and users for every sessionSource that is neither Direct nor github.com, printed with the per-source split as `external audience 7d: N sessions / M users (facebook.com 6/6 → /, t.co 3/3 → /, …)`, and make it the headline number the report leads with. Add a test that fails if the line omits the user count or includes Direct or github.com; run the analytics and autonomous test files and paste the counts in the commit body. Today's value for comparison: 19 sessions / 16 users (Organic Social 11/11 + Organic Search 5/2 + AI Assistant 2/2 + bitcointalk.org 1/1).",
+      "because": "108 sessions was the week's most misleading number: 79 are Direct from 17 users and 8 are this repository. The runner's `sessions` signal compares 108 with 102 on 2026-10-31 and calls it flat, while the only number that has ever meant a stranger — 19 sessions / 16 users — is invisible in the daily report. A metric that needs a one-off query to read is not a metric, and this is the second instrument the 2026-11-13 review began fixing.",
+      "due": "2026-11-15",
+      "owner": "cycle"
+    },
+    {
+      "id": "nonbrand-query-table-1114",
+      "action": "On every run until 2026-11-29, print the non-brand query table from the 28d GSC report — query, impressions, position, landing page — and print `non-brand queries: none visible in 28d (anonymised)` when it is empty rather than `0`. Record in BTC500_GROWTH.md → Open issues that no cycle may offer title, meta, snippet, copy or internal-link work as an action for non-brand clicks while `indexed` < 5, and print the floor beside the number. Today's table: `500 days before next bitcoin halving` 1 impression @38; brand `btc500` 2/8 @1.375.",
+      "because": "0 non-brand clicks in 24 readings is not a display problem: `positions4to20` is 0, the single non-brand impression is at position 38, and only 2 pages carry any impressions at all. Every review since 2026-10-27 has pointed at titles and snippets for this signal; a position-38 page that Google has never indexed has nothing to rewrite. Print the floor so the next cycle stops proposing copy work under a freeze that forbids it anyway.",
+      "due": "2026-11-15",
+      "owner": "cycle"
+    },
+    {
+      "id": "runner-add-scope-1115",
+      "action": "OWNER ONLY, one repair, narrowed from three: in scripts/autonomous/run-review-cycle.sh replace `git add -A` at lines 443 and 450 with an explicit path list (scripts/autonomous/review-latest.json, BTC500_GROWTH.md, scripts/autonomous/GROWTH_PROMPT.md, scripts/autonomous/experiments.json, scripts/autonomous/outreach/, scripts/autonomous/X-ENGAGEMENT-LOG.md) and make the runner refuse to commit anything outside it from a review run. Keep the verdict check at line 349. The other two repairs in runner-repairs-1114 are dropped — see mandates_dropped.",
+      "because": "Verified today, not quoted: `grep -n 'git add' scripts/autonomous/run-review-cycle.sh` → 443 and 450, both `git add -A`. A review run can therefore sweep any dirty file in the working tree into a commit labelled 'review:', which is how automation changes ship without a cycle's commit body ever naming them. It is one edit in one file, it is the only one of the three with blast radius, and it has been stated 8 times.",
+      "due": "2026-11-17",
       "owner": "owner"
     }
   ],
   "targets": [
     {
       "metric": "indexed",
-      "current": "1/4 per currentByMetric (04:09Z 4-URL read) — 1/21 on the full 21-row inspection 2026-11-13T07-32-28Z",
+      "current": "1/21 (inspection 2026-11-14T07:32:28Z, rows 21 of 21 = 21 sitemap <loc>)",
       "target": "2/21",
       "by": "2026-11-28",
       "status": "miss-so-far",
-      "note": "Tenth consecutive reading at 1 (2026-11-04 → 2026-11-13). Unchanged target and a worse outlook than yesterday: the lastmod fix shipped (c0f71a9) and the pillar was fetched with pageFetchState SUCCESSFUL on 2026-11-13T04:07:16Z, and the state is still 'Crawled - currently not indexed'. If 2/21 is not reached by 2026-11-28 it will not be because a lever was untried."
+      "note": "11th consecutive reading at 1 (2026-11-04 → 2026-11-14). The denominator is finally trustworthy, so the flatness is unambiguous. Target unchanged: reaching 2/21 is the smallest possible proof that an external signal (lopp.net, merged 2026-11-07) does anything at all; if it is not reached by 2026-11-28 it will not be because a lever was untried."
     },
     {
       "metric": "nonBrandClicks",
-      "current": "0 (7d, 2026-11-04 → 11-10) / 0 in 23 readings (2026-10-22 → 11-13)",
+      "current": "0 (7d, 2026-11-05 → 11-11) / 0 in 24 readings (2026-10-22 → 2026-11-14)",
       "target": "1 in 7d",
       "by": "2026-11-23",
       "status": "miss-so-far",
-      "note": "2 clicks / 14 impressions / 14.3% / pos 4.90, both clicks brand ('btc500' 2/7 @1.6); nonBrandImpressions 1; positions4to20 = 0 across 6 pages with impressions. Five of those six pages are unindexed, so the band a snippet change could lift does not exist. Kept rather than lowered: 0 is the honest number and the 16-day horizon makes it unlikely to move."
+      "note": "2 clicks / 15 impressions / 13.3% / pos 4.47, both brand ('btc500' 2/8 @1.375); the only non-brand impression is at position 38; positions4to20 = 0; 2 pages with impressions. Kept rather than lowered — 0 is the honest number and it is the direct cost of 1/21."
     },
     {
       "metric": "referralSessions",
-      "current": "13 in 7d from named non-github sources (facebook.com 6/6, t.co 3/3, chatgpt.com 2/2, x 1/1, bitcointalk.org 1/1); github.com 8/1 excluded per §10(b)",
+      "current": "14 in 7d from named non-github sources (facebook.com 6/6, t.co 3/3, x 2/2, chatgpt.com 2/2, bitcointalk.org 1/1); github.com 8/1 excluded per §10(b)",
       "target": "1 in 7d from a non-github referrer",
       "by": "2026-11-23",
       "status": "met",
-      "note": "Met for the second week and the composition improved: 9/9 → 13/13, and the new arrivals are the first session from an asked channel (bitcointalk.org, sent 2026-11-12) and a first session attributed to 'x' rather than t.co. Still small enough that one share accounts for 46% of the week."
+      "note": "Met for the third week. Composition improved by one session and one source (x 1/1 → 2/2) and is still dominated by a single Facebook share that accounts for 43% of the week. Met on a floor, not on a channel."
     },
     {
       "metric": "namedNonGithubSessions",
-      "current": "13 in 7d (facebook.com 6/6 → '/', t.co 3/3 → '/', chatgpt.com 2/2 → pillar, x 1/1 → pillar, bitcointalk.org 1/1 → pillar)",
+      "current": "14 in 7d (facebook.com 6/6 → '/', t.co 3/3 → '/', x 2/2 → pillar, chatgpt.com 2/2 → pillar, bitcointalk.org 1/1 → pillar)",
       "target": "20 in 7d from a source that is neither github.com nor Direct",
       "by": "2026-11-24",
       "status": "miss-so-far",
-      "note": "Up from 9 and still 7 short, with 16 days to the buy date. The mix says what is repeatable: one Facebook share produced 6, the X account produced 3 from 225 views across three posts, the forum produced 1. If this is under 15 on 2026-11-24 the site has no repeatable acquisition channel and the plan must say so in one line."
+      "note": "13 → 14 in a week, 6 short with 10 days to the buy date. The mix is one share (6), one account (5 across X/t.co), one AI citation surface (2) and one forum post (1). If this is under 15 on 2026-11-24 the plan must say in one line that the site has no repeatable acquisition channel."
+    },
+    {
+      "metric": "externalAudience7",
+      "current": "19 sessions / 16 users (Organic Social 11/11, Organic Search 5/2, AI Assistant 2/2, non-github Referral 1/1; 7d 2026-11-07 → 11-13)",
+      "target": "25 sessions / 20 users",
+      "by": "2026-11-29",
+      "status": "miss-so-far",
+      "note": "New metric, because it is the only one that excludes us: 79 of 108 sessions are Direct from 17 users and 8 are github.com from 1 user. The buy window is 15 days away and this is the audience that will see it. It replaces nothing — `sessions7` stays in the series below so the composition remains visible."
     },
     {
       "metric": "organicSessions7",
-      "current": "5 (7d, 2026-11-06 → 11-12, 2 users)",
+      "current": "5 (7d, 2026-11-07 → 11-13, 2 users)",
       "target": "8",
       "by": "2026-11-24",
       "status": "miss-so-far",
-      "note": "Fell from 7 to 5 on a window one day later. It cannot move while 20 of 21 URLs are unserved: the only indexed page is '/', and organic search is the one entry we do not control. Do not lower the target — the number is the honest cost of 1/21."
+      "note": "5 in every window since 2026-11-10, from 2 users, and it cannot move while 20 of 21 URLs are unserved: the only indexed page is '/'. Not lowered — this is the honest cost of 1/21."
     },
     {
       "metric": "externalReferringDomains",
-      "current": "1 (lopp.net, followed; anchor re-verified 2026-11-13, 0 rel=\"nofollow\"; 0 sessions 6d after merge)",
+      "current": "1 (lopp.net, followed; anchor re-fetched 2026-11-14, no rel=\"nofollow\"; 0 sessions 7d after merge)",
       "target": "1",
       "by": "2026-11-17",
       "status": "met",
-      "note": "Still met and still an input, not a result. Re-fetched today: https://www.lopp.net/bitcoin-information/trading.html renders <a href=\"https://btc500.net/bitcoin-500-day-cycle\" title=\"BTC500\" target=\"_blank\" rel=\"noopener\">. One followed link produced one crawl (2026-11-13T04:07:16Z) and no index, which is what the lopp-link-effect experiment was built to measure."
+      "note": "Still met and still an input, not a result. One followed link has now produced one crawl (2026-11-13T04:07:16Z, 48s after our own Request Indexing) and zero sessions in 7 days. No second domain."
     },
     {
       "metric": "askEffectReferrals",
-      "current": "1 from bitcointalk.org (asked, sent 2026-11-12; 7d window); 0 from lopp.net 6d after merge; 0 from theblock.co",
+      "current": "1 from bitcointalk.org (sent 2026-11-12; 7d window); 0 from lopp.net 7d after merge; 0 from theblock.co",
       "target": "1 session from lopp.net",
       "by": "2026-11-21",
       "status": "miss-so-far",
-      "note": "The series finally has a non-zero: the first asked-channel session in 22 readings came from a forum topic the owner sent by hand, not from the merged PR. The lopp.net target stands unchanged and is the honest test of whether a followed link buys traffic; if it is still 0 on 2026-11-21 the followed-link route is finished as a strategy."
+      "note": "Unchanged in a week and now half-expired: a followed link with 0 sessions 7 days after merge. If it is still 0 on 2026-11-21 the followed-link route is finished as a strategy and the next destination is the whole question."
     },
     {
       "metric": "asksExecuted",
-      "current": "3 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk topic 5599692 2026-11-12); 2 live asks carry no send (theblock-news-tip-1113, facebook-share-1114); 1 closed unexecutable today",
+      "current": "3 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk topic 5599692 2026-11-12); 2 live unsent (theblock-news-tip-1113 2d, facebook-share-1114 1d)",
       "target": "5 with a send date",
       "by": "2026-11-16",
       "status": "miss-so-far",
-      "note": "'Executed' means sent, never 'produced a session'. The count moved 2 → 3 this week because the owner sent the BitcoinTalk post. The GitHub listing route is closed as unexecutable after 3 handovers (total_count 0 on all three checks) and is not restated; the newsletter route stays open at 1 day old."
-    },
-    {
-      "metric": "aiAssistantSessions",
-      "current": "2 (7d, 2026-11-06 → 11-12, 2 users, landing on /bitcoin-500-day-cycle); 10 (28d, 10 users)",
-      "target": "5 in 7d",
-      "by": "2026-11-25",
-      "status": "miss-so-far",
-      "note": "The only channel where sessions equal users, and it is flat at 2 in 7d while 28d grows (8 users on 2026-11-12 → 10 today). The asset is correct: llms.txt renders the live date, robots.txt allows the AI crawlers, /data/500-day-cycles.json carries a citation string. This is a channel to keep alive, not to spend a cycle on."
+      "note": "3 of 12 handovers since 2026-10-27, and the count has not moved in 2 days. 'Executed' means sent, never 'produced a session'. Two by-dates lapse within the week: The Block on 2026-11-17, Facebook on 2026-11-19 — both are stated as lapse-or-close, not restate."
     },
     {
       "metric": "sessions7",
-      "current": "99 (7d, 2026-11-06 → 11-12; 31 users; 70 Direct from 16 users; engagement 31.3% vs 57.8%; duration 71.5s vs 125.7s)",
+      "current": "108 (7d, 2026-11-07 → 11-13; 34 users; 79 Direct from 17; engagement 33.3% vs 51.2%; duration 67.5s vs 69.1s)",
       "target": "60 in 7d",
       "by": "2026-11-23",
       "status": "met",
-      "note": "Met on the literal number and still not growth: sessions +120% on users +55%, engagement −46%, duration −43%, and 70 of 99 sessions are Direct from 16 users. Kept in the series only so the composition stays visible; 13 of 99 are not us."
+      "note": "Met on the literal number and meaningless as growth: +163% on users +89%, engagement −35%, and 73% of sessions are Direct from 17 users. Kept only so the composition stays visible beside externalAudience7."
     },
     {
       "metric": "crawlFreshness",
-      "current": "'/' lastCrawl 2026-11-05T07:50:37Z (unchanged); pillar 2026-11-13T04:07:16Z (declined); /halving-dates 2026-11-13 (declined); sitemap lastmod for '/' now 2026-11-11 (c0f71a9)",
-      "target": "the homepage crawled after 2026-11-12",
+      "current": "'/' Google lastCrawl 2026-11-05 (unchanged for 9d, 6d before the redesign); pillar 2026-11-13 (declined); Bing '/' 2026-11-13T23:23:57Z (declined)",
+      "target": "the homepage crawled by Google after 2026-11-12",
       "by": "2026-11-19",
       "status": "miss-so-far",
-      "note": "The lastmod defect that was supposed to explain this is fixed and the homepage still has not been crawled for 8 days. The 2026-11-19 rule fires on this number: no crawl after 2026-11-12 → the daily post drops to twice a week and no new owner ask is issued."
+      "note": "The 2026-11-19 rule fires on this number in 5 days: no Google crawl of '/' after 2026-11-12 → the daily post drops to twice a week and no new owner ask is issued. Bing's crawl of '/' on 2026-11-13 does not satisfy it (the target was written for the engine that indexes us) but it does prove the page is fetchable and declinable, which is the more useful fact."
     },
     {
       "metric": "indexedReadingIntegrity",
-      "current": "0 of 1 readings today carried the full denominator (1/4 in review-input, 1/21 available)",
+      "current": "1 of 1 readings today carried the full denominator (21 rows = 21 sitemap <loc>)",
       "target": "every indexation reading reports rows = sitemap <loc> count",
       "by": "2026-11-20",
-      "status": "miss-so-far",
-      "note": "New metric, because a series that changes its denominator is not a series. The fix is mandate inspection-denominator-1114; this target stays in the list so the next review reads the row count before it reads the fraction."
+      "status": "met",
+      "note": "Met for the first time: the collector fix landed in code with a regression test and today's review-input reads total 21. First target in the series to move from miss-so-far to met on evidence rather than on prose."
     }
   ],
   "owner_asks": [
     {
-      "id": "theblock-news-tip-1113",
-      "channel": "email",
-      "action": "Open https://www.theblock.co/contact (verified 2026-11-12: 200, a 'Send us a message' form), choose the news-tips option in INQUIRY TYPE, put your name and email in the first two fields, paste the message below into MESSAGE, and press Send. One page, one paste, one button, zero typing.",
-      "content": "Hi — we publish the only per-cycle record of Bitcoin's 500-day rule: entry, exit, multiple and worst drawdown for all four completed halvings (median -11.7%, worst -83.65%). The live T-500 buy date is 29 November 2026. Free to quote, with data: https://btc500.net/bitcoin-500-day-cycle",
-      "url": "https://btc500.net/bitcoin-500-day-cycle",
-      "because": "Still unsent one day after handover and it is the only route left that can produce a followed link from a publication that Google crawls. The case got stronger today, not weaker: Google fetched our pillar on 2026-11-13 and declined to index it, while the 21 URLs Bing crawled produced 0 indexed — the site does not need another crawl request, it needs a citation on a domain that is already trusted. What nobody else publishes is the per-cycle drawdown record: 4 of 4 completed windows fell below entry, median -11.72%, worst -83.65%, median 84.5 days before the low (https://btc500.net/data/500-day-cycles.json). One page, one paste, one button.",
-      "measure": "GA4 named-source sessions with source theblock.co in the 7d window ending 2026-11-20, printed with the user count and landing page, plus a new referring domain in the externalReferringDomains series. Baseline today: 0 theblock.co sessions.",
-      "referrers": ["theblock.co"],
-      "by": "2026-11-17"
-    },
-    {
       "id": "facebook-share-1114",
       "channel": "other",
-      "action": "Open https://btc500.net/ in the browser where you are signed into Facebook, click Share, paste the text below as the post text, and press Post. One page, one paste, one button. Do it once, from your own account, and tell me if you have never shared the site there before — that answer decides whether this channel is repeatable.",
-      "content": "Bitcoin's 500-day rule: buy 500 days before the halving, sell 500 days after. The next buy date is 29 November 2026 — 16 days away. All four completed windows fell below their entry first (worst -83.65%, median 84.5 days before the low). Dates, data and the full record: https://btc500.net/",
+      "action": "Open https://btc500.net/ in the browser where you are signed into Facebook, click Share, paste the text below as the post text, and press Post. One page, one paste, one button — and it is the same three steps as yesterday, because it was not sent. If you have never shared the site on Facebook before, say so in the ledger: that answer decides whether the 6 sessions are a channel or a one-off.",
+      "content": "Bitcoin's 500-day rule: buy 500 days before the halving, sell 500 days after. The next buy date is 29 November 2026 — 15 days away. All four completed windows fell below their entry first (worst -83.65%, median 84.5 days before the low). Dates, data and the full record: https://btc500.net/",
       "url": "https://btc500.net/",
-      "because": "facebook.com is the highest-yield channel the site has ever had and the only one where sessions equal users: 6 sessions / 6 users landing on '/' from a single share, against 3 sessions from 225 views across three X posts, 2 from ChatGPT and 1 from a brand-new BitcoinTalk account. It is also the channel nobody can explain — the share is unattributed and may have been a one-off. This is the cheapest possible test of whether it repeats: one share, one text, one measurement. If it produces 0 sessions by 2026-11-19, the 6 were a one-off, Facebook is not a channel, and no cycle should cite it again.",
-      "measure": "GA4 named-source sessions from facebook.com in the 7d window ending 2026-11-20, printed with the user count and landing page, compared with today's facebook.com 6 sessions / 6 users → '/' (window 2026-11-06 → 11-12). A result of 0 means the channel is not repeatable; any ≥1 new session means it is the only channel that has ever produced strangers twice.",
+      "because": "facebook.com is still the single highest-yield source in the whole record and the only one where sessions equal users: 6 sessions / 6 users landing on '/' — 43% of the 14 named non-github sessions in the 7d window ending 2026-11-13 — against 5 sessions from ~316 X views across four posts, 2 from ChatGPT and 1 from a hand-sent forum post. It is also the only channel nobody can explain, which is why this is a repeatability test: 0 new facebook.com sessions by 2026-11-19 means the 6 were one-off and no cycle may cite Facebook again.",
+      "measure": "GA4 named-source sessions from facebook.com in the 7d window ending 2026-11-20, printed with the user count and landing page, compared with today's 6 sessions / 6 users → '/' (window 2026-11-07 → 11-13). Any figure at or below 6 means the existing share is all there is.",
       "referrers": ["facebook.com"],
       "by": "2026-11-19"
+    },
+    {
+      "id": "theblock-news-tip-1113",
+      "channel": "email",
+      "action": "Open https://www.theblock.co/contact in the browser that knows your name and email, set INQUIRY TYPE to the news-tips option, paste the text below into MESSAGE, press Send. Two fields the browser fills, one paste, one button — no typing. Channel re-verified today: 200, form present.",
+      "content": "Hi — we publish the only per-cycle record of Bitcoin's 500-day rule: entry, exit, multiple and worst drawdown for all four completed halvings (median -11.7%, worst -83.65%). The live T-500 buy date is 29 November 2026. Free to quote, with data: https://btc500.net/bitcoin-500-day-cycle",
+      "url": "https://btc500.net/bitcoin-500-day-cycle",
+      "because": "Two days unsent and still the only route that can put a citation on a domain Google already crawls, which is now the entire bottleneck: Google has not fetched our homepage since 2026-11-05 and has declined the pillar after a successful fetch, and Bing crawled 14 of 21 URLs including '/' and indexed none. What nobody else publishes is the per-cycle drawdown record — 4 of 4 completed windows fell below entry, median -11.72%, worst -83.65%, median 84.5 days to the low (https://btc500.net/data/500-day-cycles.json). If it is unsent on 2026-11-17 this row goes lapsed and is not restated.",
+      "measure": "GA4 named-source sessions with source theblock.co in the 7d window ending 2026-11-20, printed with the user count and landing page, plus a new domain in the externalReferringDomains series. Baseline today: 0 theblock.co sessions in 23 readings.",
+      "referrers": ["theblock.co"],
+      "by": "2026-11-17"
     }
   ],
   "self_changes": [
-    "GROWTH_PROMPT.md §3 — added the 2026-11-13 ruling: the indexation levers are CLOSED until 2026-12-01, because the lastmod fix shipped (c0f71a9), Request Indexing succeeded and the pillar was fetched at 2026-11-13T04:07:16Z with pageFetchState SUCCESSFUL and coverage did not move, and Bing crawled 10 of 21 URLs and indexed 0 after all 21 were submitted on 2026-11-12. A cycle may no longer offer sitemap, lastmod, Request Indexing, URL submission, merge, redirect, canonical or copy work as an indexation fix; its permitted output is one measurement plus one distribution action, and the PERFORMANCE block must print `indexation lever: none left (crawl 2026-11-13T04:07:16Z declined; Bing 0/21 after 21 submitted)`.",
-    "GROWTH_PROMPT.md — the `indexed` line in the mandatory PERFORMANCE block now requires the row count (`indexed X/21 (rows N of M)`), and a report with fewer rows than sitemap locs must be printed as `rows N of M — not a coverage reading` rather than as a fraction. Reason: today review-input.json carried `indexation.total: 4` from the cycle's 04:09Z 4-URL file while a 21-row file from 07:32Z existed, and the runner compared 3/21 with 1/4. The same rule is in mandate inspection-denominator-1114 so the collector, not just the prose, changes.",
-    "GROWTH_PROMPT.md — every live-ask block written before 2026-11-12 that names a closed route (contact@coindesk.com, igorbarinov/awesome-bitcoin, the 2026-10-27 bitcoin-only template) is marked superseded, with one pointer: the live asks are the entries in scripts/autonomous/review-latest.json → owner_asks[] and the rows in outreach/STATUS.md with `sent: no`. Reason: the document accumulated four generations of ask rules and the cycle could read any of them; §10(c) makes an ask that names a dead route unexecutable, and prose that does the same is worse than no prose.",
-    "scripts/autonomous/outreach/STATUS.md — the GitHub listing row `github-awesome-blockchain-line-1124` is closed `unexecutable` after three unsent handovers (2026-11-10, 2026-11-12, and today's check: total_count 0), per §10(c) rule 4; a new row records the Facebook share ask (`facebook-share-1114`, due 2026-11-19, baseline facebook.com 6/6); the BitcoinTalk row's first-session note was verified against the GA4 table (`bitcointalk.org 1/1 → /bitcoin-500-day-cycle`, 7d 2026-11-06 → 11-12). The route is dead; the goal (a non-github referring domain with sessions) is not moved.",
-    "scripts/autonomous/experiments.json — `lopp-link-effect` is on its own inconclusive branch 15 days before the reading date, and that is now recorded in an `interim` field: the first success half (a post-merge crawl of the pillar) is met in the weakest possible way — 2026-11-13T04:07:16Z, 48s after Request Indexing, so the fetch may be the request's own priority fetch — and the second half (coverage moved) is not. Reading date unchanged at 2026-11-28 because the input has not changed; a second independent crawl inside the window is the only thing that can still make it positive.",
-    "BTC500_GROWTH.md — added the 2026-11-13 review block and review-history row: the first successful Request Indexing with its exact response and the 48-second crawl, the two engines' verdicts side by side (Google 1 indexed of 21 fetched/declined, Bing 0 of 10 crawled), the named-source table with the 13-session split, the 4-row vs 21-row measurement defect with the function and line that cause it, and the GitHub ask route closed as unexecutable."
+    "GROWTH_PROMPT.md — added the 2026-11-14 ruling: PERFORMANCE gains an eighth line, `external audience 7d` (every source that is neither Direct nor github.com, with sessions/users → landing), and the report leads with it; no cycle may offer title, meta, snippet, copy or internal-link work as an action for non-brand clicks while `indexed` < 5; the non-brand query table is printed from the 28d report every run and `none visible in 28d (anonymised)` is printed instead of `0`; `pagesWithImpressions` is always quoted with its window and never added to the property total (today 18 vs 15 in the same file); the X channel's measured yield is stated as 5 sessions from ~316 views across four posts, with views-per-session printed rather than views.",
+    "BTC500_GROWTH.md — added the 2026-11-14 review block and review-history row, and re-based the due readings line to include the two new measurement mandates. The block records: 1/21 with rows 21 of 21 for the 11th reading; Bing 0/21 after crawling 14 URLs including '/' at 2026-11-13T23:23:57Z; Google's '/' not crawled since 2026-11-05; 39 commits and 0 site lines since 2026-11-12; 108 sessions of which 19 are external; and the two remaining measurement defects (byPage 18 vs property 15, and pagesWithImpressions quoted across shifted windows).",
+    "scripts/autonomous/experiments.json — added the 2026-11-14 progress entry to `lopp-link-effect`: 7 days after the merge there is no second crawl, Google has still not read the redesigned homepage, Bing fetched '/' on 2026-11-13 and declined it, and 0 GA4 sessions from lopp.net in the 7d window 2026-11-07 → 11-13. The reading date stays 2026-11-28 because the input (the link) has not changed; the entry states that the traffic half is already zero at 7 days.",
+    "scripts/autonomous/outreach/STATUS.md — corrected the send rate to 3 of 12 handovers, recorded both live asks as channel-verified unsent (The Block 2 days, 0 theblock.co sessions; Facebook 1 day, facebook.com unchanged at 6/6), and wrote the lapse conditions: The Block goes lapsed if unsent on 2026-11-17 and is not restated, Facebook closes as a one-off if it produces 0 new sessions by 2026-11-19. No third ask is issued."
   ],
-  "next_review_focus": "2026-11-14: does review-input.json now carry the 21-row inspection (`totalUrls: 21`), and is `git add -A` gone from the review runner (owner)? 2026-11-16: pillar coverage 3 days after the 2026-11-13T04:07:16Z fetch — declined or indexed — plus the GSC Sitemaps panel status line. 2026-11-17: was The Block tip sent (evidence: a theblock.co session)? 2026-11-18: Bing at 6 days after a full 21-URL submission — 0 indexed means a second engine declined, at which point engine work stops. 2026-11-19: the homepage crawl rule fires (no crawl after 2026-11-12 → daily X post to twice a week, no new owner ask) and the Facebook share ask is read. 2026-11-21: lopp.net at 14 days — 0 sessions closes the followed-link route. 2026-11-24: namedNonGithubSessions under 15 means no repeatable acquisition channel. 2026-11-28: indexed 2/21 or the authority hypothesis is falsified for one followed link."
+  "next_review_focus": "2026-11-15: the external-audience line and the non-brand query table are in the daily report (external audience 19/16 today; non-brand table: 1 impression @38). 2026-11-16: pillar coverage 3 days after the 2026-11-13T04:07:16Z fetch — declined or indexed — plus the GSC Sitemaps panel status line, and the homepage's lastCrawl printed in the same line. 2026-11-17: was The Block tip sent (evidence: a theblock.co session)? If not, the row lapses and that route dies with CoinDesk. 2026-11-18: Bing at 6 days after a full 21-URL submission — 0 indexed with 14 crawled means a second engine declined and Bing work stops until 2026-11-25. 2026-11-19: the homepage-crawl rule fires (no Google crawl of '/' after 2026-11-12 → daily post to twice a week, no new owner ask), and the Facebook share is read — 0 new sessions closes the channel. 2026-11-21: lopp.net at 14 days with 0 sessions ends the followed-link route. 2026-11-24: named non-github sessions under 15 means the plan must state there is no repeatable acquisition channel. 2026-11-28: indexed 2/21 or the authority hypothesis is falsified for one followed link."
 }
