@@ -2,7 +2,7 @@
   "generated": "2026-11-14",
   "summary": "collector: a day's indexation reading is always the full-sitemap inspection (measurement fix, no site change)",
   "checks": [
-    { "path": "/", "contains": "DAYS TO BUY", "status": 200 },
+    { "path": "/", "contains": "500 days before the next Bitcoin halving", "status": 200 },
     { "path": "/llms.txt", "contains": "Next BTC500 buy date", "status": 200 },
     { "path": "/data/500-day-cycles.json", "contains": "btc500/500-day-cycles@1", "status": 200 }
   ]
