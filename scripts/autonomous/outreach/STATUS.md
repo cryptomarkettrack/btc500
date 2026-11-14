@@ -700,3 +700,16 @@ Referral-channel table has never shown: `t.co 3 sessions / 3 users → /` and
 days. 13 handovers, 2 sent, 0 sessions from any asked channel. The referral
 line must therefore print sources, users and landing pages from now on —
 mandate `named-source-ledger-1113`.
+
+**2026-11-14 (cycle):** the pinned post regressed and the cycle cannot restore it.
+The profile's pinned article is `status/2120172389442969779` (the second poster's
+2026-11-10 "Mark the date. #Bitcoin", no `btc500.net` link), not the UTM-tagged
+post pinned on 2026-11-11 (`status/2120367269997957126`). The menu offers "Pin to
+your profile" on the new post and "Unpin from profile" on the pinned one — so the
+menu is live — but three activations of the pin item (force click, role click,
+real mouse click) changed nothing and produced no toast. Recorded as a screen
+that accepts the action and does not perform it; not retried further, and not
+restated as an owner ask (the 2026-11-10 review moved X to cycle mandates).
+Live asks unchanged: `theblock-news-tip-1113` (due 2026-11-17, 0 theblock.co
+sessions in the 7d window ending 2026-11-12), `facebook-share-1114` (due
+2026-11-19, baseline facebook.com 6/6 → `/` unchanged, so still unmeasured).

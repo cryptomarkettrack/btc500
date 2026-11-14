@@ -1,31 +1,9 @@
 {
-  "generated": "2026-11-13",
-  "summary": "no site change this cycle (full freeze): measurement instrument only — GA4 named-source table + the named-sources line in npm run referrals, plus the Request Indexing and crawl evidence. Production checks below assert the site is healthy, not that this commit is served by it.",
+  "generated": "2026-11-14",
+  "summary": "collector: a day's indexation reading is always the full-sitemap inspection (measurement fix, no site change)",
   "checks": [
-    {
-      "path": "/",
-      "contains": "days to buy",
-      "status": 200
-    },
-    {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "November 29, 2026",
-      "status": 200
-    },
-    {
-      "path": "/data/500-day-cycles.json",
-      "contains": "btc500/500-day-cycles@1",
-      "status": 200
-    },
-    {
-      "path": "/sitemap.xml",
-      "contains": "2026-11-11",
-      "status": 200
-    },
-    {
-      "path": "/llms.txt",
-      "contains": "November 29, 2026",
-      "status": 200
-    }
+    { "path": "/", "contains": "DAYS TO BUY", "status": 200 },
+    { "path": "/llms.txt", "contains": "Next BTC500 buy date", "status": 200 },
+    { "path": "/data/500-day-cycles.json", "contains": "btc500/500-day-cycles@1", "status": 200 }
   ]
 }

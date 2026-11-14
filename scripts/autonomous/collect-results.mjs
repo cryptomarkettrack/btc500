@@ -353,8 +353,15 @@ function reportDate(filename) {
   return match ? match[1] : null;
 }
 
-/** Map of fetch date -> the best dated report for that day, preferring a
- *  window of `preferDays` when several were fetched the same day. */
+/** Map of fetch date -> the best dated report for that day.
+ *
+ *  Prefer the report with the most `rows` first: an inspection run with
+ *  `--urls` covers a handful of URLs, and reading it as the day's indexation
+ *  number silently changes the denominator (on 2026-11-13 a 4-row file was read
+ *  while the runner's 21-row full-sitemap file of the same morning sat beside
+ *  it, so the series compared 3/21 with 1/4). When the row counts tie, fall back
+ *  to the window closest to `preferDays`, which is how a 7d performance report
+ *  still wins over a 28d one fetched the same day. */
 export function datedReportIndex(dir, prefix, preferDays) {
   const best = new Map();
   if (!existsSync(dir)) return best;
@@ -363,10 +370,16 @@ export function datedReportIndex(dir, prefix, preferDays) {
     if (name.endsWith("-latest.json")) continue;
     const date = reportDate(name);
     if (!date) continue;
-    const days = num(readJson(join(dir, name))?.window?.days, 0);
+    const json = readJson(join(dir, name));
+    const days = num(json?.window?.days, 0);
+    const rows = Array.isArray(json?.rows) ? json.rows.length : 0;
     const prev = best.get(date);
-    if (!prev || Math.abs(days - preferDays) < Math.abs(prev.days - preferDays)) {
-      best.set(date, { path: join(dir, name), days });
+    if (
+      !prev ||
+      rows > prev.rows ||
+      (rows === prev.rows && Math.abs(days - preferDays) < Math.abs(prev.days - preferDays))
+    ) {
+      best.set(date, { path: join(dir, name), days, rows });
     }
   }
   return best;

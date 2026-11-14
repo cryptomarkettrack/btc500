@@ -360,6 +360,48 @@ test("backfillHistory rebuilds rows from dated reports on disk", () => {
   }
 });
 
+test("datedReportIndex prefers the full-sitemap inspection over a --urls partial run", () => {
+  const root = mkdtempSync(join(tmpdir(), "btc500-inspection-index-"));
+  try {
+    // The two shapes written on 2026-11-13: the cycle's 4-URL run at 04:09Z and
+    // the runner's 21-URL sitemap inspection at 07:32Z.
+    const partial = inspJson([
+      "Submitted and indexed",
+      "Crawled - currently not indexed",
+      "Crawled - currently not indexed",
+      "Crawled - currently not indexed",
+    ]);
+    const full = inspJson(
+      Array.from({ length: 21 }, (_, i) =>
+        i === 0 ? "Submitted and indexed" : "Crawled - currently not indexed",
+      ),
+    );
+    assert.equal(parseInspection(full).total, 21);
+    assert.equal(parseInspection(full).indexed, 1);
+
+    for (const order of [
+      ["inspection-2026-11-13T04-09-18.json", "inspection-2026-11-13T07-32-28.json"],
+      ["inspection-2026-11-13T07-32-28.json", "inspection-2026-11-13T04-09-18.json"],
+    ]) {
+      const dir = join(
+        root,
+        order[0] === "inspection-2026-11-13T04-09-18.json" ? "partial-first" : "full-first",
+      );
+      mkdirSync(dir, { recursive: true });
+      for (const name of order) {
+        writeFileSync(join(dir, name), JSON.stringify(name.includes("04-09") ? partial : full));
+      }
+      const index = datedReportIndex(dir, "inspection", 0);
+      assert.equal(index.size, 1);
+      // Whichever file readdir returns first, the day's denominator is the sitemap.
+      assert.match(index.get("2026-11-13").path, /T07-32-28/);
+      assert.equal(index.get("2026-11-13").rows, 21);
+    }
+  } finally {
+    rmSync(root, { recursive: true, force: true });
+  }
+});
+
 // ---------------------------------------------------------------- comparison ---
 
 test("comparableRow only matches rows with the same window", () => {

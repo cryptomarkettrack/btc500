@@ -5,6 +5,56 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-14 (04:00Z) — measurement defect fixed in code; no site change (freeze)
+
+- **`inspection-denominator-1114` — EXECUTED in code, not in prose.**
+  `datedReportIndex()` (`scripts/autonomous/collect-results.mjs`) now prefers the
+  report with the most `rows` before its window-days rule, so a `--urls` partial
+  inspection can never become a day's denominator again. Regression test feeds the
+  two real 2026-11-13 shapes (4-row `inspection-2026-11-13T04-09-18.json`, 21-row
+  `inspection-2026-11-13T07-32-28.json`) in both readdir orders and asserts the
+  21-row file wins. `node --test scripts/autonomous/collect-results.test.mjs` →
+  **30 pass / 0 fail**. Regenerated `review-input.json` (2026-11-14T04:17:58Z):
+  `indexation.current = "1/21"`, `currentByMetric.indexed.totalUrls = 21`; the
+  collector's own metrics line prints `indexed 1/21`. The 2026-11-13 row in
+  `results-history.csv` still carried `totalUrls 4` — the same defect, written by
+  the old code — and was corrected to 21 against the 21-row file; `indexed`
+  unchanged at 1, so no count moved, only the denominator.
+- **`indexation-levers-closed-1114` — COMPLIED.** No sitemap, lastmod, Request
+  Indexing, URL submission, merge, redirect, canonical or copy work as an
+  indexation fix before 2026-12-01; recorded in Open issues. No site change:
+  `git diff --stat e77f624..HEAD -- src public/sitemap.xml` → empty.
+- **Distribution — one UTM-tagged post, one reply.** Post
+  `status/2121470416250368064` at 2026-11-14T05:08:56Z, verified on the profile 12s
+  later:
+  live count **15 days**, buy date **29 Nov 2026**, tagged link
+  `https://btc500.net/bitcoin-500-day-cycle?utm_source=x&utm_medium=social&utm_campaign=countdown-1114`.
+  Dedup read first — newest post was 2026-11-13T04:03Z and no post carried
+  `countdown-1114`. Views read at ≈04:58Z (aria-labels): pinned 83 / 3 likes,
+  2026-11-13 93 / 1, 2026-11-12 68 / 1 and 72 / 2.
+- **Engagement:** reply + like to @WatchT25778
+  (`status/2121457495621407039`, "Bitcoin and altcoins reached all time highs
+  after the last halving in 2024", 53m old, 98 views) with the four-window
+  drawdown fact; reply `status/2121471178980119013` verified under the parent at
+  05:12Z. Account not in `X-ENGAGEMENT-LOG.md` before today.
+- **Pin regression — found, attempted, not fixed.** The profile's pinned post is
+  `status/2120172389442969779` — the second poster's 2026-11-10 "Mark the date.
+  #Bitcoin", **no `btc500.net` link** — not the UTM-tagged post recorded as pinned
+  on 2026-11-11 (`status/2120367269997957126`). The overflow menu is live (the
+  pinned post offers "Unpin from profile", the new post offers "Pin to your
+  profile"), but three activations of "Pin to your profile" (force click, role
+  click, real mouse click on the item's box) closed the menu and left the pin
+  unchanged, no toast. Recorded as: the pin action is accepted by the menu and
+  does not move the pin in this session. Not retried further.
+- **Measurement, from the runner's reports (no re-collection):** GSC 7d
+  **2026-11-04 → 11-10**: 2 clicks / 14 impressions / 14.3% / avg pos 4.90.
+  GA4 7d **2026-11-06 → 11-12**: 99 sessions / 31 users / 129 views / 31.3%;
+  channels Direct 70/15, Organic Social 10/10, Referral 9/2, Unassigned 6/6,
+  Organic Search 5/2, **AI Assistant 2/2**. Named sources unchanged:
+  facebook.com 6/6 → `/`, t.co 3/3 → `/`, chatgpt.com 2/2 → pillar, x 1/1 →
+  pillar, bitcointalk.org 1/1 → pillar; **theblock.co 0**. Indexed **1/21**
+  (inspection 2026-11-13T07:32:28Z, rows 21 of 21).
+
 ## Session 2026-11-13 (04:00Z) — first successful Request Indexing; the crawl came back and still declined
 
 Three mandates executed, **no site change**. Buy date read from
@@ -245,6 +295,10 @@ Not a growth bet and not claimed as one.
 0. **The freeze stands; the copy exclusion runs to 2026-11-28.** Only a review
    can lift it. Per cycle, prove compliance with
    `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml`.
+0b. **Due readings:** `pillar-verdict-1116` (2026-11-16) — pillar
+   `lastCrawlTime`/`pageFetchState`/`crawledAs`/coverage next to
+   2026-11-13T04:07:16Z, plus one read of GSC → Sitemaps; `bing-verdict-1118`
+   (2026-11-18) — Bing indexed/crawled/unknown for all 21 URLs.
 1. **The post-merge crawl has now happened and did not move coverage**
    (2026-11-13T04:07:16Z, still `Crawled - currently not indexed`). What is
    left in the lopp-link experiment's window: a *second*, independent crawl (the
@@ -280,6 +334,23 @@ Only rows 0–1b are permitted work under the freeze; everything else is a readi
 
 ## Open issues
 
+- **Indexation levers are CLOSED to 2026-12-01** (2026-11-13 review, mandate
+  `indexation-levers-closed-1114`): sitemap, lastmod, Request Indexing, URL
+  submission, merge, redirect, canonical, internal-link and copy work may not be
+  offered as an indexation fix. Every one has been executed and `indexed` is 1 for
+  the eleventh reading. A cycle's permitted output is one measurement plus one
+  distribution action; a new in-repo lever must be named in the commit body with
+  evidence that the previous five failed for a different reason.
+- **The inspection denominator is now enforced in code.** `datedReportIndex()`
+  prefers the most-rows report per day (2026-11-14); `review-input.json` reads
+  1/21 and the collector prints `indexed 1/21`. If a future cycle sees a fraction
+  whose row count is not the sitemap's `<loc>` count, that is a regression in the
+  collector, not a coverage reading.
+- **The pin does not move.** Pinned post today is `status/2120172389442969779`
+  (second poster, 2026-11-10, no link), not the tagged post recorded as pinned on
+  2026-11-11. The menu accepts "Pin to your profile" and the pin stays where it
+  was (three attempts, 2026-11-14, no toast). Stated as a screen that accepts the
+  action, not as an owner ask.
 - **The pillar HAS now been crawled with an incoming external link, and was
   declined again.** Crawl history: 2026-10-22, 11-05, 2026-11-07T03:42:34Z (all
   pre-merge, all declined), then **2026-11-13T04:07:16Z** — the first post-merge
