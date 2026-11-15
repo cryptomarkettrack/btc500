@@ -20,8 +20,6 @@ import {
   lastHalvingBlock,
   nextHalvingBlock,
   selectTimelineCycles,
-  HALVING_SIMULATION_OFFSET_DAYS,
-  HALVING_DAY_MS,
 } from "./halvings.ts";
 
 const NOW = Date.parse("2026-08-01T12:00:00.000Z");
@@ -128,7 +126,7 @@ describe("next-halving timestamp", () => {
     assert.equal(earlier, LAST_HISTORICAL_HALVING.block);
   });
 
-  it("projects the far-future date at the protocol pace from the live tip (matches CoinGecko's 2028-04-13, then pulled back 30 days by the T−500 simulation offset)", () => {
+  it("projects the far-future date at the protocol pace from the live tip (matches CoinGecko's 2028-04-13)", () => {
     // Realistic mid-2026 live tip. Even when the observed pace is slightly fast
     // (~597s epoch average), difficulty retargeting pins the long-run block time
     // at 600s, so the date is projected at the protocol target — not by
@@ -154,17 +152,12 @@ describe("next-halving timestamp", () => {
     assert.equal(estimate.nextHalvingBlock, 1_050_000);
 
     const remaining = estimate.nextHalvingBlock - estimate.currentHeight;
-    const expected = new Date(
-      observedAt +
-        remaining * PROTOCOL_BLOCK_INTERVAL_SECONDS * 1000 -
-        HALVING_SIMULATION_OFFSET_DAYS * HALVING_DAY_MS,
-    )
+    const expected = new Date(observedAt + remaining * PROTOCOL_BLOCK_INTERVAL_SECONDS * 1000)
       .toISOString()
       .slice(0, 10);
     assert.equal(estimate.estimatedDate, expected);
-    // Upstream consensus date is 13 April 2028; the T−500 simulation pulls the
-    // projection back HALVING_SIMULATION_OFFSET_DAYS (30 days), landing 14 March 2028.
-    assert.equal(expected, "2028-03-14");
+    // This is the upstream consensus date (CoinGecko: 13 April 2028).
+    assert.equal(expected, "2028-04-13");
 
     // The observed interval is reported as a diagnostic, separate from the date.
     assert.notEqual(estimate.intervalSeconds, PROTOCOL_BLOCK_INTERVAL_SECONDS);
@@ -197,13 +190,11 @@ describe("next-halving timestamp", () => {
       observedAt,
     });
     // The date is anchored on the remaining blocks x the 10-min target.
-    const expected = new Date(
-      observedAt + (1_050_000 - tipHeight) * 600 * 1000 - HALVING_SIMULATION_OFFSET_DAYS * HALVING_DAY_MS,
-    )
+    const expected = new Date(observedAt + (1_050_000 - tipHeight) * 600 * 1000)
       .toISOString()
       .slice(0, 10);
     assert.equal(estimate.estimatedDate, expected);
-    assert.equal(expected, "2028-03-14");
+    assert.equal(expected, "2028-04-13");
   });
 });
 

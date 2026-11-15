@@ -22,14 +22,6 @@ export const BLOCKS_PER_HALVING = 210_000;
 export const WINDOW_DAYS = 500;
 /** Bitcoin's protocol target. Used only as a labelled fallback. */
 export const PROTOCOL_BLOCK_INTERVAL_SECONDS = 600;
-/**
- * Days to pull the next-halving projection back when simulating being past the
- * T-500 buy date. Not a date — the real estimate is retrieved live, then this
- * many days are subtracted, so every downstream date (buy date, sell date,
- * countdown, phase, P&L) shifts as if the halving were that much earlier.
- * Set to 0 to use the live block-height estimate (production behaviour).
- */
-export const HALVING_SIMULATION_OFFSET_DAYS = 30;
 export const MIN_OBSERVED_INTERVAL_SECONDS = 300;
 export const MAX_OBSERVED_INTERVAL_SECONDS = 1_200;
 /** ~1 day of blocks. Long enough to dampen noise, cheap to sample. */
@@ -295,29 +287,19 @@ export function buildHalvingEstimate(network: NetworkState): HalvingEstimate {
   // so pulled the 2028 estimate ~3 days early vs. upstream counts (CoinGecko's
   // 13 April 2028). The observed interval is kept as a live-pace diagnostic
   // (intervalSeconds / intervalSource / confidence) but does not drive this date.
-  // Retrieve the real next-halving projection from block height at the
-  // protocol 10-minute target, then pull it back by the simulation offset so
-  // the site renders as if we are past the T-500 buy date (hold → sell phase,
-  // P&L counting). No date is hardcoded here — the value is always derived
-  // from the live estimate minus HALVING_SIMULATION_OFFSET_DAYS.
-  const realTs = estimateHalvingTimestampMs(
+  const ts = estimateHalvingTimestampMs(
     network.height,
     nextBlock,
     network.observedAt,
     PROTOCOL_BLOCK_INTERVAL_SECONDS,
   );
-  const simulatedTs =
-    realTs - HALVING_SIMULATION_OFFSET_DAYS * DAY_MS;
-  const simulatedDate = new Date(simulatedTs);
-  const estimatedTimestamp = simulatedDate.toISOString();
-  const estimatedDate = toIsoDay(simulatedTs);
   return {
     nextHalvingBlock: nextBlock,
     lastHalvingBlock: lastBlock,
     currentHeight: network.height,
     heightSource: network.heightSource,
-    estimatedTimestamp,
-    estimatedDate,
+    estimatedTimestamp: new Date(ts).toISOString(),
+    estimatedDate: toIsoDay(ts),
     intervalSeconds: network.interval.seconds,
     intervalSource: network.interval.source,
     confidence: combineEstimateConfidence(network.heightSource, network.interval),
