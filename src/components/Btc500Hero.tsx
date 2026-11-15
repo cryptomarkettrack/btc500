@@ -311,7 +311,7 @@ export function Btc500Hero({
           <circle className="zone-fill" cx="310" cy="415" r="44" />
           <circle className="zone-ring" cx="310" cy="415" r="44" />
           <text className="zone-label" x="310" y="408" textAnchor="middle" style={{ ...styleZoneLabel, fill: phase === "wait-sell" || phase === "done" ? "var(--success)" : "var(--primary)" }}>
-            bought
+            {phase === "wait-sell" || phase === "done" ? "bought" : "to buy"}
           </text>
           <text className="day-label" x="310" y="422" textAnchor="middle" style={{ ...styleDayLabel, fontSize: "11px", fill: phase === "wait-sell" || phase === "done" ? "var(--success)" : "var(--primary)" }}>
             {buyDateLabel ?? "−500d"}
