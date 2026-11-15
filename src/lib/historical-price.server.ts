@@ -6,6 +6,7 @@
  * mistaken for a finished dataset.
  */
 
+import { createServerFn } from "@tanstack/react-start";
 import { fetchBtcPriceFromBitstamp, fetchBtcPricesFromBitstampRange } from "./bitstamp-fetcher";
 import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
 import {
@@ -131,3 +132,14 @@ function nextIsoDay(dateStr: string): string {
   d.setUTCDate(d.getUTCDate() + 1);
   return d.toISOString().slice(0, 10);
 }
+
+/**
+ * Server function: BTC close price for a single date.
+ * Used to mark the entry price of the current cycle's buy date (T−500) once the
+ * window has opened, so the homepage can show a live P&L tracker.
+ */
+export const getBtcPriceForDate = createServerFn({ method: "GET" })
+  .validator((data: { date: string }) => data)
+  .handler(async ({ data }): Promise<number | null> => {
+    return getHistoricalBtcPrice(data.date);
+  });

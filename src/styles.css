@@ -208,6 +208,34 @@
   --panel: oklch(0.175 0.008 55);
 }
 
+/* Dynamic theme: when holding an open position, the brand accent color
+   follows the P&L — green in profit, red in loss. Overrides the default
+   Bitcoin-orange primary so every accent (countdown, buttons, links, chart)
+   shifts to match the position color. */
+.theme-profit,
+.theme-profit.dark {
+  --primary: var(--success);
+  --primary-foreground: oklch(0.2 0.03 155);
+  --primary-soft: var(--success-soft);
+  --accent: var(--success);
+  --ring: var(--success);
+  --chart-1: var(--success);
+  --sidebar-primary: var(--success);
+  --sidebar-ring: var(--success);
+}
+
+.theme-loss,
+.theme-loss.dark {
+  --primary: var(--destructive);
+  --primary-foreground: oklch(0.2 0.03 25);
+  --primary-soft: oklch(0.27 0.05 25);
+  --accent: var(--destructive);
+  --ring: var(--destructive);
+  --chart-1: var(--destructive);
+  --sidebar-primary: var(--destructive);
+  --sidebar-ring: var(--destructive);
+}
+
 /* The site is dark by design; .dark keeps the same tokens for components that
    set the class explicitly. */
 .dark {
@@ -305,6 +333,22 @@
   stroke: var(--muted-foreground);
   stroke-width: 1.5;
   stroke-dasharray: 2 5;
+}
+
+/* Today marker — same treatment as the halving rule, placed at today's date. */
+.today-rule {
+  stroke: var(--muted-foreground);
+  stroke-width: 1.5;
+  stroke-dasharray: 2 5;
+}
+
+.today-label {
+  font-family: "Space Grotesk", sans-serif;
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  fill: var(--muted-foreground);
+  text-transform: uppercase;
 }
 
 .halving-label {

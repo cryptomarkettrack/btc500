@@ -17,6 +17,7 @@ import {
 import { emptyDcaCycles, getDcaData } from "@/lib/dca.functions";
 import { unavailableSimulatorResult, getSimulatorData } from "@/lib/simulator.functions";
 import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
+import { getBtcPriceForDate } from "@/lib/historical-price.server";
 
 const MINUTE = 60_000;
 const NETWORK_REFRESH_MS = 10 * 60_000;
@@ -43,6 +44,22 @@ export const btcPriceQuery = queryOptions({
   staleTime: MINUTE,
   refetchInterval: MINUTE,
 });
+
+/** Entry (buy) price of the current cycle's T−500 date, for live P&L tracking. */
+export const buyPriceQuery = (buyDate: string) =>
+  queryOptions({
+    queryKey: ["buy-price", buyDate],
+    queryFn: async () => {
+      try {
+        return await getBtcPriceForDate({ data: { date: buyDate } });
+      } catch (err) {
+        console.error("[buy-price] query failed:", err);
+        return null;
+      }
+    },
+    staleTime: HOUR,
+    refetchInterval: HOUR,
+  });
 
 export const simulatorQuery = queryOptions({
   queryKey: ["simulator"],

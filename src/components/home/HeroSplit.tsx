@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Calculator, LineChart } from "lucide-react";
+import { ArrowRight, Calculator, LineChart, TrendingDown, TrendingUp } from "lucide-react";
 import { Btc500Hero } from "@/components/Btc500Hero";
 import { trackCta } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
@@ -14,6 +14,13 @@ interface HeroSplitProps {
   countdownLabel: string;
   isSellActive: boolean;
   buyDays: number;
+  sellDays: number;
+  /** Live position P&L (only meaningful once past T−500 / holding). */
+  pnlAmount: number | null;
+  pnlPercent: number | null;
+  isProfit: boolean | null;
+  /** Whether the position is open (buy date passed, sell date not yet). */
+  isHolding: boolean;
 }
 
 /**
@@ -29,8 +36,14 @@ export function HeroSplit({
   countdownLabel,
   isSellActive,
   buyDays,
+  sellDays,
+  pnlAmount,
+  pnlPercent,
+  isProfit,
+  isHolding,
 }: HeroSplitProps) {
-  const accent = isSellActive ? "var(--success)" : "var(--primary)";
+  const accent = isHolding && pnlAmount == null ? "var(--muted-foreground)" : isSellActive ? "var(--success)" : "var(--primary)";
+  const showingPnL = isHolding && pnlAmount != null && pnlPercent != null;
 
   return (
     <section
@@ -47,7 +60,9 @@ export function HeroSplit({
             style={{ "--enter-delay": "60ms" } as React.CSSProperties}
             className="font-data flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
           >
-            <span className="text-primary">{answer.eyebrow}</span>
+            <span className={showingPnL ? "text-success" : "text-primary"}>
+              {answer.eyebrow}
+            </span>
           </p>
 
           <h1
@@ -112,29 +127,71 @@ export function HeroSplit({
               <span className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                 btc500 / cycle map
               </span>
-              <span className="font-data inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
-                <i className="pulse-dot h-1.5 w-1.5 rounded-full bg-primary" aria-hidden="true" />
+              <span className="font-data inline-flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em]">
+                <i
+                  className="pulse-dot h-1.5 w-1.5 rounded-full"
+                  aria-hidden="true"
+                  style={{
+                    background:
+                      showingPnL ? "var(--success)" : "var(--primary)",
+                  }}
+                />
                 live
               </span>
             </div>
 
             {/* the number the visitor came for */}
             <div className="flex items-end justify-between gap-4 px-5 pt-5">
-              <div>
-                <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                  {countdownLabel}
+              {showingPnL ? (
+                <div>
+                  <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Current P&L
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-1">
+                    <span
+                      suppressHydrationWarning
+                      className="font-data text-5xl font-semibold leading-none tracking-tighter sm:text-6xl"
+                      style={{
+                        color: isProfit ? "var(--success)" : "var(--destructive)",
+                      }}
+                    >
+                      {isProfit ? "+" : "−"}{formatUsd(Math.abs(pnlAmount))}
+                    </span>
+                    <span
+                      className="ml-1 text-xl font-semibold"
+                      style={{
+                        color: isProfit ? "var(--success)" : "var(--destructive)",
+                      }}
+                    >
+                      {pnlPercent >= 0 ? "+" : ""}${(pnlPercent * 100).toFixed(1)}%
+                    </span>
+                  </div>
                 </div>
-                <div className="mt-1 flex items-baseline gap-2">
-                  <span
-                    suppressHydrationWarning
-                    className="font-data text-5xl font-semibold leading-none tracking-tighter sm:text-6xl"
-                    style={{ color: accent }}
-                  >
-                    {countdownValue.toLocaleString()}
-                  </span>
-                  <span className="font-data text-sm text-muted-foreground">days</span>
+              ) : isHolding && pnlAmount == null ? (
+                <div>
+                  <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    Current P&L
+                  </div>
+                  <div className="mt-1 h-12 w-48 rounded-full bg-muted animate-pulse" />
+                  <div className="mt-2 h-4 w-24 rounded-full bg-muted/50 animate-pulse" />
                 </div>
-              </div>
+              ) : (
+                <div>
+                  <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                    {countdownLabel}
+                  </div>
+                  <div className="mt-1 flex items-baseline gap-2">
+                    <span
+                      suppressHydrationWarning
+                      className="font-data text-5xl font-semibold leading-none tracking-tighter sm:text-6xl"
+                      style={{ color: accent }}
+                    >
+                      {countdownValue.toLocaleString()}
+                    </span>
+                    <span className="font-data text-sm text-muted-foreground">days</span>
+                  </div>
+                </div>
+              )}
               <div className="text-right">
                 <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   BTC / USD
@@ -147,7 +204,33 @@ export function HeroSplit({
 
             {/* the cycle chart */}
             <div className="px-2 pt-2 pb-1 sm:px-4">
-              <Btc500Hero price={price} daysLeft={buyDays} compact />
+              <Btc500Hero
+                price={price}
+                daysLeft={buyDays}
+                daysUntilSell={sellDays}
+                buyDateLabel={formatDay(cycle.buyDate)}
+                phase={cycle.phase}
+                compact
+                countdown={
+                  <div
+                    className={`w-full text-center ${showingPnL ? "text-success" : ""}`}
+                    style={{
+                      fontFamily:
+                        '"Space Grotesk", system-ui, sans-serif',
+                      fontSize: "13px",
+                      letterSpacing: "0.18em",
+                      textTransform: "uppercase",
+                      marginBottom: "4px",
+                    }}
+                  >
+                    {showingPnL
+                      ? `Position ${
+                          isProfit ? "in profit" : "underwater"
+                        } — P&L ${isProfit ? "+" : "−"}${formatUsd(Math.abs(pnlAmount))} (${(pnlPercent * 100).toFixed(1)}%)`
+                      : `${countdownLabel}: ${countdownValue} days`}
+                  </div>
+                }
+              />
             </div>
 
             {/* the three dated facts */}

@@ -4,6 +4,7 @@ import {
   BookOpen,
   Flame,
   TrendingUp,
+  TrendingDown,
   ArrowRight,
   Target,
   Shield,
@@ -15,7 +16,7 @@ import {
   Eye,
   Sparkles,
 } from "lucide-react";
-import { computeCycle, daysBetween, formatUsd } from "@/lib/phase";
+import { computeCycle, daysBetween, formatUsd, formatDate } from "@/lib/phase";
 import { buildHomeAnswer } from "@/lib/home-answer";
 import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
@@ -27,7 +28,12 @@ import { Link } from "@tanstack/react-router";
 import { getIndexableArticles, type ArticleMeta } from "@/lib/articles";
 import { trackCta } from "@/lib/analytics";
 import { HOME_LAST_REVIEWED } from "@/lib/site";
-import { halvingQuery, btcPriceQuery, simulatorPreviewQuery } from "@/lib/queries";
+import {
+  halvingQuery,
+  btcPriceQuery,
+  simulatorPreviewQuery,
+  buyPriceQuery,
+} from "@/lib/queries";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
 import { DataTape } from "@/components/home/DataTape";
@@ -58,6 +64,13 @@ export function HomePage() {
     new Date(halving.lastHalvingDate),
   );
 
+  // Entry price of the current cycle's T−500 buy date — only fetched once the
+  // buy date has passed and the position is open.
+  const buyPriceRes = useQuery({
+    ...buyPriceQuery(cycle.buyDate.toISOString().slice(0, 10)),
+    enabled: cycle.phase === "wait-sell",
+  });
+
   // The page Google actually serves (see the 2026-10-28 review) has to answer
   // "when is 500 days before the next bitcoin halving" itself: the H1 and the
   // first paragraph both carry the live T-500 date, from the same model.
@@ -72,6 +85,20 @@ export function HomePage() {
 
   const buyDays = Math.max(0, cycle.daysUntilBuy);
   const sellDays = cycle.daysUntilSell;
+
+  // P&L tracker: once the T−500 buy date has passed, the position is open and
+  // the page focuses on live P&L (buy date → now → sell date).
+  const isHolding = cycle.phase === "wait-sell";
+  const buyPrice = buyPriceRes.data ?? null;
+  const currentPrice = priceRes.data?.price ?? null;
+  const INVESTMENT = 50_000;
+  const pnlPercent =
+    buyPrice != null && currentPrice != null && buyPrice > 0
+      ? (currentPrice - buyPrice) / buyPrice
+      : null;
+  const pnlAmount = pnlPercent != null ? INVESTMENT * pnlPercent : null;
+  const positionValue = pnlAmount != null ? INVESTMENT + pnlAmount : null;
+  const isProfit = pnlAmount != null && pnlAmount >= 0;
 
   // Archived articles are served with `noindex, nofollow`, so a link to one
   // carries no signal and tells Google the page behind it should not be
@@ -111,8 +138,19 @@ export function HomePage() {
         ? "days to next buy"
         : "days to buy";
 
+  // Dynamic theme: when holding an open position, the brand accent follows
+  // the P&L — green in profit, red in loss.
+  const themeClass =
+    isHolding && pnlAmount != null
+      ? pnlAmount > 0
+        ? "theme-profit"
+        : pnlAmount < 0
+          ? "theme-loss"
+          : null
+      : null;
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className={`min-h-screen bg-background text-foreground ${themeClass ?? ""}`}>
       <HeroSplit
         answer={answer}
         cycle={cycle}
@@ -121,6 +159,11 @@ export function HomePage() {
         countdownLabel={countdownLabel}
         isSellActive={isSellActive}
         buyDays={buyDays}
+        sellDays={sellDays}
+        pnlAmount={pnlAmount}
+        pnlPercent={pnlPercent}
+        isProfit={isProfit}
+        isHolding={isHolding}
       />
 
       <DataTape
@@ -240,6 +283,144 @@ export function HomePage() {
             />
           </nav>
         </section>
+
+        {/* ===== P&L TRACKER — live once the T−500 buy date has passed ===== */}
+        {isHolding && (
+          <section className="pt-20 sm:pt-24" aria-label="Live position P&L">
+            <div className="max-w-2xl">
+              <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-success">
+                02 / Live position — P&L tracker
+              </p>
+              <h2
+                className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
+              >
+                Bought on <span className="text-primary">{formatDate(cycle.buyDate)}</span>{" "}
+                (T−500) · selling{" "}
+                <span className="text-success">{formatDate(cycle.sellDate)}</span>{" "}
+                (T+500)
+              </h2>
+              <p className="mt-4 text-base leading-relaxed text-muted-foreground">
+                Position is open. P&L is marked live against today's BTC price — green in profit,
+                red in loss. Hold to the sell date.
+              </p>
+            </div>
+
+            <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
+                <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Bought on (T−500)
+                </div>
+                <div className="mt-1 text-sm font-semibold text-muted-foreground">
+                  {formatDate(cycle.buyDate)}
+                </div>
+                <div className="mt-2 text-2xl font-bold text-foreground">
+                  {buyPrice != null ? formatUsd(buyPrice) : "—"}
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  BTC price at entry
+                </p>
+              </div>
+
+              <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
+                <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  BTC now
+                </div>
+                <div className="mt-1 text-sm font-semibold text-muted-foreground">
+                  Live mark
+                </div>
+                <div className="mt-2 text-2xl font-bold text-foreground">
+                  {currentPrice != null ? formatUsd(currentPrice) : "—"}
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Current price
+                </p>
+              </div>
+
+              <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
+                <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Investment
+                </div>
+                <div className="mt-1 text-sm font-semibold text-muted-foreground">
+                  Fixed position size
+                </div>
+                <div className="mt-2 text-2xl font-bold text-foreground">
+                  {formatUsd(INVESTMENT)}
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Capital deployed at entry
+                </p>
+              </div>
+
+              <div
+                className={`lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6 ${
+                  isProfit
+                    ? "border-success/30 bg-success/[0.03]"
+                    : pnlAmount != null && pnlAmount < 0
+                      ? "border-destructive/30 bg-destructive/[0.03]"
+                      : ""
+                }`}
+              >
+                <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Current P&L
+                </div>
+                <div className="mt-1 text-sm font-semibold text-muted-foreground">
+                  {positionValue != null
+                    ? `Position value ${formatUsd(positionValue)}`
+                    : "—"}
+                </div>
+                <div className="mt-2 flex items-baseline gap-1">
+                  <span
+                    className="text-4xl font-bold tracking-tighter"
+                    style={{
+                      color: isProfit
+                        ? "var(--success)"
+                        : pnlAmount != null && pnlAmount < 0
+                          ? "var(--destructive)"
+                          : "var(--muted-foreground)",
+                    }}
+                  >
+                    {pnlAmount != null
+                      ? `${isProfit ? "+" : "−"}${formatUsd(Math.abs(pnlAmount))}`
+                      : "—"}
+                  </span>
+                  <span
+                    className="ml-1 text-xl font-semibold"
+                    style={{
+                      color: isProfit
+                        ? "var(--success)"
+                        : pnlAmount != null && pnlAmount < 0
+                          ? "var(--destructive)"
+                          : "var(--muted-foreground)",
+                    }}
+                  >
+                    {pnlPercent != null
+                      ? `${pnlPercent >= 0 ? "+" : ""}${(pnlPercent * 100).toFixed(1)}%`
+                      : "—"}
+                  </span>
+                </div>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  {pnlAmount != null
+                    ? isProfit
+                      ? "You're in profit on the rule."
+                      : "Position is underwater — hold to the sell date."
+                    : "P&L loads once entry price is available."}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <Link
+                to="/simulator"
+                onClick={() => trackCta("pnl_tracker", "/simulator")}
+                className="press inline-flex items-center gap-2 rounded-full bg-primary px-6 py-3 text-sm font-semibold text-primary-foreground"
+              >
+                <Calculator className="h-4 w-4" />
+                Backtest this window
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </section>
+        )}
 
         {/* ===== THE ANSWERS (AEO) ===== */}
         <section className="pt-20 sm:pt-24" aria-label="What the rule means">

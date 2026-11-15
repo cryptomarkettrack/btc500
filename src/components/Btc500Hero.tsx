@@ -1,9 +1,17 @@
 import { useId, type CSSProperties, type ReactNode } from "react";
 import { formatUsd } from "@/lib/phase";
+import { WINDOW_DAYS } from "@/lib/halvings";
 
 interface Btc500HeroProps {
   price: number | null;
+  /** Days until buy (wait-buy phase). */
   daysLeft?: number;
+  /** Days until sell (wait-sell phase). */
+  daysUntilSell?: number;
+  /** Label shown at the buy point, e.g. "bought Nov 4, 2026". */
+  buyDateLabel?: string;
+  /** Current cycle phase, used to place the "where we are" market marker. */
+  phase?: "wait-buy" | "wait-sell" | "done";
   /** Hide brand title / price when embedded in a share card that already has them. */
   compact?: boolean;
   /** Custom H1 text (HTML string). Defaults to the BTC500 brand block. */
@@ -58,6 +66,9 @@ const styleWeAreHere: CSSProperties = {
 export function Btc500Hero({
   price,
   daysLeft = 500,
+  daysUntilSell,
+  buyDateLabel,
+  phase,
   compact = false,
   title,
   srTitle,
@@ -67,61 +78,92 @@ export function Btc500Hero({
   const reactId = useId();
   const fadeGradId = `fadeGrad-${reactId.replace(/:/g, "")}`;
 
-  // Calculate current position on chart (0-500 days maps to x position)
-  // Buy point is at x=310, chart starts at x=10
-  const progress = (500 - daysLeft) / 500; // 0 to 1
-  const currentX = 10 + progress * 300; // Maps to x=10 (start) to x=310 (buy point)
-
-  // Find approximate Y position on price curve at currentX
-  // Price curve points (x, y): (10,280), (40,292), (70,300), (100,288), (130,297), (160,278),
-  // (190,260), (220,268), (250,240), (280,222), (310,232), (340,200), (370,178),
-  // (400,186), (430,150), (460,100), (490,115), (520,65), (550,78), (580,20),
-  // (610,10), (640,20), (670,10), (700,30), (730,55), (760,100), (790,125),
-  // (820,150), (850,175), (890,200)
+  // Price curve points — must mirror the `price-line` path exactly:
+  // M 10 380 L 40 392 L 70 400 L 100 388 L 130 397 L 160 378 L 190 360 L 220 368
+  // L 250 340 L 280 322 L 310 332 L 340 300 L 370 278 L 400 286 L 430 250
+  // L 460 200 L 490 215 L 520 165 L 550 178 L 580 120 L 610 95 L 640 108 L 670 60
+  // L 700 80 L 730 105 L 760 150 L 790 175 L 820 210 L 850 235 L 890 260
   const pricePoints: [number, number][] = [
-    [10, 280],
-    [40, 292],
-    [70, 300],
-    [100, 288],
-    [130, 297],
-    [160, 278],
-    [190, 260],
-    [220, 268],
-    [250, 240],
-    [280, 222],
-    [310, 232],
-    [340, 200],
-    [370, 178],
-    [400, 186],
-    [430, 150],
-    [460, 100],
-    [490, 115],
-    [520, 65],
-    [550, 78],
-    [580, 20],
-    [610, 10],
-    [640, 20],
-    [670, 10],
-    [700, 30],
-    [730, 55],
-    [760, 100],
-    [790, 125],
-    [820, 150],
-    [850, 175],
-    [890, 200],
+    [10, 380],
+    [40, 392],
+    [70, 400],
+    [100, 388],
+    [130, 397],
+    [160, 378],
+    [190, 360],
+    [220, 368],
+    [250, 340],
+    [280, 322],
+    [310, 332],
+    [340, 300],
+    [370, 278],
+    [400, 286],
+    [430, 250],
+    [460, 200],
+    [490, 215],
+    [520, 165],
+    [550, 178],
+    [580, 120],
+    [610, 95],
+    [640, 108],
+    [670, 60],
+    [700, 80],
+    [730, 105],
+    [760, 150],
+    [790, 175],
+    [820, 210],
+    [850, 235],
+    [890, 260],
   ];
 
-  // Find Y at currentX by interpolating between points
-  let currentY = 280; // default
-  for (let i = 0; i < pricePoints.length - 1; i++) {
-    const [x1, y1] = pricePoints[i];
-    const [x2, y2] = pricePoints[i + 1];
-    if (currentX >= x1 && currentX <= x2) {
-      const t = (currentX - x1) / (x2 - x1);
-      currentY = y1 + t * (y2 - y1);
-      break;
+  // Find Y on the illustrated price curve at a given x by interpolating between points.
+  function interpolateY(x: number): number {
+    let y = 280; // default
+    for (let i = 0; i < pricePoints.length - 1; i++) {
+      const [x1, y1] = pricePoints[i];
+      const [x2, y2] = pricePoints[i + 1];
+      if (x >= x1 && x <= x2) {
+        const t = (x - x1) / (x2 - x1);
+        y = y1 + t * (y2 - y1);
+        break;
+      }
     }
+    return y;
   }
+
+  // Determine the "where we are" market marker on the chart based on cycle phase.
+  let markerX = 310; // default: buy point
+  let showMarker = false;
+
+  if (phase === "wait-buy" && daysLeft != null && daysLeft > 0 && daysLeft <= 500) {
+    showMarker = true;
+    const progress = (500 - daysLeft) / 500;
+    markerX = 10 + progress * 300; // start (x=10) → buy point (x=310)
+  } else if (
+    phase === "wait-sell" &&
+    daysUntilSell != null &&
+    daysUntilSell >= 0
+  ) {
+    showMarker = true;
+    // During the holding phase we can still be before the halving (between the
+    // T-500 buy and the halving), so days-until-sell spans up to ~2×WINDOW_DAYS.
+    // Place the marker on the buy→halving leg while pre-halving, halving→sell after.
+    const daysSinceBuy = Math.max(0, 2 * WINDOW_DAYS - daysUntilSell);
+    const daysSinceHalving = daysSinceBuy - WINDOW_DAYS;
+    if (daysSinceHalving < 0) {
+      // holding before the halving → between buy (x=310) and halving (x=460)
+      markerX = 310 + (daysSinceBuy / WINDOW_DAYS) * 150;
+      // keep the full-height marker clear of the bought-callout zone near the buy point
+      markerX = Math.max(markerX, 356);
+    } else {
+      markerX = 460 + (daysSinceHalving / WINDOW_DAYS) * 210; // halving (x=460) → sell point (x=670)
+    }
+  } else if (phase === "done") {
+    showMarker = true;
+    markerX = 670; // sell point
+  }
+
+  const markerY = interpolateY(markerX);
 
   return (
     <div className="flex flex-col items-center">
@@ -193,61 +235,44 @@ export function Btc500Hero({
             Halving
           </text>
 
-          {/* Current position indicator - show when we're in the counting period or at the start */}
-          {daysLeft <= 500 && daysLeft > 0 && (
+          {/* Current position / market marker — "where we are" on the chart */}
+          {showMarker && (
             <>
-              {/* Vertical line from bottom to current price position */}
-              <line
-                suppressHydrationWarning
-                x1={currentX}
-                y1={currentY}
-                x2={currentX}
-                y2={400}
-                stroke="var(--primary)"
-                strokeWidth="2"
-                strokeDasharray="4 4"
-                opacity="0.6"
-              />
-              {/* Pulsing dot at current position */}
+              {/* Pulsing dot at current position — same treatment as the bought circle */}
               <circle
                 suppressHydrationWarning
-                cx={currentX}
-                cy={currentY}
-                r="6"
-                fill="var(--primary)"
-                opacity="0.3"
+                cx={markerX}
+                cy={markerY}
+                r="8"
+                fill={phase === "wait-sell" ? "var(--success)" : "var(--primary)"}
+                stroke="var(--background)"
+                strokeWidth="3"
+                opacity="0.2"
               >
-                <animate attributeName="r" values="6;10;6" dur="2s" repeatCount="indefinite" />
+                <animate attributeName="r" values="8;12;8" dur="3s" repeatCount="indefinite" />
                 <animate
                   attributeName="opacity"
-                  values="0.3;0.1;0.3"
-                  dur="2s"
+                  values="0.2;0.05;0.2"
+                  dur="3s"
                   repeatCount="indefinite"
                 />
               </circle>
               <circle
                 suppressHydrationWarning
-                cx={currentX}
-                cy={currentY}
+                cx={markerX}
+                cy={markerY}
                 r="4"
-                fill="var(--primary)"
+                fill={phase === "wait-sell" ? "var(--success)" : "var(--primary)"}
+                stroke="var(--background)"
+                strokeWidth="3"
               />
-              {/* Days remaining label */}
+              {/* Callout line from the dot up to the label, like the buy callout */}
+              <line className="callout-line" x1={markerX} y1={markerY} x2={markerX} y2={markerY - 22} />
+              {/* "we are here" label with black contrast — above the dot */}
               <text
                 suppressHydrationWarning
-                x={currentX}
-                y={currentY - 18}
-                textAnchor="middle"
-                className="day-label"
-                style={{ ...styleDayLabel, fontSize: "12px" }}
-              >
-                {daysLeft}d
-              </text>
-              {/* "we are here" label with black contrast - positioned right next to the dot */}
-              <text
-                suppressHydrationWarning
-                x={currentX}
-                y={currentY + 16}
+                x={markerX}
+                y={markerY - 22}
                 textAnchor="middle"
                 style={styleWeAreHere}
               >
@@ -283,13 +308,13 @@ export function Btc500Hero({
             strokeWidth="2.5"
           />
           <line className="callout-line" x1="310" y1="332" x2="310" y2="378" />
-          <circle className="zone-fill" cx="310" cy="415" r="38" />
-          <circle className="zone-ring" cx="310" cy="415" r="38" />
-          <text className="zone-label" x="310" y="408" textAnchor="middle" style={styleZoneLabel}>
-            Buy
+          <circle className="zone-fill" cx="310" cy="415" r="44" />
+          <circle className="zone-ring" cx="310" cy="415" r="44" />
+          <text className="zone-label" x="310" y="408" textAnchor="middle" style={{ ...styleZoneLabel, fill: phase === "wait-sell" || phase === "done" ? "var(--success)" : "var(--primary)" }}>
+            bought
           </text>
-          <text className="day-label" x="310" y="426" textAnchor="middle" style={styleDayLabel}>
-            −500d
+          <text className="day-label" x="310" y="422" textAnchor="middle" style={{ ...styleDayLabel, fontSize: "11px", fill: phase === "wait-sell" || phase === "done" ? "var(--success)" : "var(--primary)" }}>
+            {buyDateLabel ?? "−500d"}
           </text>
 
           {/* SELL callout: point on curve ~670,60 */}
