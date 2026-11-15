@@ -5,6 +5,7 @@ import { join } from "node:path";
 import test from "node:test";
 
 import {
+  externalAudienceLine,
   namedSourceRows,
   namedSourcesLine,
   newestReport,
@@ -224,4 +225,85 @@ test("named sources carries the report's own window label", () => {
   );
   assert.match(line, /^named sources 28d:/);
   assert.match(line, /\(window 2026-10-06 → 2026-11-02\)$/);
+});
+
+// --- external audience (mandate external-audience-line-1114) -----------------
+//
+// The 2026-11-14 review made this the headline: 108 sessions read as growth
+// until it is split into Direct 79/17 and github.com 8/1. The line must print
+// sessions AND users, and must never let Direct or github.com inflate it.
+
+const externalRow = namedRow;
+
+const reviewWindowRows = () =>
+  namedSourceRows([
+    externalRow("Direct", "(direct)", "/", 54, 12),
+    externalRow("Direct", "(direct)", "/bitcoin-500-day-cycle", 20, 2),
+    externalRow("Direct", "(direct)", "/halving-dates", 5, 3),
+    externalRow("Referral", "github.com", "/", 8, 1),
+    externalRow("Organic Social", "facebook.com", "/", 6, 6),
+    externalRow("Organic Social", "t.co", "/", 3, 3),
+    externalRow("Organic Social", "x", "/bitcoin-500-day-cycle", 2, 2),
+    externalRow("Organic Search", "google", "/", 5, 2),
+    externalRow("AI Assistant", "chatgpt.com", "/bitcoin-500-day-cycle", 2, 2),
+    externalRow("Referral", "bitcointalk.org", "/bitcoin-500-day-cycle", 1, 1),
+    externalRow("Unassigned", "(not set)", "/", 3, 3),
+  ]);
+
+test("external audience reproduces the review's 19 sessions / 16 users baseline", () => {
+  const line = externalAudienceLine(reviewWindowRows(), {
+    start: "2026-11-07",
+    end: "2026-11-13",
+    days: 7,
+  });
+  assert.equal(
+    line,
+    'external audience 7d: 19 sessions / 16 users (facebook.com 6/6 → /, google 5/2 → /, t.co 3/3 → /, chatgpt.com 2/2 → /bitcoin-500-day-cycle, x 2/2 → /bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle) (window 2026-11-07 → 2026-11-13) — unattributed 3 sessions / 3 users ("(not set)")',
+  );
+});
+
+test("external audience never omits the user count and never counts Direct or github.com", () => {
+  const line = externalAudienceLine(reviewWindowRows(), window7d);
+  // A line without users is the defect this mandate exists to fix.
+  assert.match(line, /^\w[\w ]* \d+d: \d+ sessions \/ \d+ users \(/);
+  assert.match(line, /\d+ sessions \/ \d+ users/);
+  assert.doesNotMatch(line, /direct/i);
+  assert.doesNotMatch(line, /github\.com/);
+  // The two inflated sources are 79 sessions; a line that included them could
+  // not read 19.
+  assert.match(line, /19 sessions \/ 16 users/);
+});
+
+test("external audience reports unattributed sessions separately instead of dropping them", () => {
+  const line = externalAudienceLine(
+    namedSourceRows([
+      externalRow("Organic Social", "facebook.com", "/", 6, 6),
+      externalRow("Unassigned", "(not set)", "/", 3, 3),
+    ]),
+    window7d,
+  );
+  assert.match(line, /6 sessions \/ 6 users/);
+  assert.match(line, /unattributed 3 sessions \/ 3 users/);
+});
+
+test("external audience says none instead of printing a bare zero", () => {
+  const line = externalAudienceLine(
+    namedSourceRows([
+      externalRow("Direct", "(direct)", "/", 70, 16),
+      externalRow("Referral", "github.com", "/", 8, 1),
+    ]),
+    window7d,
+  );
+  assert.equal(
+    line,
+    "external audience 7d: 0 sessions / 0 users (none outside Direct, github.com and unattributed) (window 2026-10-27 → 2026-11-02)",
+  );
+});
+
+test("external audience labels its own window and never guesses 7d", () => {
+  assert.match(externalAudienceLine([], undefined), /^external audience \(window unknown\):/);
+  assert.match(
+    externalAudienceLine([], window28d),
+    /^external audience 28d: 0 sessions \/ 0 users/,
+  );
 });

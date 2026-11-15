@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-14",
-  "summary": "collector: a day's indexation reading is always the full-sitemap inspection (measurement fix, no site change)",
+  "generated": "2026-11-15",
+  "summary": "measurement instrumentation only: external-audience line + non-brand query table (no site change, freeze)",
   "checks": [
     { "path": "/", "contains": "500 days before the next Bitcoin halving", "status": 200 },
     { "path": "/llms.txt", "contains": "Next BTC500 buy date", "status": 200 },

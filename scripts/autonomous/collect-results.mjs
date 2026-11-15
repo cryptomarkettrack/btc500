@@ -66,7 +66,7 @@ const HISTORY_HEADER =
   "nonBrandEnd,pagesWithImpressions,indexed,totalUrls,sessions,organicSessions,referralSessions," +
   "bingIndexed,bingTotalUrls";
 
-const BRAND_RE = /btc\s*500/i;
+export const BRAND_RE = /btc\s*500/i;
 
 /** Statuses that mean the automation itself broke, not just "no movement". */
 const FAILURE_STATUSES = [

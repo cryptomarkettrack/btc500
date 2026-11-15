@@ -97,6 +97,16 @@ export function referralLine(rows, window) {
 export const EXCLUDED_SOURCES = ["direct", "(direct)", "github.com"];
 
 /**
+ * Sessions GA4 could not attribute to any source at all. They are not external
+ * traffic — nothing named them — but they are not Direct either, so the external
+ * audience line reports them separately instead of silently adding or dropping
+ * them: the 2026-11-14 review's baseline of `19 sessions / 16 users` excludes
+ * Unassigned 3/3, and a line that quietly included it would never reconcile
+ * with that number.
+ */
+export const UNATTRIBUTED_SOURCES = ["(not set)", "not set", "", "(none)"];
+
+/**
  * Reduce GA4 rows shaped `[channel, sessionSource, landingPage]` +
  * `[sessions, users]` to `[{channel, source, landing, sessions, users}]`.
  */
@@ -166,6 +176,65 @@ export function namedSourcesLine(rows, window) {
 }
 
 /**
+ * `external audience 7d: 19 sessions / 16 users (facebook.com 6/6 → /, …)`
+ *
+ * The 2026-11-14 review made this the headline number of every report, because
+ * a session total without it is not a result: 108 sessions in the 7 days to
+ * 2026-11-13 read as growth, and 19 of them were strangers (79 were Direct from
+ * 17 users and 8 were this repository).
+ *
+ * "External" means every source that is neither Direct, github.com nor
+ * unattributed — the same three exclusions, stated in the line's own label, so
+ * the count cannot be inflated by traffic the site cannot name.
+ *
+ * `users` is summed per source, not de-duplicated across sources: it is the
+ * same arithmetic the review used to state 19/16, and a de-duplicated figure
+ * would disagree with every earlier reading for no gain in meaning.
+ */
+export function externalAudienceLine(rows, window) {
+  const bySource = new Map();
+  let unattributedSessions = 0;
+  let unattributedUsers = 0;
+  for (const row of rows) {
+    if (!(row.sessions > 0)) continue;
+    if (EXCLUDED_SOURCES.includes(row.source)) continue;
+    if (UNATTRIBUTED_SOURCES.includes(row.source)) {
+      unattributedSessions += row.sessions;
+      unattributedUsers += row.users;
+      continue;
+    }
+    const entry = bySource.get(row.source) ?? { sessions: 0, users: 0, landings: new Map() };
+    entry.sessions += row.sessions;
+    entry.users += row.users;
+    entry.landings.set(row.landing, (entry.landings.get(row.landing) ?? 0) + row.sessions);
+    bySource.set(row.source, entry);
+  }
+
+  const days = reportDays({ window });
+  const label = days ? `external audience ${days}d:` : "external audience (window unknown):";
+  const sessions = [...bySource.values()].reduce((sum, entry) => sum + entry.sessions, 0);
+  const users = [...bySource.values()].reduce((sum, entry) => sum + entry.users, 0);
+
+  const parts = [...bySource.entries()]
+    .sort((a, b) => b[1].sessions - a[1].sessions || a[0].localeCompare(b[0]))
+    .map(([source, entry]) => {
+      const [landing] = [...entry.landings.entries()].sort(
+        (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
+      )[0];
+      return `${source} ${entry.sessions}/${entry.users} → ${landing}`;
+    });
+
+  const detail =
+    parts.length === 0 ? "none outside Direct, github.com and unattributed" : parts.join(", ");
+  let line = `${label} ${sessions} sessions / ${users} users (${detail})`;
+  if (window?.start && window?.end) line += ` (window ${window.start} → ${window.end})`;
+  if (unattributedSessions > 0) {
+    line += ` — unattributed ${unattributedSessions} sessions / ${unattributedUsers} users ("(not set)")`;
+  }
+  return line;
+}
+
+/**
  * Window length in days, read from the report's own `window` — its `days` field
  * when present, otherwise counted inclusively from `start`/`end`. Returns null
  * when the report does not say, so the caller prints "unknown" instead of 7.
@@ -226,14 +295,21 @@ function printWindow(dir, wanted) {
   const found = newestReport(dir, { days: wanted });
   if (!found) {
     console.log(
+      `external audience ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}. Run: npm run analytics -- --days=${wanted}`,
+    );
+    console.log(
       `referrals ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}. Run: npm run analytics -- --days=${wanted}`,
     );
     console.log(`named sources ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}.`);
     return false;
   }
   const window = found.report?.window;
+  const rows = namedSourceRows(found.report?.tables?.namedSources);
+  // External audience first: since 2026-11-14 it is the headline the report
+  // leads with, and the referral/named-source lines are its detail.
+  console.log(externalAudienceLine(rows, window));
   console.log(referralLine(referralRows(found.report?.tables?.referrals), window));
-  console.log(namedSourcesLine(namedSourceRows(found.report?.tables?.namedSources), window));
+  console.log(namedSourcesLine(rows, window));
   return true;
 }
 

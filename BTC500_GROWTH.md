@@ -5,7 +5,62 @@ not record guesses as results.
 
 ---
 
-## Session 2026-11-14 (04:00Z) — measurement defect fixed in code; no site change (freeze)
+## Session 2026-11-15 (04:00Z) — the two measurement mandates are now code; no site change (freeze)
+
+- **`external-audience-line-1114` — EXECUTED in code.** `externalAudienceLine()`
+  (`scripts/autonomous/referral-line.mjs`) prints, first, before the referral and
+  named-source lines:
+  `external audience 7d: 19 sessions / 16 users (facebook.com 6/6 → /, google
+  5/2 → /, t.co 3/3 → /, chatgpt.com 2/2 → /bitcoin-500-day-cycle, x 2/2 →
+  /bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle) (window
+  2026-11-07 → 2026-11-13) — unattributed 3 sessions / 3 users ("(not set)")`.
+  Direct and github.com are excluded by name; `(not set)` is printed separately
+  rather than added or dropped, so the number reconciles with the review's 19/16
+  baseline. `users` is summed per source (the review's own arithmetic), stated in
+  the function's comment. Five tests, including one that fails if the line omits
+  the user count or counts Direct / github.com. `node --test …referral-line.test.mjs`
+  → **23 pass / 0 fail**.
+- **`nonbrand-query-table-1114` — EXECUTED in code.** New
+  `scripts/autonomous/nonbrand-queries.mjs` (`npm run nonbrand`) prints the table
+  from the report of the requested window, each row with the landing page that
+  carried most of its impressions, the report's own anonymisation note, and the
+  floor line beside it. It reuses the collector's `BRAND_RE` (now exported) so the
+  table and the `non-brand-clicks` signal can never disagree about what brand is.
+  Empty is printed as `non-brand queries: none visible in 28d (anonymised)`, never
+  `0`. Eight tests; file added to `npm test` → **235 pass / 0 fail**, `tsc
+  --noEmit` clean.
+- **The 28d GSC report was collected once** (mandate names a reading the runner
+  does not take; the runner takes 7d): **12 clicks / 61 impressions / 19.7% / avg
+  pos 14.4**, window **2026-10-16 → 11-12**. Property 61 vs byPage 105 vs query
+  rows 23 — the three numbers are different aggregations and are never summed.
+- **Non-brand query table, 28d (`2026-10-16 → 2026-11-12`), printed beside its
+  floor:** `bitcoin 500` 0 clicks / 2 impressions @54 → `/`;
+  `500 days before next bitcoin halving` 0/1 @38 → `/`. Brand in the same window:
+  `btc500` 5/19 @2.42. `positions4to20` = 0. **Floor: no title, meta, snippet,
+  copy or internal-link work as a non-brand action while `indexed` < 5** — today
+  1/21, so none is permitted (recorded in Open issues).
+- **Distribution — one UTM-tagged post, one reply + like.** Post
+  `status/2121832526075592780` at **2026-11-15T05:07:50Z**, verified on the
+  profile 8s later: live count **14 days** (read from `/` the same run), buy date
+  **29 Nov 2026** (the site's own date — the X bio now reads Nov 29 too, so the
+  three-surface disagreement recorded on 2026-11-11 is closed), tagged link
+  `https://btc500.net/bitcoin-500-day-cycle?utm_source=x&utm_medium=social&utm_campaign=countdown-1115`.
+  Sunday has no template in the rotation, so the countdown shape was used with the
+  live number, never a hardcoded one.
+- **Engagement:** reply + like to @parabolachart
+  (`status/2121811037481763226`, "BTC: The 500-Day Window Is Opening…", 1h old,
+  94 views) adding the 4/4 below-entry record; reply
+  `status/2121833086157734263` verified under the parent at 05:10:04Z. Created
+  `scripts/autonomous/X-ENGAGEMENT-LOG.md` (did not exist) and logged it.
+- **Views read at ≈05:05Z:** pinned (2026-11-10, still the second poster's
+  unlinked post) 94 / 3 likes; 2026-11-14 71 / 1; 2026-11-13 107 / 2; 2026-11-12
+  72 / 1 and 76 / 2. The pin defect is unchanged and was not retried (a screen
+  that accepts the action and does nothing, three attempts on 2026-11-14).
+- **No site change:** `git diff --stat d3f72f4..HEAD -- src public/sitemap.xml`
+  → empty (see the commit body's MANDATES block).
+
+---
+
 
 - **`inspection-denominator-1114` — EXECUTED in code, not in prose.**
   `datedReportIndex()` (`scripts/autonomous/collect-results.mjs`) now prefers the
@@ -110,37 +165,26 @@ facebook-share-1114 unsent, 1 day, facebook.com 6/6 unchanged. Between them, 0
 sends.
 
 
-## Session 2026-11-13 (04:00Z) — compressed — Request Indexing worked, the crawl still declined
+## Session 2026-11-13 — compressed — Request Indexing worked, the crawl still declined
 
-- Request Indexing clicked at **04:06:28Z** (_"URL was added to a priority crawl
-  queue"_); `/simulator` at 04:08:27Z; `/halving-dates` toast expired unconfirmed.
-  The pillar was fetched **48 seconds later** — `lastCrawlTime
-2026-11-13T04:07:16Z`, `crawledAs=MOBILE`, `pageFetchState=SUCCESSFUL`, first
-  post-merge crawl and first read of the 2026-11-11 redesign — coverage **still
-  `Crawled - currently not indexed`**. `/halving-dates` moved `2026-10-22 →
-2026-11-13`, also declined.
-- Raw crawl times (04:09Z): `/` **2026-11-05T07:50:37Z** (unchanged, indexed) ·
-  pillar 2026-11-13T04:07:16Z · `/halving-dates` 2026-10-22T14:38:27Z ·
-  `/simulator` 2026-11-07T06:25:39Z.
-- `named-source-ledger-1113` executed: `fetch-ga4.ts` now collects a
-  `namedSources` table and `referral-line.mjs` prints it (4 new tests, 222 pass).
-- `x-post-dedup-1113` executed: post `status/2121091569650483649`
-  (2026-11-13T04:03:32Z) verified on the profile; reply + like to
-  @WelshBullTrader (`status/2121091868972798203`).
-- New defect signal: GSC's Discovery panel read **"No referring sitemaps
-  detected"** for all four inspected URLs while `sitemap.xml` holds 21 locs and is
-  submitted.
+- Request Indexing clicked **04:06:28Z** (_"URL was added to a priority crawl
+  queue"_); the pillar was fetched **48 seconds later**
+  (`lastCrawlTime 2026-11-13T04:07:16Z`, `crawledAs=MOBILE`,
+  `pageFetchState=SUCCESSFUL`) and coverage stayed
+  `Crawled - currently not indexed`. `/halving-dates` moved `2026-10-22 →
+2026-11-13`, also declined; `/simulator` submitted, not recrawled.
+- `named-source-ledger-1113` executed: `fetch-ga4.ts` collects `namedSources` and
+  `referral-line.mjs` prints it. `x-post-dedup-1113` executed: post
+  `status/2121091569650483649` verified, reply + like to @WelshBullTrader.
+- New defect signal: GSC Discovery read **"No referring sitemaps detected"** for
+  all four inspected URLs while `sitemap.xml` holds 21 locs and is submitted.
 
 ## Outbound — 2026-11-12 — compressed — BitcoinTalk topic (first non-GitHub, non-X send)
 
-<https://bitcointalk.org/index.php?topic=5599692.0>, board 1, owner's logged-in
-session, published 2026-11-12 16:31 local and read back on the board listing. The
-copy was the four-window record + the ±120-day entry test + the live call
-(Nov 29, 2026), rewritten from the older single-number pitch. Both anchors render
-`rel="ugc"` — a referral/mention send, never authority. Posting account read
-"Brand new" (`Activity 0`, `Posts 1`). **First session 2026-11-13:**
-`bitcointalk.org 1/1 → /bitcoin-500-day-cycle` in 7d — the first session from any
-asked channel in 22 readings. One session, one user: a floor, not a result.
+<https://bitcointalk.org/index.php?topic=5599692.0>, board 1, owner's session.
+Both anchors render `rel="ugc"` — a mention send, never authority. First session
+2026-11-13: `bitcointalk.org 1/1 → /bitcoin-500-day-cycle` in 7d, the first
+session from any asked channel in 22 readings. One session, one user: a floor.
 
 ## Baseline — measured 2026-11-12 (Bing)
 
@@ -185,48 +229,25 @@ since 2026-10-23.
 
 ---
 
-## Results reviews — 2026-11-12 and 2026-11-13 — compressed
+## History — 2026-11-10 → 2026-11-13 — compressed
 
-**11-12 (streak 19):** the sitemap's `<lastmod>2026-10-29</lastmod>` for `/` was
-false (`scripts/sitemap.mjs` excluded `src/components/home/`); Request Indexing
-was refused (quota 0); the Referral-channel table cannot see
-`t.co`/`facebook.com`/`chatgpt.com`, so 21 readings said "0 named non-github
-referral sessions" while nine existed; the 2026-11-19 homepage-crawl rule
-replaced the 2026-11-20 stop rule.
-**11-13 (streak 20):** the decisive fact was negative — an accepted Request
-Indexing followed by a successful fetch 48s later that still declined the pillar;
-Bing 0 indexed / 10 crawled / 11 unknown after all 21 URLs were submitted the day
-before; every indexation lever closed to 2026-12-01; the collector read a 4-row
-inspection while a 21-row one existed; the `yjjnls/awesome-blockchain` route
-closed `unexecutable` (three unsent handovers, `total_count: 0`).
-**Movement:** named non-github sessions 9 → 13 in 7d. Nothing else moved:
-indexed 1/21, non-brand clicks 0 in 23 readings, positions 4–20 = 0, impressions
-14, sessions 99 with 70 Direct from 16 users. Details:
-`scripts/autonomous/review-latest.json`.
-
-## Session 2026-11-12 — compressed
-
-`date-consistency-1112` (7046cc2): `/llms.txt` and `/llms-full.txt` became
-live-rendered server routes, so all seven quoteable surfaces read 29 November
-2026; the X bio was corrected by hand. Request Indexing refused (quota 0, never
-submitted) and the pillar's raw `lastCrawlTime` still 2026-11-07T03:42:34Z.
-GA4 7d 2026-11-05 → 11-11: 90 sessions / 29 users / 120 views / 36.7%, Direct
-61/15, Organic Social 9/9, Referral 8/1 (all github.com, 1 user), Organic Search
-7/2, AI Assistant 2/2. BitcoinTalk topic posted by the owner's session
-(5599692), both anchors `rel="ugc"`. Session 2026-11-11: pinned the tagged post,
-posted + replied, no site change; 11-10: first linked post on the profile.
-
-## Session 2026-11-11 (later) — owner-directed redesign (compressed)
-
-Owner instruction: _"use taste-skill to improve the website look, redesign if
-needed."_ A skin, not a copy or structure rewrite: near-black warm ground +
-Bitcoin orange across every route (token-driven), split hero with the live cycle
-map, rule diagram, rolling proof figures, dark nav/footer; share cards, share
-buttons and the embed kit re-cut on the same system. No new dependency, no
-WebGL, no change to H1, lead, AEO ids, FAQ or JSON-LD. Verified: typecheck,
-tests, build, browser pass at 1440/1024/768/390. The vendored skill lives in
-`.agents/` and `.taste-skill/` — both gitignored; the repo must never carry it.
-Not a growth bet and not claimed as one.
+- **Reviews 11-12 (streak 19) and 11-13 (streak 20):** the sitemap's
+  `<lastmod>2026-10-29</lastmod>` for `/` was false (`scripts/sitemap.mjs`
+  excluded `src/components/home/`); Request Indexing was refused on quota 0 on
+  11-12 and accepted on 11-13, which produced the decisive negative — a
+  successful fetch 48s later that still declined the pillar; the Referral table
+  cannot see `t.co`/`facebook.com`/`chatgpt.com` (nine sessions invisible in 21
+  readings); every indexation lever closed to 2026-12-01; the
+  `yjjnls/awesome-blockchain` route closed `unexecutable`. Movement: named
+  non-github sessions 9 → 13 in 7d. Nothing else moved (indexed 1/21, non-brand
+  clicks 0 in 23 readings, positions 4–20 = 0). Details:
+  `scripts/autonomous/review-latest.json`.
+- **Session 11-12:** `date-consistency-1112` made `/llms.txt` and
+  `/llms-full.txt` live-rendered server routes so all seven quoteable surfaces
+  read 29 November 2026. GA4 7d 11-05 → 11-11: 90 sessions / 29 users, Direct
+  61/15, Organic Social 9/9, Referral 8/1 (all github.com).
+- **Session 11-11 (later):** owner-directed visual redesign (skin only — no H1,
+  lead, AEO id, FAQ or JSON-LD change). Not a growth bet and not claimed as one.
 
 ---
 
@@ -247,12 +268,14 @@ Not a growth bet and not claimed as one.
 0. **Freeze stands; the copy exclusion runs to 2026-11-28** (only a review lifts
    it). Prove compliance per cycle with
    `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml`.
-   0b. **Due readings:** `pillar-verdict-1116` (2026-11-16) — pillar
+   0b. **Readings:** `external-audience-line-1114` and
+   `nonbrand-query-table-1114` were **executed in code on 2026-11-15** (`npm run
+   referrals` leads with the external-audience line; `npm run nonbrand` prints
+   the table + floor); `pillar-verdict-1116` **due 2026-11-16** — pillar
    `lastCrawlTime`/`pageFetchState`/`crawledAs`/coverage next to
-   2026-11-13T04:07:16Z plus one read of GSC → Sitemaps;
-   `bing-verdict-1118` (2026-11-18) — Bing indexed/crawled/unknown for 21 URLs;
-   `external-audience-line-1114` and `nonbrand-query-table-1114` (2026-11-15) —
-   the PERFORMANCE block's new eighth line and the non-brand query table.
+   2026-11-13T04:07:16Z, the homepage's lastCrawl on the same line, plus one read
+   of GSC → Sitemaps (status, discovered URLs, errors); `bing-verdict-1118` (due
+   2026-11-18) — Bing indexed/crawled/unknown for 21 URLs.
 1. **The post-merge crawl happened and did not move coverage.** What is left in
    the lopp window: a second, independent crawl (04:07:16Z was 48s after the
    request, so it may be the priority fetch) or one lopp.net session. Read on
@@ -266,7 +289,7 @@ Not a growth bet and not claimed as one.
 4. **Rules that fire soon:** 2026-11-19 — no crawl of `/` after 2026-11-12 → the
    daily post drops to twice a week, no new owner ask, weekly measurement + one
    link action only. 2026-11-18 — X cadence verdict (views/post vs t.co sessions).
-5. **The buy-window peg is a live estimate — 29 November 2026, 15 days out.**
+5. **The buy-window peg is a live estimate — 29 November 2026, 14 days out.**
    Re-read it from the site every cycle, never from this log or a post.
 
 ## Ranked backlog
@@ -294,6 +317,13 @@ Only rows 0–1b are permitted work under the freeze; everything else is a readi
   1/21 and the collector prints `indexed 1/21`. If a future cycle sees a fraction
   whose row count is not the sitemap's `<loc>` count, that is a regression in the
   collector, not a coverage reading.
+- **No copy work for non-brand clicks while `indexed` < 5** (2026-11-14 review,
+  mandate `nonbrand-query-table-1114`): no cycle may offer title, meta, snippet,
+  copy or internal-link work as an action for non-brand clicks below that floor.
+  Today `indexed` is **1/21**, `positions4to20` = 0, and the 28d non-brand table is
+  two rows — `bitcoin 500` 0/2 @54 and `500 days before next bitcoin halving` 0/1
+  @38, both landing on `/`. `npm run nonbrand` prints that table with the floor
+  line beside it, from the 28d report, every run.
 - **The pin does not move.** Pinned post today is `status/2120172389442969779`
   (second poster, 2026-11-10, no link), not the tagged post recorded as pinned on
   2026-11-11. The menu accepts "Pin to your profile" and the pin stays where it
