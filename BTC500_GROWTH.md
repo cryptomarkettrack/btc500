@@ -5,6 +5,69 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-16 (04:00Z) — the pillar verdict is in: fetched successfully, still not indexed; no site change (freeze)
+
+- **`pillar-verdict-1116` — EXECUTED (measurement only).** URL Inspection API read at
+  `2026-11-16T04:03Z`, three days after the priority crawl:
+  `/bitcoin-500-day-cycle` → `lastCrawlTime 2026-11-13T04:07:16Z` (unchanged),
+  `pageFetchState SUCCESSFUL`, `crawledAs MOBILE`,
+  `coverageState "Crawled - currently not indexed"`, `indexingState INDEXING_ALLOWED`,
+  `robotsTxtState ALLOWED`. `/` on the same line → `lastCrawlTime
+  2026-11-05T07:50:37Z` (11 days old, 6 days before the redesign),
+  `coverageState "Submitted and indexed"`, same fetch/crawlAs/robots values.
+  **a successful Google fetch of the redesigned pillar produced no index.** The
+  pillar is not a page waiting to be served; it is a page Google has read and
+  declined, and no cycle may describe it otherwise before 2026-11-28.
+- **GSC → Sitemaps opened once (mandate's second half).** Screen: `/sitemap.xml |
+  Sitemap | Submitted Nov 11, 2026 | Last read Nov 11, 2026 | Success | Discovered
+  pages 21 | Discovered videos 0`, no error row. The API behind the same screen
+  agrees: `lastSubmitted 2026-11-11T20:01:43Z`, `lastDownloaded
+  2026-11-11T20:07:46Z`, `warnings 0`, `errors 0`, contents web submitted 21,
+  indexed 0. **"No referring sitemaps detected" is a field artifact, not a
+  defect**: the per-URL `sitemap[]` array is empty for `/` too, and `/` is indexed.
+  Open issue closed.
+- **indexed 1/21** (inspection `2026-11-16T04:03:41Z`, 21 rows of 21 sitemap
+  `<loc>`): 1 PASS, 17 crawled-not-indexed, 1 discovered (`/insider-trading`),
+  1 unknown (`/news`), 1 soft 404 (`/articles/bear-market-accumulation`). Twelfth
+  consecutive reading at 1.
+- **Measurement (runner reports; nothing re-collected except the two above).**
+  GSC 7d `2026-11-06 → 11-12`: 2 clicks / 13 impressions / 15.4% / avg pos 5.69,
+  both clicks brand. GSC 28d `2026-10-16 → 11-12`: 12 / 61 / 19.7% / 14.36.
+  Non-brand table 28d: `bitcoin 500` 0/2 @54 → `/`; `500 days before next bitcoin
+  halving` 0/1 @38 → `/`. **Floor: 1/21 indexed → no title/meta/snippet/copy work.**
+  GA4 7d `2026-11-08 → 11-14`: 124 sessions / 37 users / 214 views / 37.1% engaged;
+  channels Direct 89/18, Referral 14/3, Organic Social 11/11, Organic Search 6/3,
+  AI Assistant 2/2, Unassigned 2/2. **External audience 22 sessions / 19 users**
+  (facebook.com 6/6 → `/`, google 6/3 → `/`, bitcointalk.org 3/3 → pillar,
+  t.co 3/3 → `/`, chatgpt.com 2/2 → pillar, x 2/2 → pillar). bitcointalk 1 → 3 is
+  the 2026-11-12 forum send landing; facebook.com is still the same single share
+  (6/6, unchanged); theblock.co 0.
+- **Distribution — one UTM-tagged post, verified.** `status/2122179749300572501` at
+  **2026-11-16T04:07:35Z**, on the profile 10s later: Monday shape, live count
+  **13 days** read from `/` the same run, buy date **29 Nov 2026** (the site's own
+  date; the prompt template's hardcoded "Nov 28" would have reopened the
+  three-surface disagreement closed on 11-15), tagged link
+  `https://btc500.net/bitcoin-500-day-cycle?utm_source=x&utm_medium=social&utm_campaign=countdown-1116`.
+  Dedup read first: newest posts were 2026-11-15T08:44:28Z (second poster, no
+  link) and 2026-11-15T05:07:50Z (`countdown-1115`); no `countdown-1116` existed.
+- **Engagement:** reply + like to @KillaXBT (`status/2122116185097748601`, 4h,
+  47.8K views, "The bear market floor is approaching…") with the four-window
+  record — 4/4 traded below their T-500 entry first, median low −11.72%, worst
+  −83.65%, median 84.5 days to the low. Reply `status/2122180032340562305`
+  verified under the parent at 04:09Z and logged in `X-ENGAGEMENT-LOG.md`.
+- **Views at ≈04:06Z:** pinned `status/2120172389442969779` 125 / 3 likes
+  (2026-11-10, second poster, still no link); 2026-11-15 149 / 3 likes / 1 repost
+  (second poster, no link); `countdown-1115` 93 / 0 likes; today's post 5 views at
+  2 minutes. The pin defect is unchanged and was not retried.
+- **No site change:** `git diff --stat cfa51e3..HEAD -- src public/sitemap.xml` →
+  empty (see the commit body's MANDATES block).
+- **Review machinery:** the 2026-11-15 review run was rejected `verdict-invalid`
+  (`generated` 2026-11-14, `mode` daily where deep was expected), so the last
+  accepted review is still 2026-11-14 and the streak reads 22. Not a cycle fix;
+  recorded for the owner.
+
+---
+
 ## Session 2026-11-15 (04:00Z) — the two measurement mandates are now code; no site change (freeze)
 
 - **`external-audience-line-1114` — EXECUTED in code.** `externalAudienceLine()`
@@ -112,58 +175,32 @@ not record guesses as results.
 
 ---
 
-## Results review 2026-11-14 (daily, streak 21) — `failing`
+## Results review 2026-11-14 (daily, streak 21) — `failing` — compressed
 
-**The one result: the instrument is honest and the audience is 19 sessions a
-week.** `indexed` **1/21 (rows 21 of 21**, coverage: 1 indexed, 17 crawled-not-
-indexed, 1 soft 404, 1 discovered, 1 unknown) for the **11th consecutive daily
-reading** since 2026-11-04; non-brand clicks **0 in 24 readings** (2 clicks / 15
-impressions / 13.3% / pos 4.47, both clicks brand `btc500` 2/8 @1.375; the only
-non-brand impression is `500 days before next bitcoin halving` @38). Bing **0/21**
-— 14 crawled (up from 10), 7 unknown — and Bing crawled `/` at
-**2026-11-13T23:23:57Z** and kept nothing. Google's `/` lastCrawl is still
-**2026-11-05**, so the only indexed URL has never been read post-redesign.
-
-GA4 7d **2026-11-07 → 11-13: 108 sessions / 34 users / 26 new / 147 views /
-33.3% engaged / 67.5s**, against the previous 7d 41 / 18 / 10 / 67 / 51.2% /
-69.1s. The composition is the finding: **Direct 79 sessions / 17 users**, Organic
-Social 11/11, Referral 9/2 (github.com 8/1 = this repo), Organic Search 5/2, AI
-Assistant 2/2, Unassigned 3/3. Named non-github **14/14**: facebook.com 6/6 → `/`,
-t.co 3/3 → `/`, x 2/2 → pillar, chatgpt.com 2/2 → pillar, bitcointalk.org 1/1 →
-pillar (13/13 yesterday). External audience = **19 sessions / 16 users**.
-
-**Input vs output, same window:** 39 commits, 7 runs, 7 `shipped` statuses, 0
-failures — and the site diff is 46 files / +2,721 / −1,458 **all dated 2026-11-11
-and 11-12** (the redesign, llms.txt, sitemap rebuild). Since 11-12: 29 commits,
-**0 lines of site change**. The redesign produced 0 index changes and is not
-visible in Organic Search (5/2 before and after). `shipped` is a runner status,
-not an outcome.
-
-**Two engines, one answer.** Google took delivery of all 21 URLs and kept `/`;
-Bing took delivery of all 21 on 2026-11-12, crawled 14 by today — including the
-homepage 2026-11-13T23:23:57Z — and kept none. That pair is why the levers stay
-closed to 2026-12-01 and why the only open route is a link from a domain that is
-already crawled.
-
-**Measurement defects found today (both small, both real).** (a) The same file
-carries page impressions summed to **18** against a property total of **15**, and
-`reconciliation.ok = true` with no warning — the byPage/property gap is not
-checked. (b) `pagesWithImpressions` reads 6 → 2 in one day, which is a window
-shift (11-04→11-10 → 11-05→11-11), not a collapse; it must always be quoted with
-its window.
-
-**Compliance:** `inspection-denominator-1114` executed in code (30/30 tests,
-`review-input.json` total 21) — the first measurement mandate in 21 reviews that
-changed an instrument rather than prose. `indexation-levers-closed-1114` complied
-(`git diff --stat e77f624..HEAD -- src public/sitemap.xml` empty). `pillar-verdict-
-1116` due 11-16, `bing-verdict-1118` due 11-18 — carried. `runner-repairs-1114`
-(owner) **not executed, 8th statement**; narrowed to the `git add -A` repair and
-restated once.
-
-**Asks:** theblock-news-tip-1113 unsent, 2 days, **0 theblock.co sessions**;
-facebook-share-1114 unsent, 1 day, facebook.com 6/6 unchanged. Between them, 0
-sends.
-
+- `indexed` **1/21** (rows 21 of 21) for the 11th consecutive reading; non-brand
+  clicks **0 in 24 readings**; `positions4to20` = 0; Bing **0/21** after crawling
+  14 URLs including `/` (2026-11-13T23:23:57Z) and keeping none.
+- **The finding is the composition, not the total.** GA4 7d `2026-11-07 → 11-13`:
+  108 sessions / 34 users of which **Direct 79/17** and **github.com 8/1** (this
+  repo) — **external audience 19 sessions / 16 users**. That number, not
+  `sessions`, is what the daily report must lead with (mandate
+  `external-audience-line-1114`, shipped in code 2026-11-15).
+- **Input vs output:** 39 commits, 7 runs, 7 `shipped` statuses, and the site diff
+  is 46 files all dated 2026-11-11/12. Since 11-12: 29 commits, **0 lines of site
+  change**, 0 index changes. `shipped` is a runner status, not an outcome.
+- **Two engines, one answer:** Google took 21 URLs and kept `/`; Bing took 21 and
+  kept none. Levers stay closed to 2026-12-01.
+- **Rules it set (still binding):** PERFORMANCE gains `external audience 7d`;
+  no title/meta/snippet/copy/internal-link work as a non-brand action while
+  `indexed` < 5; the non-brand table is printed every run from the 28d report;
+  `pagesWithImpressions` is always quoted with its window (the same file carried
+  page impressions 18 vs property 15 — never summed).
+- **Compliance:** `inspection-denominator-1114` executed in code (30/30 tests);
+  `indexation-levers-closed-1114` complied (empty `src`/sitemap diff);
+  `pillar-verdict-1116` due 11-16, `bing-verdict-1118` due 11-18 (carried);
+  `runner-add-scope-1115` (owner, `git add -A` at `run-review-cycle.sh:443/:450`)
+  **not executed, 9th statement**.
+- **Asks:** theblock-news-tip-1113 and facebook-share-1114 both unsent, 0 sends.
 
 ## Session 2026-11-13 — compressed — Request Indexing worked, the crawl still declined
 
@@ -270,12 +307,13 @@ since 2026-10-23.
    `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml`.
    0b. **Readings:** `external-audience-line-1114` and
    `nonbrand-query-table-1114` were **executed in code on 2026-11-15** (`npm run
-   referrals` leads with the external-audience line; `npm run nonbrand` prints
-   the table + floor); `pillar-verdict-1116` **due 2026-11-16** — pillar
-   `lastCrawlTime`/`pageFetchState`/`crawledAs`/coverage next to
-   2026-11-13T04:07:16Z, the homepage's lastCrawl on the same line, plus one read
-   of GSC → Sitemaps (status, discovered URLs, errors); `bing-verdict-1118` (due
-   2026-11-18) — Bing indexed/crawled/unknown for 21 URLs.
+   referrals` leads with the external-audience line — today `22 sessions / 19
+   users (window 2026-11-08 → 2026-11-14)`; `npm run nonbrand` prints the table +
+   floor); `pillar-verdict-1116` **executed 2026-11-16** — pillar crawl
+   `2026-11-13T04:07:16Z` / `SUCCESSFUL` / `MOBILE` / `Crawled - currently not
+   indexed`, homepage `2026-11-05T07:50:37Z` indexed, Sitemaps screen `Success`,
+   21 discovered, 0 errors; `bing-verdict-1118` (due 2026-11-18) — Bing
+   indexed/crawled/unknown for 21 URLs.
 1. **The post-merge crawl happened and did not move coverage.** What is left in
    the lopp window: a second, independent crawl (04:07:16Z was 48s after the
    request, so it may be the priority fetch) or one lopp.net session. Read on
@@ -284,12 +322,15 @@ since 2026-10-23.
 2. **`runner-repairs-1114` (OWNER, 7th statement):** 2026-11-07 status row
    absent, `dirty_paths_note()` inline at `run-growth-cycle.sh:111/:197/:345`,
    no `status-note.sh`, `git add -A` at `run-review-cycle.sh:443/:450`.
-3. **"No referring sitemaps detected"** (GSC Discovery panel, 2026-11-13) needs a
-   mandate: is the submitted sitemap processed, or does the property carry two?
+3. **`bing-verdict-1118` (due 2026-11-18)** — Bing indexed / crawled / unknown
+   for all 21 URLs against the 2026-11-12 full submission; if `indexed` is still 0
+   at six days, Bing leaves the list of untested surfaces.
 4. **Rules that fire soon:** 2026-11-19 — no crawl of `/` after 2026-11-12 → the
    daily post drops to twice a week, no new owner ask, weekly measurement + one
-   link action only. 2026-11-18 — X cadence verdict (views/post vs t.co sessions).
-5. **The buy-window peg is a live estimate — 29 November 2026, 14 days out.**
+   link action only. `/` was last crawled **2026-11-05T07:50:37Z** (read
+   2026-11-16), so the rule is three days from firing. 2026-11-18 — X cadence
+   verdict (views/post vs t.co sessions).
+5. **The buy-window peg is a live estimate — 29 November 2026, 13 days out.**
    Re-read it from the site every cycle, never from this log or a post.
 
 ## Ranked backlog
@@ -330,17 +371,23 @@ Only rows 0–1b are permitted work under the freeze; everything else is a readi
   was (three attempts, 2026-11-14, no toast). Stated as a screen that accepts the
   action, not as an owner ask.
 - **The pillar HAS now been crawled with an incoming external link, and was
-  declined again.** Crawl history: 2026-10-22, 11-05, 2026-11-07T03:42:34Z (all
-  pre-merge, all declined), then **2026-11-13T04:07:16Z** — the first post-merge
-  crawl, `crawledAs=MOBILE`, `pageFetch=SUCCESSFUL`, coverage unchanged. One
-  followed link from lopp.net did not move the gate on its first read.
-- **Indexation 1/21** (inspection 2026-11-12T07:32:29Z, 21 rows = 21 sitemap
-  locs): 20 NEUTRAL, 1 PASS, 0 ERROR. Series: 6 (10-22) → 5 → 3 → 2 (10-31) →
-  1/21 since 11-04. Today's 4-URL read is not a 21-URL measurement and is never
-  quoted as one.
-- **GSC says "No referring sitemaps detected" for every inspected URL**
-  (2026-11-13), while `sitemap.xml` holds 21 locs and is submitted. Recorded as
-  a defect signal; fixing it is a mandate, not a cycle decision.
+  declined again — and the redesigned version has been fetched and declined too.**
+  Crawl history: 2026-10-22, 11-05, 2026-11-07T03:42:34Z (all pre-merge, all
+  declined), then **2026-11-13T04:07:16Z** — the first post-merge crawl and the
+  first read of the 2026-11-11 redesign, `crawledAs=MOBILE`,
+  `pageFetch=SUCCESSFUL`, coverage unchanged. Read again 2026-11-16T04:03Z: still
+  `Crawled - currently not indexed`. **a successful Google fetch of the redesigned
+  pillar produced no index** — do not describe the pillar as a page waiting to be
+  served before 2026-11-28.
+- **Indexation 1/21** (inspection `2026-11-16T04:03:41Z`, 21 rows = 21 sitemap
+  locs): 1 PASS, 17 crawled-not-indexed, 1 discovered, 1 unknown, 1 soft 404.
+  Series: 6 (10-22) → 5 → 3 → 2 (10-31) → 1/21 for twelve readings since 11-04.
+  A read whose row count is not 21 is never quoted as a fraction.
+- **"No referring sitemaps detected" — CLOSED 2026-11-16, it was a field
+  artifact.** The Sitemaps screen reads `Success`, submitted and last read
+  2026-11-11, **21 discovered pages, 0 errors, 0 warnings**, and the per-URL
+  `sitemap[]` array is empty even for `/`, which is indexed. Google knows the
+  sitemap; the Discovery panel's line means nothing about it.
 - **The buy date is live-derived (29 Nov 2026 today) and now reads the same on
   all seven quoteable surfaces** (fixed 2026-11-12, 7046cc2 + bio). Keep it
   that way: the two llms files render live, the bio was corrected by hand —

@@ -1,9 +1,17 @@
 {
-  "generated": "2026-11-15",
-  "summary": "measurement instrumentation only: external-audience line + non-brand query table (no site change, freeze)",
+  "generated": "2026-11-16",
+  "summary": "measurement cycle only: pillar crawl verdict + GSC Sitemaps read, no site change (freeze)",
   "checks": [
-    { "path": "/", "contains": "500 days before the next Bitcoin halving", "status": 200 },
-    { "path": "/llms.txt", "contains": "Next BTC500 buy date", "status": 200 },
+    {
+      "path": "/",
+      "contains": "500 days before the next Bitcoin halving is 29 November 2026",
+      "status": 200
+    },
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "November 29, 2026: 500 Days Before the Next Bitcoin Halving",
+      "status": 200
+    },
     { "path": "/data/500-day-cycles.json", "contains": "btc500/500-day-cycles@1", "status": 200 }
   ]
 }
