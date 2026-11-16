@@ -175,6 +175,54 @@ not record guesses as results.
 
 ---
 
+## Results review 2026-11-16 (daily, streak 22) — `failing` — the freeze is partially lifted for one build
+
+- **The one number that moved:** external audience **19 → 26 sessions** (window
+  2026-11-09 → 11-15: google 9/5 → `/`, facebook.com 6/6 → `/`, bitcointalk.org
+  5/2 → pillar, t.co 3/3 → `/`, x 2/2 → pillar, chatgpt.com 1/1 → pillar = 26
+  sessions / 19 users). Two thirds of the gain is `google` (Organic Search 5/2 →
+  9/5), which four weeks of reviews cannot move and which is entirely brand
+  queries on `/`; the rest is bitcointalk 1 → 5 from the 2026-11-12 send.
+- **The one number that did not move, for the 12th reading:** `indexed` **1/21**
+  (inspection `2026-11-16T04:03:41Z`, 21 rows = 21 sitemap `<loc>`). Bing **0/21**
+  after crawling 15 URLs (homepage `2026-11-15T23:38:24Z`). Non-brand clicks **0
+  in 25 readings**; 3 clicks / 13 impressions in 7d, all brand; `positions4to20` = 0.
+- **Input vs output:** 8 cycles, 8 `shipped`, 0 failures, and the site diff is
+  **0 lines since 2026-11-12** (freeze). The work that did ship is measurement
+  (the external-audience line, the non-brand table, the pillar verdict) — the
+  first two are now instruments the cycle actually reads.
+- **Instrument defect found today:** `npm run referrals` prints **26 sessions / 22
+  users** while the same GA4 file's `referrals` table says `bitcointalk.org 5
+  sessions / 2 users`. `externalAudienceLine()` sums users **per landing row**
+  (bitcointalk lands on 4 pages → 5 "users"). Channel-level user sums are 41
+  against a property total of 40, so 22 is arithmetic, not people. Honest figure:
+  **26 sessions / 19 users**. Mandate `referral-instrument-1116`.
+- **Ask ledger is the failure, again:** four asks were handed over since 2026-11-09
+  (x-pinned-post-with-link-1116, github-awesome-blockchain-line-1124,
+  theblock-news-tip-1113, facebook-share-1114) and **0 were sent**; two lapse
+  today, The Block on 11-17 (its form returns **403** to a fetch, so the route is
+  not re-verifiable), Facebook on 11-19. `github-awesome-blockchain-line-1124`
+  re-issued a destination the ledger had **withdrawn on 2026-11-04** — dead routes
+  were re-opened instead of counted.
+- **THE FREEZE IS PARTIALLY LIFTED (this review) — one build only.** The original
+  lift condition ("one GA4 referral session from a domain other than github.com")
+  is met twice over: bitcointalk.org 1/1 (window to 11-13) and 5/2 (window to
+  11-15). In 17 days of total freeze: 0 indexed pages gained, 0 non-brand clicks,
+  0 new referring domains. **Permitted now: the public $10,000 paper-buy record at
+  a stable URL** — which the 2026-11-12 BitcoinTalk topic already promises
+  ("on Nov 29, 2026 the rule opens a public $10,000 paper buy, tracked daily to the
+  exit (T+500, currently around Aug 2029)"). Nothing exists for it: `grep -rin
+  paper src/` returns no page and this log has never contained the word. **The
+  copy ban stays** (no title/meta/snippet/section/article/internal-link work while
+  `indexed` < 5, today 1/21).
+- **The countdown expires 2026-11-29 and the site has no 11-30 product.** That is
+  the strategic finding of the week: the only live hook is a countdown, and on
+  Monday 30 November it is worth zero. The paper record is the post-buy-date
+  product and the only thing on this site that can bring a visitor back.
+- **Review machinery:** the 2026-11-15 run was `verdict-invalid` (generated
+  2026-11-14, mode daily where deep was expected) — the third invalid day in 30
+  and the second Sunday in a row. No deep review since 2026-11-01.
+
 ## Results review 2026-11-14 (daily, streak 21) — `failing` — compressed
 
 - `indexed` **1/21** (rows 21 of 21) for the 11th consecutive reading; non-brand
@@ -292,6 +340,7 @@ since 2026-10-23.
 
 | date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22 |
 | 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21 |
 | 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20 |
 | 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19                                     |
@@ -302,9 +351,19 @@ since 2026-10-23.
 
 ## Next priorities
 
-0. **Freeze stands; the copy exclusion runs to 2026-11-28** (only a review lifts
-   it). Prove compliance per cycle with
-   `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml`.
+0. **Freeze: PARTIALLY LIFTED on 2026-11-16 — one build, and the copy ban
+   stands.** Exactly one site change is permitted until the next review: the
+   public **$10,000 paper-buy record** at a stable URL (`/paper-buy` or an
+   equivalent route), stating the entry date (29 Nov 2026), the notional, the
+   entry-price source, the exit rule (T+500) and a dated daily line. It may not
+   change the title, meta, H1, copy or internal links of any existing page, and it
+   may not be offered as an indexation fix. Prove the rest of the freeze per cycle
+   with `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml` — that diff
+   must contain only the new record's files.
+   0a. **The paper record is the post-buy-date product.** The countdown reads 13
+   days on 2026-11-16 and is worth zero on 2026-11-30. From the buy date every
+   cycle's report opens with `paper record: entry $X on 2026-11-29, day N, $Y now,
+   Z%` — the countdown is never described as the site's product again.
    0b. **Readings:** `external-audience-line-1114` and
    `nonbrand-query-table-1114` were **executed in code on 2026-11-15** (`npm run
    referrals` leads with the external-audience line — today `22 sessions / 19
@@ -335,10 +394,12 @@ since 2026-10-23.
 
 ## Ranked backlog
 
-Only rows 0–1b are permitted work under the freeze; everything else is a reading.
+Only rows 0–1b are permitted work under the freeze; since 2026-11-16 row 0c is
+also permitted — it is the single site change the partial lift allows.
 
 | #   | Bet                                                                 | Why it can move the needle                                                                                                                                                    | I   | E   |
 | --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| 0c  | **Public $10,000 paper-buy record (permitted build, 2026-11-16)**   | The 2026-11-12 BitcoinTalk topic already promises it in public and nothing exists. It is the only asset that survives 2026-11-30, the only reason a visitor returns daily, and the payload for every future send (forum bump, X post, AI citation) | 10  | 1   |
 | 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measurable only as a post-merge crawl and a lopp.net session — neither exists yet                              | 10  | 0   |
 | 1b  | **X click path (pinned + tagged since 2026-11-11)**                 | 206 followers, a `btc500.net` profile link, a pinned post that now carries a UTM-tagged pillar link, and 0 x.com referral sessions in 20 readings. Measured by GA4 x.com/t.co | 9   | 1   |
 | 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                        | 4   | 3   |
@@ -412,15 +473,24 @@ Only rows 0–1b are permitted work under the freeze; everything else is a readi
   between the two cycles, so it was not published by this automation — and it
   carries no link. Every unlinked post from the account dilutes the one click path
   the cycle can measure. Not a defect the freeze lets us fix; the owner should know.
-- **Ask routes:** 12 asks handed over since 2026-10-27, 2 sent (both one-page
-  GitHub), 0 sessions from any asked channel, #1267 merged 2026-11-07. The live ask
-  is `github-awesome-blockchain-line-1124`, channel-verified unsent today
-  (`total_count` 0), now zero-typing after its anchor aged within a day (the
-  `### Tools Directory` block appeared under it). **A `sent` cell is verified
-  against the channel, never against this file.**
+- **Ask routes (rewritten 2026-11-16):** 13 asks handed over since 2026-10-27,
+  **3 sent** (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk
+  topic 5599692 2026-11-12), and **the third one produced the first sessions from
+  any asked channel: bitcointalk.org 5 sessions / 2 users in the 7d window ending
+  2026-11-15** (1/1 in the window ending 11-13) from a topic read 37 times —
+  13.5% sessions per read, against X's 5 sessions from ~316 views (1.6%). The live
+  ask is `bitcointalk-reply-1116` (one page, one paste, one button, the same thread,
+  due 2026-11-18). **The ledger is the source of truth, not this log:** the four
+  asks handed over between 2026-11-09 and 2026-11-13 (`x-pinned-post-with-link-1116`,
+  `github-awesome-blockchain-line-1124`, `theblock-news-tip-1113`,
+  `facebook-share-1114`) were all unsent on 2026-11-16 and two lapsed today;
+  `github-awesome-blockchain-line-1124` re-issued a destination `STATUS.md` had
+  **withdrawn on 2026-11-04**, which is how a dead route stays "live" for a week.
+  **A `sent` cell is verified against the channel, never against this file.**
   `github.com` referrals are a self-referral (this repo and the owner's browser), so
   only a non-github session counts. **A destination needs a merge record, not stars**
-  (awesome-bitcoin: 1,358 stars, 0 of 2); #1267 satisfies this for the first time.
+  (awesome-bitcoin: 1,358 stars, 0 of 2); #1267 satisfies this for the first time
+  and produced 0 sessions in 9 days.
 - **`/articles/bear-market-accumulation` — keep and leave alone.** Soft 404 set on
   a 2026-08-08 crawl; serves 200, 1,383 words, no pillar duplication.
 - **"0 non-brand" is a floor** — GSC anonymises query rows. **`lopp.net` is www-only

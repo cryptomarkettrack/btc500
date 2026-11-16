@@ -35,6 +35,20 @@ mandates aged. If you cannot produce a valid review, write nothing and say so in
 the report; a stale file is worse than an absent one because the next cycle reads
 it as current.
 
+**Mechanical freshness rule (added 2026-11-16).** Do not open
+`scripts/autonomous/review-latest.json` at any point before the new file has been
+written. The previous review is already in `review-input.json →
+previousReview`; that is the only copy you read from. Take `generated` from
+`date +%F` and `mode` from RUN CONTEXT, and write the file with the write tool,
+never by editing what is on disk. Reason, from
+`<state-dir>/review-history.csv`: **three of the last 30 review days produced no
+verdict at all** — `verdict-invalid` on 2026-10-31 (`generated 2026-10-30`),
+2026-11-08 (`generated 2026-11-07`, `mode daily` where `deep` was expected) and
+2026-11-15 (same failure, again on the Sunday deep run). Two of the three were
+deep days, so **no deep review — no competitor benchmark, no backlog rescore —
+has been written since 2026-11-01**, and the streak you are asked to escalate on
+is being counted from a file two days old.
+
 ## 1. The hard rule — the runner enforces it, you cannot argue with it
 
 `rule.mayClaimImproving` is computed from the data, not from your opinion:

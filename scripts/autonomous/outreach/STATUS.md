@@ -730,3 +730,55 @@ restated as an owner ask (the 2026-11-10 review moved X to cycle mandates).
 Live asks unchanged: `theblock-news-tip-1113` (due 2026-11-17, 0 theblock.co
 sessions in the 7d window ending 2026-11-12), `facebook-share-1114` (due
 2026-11-19, baseline facebook.com 6/6 → `/` unchanged, so still unmeasured).
+
+## 2026-11-16 — results review: four asks unsent, two lapse today, one route closed, and the forum is the only channel with a session
+
+**Send record, verified against the channels today (not against this file).**
+13 asks handed over since 2026-10-27, **3 sent**:
+
+| id | sent | evidence |
+| --- | --- | --- |
+| `github-bitcoin-only-listing` | 2026-10-27 | issue open 2026-10-27T05:34:46Z; 0 sessions from bitcoin-only.com in 19 days |
+| `github-lopp-net-charts` | 2026-11-06 | PR #1267 merged 2026-11-07T20:20:30Z; **0 lopp.net sessions 9 days later** |
+| `community-bitcointalk-timing` | 2026-11-12 | topic 5599692 live today (HTTP 200, "Read 37 times", board 1); **5 sessions / 2 users** in the 7d window ending 2026-11-15 |
+
+**Lapsed / closed today, not restated:**
+
+- `x-pinned-post-with-link-1116` — **lapsed 2026-11-16**, `sent: no`. The profile's
+  pinned post is still the second poster's unlinked 2026-11-10 post; the cycle's
+  three attempts (2026-11-14) are recorded as a screen that accepts the action and
+  does not perform it. Not restated: `x` asks were retired on 2026-11-02 because
+  the cycle posts from the account itself.
+- `github-awesome-blockchain-line-1124` — **lapsed 2026-11-16**, `sent: no`, 6 days.
+  It should never have been issued: `github-awesome-blockchain-pr` to the same
+  repository was **withdrawn on 2026-11-04** (never sent, and `github.com`
+  nofollow cannot move `indexed`). Re-opening a withdrawn destination is the ledger
+  drift this file exists to prevent.
+- `theblock-news-tip-1113` — **closed `unexecutable` 2026-11-16**, `sent: no`, 4
+  days. `https://www.theblock.co/contact` returns **403** to today's fetch (and to
+  the 2026-11-14 scripted fetch), so the route that was verified in a browser on
+  2026-11-12 can no longer be re-checked by anyone but the owner. §10(a) makes an
+  unverifiable route invalid; its failure is indistinguishable from indifference.
+  Not restated.
+- `facebook-share-1114` — **channel closed 2026-11-16** after two unsent handovers
+  (2026-11-13, 2026-11-14). §10(c)(4): a third unsent restatement ends the route.
+  `facebook.com` is still **6 sessions / 6 users → `/`**, unchanged since
+  2026-11-07, so the existing share is all there is and no cycle may cite Facebook
+  as a channel again before it produces a seventh session.
+
+**Live ask (one, from the only channel with a measured session):**
+
+`bitcointalk-reply-1116` — channel `community`, due **2026-11-18**, one page, one
+paste, one button: open `https://bitcointalk.org/index.php?topic=5599692.0`, press
+Reply, paste, Post. Route verified today: HTTP 200, board 1 (Bitcoin Discussion),
+OP by `btc500halving`, 37 reads, and the two anchors in the OP already point at
+`/bitcoin-500-day-cycle` and `/data/500-day-cycles.json`. Measured yield of this
+channel so far: **5 sessions / 2 users from 37 reads (13.5%)** against **5
+sessions from ~316 X views (1.6%)** — the forum is eight times better per reader
+and it is the only owner action this month that has produced a stranger.
+
+**Rule this review adds for the next ledger:** an ask may only be issued against a
+row whose `sent` is `yes` for that channel, or a route re-verified on the day of
+issue with a printed HTTP status. Four handovers in eight days produced zero
+sends; the cost of that is now measurable — the site had 26 external sessions this
+week and 4 of them came from a forum post sent by hand.

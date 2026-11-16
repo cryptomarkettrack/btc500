@@ -438,6 +438,42 @@ inventory and kept one URL (`/`).
 - The PERFORMANCE block must carry the lever line (see below), so the next review
   can see whether a cycle invented indexation work anyway.
 
+**2026-11-16 (this review): the freeze is PARTIALLY LIFTED — one build, and the
+copy ban stands unchanged.**
+
+- **The lifting condition was met twice over and nobody noticed.** The 2026-10-30
+  freeze said it lifts on "one GA4 referral session from a domain other than
+  `github.com`". `bitcointalk.org` is a `Referral`-channel source with **1 session /
+  1 user** in the 7d window ending 2026-11-13 and **5 sessions / 2 users** in the
+  window ending 2026-11-15 (GA4 `referrals` table, `ga4-2026-11-16T07-30-07.json`).
+  The freeze has been in force for 17 days; its measured yield in that time is
+  **0 pages added to the index** (`indexed` 1/21 for 12 consecutive readings), **0
+  non-brand clicks** (25 readings), **0 new external referring domains**, and 0
+  site lines since 2026-11-12. A rule that forbids every site change while the
+  only live hook expires in 13 days is now protecting the failure it was written
+  to prevent.
+- **Permitted, and alone in its commit: the public $10,000 paper-buy record** at a
+  stable URL (`/paper-buy` or an equivalent route). It must state the entry date
+  (29 Nov 2026), the $10,000 notional, the entry-price source, the exit rule
+  (T+500) and carry a dated daily line that the existing price archive can
+  append. It is permitted because the 2026-11-12 BitcoinTalk topic already
+  promises it publicly — "on Nov 29, 2026 the rule opens a public $10,000 paper
+  buy, tracked daily to the exit (T+500, currently around Aug 2029). It is a live
+  record, not a forecast" — and nothing on the site implements it (`grep -rin
+  paper src/` → no page; the phrase appears nowhere in this prompt or the growth
+  log). It is a product, not copy: it may not change the title, meta, H1, copy or
+  internal links of any existing page, and it may not be offered as an indexation
+  fix.
+- **Everything else stays frozen.** No sitemap/lastmod/Request Indexing/URL
+  submission/merge/redirect/canonical/internal-link work, and **no title, meta,
+  snippet, section, article or copy work as an indexation or non-brand-click
+  action while `indexed` < 5** (today 1/21). The freeze's other dates stand:
+  2026-11-19 homepage-crawl rule, 2026-11-28 falsification date.
+- **From 2026-11-30 the countdown is worth zero.** Every cycle after the buy date
+  opens PERFORMANCE with `paper record: entry $X on 2026-11-29, day N, $Y now,
+  Z%` and may not describe the countdown as the site's product. The paper record
+  is the only asset here that a visitor has a reason to return to.
+
 PERFORMANCE must open with these seven lines, every cycle:
 
 ```
