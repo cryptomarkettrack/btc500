@@ -15,7 +15,7 @@ interface LedgerCalculatorProps {
  * window's real historical return. Adapted from the BTC500 growth redesign (section 04).
  */
 export function LedgerCalculator({ cycle }: LedgerCalculatorProps) {
-  const [amount, setAmount] = useState("10000");
+  const [amount, setAmount] = useState("50000");
   const numeric = Math.max(0, Number(amount.replace(/[^0-9]/g, "")) || 0);
   const multiplier = cycle?.returnMultiplier ?? null;
   const estimate = multiplier !== null ? Math.round(numeric * multiplier) : null;
@@ -28,7 +28,7 @@ export function LedgerCalculator({ cycle }: LedgerCalculatorProps) {
           04 / Put a number on it
         </p>
         <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-          What would $10,000 have done?
+          What would $50,000 have done?
         </h2>
         <p className="mt-4 max-w-md text-sm leading-relaxed text-muted-foreground">
           A quick look at the last completed BTC500 window. This is the useful kind of what-if:

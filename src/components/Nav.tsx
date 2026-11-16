@@ -41,7 +41,7 @@ type NavItem = {
 const tools: NavItem[] = [
   {
     to: "/paper-buy",
-    label: "$10k Paper Buy",
+    label: "$50k Paper Buy",
     description: "Public position, tracked daily",
     icon: CircleDollarSign,
   },

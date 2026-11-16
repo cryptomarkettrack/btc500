@@ -50,7 +50,7 @@ switch (SLOT) {
     if ([1,3,5].includes(day)) { // Mon, Wed, Fri
       text = `20 Days until 500 days before halving #Bitcoin\n\nThe rule is fixed: buy Nov 28, 2026. No indicators. No narratives. Just the calendar. Who’s with me? 🚀`;
     } else {
-      text = `Quick question: why does every "Bitcoin cycle top caller" ignore the 500-day rule? Asking for a friend who’s tracking a $10k paper position live until 2029. 🧵👇`;
+      text = `Quick question: why does every "Bitcoin cycle top caller" ignore the 500-day rule? Asking for a friend who’s tracking a $50k paper position live until 2029. 🧵👇`;
     }
     break;
   case 'md':
@@ -59,7 +59,7 @@ switch (SLOT) {
     break;
   case 'pm':
     // Friday: weekly recap
-    text = `This week on @btc500halving: 3 replies to cycle-data thinkers, 3 new followers, and the buy date is officially locked: Nov 28, 2026. Public $10k position opens that day. Track it with us. #Bitcoin`;
+    text = `This week on @btc500halving: 3 replies to cycle-data thinkers, 3 new followers, and the buy date is officially locked: Nov 28, 2026. Public $50k position opens that day. Track it with us. #Bitcoin`;
     break;
   default:
     text = `20 Days until 500 days before halving #Bitcoin`;

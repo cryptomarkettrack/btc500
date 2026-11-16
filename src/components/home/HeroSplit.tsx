@@ -42,7 +42,12 @@ export function HeroSplit({
   isProfit,
   isHolding,
 }: HeroSplitProps) {
-  const accent = isHolding && pnlAmount == null ? "var(--muted-foreground)" : isSellActive ? "var(--success)" : "var(--primary)";
+  const accent =
+    isHolding && pnlAmount == null
+      ? "var(--muted-foreground)"
+      : isSellActive
+        ? "var(--success)"
+        : "var(--primary)";
   const showingPnL = isHolding && pnlAmount != null && pnlPercent != null;
 
   return (
@@ -60,9 +65,7 @@ export function HeroSplit({
             style={{ "--enter-delay": "60ms" } as React.CSSProperties}
             className="font-data flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-muted-foreground"
           >
-            <span className={showingPnL ? "text-success" : "text-primary"}>
-              {answer.eyebrow}
-            </span>
+            <span className={showingPnL ? "text-success" : "text-primary"}>{answer.eyebrow}</span>
           </p>
 
           <h1
@@ -93,7 +96,7 @@ export function HeroSplit({
               className="press inline-flex items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-[0_10px_30px_-12px_var(--primary)] hover:shadow-[0_16px_40px_-14px_var(--primary)]"
             >
               <Calculator className="h-4 w-4" />
-              Run $10,000 through the cycle
+              Run $50,000 through the cycle
               <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
@@ -132,8 +135,7 @@ export function HeroSplit({
                   className="pulse-dot h-1.5 w-1.5 rounded-full"
                   aria-hidden="true"
                   style={{
-                    background:
-                      showingPnL ? "var(--success)" : "var(--primary)",
+                    background: showingPnL ? "var(--success)" : "var(--primary)",
                   }}
                 />
                 live
@@ -155,7 +157,8 @@ export function HeroSplit({
                         color: isProfit ? "var(--success)" : "var(--destructive)",
                       }}
                     >
-                      {isProfit ? "+" : "−"}{formatUsd(Math.abs(pnlAmount))}
+                      {isProfit ? "+" : "−"}
+                      {formatUsd(Math.abs(pnlAmount))}
                     </span>
                     <span
                       className="ml-1 text-xl font-semibold"
@@ -215,8 +218,7 @@ export function HeroSplit({
                   <div
                     className={`w-full text-center ${showingPnL ? "text-success" : ""}`}
                     style={{
-                      fontFamily:
-                        '"Space Grotesk", system-ui, sans-serif',
+                      fontFamily: '"Space Grotesk", system-ui, sans-serif',
                       fontSize: "13px",
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",

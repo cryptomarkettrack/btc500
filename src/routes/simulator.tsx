@@ -36,7 +36,7 @@ const simulatorHowToSchema = {
       "@type": "HowToStep",
       position: 1,
       name: "Enter a starting amount",
-      text: "Type a dollar amount or pick a preset from $10,000 to $1,000,000. The default is $50,000 so the historical result is easy to read.",
+      text: "Type a dollar amount or pick a preset from $500 to $1,000,000. The default is $50,000 so the historical result is easy to read.",
       url: `${SITE_URL}/simulator#sim-amount`,
     },
     {
