@@ -17,6 +17,7 @@ import {
   CalendarDays,
   CalendarClock,
   Landmark,
+  CircleDollarSign,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -38,6 +39,12 @@ type NavItem = {
 };
 
 const tools: NavItem[] = [
+  {
+    to: "/paper-buy",
+    label: "$10k Paper Buy",
+    description: "Public position, tracked daily",
+    icon: CircleDollarSign,
+  },
   {
     to: "/halving-dates",
     label: "Halving Dates",

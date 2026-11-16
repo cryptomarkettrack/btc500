@@ -5,7 +5,7 @@
  * derived here so the record is reproducible from its inputs and unit-testable.
  *
  * The public promise (made in the 2026-11-12 BitcoinTalk topic) is fixed:
- *   - Notional: $10,000 paper. No real money, no leverage, no discretionary exits.
+ *   - Notional: $50,000 paper. No real money, no leverage, no discretionary exits.
  *   - Entry: the cycle's T-500 buy date, read from the site's live halving model.
  *     It is never a literal, because the halving date is a live estimate.
  *   - Entry price: that date's BTC/USD daily close from the bundled archive,
@@ -19,7 +19,7 @@
  *   - A paper result is not a guaranteed fill and not financial advice.
  */
 
-export const PAPER_NOTIONAL_USD = 10_000;
+export const PAPER_NOTIONAL_USD = 50_000;
 
 export type PaperRecordState = "scheduled" | "awaiting-price" | "live" | "closed";
 
@@ -116,8 +116,7 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
 
   if (today < entry) {
     state = "scheduled";
-    statusNote =
-      "No position is open. The $10,000 stays in the paper cash balance until the buy date.";
+    statusNote = `No position is open. The ${paperMoney(PAPER_NOTIONAL_USD)} stays in the paper cash balance until the buy date.`;
   } else if (entryPrice === null) {
     state = "awaiting-price";
     statusNote =

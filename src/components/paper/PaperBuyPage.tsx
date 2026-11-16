@@ -9,6 +9,7 @@ import {
   Clock,
   Info,
   Lock,
+  TrendingUp,
   ShieldCheck,
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -115,7 +116,8 @@ export function PaperBuyPage() {
             </strong>{" "}
             — 500 days before the estimated halving — and exits 500 days after it, on{" "}
             <strong className="text-foreground">{paperLongDate(sellDateISO)}</strong>. The entry
-            price is that date&apos;s BTC/USD close. Nothing here is real money or a forecast.
+            price is that date&apos;s BTC/USD close and the P&amp;L ledger marks the position every
+            day. Nothing here is real money or a forecast.
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
             Educational paper performance · not financial advice.
@@ -130,20 +132,28 @@ export function PaperBuyPage() {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Public paper position
+                    Unrealized P&amp;L · {paperMoney(PAPER_NOTIONAL_USD)} paper
                   </div>
-                  <div className="mt-2 text-5xl font-bold tracking-tight tabular-nums">
-                    {record.returnPercent !== null
-                      ? paperPercent(record.returnPercent)
+                  <div
+                    className={`mt-2 text-5xl font-bold tracking-tight tabular-nums ${
+                      record.profitUSD == null
+                        ? ""
+                        : record.profitUSD >= 0
+                          ? "text-success"
+                          : "text-destructive"
+                    }`}
+                  >
+                    {record.profitUSD !== null
+                      ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
                       : record.state === "scheduled"
                         ? record.daysToEntry
                         : "—"}
                   </div>
                   <div className="mt-1 text-sm text-muted-foreground">
                     {record.returnPercent !== null
-                      ? `${paperMoney(record.valueUSD!)} position value`
+                      ? `${paperPercent(record.returnPercent)} on ${paperMoney(PAPER_NOTIONAL_USD)} · ${paperMoney(record.valueUSD!)} value`
                       : record.state === "scheduled"
-                        ? "days until the buy date"
+                        ? "days until the buy date · P&L starts at entry"
                         : "no mark published yet"}
                   </div>
                 </div>
@@ -195,6 +205,62 @@ export function PaperBuyPage() {
                   hint="Site's live BTC price feed"
                 />
               </dl>
+
+              {/* P&L is always on the page. Before entry it explicitly says no
+                  P&L exists; it never fabricates a trade that has not happened. */}
+              <div
+                id="pnl"
+                className="mt-8 rounded-xl border border-border/60 bg-background/40 p-4 sm:p-5"
+              >
+                <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+                  <div className="flex items-center gap-2">
+                    <TrendingUp className="h-4 w-4 text-primary" />
+                    <h3 className="text-sm font-semibold">Profit &amp; loss</h3>
+                  </div>
+                  <Badge variant="outline" className="text-[10px] text-muted-foreground">
+                    {record.state === "scheduled"
+                      ? "Not open yet"
+                      : record.state === "awaiting-price"
+                        ? "Mark pending"
+                        : "Live paper P&L"}
+                  </Badge>
+                </div>
+                <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
+                  <Field
+                    label="Unrealized P&L"
+                    value={
+                      record.profitUSD !== null
+                        ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
+                        : "—"
+                    }
+                  />
+                  <Field
+                    label="Return"
+                    value={record.returnPercent !== null ? paperPercent(record.returnPercent) : "—"}
+                  />
+                  <Field
+                    label="Position value"
+                    value={record.valueUSD !== null ? paperMoney(record.valueUSD) : "—"}
+                  />
+                  <Field
+                    label="Deployed"
+                    value={
+                      record.state === "scheduled"
+                        ? `${paperMoney(PAPER_NOTIONAL_USD)} cash`
+                        : record.btcHeld !== null
+                          ? `${record.btcHeld.toFixed(6)} BTC`
+                          : "—"
+                    }
+                  />
+                </div>
+                <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
+                  {record.state === "scheduled"
+                    ? `The ${paperMoney(PAPER_NOTIONAL_USD)} is uninvested until ${paperLongDate(buyDateISO)}. No P&L exists before entry — this is not a live trade.`
+                    : record.returnPercent !== null
+                      ? `P&L = ${paperMoney(PAPER_NOTIONAL_USD)} × (mark ÷ entry close − 1). Mark ${paperMoney(record.currentPriceUSD!)} against entry ${paperMoney(record.entryPriceUSD!)}. Paper result, not a guaranteed fill.`
+                      : record.statusNote}
+                </p>
+              </div>
 
               <div className="mt-8">
                 <div className="mb-2 flex items-center justify-between text-xs text-muted-foreground">
@@ -282,9 +348,8 @@ export function PaperBuyPage() {
                     <th className="py-3 pr-4 font-semibold">Buy (T−500)</th>
                     <th className="py-3 pr-4 font-semibold">Entry close</th>
                     <th className="py-3 pr-4 font-semibold">Sell (T+500)</th>
-                    <th className="py-3 font-semibold">
-                      ${PAPER_NOTIONAL_USD.toLocaleString("en-US")} result
-                    </th>
+                    <th className="py-3 pr-4 font-semibold">Final value</th>
+                    <th className="py-3 font-semibold">P&amp;L</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -294,14 +359,21 @@ export function PaperBuyPage() {
                       <td className="whitespace-nowrap py-3 pr-4 tabular-nums">{c.buyDate}</td>
                       <td className="py-3 pr-4 tabular-nums">{paperMoney(c.buyPrice!)}</td>
                       <td className="whitespace-nowrap py-3 pr-4 tabular-nums">{c.sellDate}</td>
-                      <td className="py-3 font-semibold tabular-nums">
-                        {paperMoney(PAPER_NOTIONAL_USD * c.returnMultiplier!)} (
+                      <td className="py-3 pr-4 font-semibold tabular-nums">
+                        {paperMoney(PAPER_NOTIONAL_USD * c.returnMultiplier!)}
+                      </td>
+                      <td className="py-3 tabular-nums">
                         <span
-                          className={c.returnPercent! > 0 ? "text-success" : "text-destructive"}
+                          className={
+                            c.returnPercent! >= 0
+                              ? "font-semibold text-success"
+                              : "text-destructive"
+                          }
                         >
-                          {paperPercent(c.returnPercent!)}
+                          {c.returnPercent! >= 0 ? "+" : "−"}
+                          {paperMoney(Math.abs(PAPER_NOTIONAL_USD * (c.returnMultiplier! - 1)))} (
+                          {paperPercent(c.returnPercent!)})
                         </span>
-                        )
                       </td>
                     </tr>
                   ))}

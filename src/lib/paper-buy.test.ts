@@ -44,6 +44,7 @@ test("scheduled: nothing deployed, no price and no P&L before the entry date", (
   assert.equal(r.profitUSD, null);
   assert.equal(r.returnPercent, null);
   assert.match(r.dailyLine, /^2026-11-16 — Scheduled/);
+  assert.match(r.dailyLine, /\$50,000 not deployed/);
   assert.match(r.dailyLine, /13 days away/);
   assert.equal(r.notionalUSD, PAPER_NOTIONAL_USD);
 });
@@ -90,7 +91,11 @@ test("awaiting-price: entry locked but the live feed is down", () => {
   assert.match(r.statusNote, /live BTC mark is unavailable/);
 });
 
-test("live: $10k at 50k and marked at 60k is +20% / +$2,000", () => {
+test("notional is the owner-approved $50,000 paper position", () => {
+  assert.equal(PAPER_NOTIONAL_USD, 50_000);
+});
+
+test("live: $50k at 50k and marked at 60k is +20% / +$10,000", () => {
   const r = buildPaperRecord({
     nowISO: "2026-12-06T12:00:00.000Z",
     buyDateISO: ENTRY,
@@ -100,9 +105,9 @@ test("live: $10k at 50k and marked at 60k is +20% / +$2,000", () => {
   });
   assert.equal(r.state, "live");
   assert.equal(r.daysSinceEntry, 7);
-  assert.equal(r.btcHeld, 0.2);
-  assert.equal(r.valueUSD, 12_000);
-  assert.equal(r.profitUSD, 2_000);
+  assert.equal(r.btcHeld, 1);
+  assert.equal(r.valueUSD, 60_000);
+  assert.equal(r.profitUSD, 10_000);
   assert.equal(r.returnPercent, 20);
   assert.equal(r.progress > 0 && r.progress < 1, true);
   assert.match(r.dailyLine, /^2026-12-06 — Day 7/);
@@ -118,8 +123,8 @@ test("live: a loss is signed correctly and progress is clamped", () => {
     currentPriceUSD: 80_000,
   });
   assert.equal(r.returnPercent, -20);
-  assert.equal(r.profitUSD, -2_000);
-  assert.match(r.dailyLine, /−\$2,000/);
+  assert.equal(r.profitUSD, -10_000);
+  assert.match(r.dailyLine, /−\$10,000/);
   assert.equal(paperPercent(-20), "-20.00%");
   assert.equal(r.progress > 0 && r.progress < 1, true);
 });
@@ -134,6 +139,7 @@ test("closed: the exit rule fires and the last mark is used", () => {
   });
   assert.equal(r.state, "closed");
   assert.equal(r.returnPercent, 200);
+  assert.equal(r.profitUSD, 100_000);
   assert.equal(r.daysToExit, 0);
   assert.equal(r.progress, 1);
   assert.match(r.dailyLine, /Rule closed/);

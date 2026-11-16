@@ -12,14 +12,14 @@ import {
 } from "@/lib/site";
 
 const PATH = "/paper-buy";
-const TITLE = "BTC500 Public $10,000 Paper Buy — Live Ledger";
+const TITLE = "BTC500 Public $50,000 Paper Buy — P&L Ledger";
 const DESCRIPTION =
-  "A public $10,000 paper Bitcoin position under the BTC500 rule: buy 500 days before the halving, sell 500 days after. Entry date, price source and a dated daily mark.";
+  "A public $50,000 paper Bitcoin position under the BTC500 rule: buy 500 days before the halving, sell 500 days after. Entry date, live P&L, price source and a dated daily mark.";
 
 const pageSchema = [
   generateWebPageSchema({
     path: PATH,
-    name: "BTC500 Public $10,000 Paper Buy",
+    name: "BTC500 Public $50,000 Paper Buy",
     description: DESCRIPTION,
     breadcrumbs: [
       { name: "Home", path: "/" },
@@ -30,7 +30,7 @@ const pageSchema = [
   }),
   generateSpeakableSchema({
     path: PATH,
-    cssSelectors: [".lead", "#daily-line"],
+    cssSelectors: [".lead", "#pnl", "#daily-line"],
   }),
   generateFaqSchema(PAPER_FAQ),
 ];
@@ -42,10 +42,10 @@ export const Route = createFileRoute("/paper-buy")({
       title: TITLE,
       description: DESCRIPTION,
       keywords:
-        "bitcoin paper trading, $10,000 bitcoin, 500 day bitcoin rule, bitcoin halving strategy, public bitcoin portfolio, bitcoin cycle tracking",
+        "bitcoin paper trading, $50,000 bitcoin, bitcoin P&L tracker, 500 day bitcoin rule, bitcoin halving strategy, public bitcoin portfolio, bitcoin cycle tracking",
       ogTitle: TITLE,
       ogDescription: DESCRIPTION,
-      ogImageAlt: "BTC500 Public $10,000 Paper Buy — Live Ledger",
+      ogImageAlt: "BTC500 Public $50,000 Paper Buy — P&L Ledger",
       twitterDescription: DESCRIPTION,
       schema: pageSchema,
       publishedTime: "2026-11-16",

@@ -7,7 +7,7 @@ export const PAPER_FAQ: { question: string; answer: string }[] = [
   {
     question: "What is the BTC500 paper buy?",
     answer:
-      "It is a public, paper-only $10,000 position that follows the BTC500 rule exactly: buy 500 days before a Bitcoin halving and sell 500 days after. No real money is used, there is no leverage, and there are no discretionary exits. It exists so the rule can be checked in public rather than argued about.",
+      "It is a public, paper-only $50,000 position that follows the BTC500 rule exactly: buy 500 days before a Bitcoin halving and sell 500 days after. No real money is used, there is no leverage, and there are no discretionary exits. It exists so the rule can be checked in public rather than argued about.",
   },
   {
     question: "When is the entry date and how is it chosen?",
@@ -18,6 +18,11 @@ export const PAPER_FAQ: { question: string; answer: string }[] = [
     question: "What price is used for the entry and the daily mark?",
     answer:
       "The entry price is the BTC/USD daily close on the entry date from the site's bundled historical archive, with the same Bitstamp fallback the simulator uses for dates beyond the archive. The daily mark uses the site's live price feed. If either price is unavailable, no P&L is published rather than estimated.",
+  },
+  {
+    question: "How is the P&L calculated?",
+    answer:
+      "The position holds a fixed number of BTC bought with $50,000 at the entry daily close. Unrealised P&L is that BTC amount times the current mark, minus $50,000, expressed in dollars and as a percentage. Before the entry date no position exists, so the ledger reports no P&L rather than a made-up number. The historical table shows the same calculation applied to the four completed cycles.",
   },
   {
     question: "When does the position close?",
