@@ -157,7 +157,7 @@ export const articles: ArticleMeta[] = [
     dateModifiedISO: "2026-08-15",
     readTime: "12 min read",
     wordCount: 3400,
-    ogImage: `${SITE_URL}/og/default.png`,
+    ogImage: `${SITE_URL}/og/default-v2.png`,
     articleSection: "Bitcoin Investment Strategy",
     schemaKeywords:
       "when to buy Bitcoin before the halving, BTC500 strategy, Bitcoin 500-day cycle, sell after Bitcoin halving, Bitcoin investment timing",
@@ -176,7 +176,7 @@ export const articles: ArticleMeta[] = [
     dateModifiedISO: "2026-07-13",
     readTime: "7 min read",
     wordCount: 1800,
-    ogImage: `${SITE_URL}/og/default.png`,
+    ogImage: `${SITE_URL}/og/default-v2.png`,
     articleSection: "Bitcoin Investment Strategy",
     schemaKeywords:
       "Bitcoin investing mistakes, BTC500 strategy, Bitcoin bear market, buying the bottom, Bitcoin investment timing, halving cycle strategy",
@@ -233,7 +233,7 @@ export const articles: ArticleMeta[] = [
     dateModifiedISO: "2026-08-04",
     readTime: "22 min read",
     wordCount: 4200,
-    ogImage: `${SITE_URL}/og/default.png`,
+    ogImage: `${SITE_URL}/og/default-v2.png`,
     articleSection: "Crypto Regulation & Policy",
     schemaKeywords:
       "CLARITY Act, Digital Asset Market Clarity Act, crypto regulation, cryptocurrency regulation, SEC vs CFTC, Bitcoin regulation, Ethereum regulation, digital asset regulation, crypto legislation",

@@ -9,7 +9,17 @@ export const SITE_NAME = "BTC500";
 export const GA_MEASUREMENT_ID = "G-GM4WBKY74P";
 export const SITE_TAGLINE = "Buy Bitcoin 500 Days Before Halving";
 export const TWITTER_HANDLE = "@btc500halving";
-export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default.png`;
+/**
+ * Cache-bust URL for the default share card.
+ *
+ * X/Telegram/LinkedIn cache OG images per URL. The artwork at /og/default.png
+ * was replaced on 2026-11-15, but every preview of https://btc500.net kept
+ * showing the previous version because the image URL never changed. The bytes
+ * here are identical to /og/default.png — only the URL is new, which forces
+ * social crawlers to fetch the current artwork. Do not "deduplicate" this back
+ * to /og/default.png until the old previews have been replaced.
+ */
+export const DEFAULT_OG_IMAGE = `${SITE_URL}/og/default-v2.png`;
 export const DEFAULT_OG_IMAGE_ALT = "BTC500 — Bitcoin Halving Countdown & Strategy";
 /**
  * Last time homepage footer copy was reviewed. Page-specific — not a global
