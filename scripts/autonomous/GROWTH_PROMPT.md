@@ -474,16 +474,21 @@ copy ban stands unchanged.**
   Z%` and may not describe the countdown as the site's product. The paper record
   is the only asset here that a visitor has a reason to return to.
 
-PERFORMANCE must open with these seven lines, every cycle:
+PERFORMANCE must open with these lines, every cycle — each one a plain sentence,
+not a metric key or an abbreviation:
 
 ```
-- indexed X/21, sitemap N (inspection <timestamp>, rows N of M)
-- indexation lever: none left (crawl 2026-11-13T04:07:16Z declined; Bing 0/21 after 21 submitted) — or the new lever and its evidence
-- referrals 7d: <full line>
-- named sources 7d: <every sessionSource outside Direct and github.com, with sessions/users → landing page>
-- live ask: <id> — channel-verified: <what the channel itself says>, due <date>
-- X views 7d: <post, views, likes> (pinned post included)
-- channels 7d: <channel sessions/users, including AI Assistant>
+- Search visibility: Google lists X of our 21 pages (checked <date>), which is
+  <unchanged / up / down> from last time. Say what that means for the site.
+- Ways to get found: <what was tried and what happened, or that nothing is left
+  to try — one plain sentence, with the evidence>
+- Visitors this week: <total visits and people, and the change from last week>
+- Where they came from: <each source other than direct visits and this repo,
+  with the visits and the page they landed on, written as sentences>
+- One thing we are waiting on: <the ask, what the owner should do, and by when>
+- X posts: <views and likes on the recent posts, including the pinned one>
+- Traffic by channel: <the main channels in plain words, including any visits
+  from AI assistants>
 ```
 
 **The `indexed` line carries the row count, and a partial read is not a reading.**
@@ -503,11 +508,12 @@ Organic Search 5/2, AI Assistant 2/2, Unassigned 3/3. Named non-github sources a
 facebook.com 6/6 → `/`, t.co 3/3 → `/`, x 2/2 → pillar, chatgpt.com 2/2 → pillar,
 bitcointalk.org 1/1 → pillar = **14 sessions / 14 users**. Rules that follow:
 
-- **PERFORMANCE gains an eighth line, `external audience 7d`**, printed as
-  `external audience 7d: N sessions / M users (source s/u → landing, …)` where
-  "external" means every source that is neither Direct nor github.com. It is the
-  number the report leads with. A session total without it is not a result:
-  108 sessions read as growth and 19 do not.
+- **PERFORMANCE also leads with the "Visitors this week" line**: "Visitors this
+  week: N visits from M people (source: N visits → page, …)". "External" here
+  means everyone who did not type the address directly and did not come from this
+  repo. This is the number the report leads with, because a raw visit total is
+  misleading: 108 visits sounds like growth until you see that only 19 were
+  real outsiders.
 - **No cycle may offer title, meta, snippet, copy or internal-link work as an
   action for non-brand clicks before `indexed` ≥ 5.** Today: 1/21 indexed, 2 clicks
   in 7d both brand (`btc500` 2/8 @1.375), 1 non-brand impression (`500 days before
@@ -617,8 +623,9 @@ forever. From today:
   a `btc500.net` link, and GA4 has recorded **0 x.com referral sessions in 18
   readings**. Every post this cycle publishes must carry
   `https://btc500.net/bitcoin-500-day-cycle` (≤280 chars with the link), and the
-  PERFORMANCE block must print the post URL and `x.com referrals 7d: N`. A post
-  without a link is not distribution; it is a diary entry.
+  PERFORMANCE block must print the post URL and, in plain words, how many
+  visitors X sent us this week. A post without a link is not distribution; it is
+  a diary entry.
   **Set by the 2026-11-10 review — X is a channel the CYCLE operates, and the
   cycle stops asking the owner to touch it.** The cycle has a working browser
   session on the account and posted twice on 2026-11-10
@@ -934,8 +941,9 @@ Repo-specific facts:
 
 ## 6. Ship and verify
 
-Commit to `main` with a message the owner can read on their phone. Subject line:
-`growth: <outcome in ≤60 chars>`. Body: the report described below.
+Commit to `main` with a message the owner can read on their phone in two minutes.
+Subject line: `growth: <what changed, in plain words, ≤60 chars>`. Body: the report
+described in section 7, written in ordinary language.
 
 Then `git push origin main`. If the push is rejected because the runner pushed
 first, `git pull --ff-only origin main` and push again — never force, never
@@ -980,42 +988,56 @@ your evidence.
 
 ## 7. Commit message = the report
 
-The owner reads the commit message instead of watching the session. Use exactly
-this structure (plain text, no emoji spam):
+The owner reads the commit message instead of watching the session. Write for a
+smart person who has never seen this repo: use ordinary words, and explain every
+number by what it means for the site. Internal IDs, metric keys and abbreviations
+may appear once in parentheses, but never as the label of a line. Say "Google
+still lists only 1 of our 21 pages, the 12th check in a row" instead of `indexed
+1/21 (12th reading)`, and "a visitor came from the BitcoinTalk post" instead of
+`bitcointalk.org 5/2 → pillar`. Keep the section names below (they make the daily
+reports comparable), but write the content in plain language.
+
+Use exactly this structure (plain text, no emoji spam):
 
 ```
-growth: <outcome>
+growth: <what changed, in plain words>
 
-TL;DR FOR OWNER
-- <what changed, in one line>
-- <what to look at on the live site>
-- <anything they must do, or "nothing needed">
+THE SHORT VERSION
+- <what changed today, in one plain sentence>
+- <what the owner should see on the live site>
+- <anything the owner must do, or "nothing from you today">
 
-PERFORMANCE
-- <window>: <clicks> clicks / <impressions> impressions / <CTR> / avg pos <n>
-- <change vs previous period, or "too early to judge">
-- <experiments still running>
+PERFORMANCE — how the site is doing
+- <search visibility: Google lists X of 21 pages, unchanged/up/down, and what
+  that means>
+- <ways to get found: what was tried and what happened, or nothing left to try>
+- <visitors this week: N visits from M people, and the change from last week>
+- <where they came from: each source other than direct visits and this repo,
+  with visits and landing page, as sentences>
+- <one thing we are waiting on: the ask, what to do, and by when>
+- <X posts: views and likes, including the pinned one>
+- <traffic by channel, in plain words, including visits from AI assistants>
 
-FINDINGS
-- <the most important opportunity or problem, with evidence>
+FINDINGS — what I learned
+- <the one opportunity or problem, with the evidence that proves it>
 
-ACTIONS
-- <specific files/routes/features changed>
+ACTIONS — what I changed
+- <files, routes or features, described as what a visitor would notice>
 
-EXPERIMENTS
-- <readings taken today, verdicts written to the ledger, or "none due">
+EXPERIMENTS — checks that were due
+- <readings taken today and what they concluded, or "none due">
 
-MANDATES
-- <id>: executed | skipped — <one line, with the evidence; skipping without a
-  reason is how a failed review gets to repeat itself>
+MANDATES — follow-ups from the last review
+- <id>: <what was done, or what blocked it, in plain words; never leave this
+  blank — skipping without a reason is how a failed review repeats itself>
 
-DEPLOYMENT
+DEPLOYMENT — is it live
 - Commit: <sha>
-- Push: <verified origin/main at sha>
-- Production: verified|unverified — <exact checks and results>
-- IndexNow: <result or not run>
+- Push: <confirmed on origin/main>
+- Production: <verified or not, with the exact pages checked>
+- IndexNow: <done or not run>
 
-NEXT
+NEXT — what matters most
 1. <highest-value next action>
 2. <...>
 3. <...>

@@ -351,31 +351,63 @@ replacing. Paste the `PASS` line into the commit body. If the run cannot finish,
 write nothing and say so in the log: a stale file is worse than an absent one,
 because the next cycle reads it as current.
 
-Commit with:
+Commit with a subject that says the verdict in plain words, then a short body:
 
 ```
-review: <verdict> — <one line about the result, with the number>
+review: <passing|failing> — <what the numbers say, in one plain sentence>
 ```
 
-and, when you issued asks, a line carrying them — the owner reads commits, so
-the ask has to travel in one:
+Write the body for a smart person who has never seen this repo. Explain every
+number by what it means for the site; keep internal IDs only in parentheses.
+Use exactly this structure (plain text, no emoji spam):
 
 ```
-ASKS: <channel> by <date> — <the action in one line>
+THE SHORT VERSION
+- <what the verdict means in plain words>
+- <the one number that matters and what it says>
+- <what you need from the owner, or "nothing from you today">
+
+WHAT THE NUMBERS SAY
+- <visitors, where they came from, and whether that is up or down>
+- <search visibility in plain words, e.g. "Google still lists only 1 of our 21
+  pages — the 12th check in a row">
+- <clicks and rankings in plain words>
+
+WHY
+- <the root cause in one plain sentence>
+
+FOLLOW-UPS FOR YOU
+- <channel>: <the exact action, in plain words> by <date>   (the copy-paste text
+  is in owner-asks.txt)
+
+WHAT CHANGED
+- <decisions made or files touched, in plain words>
+
+CHECKS
+- <validation in plain words, e.g. "The data supports this verdict; 82 tests
+  passed, none failed">
 ```
 
-(repeat one `ASKS:` line per ask; put the verbatim text in the commit body if
-it fits — it is always in `owner-asks.txt`).
+When you issued asks, also repeat the owner action on its own line so it survives
+a phone notification — the owner reads commits, so the ask has to travel in one:
 
-Then print the report (the runner keeps it in the log):
+```
+ASKS: <channel> by <date> — <the action in one plain sentence>
+```
+
+(one `ASKS:` line per ask; put the verbatim copy-paste text in the body if it
+fits — it is always in `owner-asks.txt`).
+
+Then print the report (the runner keeps it in the log). Use the same plain
+language here — the labels are for the runner, but the values must be readable:
 
 ```
 REVIEW <verdict> (<mode>, <date>)
-RESULT <the one number that moved, or "no measurable result">
-WHY    <root cause, one line>
-MANDATES <id>: <action> [due <date>]   (one per line)
-ASKS   <channel>: <action> [by <date>] (one per line; the text is in owner_asks[].content)
-TARGETS <metric>: <current> -> <target> by <date>
+RESULT <the one number that moved, in plain words, or "no measurable change">
+WHY    <root cause, one plain sentence>
+MANDATES <id>: <what was done or what blocked it> [due <date>]   (one per line)
+ASKS   <channel>: <action in plain words> [by <date>] (one per line; text in owner_asks[].content)
+TARGETS <metric in plain words>: <current> -> <target> by <date>
 CHANGED <self_changes, or "none">
 ```
 
