@@ -24,6 +24,7 @@ import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as PaperBuyRouteImport } from './routes/paper-buy'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as TermsRouteImport } from './routes/terms'
@@ -120,6 +121,11 @@ const LlmsDottxtRoute = LlmsDottxtRouteImport.update({
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PaperBuyRoute = PaperBuyRouteImport.update({
+  id: '/paper-buy',
+  path: '/paper-buy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyRoute = PrivacyRouteImport.update({
@@ -254,6 +260,7 @@ export interface FileRoutesByFullPath {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
+  '/paper-buy': typeof PaperBuyRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
@@ -292,6 +299,7 @@ export interface FileRoutesByTo {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
+  '/paper-buy': typeof PaperBuyRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
@@ -331,6 +339,7 @@ export interface FileRoutesById {
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
   '/news': typeof NewsRoute
+  '/paper-buy': typeof PaperBuyRoute
   '/privacy': typeof PrivacyRoute
   '/simulator': typeof SimulatorRoute
   '/terms': typeof TermsRoute
@@ -371,6 +380,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/news'
+    | '/paper-buy'
     | '/privacy'
     | '/simulator'
     | '/terms'
@@ -409,6 +419,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/news'
+    | '/paper-buy'
     | '/privacy'
     | '/simulator'
     | '/terms'
@@ -447,6 +458,7 @@ export interface FileRouteTypes {
     | '/llms-full.txt'
     | '/llms.txt'
     | '/news'
+    | '/paper-buy'
     | '/privacy'
     | '/simulator'
     | '/terms'
@@ -486,6 +498,7 @@ export interface RootRouteChildren {
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
   NewsRoute: typeof NewsRoute
+  PaperBuyRoute: typeof PaperBuyRoute
   PrivacyRoute: typeof PrivacyRoute
   SimulatorRoute: typeof SimulatorRoute
   TermsRoute: typeof TermsRoute
@@ -599,6 +612,13 @@ declare module '@tanstack/react-router' {
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/paper-buy': {
+      id: '/paper-buy'
+      path: '/paper-buy'
+      fullPath: '/paper-buy'
+      preLoaderRoute: typeof PaperBuyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy': {
@@ -810,6 +830,7 @@ const rootRouteChildren: RootRouteChildren = {
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
   NewsRoute: NewsRoute,
+  PaperBuyRoute: PaperBuyRoute,
   PrivacyRoute: PrivacyRoute,
   SimulatorRoute: SimulatorRoute,
   TermsRoute: TermsRoute,

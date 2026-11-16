@@ -3,7 +3,7 @@
 
   <url>
     <loc>https://btc500.net/</loc>
-    <lastmod>2026-11-11</lastmod>
+    <lastmod>2026-11-15</lastmod>
   </url>
   <url>
     <loc>https://btc500.net/about</loc>
@@ -72,6 +72,10 @@
   <url>
     <loc>https://btc500.net/news</loc>
     <lastmod>2026-08-13</lastmod>
+  </url>
+  <url>
+    <loc>https://btc500.net/paper-buy</loc>
+    <lastmod>2026-11-16</lastmod>
   </url>
   <url>
     <loc>https://btc500.net/simulator</loc>

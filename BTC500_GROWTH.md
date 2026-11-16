@@ -5,6 +5,17 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-16 (owner-approved) — the public $10,000 paper-buy record is built at `/paper-buy` (the one permitted build)
+
+- **Scope.** The owner approved the single build the 2026-11-16 partial lift permits. New files only: `src/routes/paper-buy.tsx`, `src/components/paper/PaperBuyPage.tsx`, `src/lib/paper-buy.ts`, `src/lib/paper-buy.test.ts`, `src/lib/paper-faq.ts`, plus the generated `public/sitemap.xml` entry and the tool-generated `src/routeTree.gen.ts`. No existing page's title, meta, H1, copy or internal links changed. The sitemap's `/` lastmod moved 11-11 → 11-15 because commit `0b3fc0c` (11-15) changed real homepage components and the committed sitemap was already stale; regenerating it to add the new route is a correctness fix, not an indexation lever.
+- **What the page states.** Entry date = live-derived T-500 (SSR read **29 Nov 2026, 13 days out**), notional **$10,000 paper**, entry-price source = that date's BTC/USD daily close from the bundled archive with the site's Bitstamp tail fallback, exit rule = **T+500** (SSR read 25 Aug 2029, labelled estimated), and a dated daily line (`#daily-line`) that changes once a day. Schema: WebPage + Speakable (`.lead`, `#daily-line`) + FAQPage generated from the same `PAPER_FAQ` list the page renders.
+- **Honesty rules are in code, not prose.** `src/lib/paper-buy.ts` is pure and tested. Before entry: no price, no mark, no P&L ("Scheduled. $10,000 not deployed…"). Past entry with no archive close or no live mark: `awaiting-price`, no P&L — today's price is never substituted for the entry price. After exit: `closed`, last available mark, explicitly not a guaranteed fill. Nine unit tests.
+- **Why this is the 11-30 product.** The countdown expires 11-29 and is worth zero on 11-30. This record is the only asset that survives it and the payload for every future send (forum bump, X post, AI citation). The 2026-11-12 BitcoinTalk topic already promises it in public.
+- **Validation.** `bun run build` ✓ · `bun run typecheck` ✓ · `eslint` on new files ✓ (0 errors) · `prettier --check` ✓ · `bun test` **244 pass / 0 fail**. Dev-server SSR of `GET /paper-buy`: correct title, canonical, robots, H1, JSON-LD (`WebPage`/`SpeakableSpecification`/`FAQPage`/`BreadcrumbList`) and the daily line rendered in the HTML, not client-only. No browser was paired, so no visual screenshot QA.
+- **Not done — owner's next move.** Distribution. The freeze forbids adding an internal link from any existing page, and no send has happened. The 13-day runway needs: the queued BitcoinTalk reply pointing at `/paper-buy`, one X post with a tagged link, and 5+ real relevant inbound links. Until a send happens this is an asset, not traffic.
+
+---
+
 ## Session 2026-11-16 (04:00Z) — the pillar verdict is in: fetched successfully, still not indexed; no site change (freeze)
 
 - **`pillar-verdict-1116` — EXECUTED (measurement only).** URL Inspection API read at
