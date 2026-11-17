@@ -317,6 +317,40 @@ only `/` remains, `bip-110` is `Crawled - currently not indexed` (lastCrawl
 Both URLs must be named in every review until they are classified after a crawl
 dated later than 2026-11-07.
 
+**2026-11-17 (this review): a fourth permitted output — an answer to a question a
+named stranger asked in public. The freeze is right about copy written for a
+crawler; it is wrong about copy written for a reader who is already reading.**
+
+Evidence, all from files: the 2026-11-12 BitcoinTalk topic (`topic=5599692.0`,
+HTTP 200, `Read 79 times`, 7 posts) is the only channel that has produced
+strangers — `bitcointalk.org 5 sessions / 2 users` in the 7d window ending
+2026-11-16 — and it carries two substantive objections from other members: does
+the result survive 400/450/600-day spacing (`swapcore_exchange`, 2026-11-12), and
+does a decaying halving supply effect make window 4 unlike windows 1–3
+(`Yamane_Keto`, Hero Member, 2026-11-12). Our own opening post promised "If you
+think 500 is the wrong number, say which one and I will run it and post the
+table". Five days later no table exists anywhere on the site, and the owner's
+2026-11-16 follow-up answered neither question. That is an unpaid public promise
+with a measured audience behind it — the one kind of content this gate was never
+meant to block.
+
+The data already exists and the method is the site's own: `public/btc-usd-max.csv`
+(2011-07-17 → 2026-11-16, 5,599 rows) run at spacing 500 reproduces
+`/data/500-day-cycles.json` exactly — 29.8977×, 34.1823×, 11.6699×, 6.5983×;
+median low −11.72%, worst −83.65%. At 400 days: 4 windows, median 12.85×, worst
+3.96×, worst low −27.22%. At 600 days: 3 windows (the 2012 entry predates the
+archive), median 7.49×, worst 4.55×, median low −49.61%. Every completed window
+in every spacing closed above its entry; the 2012 400-day 244× is a 2011-bottom
+artefact and must be labelled as one.
+
+So, permitted alone in one commit: one new route plus `/data/halving-spacing.json`,
+one sitemap row, and one server-rendered link from `/` to it. Contents: the
+400/500/600 table, the method, the 2012/600 exclusion, and the caveat. It is **not
+an indexation lever** and may not be described as one; it is measured only by (a)
+referral sessions from `bitcointalk.org` and (b) landings on the new route.
+Expires with the rest of the freeze on 2026-11-28. No title, meta, H1 or copy
+change to any existing page — the single added link is the only edit to `/`.
+
 **2026-11-11 (this review): the channel that "distributes" has a measured ceiling,
 and the site is serving a stale number to the only channel that brings strangers.**
 
@@ -396,10 +430,16 @@ rule that can actually fire.**
   **and** no named non-github referral session"; the second half is now met, so
   the rule could never fire, and a rule that cannot fire is decoration. The
   replacement has one test: **if the homepage has no crawl dated after
-  2026-11-12 by 2026-11-19, the daily X post drops to twice a week, no new
-  owner ask is issued, and the cycle's only work is the weekly measurement plus
-  one link action.** The daily post's measured output is 3 sessions a week from
-  a 212-follower account, so it cannot be the thing that saves the window.
+  2026-11-12 by 2026-11-19, the daily X post drops to twice a week, no new post is
+  issued on X, Instagram or Facebook, and the cycle's only work is the weekly
+  measurement plus one link action.** The daily post's measured output is 3
+  sessions a week from a 212-follower account, so it cannot be the thing that
+  saves the window. **Amended 2026-11-17:** the ban is on *broadcast* posts, not
+  on a reply in a thread that has already produced a GA4 referral session. One
+  forum reply, in `topic=5599692.0`, is permitted and is the last action on that
+  route for 14 days. The reason the two are not the same channel is measured:
+  ~100 views per X post yields 3 sessions (1.6%) while the thread yields 5
+  sessions / 2 users from 79 reads and 4 replies from strangers.
 - **Request Indexing is rationed, not broken.** It was used for the first time
   ever on 2026-11-12 ~06:18Z and refused — "Quota Exceeded — exceeded your
   daily quota, try again tomorrow", remaining quota 0, never submitted. Retry

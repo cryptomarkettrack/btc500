@@ -412,6 +412,7 @@ since 2026-10-23.
 
 | date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-17 | failing | `indexed` **1/22 for the 13th reading** (the runner's `2 → 1` regression is the 2026-11-03 → 11-04 drop still inside its 14-day window); Bing crawled `/` 2026-11-16T07:33:31Z and the pillar 2026-11-17T05:28:38Z and kept **0/22**; non-brand clicks 0 in 26 readings, the only non-brand impression at position 38; external audience **26/19 → 29 sessions / 20 users** but 95 of 125 sessions are us (Direct 86/18 + github 9/1); `bitcointalk.org 5/2` **predates** the 2026-11-16 11:40 reply, so ask-effect is unproven until a window starting 11-16; the X poster has **never run** (bash on a `.mjs`, 3 slots, 0 posts); `/paper-buy` has **zero crawlable inbound links** (`grep -c paper` = 0 on `/` and the pillar) and is `Discovered - currently not indexed` 12 days before entry; the forum OP promises **$10,000** while the page and the X post say **$50,000**. Fourth freeze output authorised: the 400/500/600 spacing answer. Streak 23 |
 | 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22 |
 | 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21 |
 | 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20 |
@@ -471,15 +472,33 @@ also permitted — it is the single site change the partial lift allows.
 
 | #   | Bet                                                                 | Why it can move the needle                                                                                                                                                    | I   | E   |
 | --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
-| 0c  | **Public $10,000 paper-buy record (permitted build, 2026-11-16)**   | The 2026-11-12 BitcoinTalk topic already promises it in public and nothing exists. It is the only asset that survives 2026-11-30, the only reason a visitor returns daily, and the payload for every future send (forum bump, X post, AI citation) | 10  | 1   |
-| 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measurable only as a post-merge crawl and a lopp.net session — neither exists yet                              | 10  | 0   |
-| 1b  | **X click path (pinned + tagged since 2026-11-11)**                 | 206 followers, a `btc500.net` profile link, a pinned post that now carries a UTM-tagged pillar link, and 0 x.com referral sessions in 20 readings. Measured by GA4 x.com/t.co | 9   | 1   |
+| 0d  | **Is the rule a 500-day artefact? — AUTHORISED 2026-11-17**         | Promoted from row 3 by the 2026-11-17 review as the freeze's fourth permitted output. Two strangers asked it in the only thread that has produced sessions; the opening post promised the table five days ago and nothing on the site answers it. 400/500/600 numbers are already computed from `public/btc-usd-max.csv` and the 500 row reproduces `/data/500-day-cycles.json` exactly. Measured by bitcointalk.org sessions and new-route landings, **not** by indexation |
+| 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**     | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk and only the owner can fix the post (ask `bitcointalk-spacing-correction-1117`). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0 | 10  | 1   |
+| 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measured as a post-merge crawl and a lopp.net session — the crawl came 48s after our own Request Indexing and the session never came; experiment **closed 2026-11-16**. Read as an input, not a result | 10  | 0   |
+| 1b  | ~~X click path (pinned + tagged)~~ — **DEMOTED 2026-11-17**         | The scheduled poster has never run: `net.btc500.x-post-{am,md,pm}.plist` execute `/bin/bash post-daily.mjs`, and every slot logs `const: command not found`. 3 slots × 30 days = 0 posts; the only post is the hand-made one of 2026-11-16, and x.com/t.co delivered 6 sessions / 6 users in 7d. A channel that cannot publish cannot be a bet until the plist is fixed (owner mandate) | 3   | 1   |
 | 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                        | 4   | 3   |
 | 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~ | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), false premise (no account). None restated                                                                    | —   | —   |
-| 3   | **Is the rule a 500-day artefact?** (parked, frozen)                 | Two strangers in the BitcoinTalk thread asked it on 2026-11-12 before any cycle did: does the result survive 400/450/600-day spacing, and does a decaying halving supply effect make window 4 unlike windows 1–3? The archive + simulator already hold the data; nothing on the site answers it. Highest-value answer no competitor publishes, but it is content work and the copy ban holds while `indexed` < 5 | 8   | 1   |
+| 3   | ~~Is the rule a 500-day artefact?~~ (promoted to **0d**)            | Was parked as content work; the 2026-11-17 review found the audience already asking it and the archive already holding the answer. Moved, not duplicated                       | —   | —   |
 
 ## Open issues
 
+- **The paper-buy record is linked from nothing crawlable (2026-11-17).** `curl -s
+https://btc500.net/ | grep -c paper` → **0**; the same on
+  `/bitcoin-500-day-cycle` → **0**. The `Nav.tsx` tools entry the owner added on
+  2026-11-16 does not appear in the server-rendered HTML, so Google has
+  `Discovered - currently not indexed` on a URL with no inbound link, 12 days
+  before its first dated line. Mandate `paper-buy-internal-link-1117`.
+- **The scheduled X poster has never run (2026-11-17).** Three launchd jobs run
+  `/bin/bash .../post-daily.mjs`; `x/launchd-pm.err.log` ends in
+  `post-daily.mjs: line 5: const: command not found` and `syntax error near
+  unexpected token '('`. 0 machine posts; the 2026-11-16 post
+  (`status/2122389869939040716`) was made by hand inside a cycle. Owner mandate
+  `x-poster-node-1117`; no cycle may hand-patch the plists.
+- **The notional is $50,000 on the site and $10,000 in the thread (2026-11-17).**
+  `/paper-buy` serves `Scheduled. $50,000 not deployed.`; the 2026-11-12
+  BitcoinTalk opening post says "a public $10,000 paper buy". Two members are
+  reading that thread. Only the owner can correct the post, so it is the ask
+  `bitcointalk-spacing-correction-1117`, not a cycle task.
 - **Indexation levers are CLOSED to 2026-12-01** (2026-11-13 review, mandate
   `indexation-levers-closed-1114`): sitemap, lastmod, Request Indexing, URL
   submission, merge, redirect, canonical, internal-link and copy work may not be
