@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-16",
-  "summary": "measurement cycle only: pillar crawl verdict + GSC Sitemaps read, no site change (freeze)",
+  "generated": "2026-11-17",
+  "summary": "no site change: the audience-measuring script was fixed (one user count per source, plus the asked-channels line) and the forum ask was verified as already sent",
   "checks": [
     {
       "path": "/",
@@ -8,8 +8,8 @@
       "status": 200
     },
     {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "November 29, 2026: 500 Days Before the Next Bitcoin Halving",
+      "path": "/paper-buy",
+      "contains": "Scheduled. $50,000 not deployed",
       "status": 200
     },
     { "path": "/data/500-day-cycles.json", "contains": "btc500/500-day-cycles@1", "status": 200 }

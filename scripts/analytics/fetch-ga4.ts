@@ -209,6 +209,7 @@ async function main(): Promise<void> {
     devices,
     referrals,
     namedSources,
+    sourceTotals,
   ] = await Promise.all([
     runReport(propertyId, totalsBody(currentRange.startDate, currentRange.endDate)),
     runReport(propertyId, totalsBody(previousRange.startDate, previousRange.endDate)),
@@ -272,6 +273,21 @@ async function main(): Promise<void> {
       metrics: [{ name: "sessions" }, { name: "totalUsers" }],
       orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
       limit: 40,
+    }),
+    // One row per named source, without the landing-page dimension. This is the
+    // only table whose `totalUsers` is a per-source count: a breakdown by
+    // landing page repeats a visitor under every page they landed on, so
+    // summing that column counts one person several times. The 2026-11-16
+    // review found the external-audience line printing `bitcointalk.org 5/5`
+    // (four landing rows: 2/2, 1/1, 1/1, 1/1) where this table says 5 sessions
+    // / 2 users, and 22 external users where the honest figure is 19 (mandate
+    // referral-instrument-1116).
+    runReport(propertyId, {
+      dateRanges: [currentRange],
+      dimensions: [{ name: "sessionDefaultChannelGroup" }, { name: "sessionSource" }],
+      metrics: [{ name: "sessions" }, { name: "totalUsers" }],
+      orderBys: [{ metric: { metricName: "sessions" }, desc: true }],
+      limit: 60,
     }),
   ]);
 
@@ -435,6 +451,26 @@ async function main(): Promise<void> {
     "",
   );
 
+  lines.push("## Named sources — one row per source", "");
+  lines.push(
+    "The same sources without the landing-page dimension. This is the only table",
+    "whose `Users` column can be read as a person count: the landing-page",
+    "breakdown above counts a visitor once per page they landed on.",
+    "",
+  );
+  lines.push(
+    table(
+      ["Channel", "Source", "Sessions", "Users"],
+      rowsOf(sourceTotals).map((row) => [
+        dimensionValue(row, 0),
+        dimensionValue(row, 1),
+        num(metricValue(row, 0)),
+        num(metricValue(row, 1)),
+      ]),
+    ),
+    "",
+  );
+
   const markdown = lines.join("\n");
   const { markdownPath, jsonPath } = writeReport("ga4", markdown, {
     propertyId,
@@ -447,6 +483,7 @@ async function main(): Promise<void> {
       devices: rowsOf(devices),
       referrals: rowsOf(referrals),
       namedSources: rowsOf(namedSources),
+      sourceTotals: rowsOf(sourceTotals),
     },
   });
 

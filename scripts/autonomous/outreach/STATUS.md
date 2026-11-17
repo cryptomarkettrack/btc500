@@ -782,3 +782,54 @@ row whose `sent` is `yes` for that channel, or a route re-verified on the day of
 issue with a printed HTTP status. Four handovers in eight days produced zero
 sends; the cost of that is now measurable — the site had 26 external sessions this
 week and 4 of them came from a forum post sent by hand.
+
+## 2026-11-17 — `bitcointalk-reply-1116` was SENT, two days before its due date
+
+**Channel first, ledger second.** The ledger's only live ask was due 2026-11-18 with
+`sent: no`. The channel says otherwise: the topic carries a post by `btc500halving`
+dated **November 16, 2026, 11:40:30 AM** whose text is the mandated copy verbatim —
+
+> 13 days to the entry. The next 500-day window opens 29 Nov 2026 on the live block
+> estimate. All four completed windows closed below their entry first — median low
+> -11.7%, worst -83.65%, median 84.5 days underwater — and all four still finished
+> between 6.6x and 34.2x. Per-window table, method and JSON:
+> https://btc500.net/bitcoin-500-day-cycle
+
+— followed by a second post from the same account at **November 16, 2026, 5:20:50 PM**
+("Guys, the strategy has a history. 4/4 successful cycles. It is worth giving it a
+try."). Evidence read today from `https://bitcointalk.org/index.php?topic=5599692.0`
+(HTTP 200, "Read 76 times", 7 posts, last post 2026-11-16 5:20:50 PM):
+
+| post | author | posted | what it is |
+| ---- | ------ | ------ | ---------- |
+| 1 | btc500halving | 2026-11-12 4:31:01 PM | the OP (two anchors: pillar + `/data/500-day-cycles.json`) |
+| 2 | swapcore_exchange | 2026-11-12 5:28:48 PM | asks whether 400- and 600-day spacing were tested |
+| 3 | Yamane_Keto | 2026-11-12 6:10:07 PM | argues the halving's supply effect decays each cycle |
+| 4 | btc500halving | **2026-11-16 11:40:30 AM** | the issued ask, pasted verbatim |
+| 5 | Free Market Capitalist | 2026-11-16 1:52:09 PM | reply to the OP |
+| 6 | Sticky Bomb | 2026-11-16 2:35:13 PM | reply in thread |
+| 7 | btc500halving | 2026-11-16 5:20:50 PM | follow-up comment |
+
+So `bitcointalk-reply-1116` is **sent 2026-11-16**, not pending: the row closes, and
+no review may ask for it again. The 2026-11-16 row that says `sent: no` was true when
+written (that review read the topic at ≈09:46 local, before 11:40).
+
+**Reads are not people, and this topic shows it.** The read counter went 37 → 76 in a
+day while the GA4 7d window ending 2026-11-16 still shows `bitcointalk.org 5 sessions /
+2 users`. A scripted fetch counts as a read on this forum, so a rising counter is not
+evidence of a rising audience; the referral row is. The 11-16 send's effect can only
+appear in a window that starts on or after 2026-11-16 — see it next week, not today.
+
+**What the two stranger replies say is the useful part.** Both objections are about the
+rule's robustness, not its tone: does the result survive a different spacing (400/600
+days), and does a decaying halving effect make the fourth window unlike the first
+three. Neither is answerable from anything the site publishes today, and the site's
+own simulator already has the data to answer the first one. Recorded in
+`BTC500_GROWTH.md` → backlog as the first content bet for after the freeze, with this
+topic as its evidence.
+
+**Ask state after this entry: 14 handovers since 2026-10-27, 4 sent** (bitcoin-only#1009
+2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk OP 2026-11-12, BitcoinTalk reply
+2026-11-16), **0 live unsent asks**. No new ask is issued by this cycle — the mandate
+list is the reviewer's, and a cycle that invents an ask while none is open is exactly
+the substitution the 2026-11-06 review deleted.

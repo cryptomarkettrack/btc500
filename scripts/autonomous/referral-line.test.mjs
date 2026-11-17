@@ -5,6 +5,8 @@ import { join } from "node:path";
 import test from "node:test";
 
 import {
+  ASKED_CHANNELS,
+  askedChannelsLine,
   externalAudienceLine,
   namedSourceRows,
   namedSourcesLine,
@@ -12,6 +14,7 @@ import {
   referralLine,
   referralRows,
   reportDays,
+  sourceTotalRows,
 } from "./referral-line.mjs";
 
 const ga4Row = (source, sessions) => ({
@@ -204,7 +207,9 @@ test("named sources keeps the landing page that carried most sessions", () => {
     ]),
     window7d,
   );
-  assert.match(line, /t\.co 7\/7 → \//);
+  // Sessions sum across landings (7); users do not — one person is not two
+  // because they landed on two pages (mandate referral-instrument-1116).
+  assert.match(line, /t\.co 7\/5 → \//);
 });
 
 test("named sources says none instead of printing an empty list", () => {
@@ -306,4 +311,150 @@ test("external audience labels its own window and never guesses 7d", () => {
     externalAudienceLine([], window28d),
     /^external audience 28d: 0 sessions \/ 0 users/,
   );
+});
+
+// --- one user count per source (mandate referral-instrument-1116) ------------
+//
+// The line the 2026-11-14 review made mandatory overstated people on its first
+// day: it printed `26 sessions / 22 users` because it summed `users` across
+// each source's landing rows. bitcointalk.org has four landing rows in the
+// 7d window ending 2026-11-15 (pillar 2/2, /liquidation 1/1, /simulator 1/1,
+// /timeline 1/1), so it printed 5/5 where the report's own Referral table says
+// 5 sessions / 2 users, and the property total was 40 users.
+
+const sourceTotalRow = (channel, source, sessions, users) => ({
+  dimensionValues: [{ value: channel }, { value: source }],
+  metricValues: [{ value: String(sessions) }, { value: String(users) }],
+});
+
+/** The 2026-11-16 report's named-source table, verbatim (partial where Direct). */
+const todayRows = () =>
+  namedSourceRows([
+    namedRow("Direct", "(direct)", "/", 68, 15),
+    namedRow("Direct", "(direct)", "/bitcoin-500-day-cycle", 17, 1),
+    namedRow("Organic Search", "google", "/", 9, 5),
+    namedRow("Referral", "github.com", "/", 9, 1),
+    namedRow("Organic Social", "facebook.com", "/", 6, 6),
+    namedRow("Direct", "(direct)", "(not set)", 3, 3),
+    namedRow("Direct", "(direct)", "/timeline", 3, 2),
+    namedRow("Organic Social", "t.co", "/", 3, 3),
+    namedRow("Organic Social", "x", "/bitcoin-500-day-cycle", 2, 2),
+    namedRow("Referral", "bitcointalk.org", "/bitcoin-500-day-cycle", 2, 2),
+    namedRow("AI Assistant", "chatgpt.com", "/bitcoin-500-day-cycle", 1, 1),
+    namedRow("Referral", "bitcointalk.org", "/liquidation", 1, 1),
+    namedRow("Referral", "bitcointalk.org", "/simulator", 1, 1),
+    namedRow("Referral", "bitcointalk.org", "/timeline", 1, 1),
+    namedRow("Unassigned", "(not set)", "/", 1, 1),
+  ]);
+
+const todayTotals = () =>
+  sourceTotalRows([
+    sourceTotalRow("Direct", "(direct)", 92, 20),
+    sourceTotalRow("Organic Search", "google", 9, 5),
+    sourceTotalRow("Referral", "github.com", 9, 1),
+    sourceTotalRow("Organic Social", "facebook.com", 6, 6),
+    sourceTotalRow("Referral", "bitcointalk.org", 5, 2),
+    sourceTotalRow("Organic Social", "t.co", 3, 3),
+    sourceTotalRow("Organic Social", "x", 2, 2),
+    sourceTotalRow("AI Assistant", "chatgpt.com", 1, 1),
+    sourceTotalRow("Unassigned", "(not set)", 1, 1),
+  ]);
+
+test("regression: bitcointalk.org prints 5/2, not 5/5, for the 2026-11-16 file", () => {
+  const line = externalAudienceLine(todayRows(), {
+    start: "2026-11-09",
+    end: "2026-11-15",
+    days: 7,
+  });
+  assert.match(line, /bitcointalk\.org 5\/2 → \/bitcoin-500-day-cycle/);
+  assert.doesNotMatch(line, /bitcointalk\.org 5\/5/);
+  // 19 users, not the inflated 22 the sum produced.
+  assert.match(line, /26 sessions \/ 19 users/);
+  assert.match(
+    namedSourcesLine(todayRows(), { start: "2026-11-09", end: "2026-11-15", days: 7 }),
+    /bitcointalk\.org 5\/2/,
+  );
+});
+
+test("the per-source table wins over the landing rows when the report has one", () => {
+  const line = externalAudienceLine(todayRows(), undefined, { sourceTotals: todayTotals() });
+  assert.match(line, /bitcointalk\.org 5\/2/);
+  assert.match(line, /26 sessions \/ 19 users/);
+});
+
+test("external users never exceed the GA4 property's own user total", () => {
+  const users = (line) => Number(/\/ (\d+) users/.exec(line)[1]);
+  // Property total 40, honest external 19: no cap, nothing hidden.
+  const honest = externalAudienceLine(todayRows(), undefined, {
+    sourceTotals: todayTotals(),
+    propertyUsers: 40,
+  });
+  assert.equal(users(honest), 19);
+  assert.doesNotMatch(honest, /capped/);
+  // A table that double-counts people across sources cannot print more people
+  // than the property has, and says so instead of silently dropping the excess.
+  const inflated = externalAudienceLine(todayRows(), undefined, {
+    sourceTotals: sourceTotalRows([
+      sourceTotalRow("Organic Social", "facebook.com", 6, 30),
+      sourceTotalRow("Organic Social", "t.co", 3, 30),
+    ]),
+    propertyUsers: 40,
+  });
+  assert.equal(users(inflated), 40);
+  assert.match(inflated, /users capped at the property total of 40/);
+});
+
+test("every window of the real corpus keeps users <= sessions and <= the property total", () => {
+  const cases = [
+    { rows: reviewWindowRows(), propertyUsers: 40 },
+    { rows: todayRows(), propertyUsers: 40, sourceTotals: todayTotals() },
+  ];
+  for (const { rows, propertyUsers, sourceTotals } of cases) {
+    const line = externalAudienceLine(rows, window7d, { propertyUsers, sourceTotals });
+    const [, sessions, users] = /: (\d+) sessions \/ (\d+) users/.exec(line);
+    assert.ok(Number(users) <= Number(sessions), line);
+    assert.ok(Number(users) <= propertyUsers, line);
+  }
+});
+
+test("asked channels lists all seven asked destinations, including the ones that sent nothing", () => {
+  const line = askedChannelsLine(todayRows(), {
+    start: "2026-11-09",
+    end: "2026-11-15",
+    days: 7,
+  });
+  assert.match(line, /^asked channels 7d:/);
+  for (const source of ASKED_CHANNELS) assert.match(line, new RegExp(`${source} \\d+/\\d+`));
+  assert.match(line, /bitcointalk\.org 5\/2/);
+  assert.match(line, /t\.co 3\/3/);
+  assert.match(line, /x\.com 0\/0/);
+  assert.match(line, /theblock\.co 0\/0/);
+  assert.match(line, /lopp\.net 0\/0/);
+  assert.match(line, /\(window 2026-11-09 → 2026-11-15\)$/);
+});
+
+test("asked channels says none of them sent a visitor rather than printing seven bare zeros", () => {
+  const line = askedChannelsLine([], window7d);
+  assert.match(line, /none of them sent a visitor/);
+  assert.doesNotMatch(line, /capped/);
+});
+
+test("a 28-day report labels the asked-channels line 28d", () => {
+  assert.match(
+    askedChannelsLine(namedSourceRows([namedRow("Referral", "lopp.net", "/", 2, 2)]), window28d),
+    /^asked channels 28d: .*lopp\.net 2\/2/,
+  );
+  assert.match(askedChannelsLine([], undefined), /^asked channels \(window unknown\):/);
+});
+
+test("the collector's per-source table parses to one row per source", () => {
+  const rows = sourceTotalRows([
+    sourceTotalRow("Referral", "bitcointalk.org", 5, 2),
+    sourceTotalRow("Organic Social", "T.CO", 3, 3),
+    { dimensionValues: [{ value: "Referral" }], metricValues: [{ value: "1" }, { value: "1" }] },
+  ]);
+  assert.deepEqual(rows, [
+    { channel: "Referral", source: "bitcointalk.org", sessions: 5, users: 2 },
+    { channel: "Organic Social", source: "t.co", sessions: 3, users: 3 },
+  ]);
 });

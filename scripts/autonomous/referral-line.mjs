@@ -107,6 +107,51 @@ export const EXCLUDED_SOURCES = ["direct", "(direct)", "github.com"];
 export const UNATTRIBUTED_SOURCES = ["(not set)", "not set", "", "(none)"];
 
 /**
+ * Reduce GA4 rows shaped `[channel, sessionSource]` + `[sessions, users]` to
+ * `[{channel, source, sessions, users}]`.
+ *
+ * This one-row-per-source table is the only honest source of a user count: a
+ * breakdown by landing page repeats a visitor under every page they landed on,
+ * so summing `users` across those rows counts one person several times. The
+ * 2026-11-16 review caught the line doing exactly that — `bitcointalk.org 5/5`
+ * when the same report's Referral table says `bitcointalk.org 5/2`, because the
+ * source has four landing rows (pillar 2/2, /liquidation 1/1, /simulator 1/1,
+ * /timeline 1/1), and the property-wide total of 40 users was reported as 22
+ * external when the honest figure was 19.
+ */
+export function sourceTotalRows(table) {
+  const rows = Array.isArray(table) ? table : [];
+  const out = [];
+  for (const row of rows) {
+    const channel = row?.dimensionValues?.[0]?.value;
+    const source = row?.dimensionValues?.[1]?.value;
+    const sessions = Number(row?.metricValues?.[0]?.value ?? 0);
+    const users = Number(row?.metricValues?.[1]?.value ?? 0);
+    if (!source || !Number.isFinite(sessions)) continue;
+    out.push({
+      channel: String(channel ?? ""),
+      source: String(source).toLowerCase(),
+      sessions,
+      users: Number.isFinite(users) ? users : 0,
+    });
+  }
+  return out;
+}
+
+/**
+ * One user count per source: the authoritative `(channel, sessionSource)` table
+ * when the report carries it, otherwise the largest single landing row for that
+ * source — a lower bound, never a sum.
+ */
+function sourceUserIndex(totals) {
+  const index = new Map();
+  for (const row of Array.isArray(totals) ? totals : []) {
+    index.set(row.source, (index.get(row.source) ?? 0) + row.users);
+  }
+  return index;
+}
+
+/**
  * Reduce GA4 rows shaped `[channel, sessionSource, landingPage]` +
  * `[sessions, users]` to `[{channel, source, landing, sessions, users}]`.
  */
@@ -141,17 +186,25 @@ export function namedSourceRows(table) {
  * Assistant, so 21 readings printed "0 named non-github referral sessions"
  * while nine such sessions were in the same 7-day window (review 2026-11-12).
  */
-export function namedSourcesLine(rows, window) {
+export function namedSourcesLine(rows, window, options = {}) {
+  const totalsIndex = sourceUserIndex(options.sourceTotals);
   const bySource = new Map();
   for (const row of rows) {
     if (!(row.sessions > 0)) continue;
     if (EXCLUDED_SOURCES.includes(row.source)) continue;
-    const entry = bySource.get(row.source) ?? { sessions: 0, users: 0, landings: new Map() };
+    const entry = bySource.get(row.source) ?? {
+      sessions: 0,
+      users: 0,
+      landings: new Map(),
+    };
     entry.sessions += row.sessions;
-    entry.users += row.users;
+    // One count per source: never the sum of a page-level breakdown.
+    entry.users = Math.max(entry.users, row.users);
     entry.landings.set(row.landing, (entry.landings.get(row.landing) ?? 0) + row.sessions);
     bySource.set(row.source, entry);
   }
+
+  const usersFor = (source, fallback) => totalsIndex.get(source) ?? fallback;
 
   const days = reportDays({ window });
   const label = days ? `named sources ${days}d:` : "named sources (window unknown):";
@@ -167,7 +220,7 @@ export function namedSourcesLine(rows, window) {
       const [landing] = [...entry.landings.entries()].sort(
         (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
       )[0];
-      return `${source} ${entry.sessions}/${entry.users} → ${landing}`;
+      return `${source} ${entry.sessions}/${usersFor(source, entry.users)} → ${landing}`;
     });
 
   let line = `${label} ${parts.join(", ")}`;
@@ -187,11 +240,19 @@ export function namedSourcesLine(rows, window) {
  * unattributed — the same three exclusions, stated in the line's own label, so
  * the count cannot be inflated by traffic the site cannot name.
  *
- * `users` is summed per source, not de-duplicated across sources: it is the
- * same arithmetic the review used to state 19/16, and a de-duplicated figure
- * would disagree with every earlier reading for no gain in meaning.
+ * `users` is one count per source, never a sum across a source's landing rows.
+ * The 2026-11-16 review's mandate (`referral-instrument-1116`) exists because the
+ * first version summed them: `bitcointalk.org` printed 5/5 by adding four
+ * landing rows (2/2, 1/1, 1/1, 1/1) where the report's own Referral table says
+ * 5 sessions / 2 users, and the headline read 22 users where the honest figure
+ * was 19. The report's `(channel, sessionSource)` table, when present, is the
+ * count; otherwise the largest landing row for that source is used — a lower
+ * bound. Cross-source de-duplication is impossible from a breakdown, so the
+ * total is capped at the property total and the cap is printed when it bites.
  */
-export function externalAudienceLine(rows, window) {
+export function externalAudienceLine(rows, window, options = {}) {
+  const totalsIndex = sourceUserIndex(options.sourceTotals);
+  const propertyUsers = Number(options.propertyUsers);
   const bySource = new Map();
   let unattributedSessions = 0;
   let unattributedUsers = 0;
@@ -200,12 +261,17 @@ export function externalAudienceLine(rows, window) {
     if (EXCLUDED_SOURCES.includes(row.source)) continue;
     if (UNATTRIBUTED_SOURCES.includes(row.source)) {
       unattributedSessions += row.sessions;
-      unattributedUsers += row.users;
+      unattributedUsers = Math.max(unattributedUsers, row.users);
       continue;
     }
-    const entry = bySource.get(row.source) ?? { sessions: 0, users: 0, landings: new Map() };
+    const entry = bySource.get(row.source) ?? {
+      sessions: 0,
+      users: 0,
+      landings: new Map(),
+    };
     entry.sessions += row.sessions;
-    entry.users += row.users;
+    // One count per source. Summing this field is the defect this fixes.
+    entry.users = Math.max(entry.users, row.users);
     entry.landings.set(row.landing, (entry.landings.get(row.landing) ?? 0) + row.sessions);
     bySource.set(row.source, entry);
   }
@@ -213,7 +279,15 @@ export function externalAudienceLine(rows, window) {
   const days = reportDays({ window });
   const label = days ? `external audience ${days}d:` : "external audience (window unknown):";
   const sessions = [...bySource.values()].reduce((sum, entry) => sum + entry.sessions, 0);
-  const users = [...bySource.values()].reduce((sum, entry) => sum + entry.users, 0);
+  let users = [...bySource.entries()].reduce(
+    (sum, [source, entry]) => sum + (totalsIndex.get(source) ?? entry.users),
+    0,
+  );
+  let capped = false;
+  if (Number.isFinite(propertyUsers) && propertyUsers > 0 && users > propertyUsers) {
+    users = propertyUsers;
+    capped = true;
+  }
 
   const parts = [...bySource.entries()]
     .sort((a, b) => b[1].sessions - a[1].sessions || a[0].localeCompare(b[0]))
@@ -221,16 +295,63 @@ export function externalAudienceLine(rows, window) {
       const [landing] = [...entry.landings.entries()].sort(
         (a, b) => b[1] - a[1] || a[0].localeCompare(b[0]),
       )[0];
-      return `${source} ${entry.sessions}/${entry.users} → ${landing}`;
+      return `${source} ${entry.sessions}/${totalsIndex.get(source) ?? entry.users} → ${landing}`;
     });
 
   const detail =
     parts.length === 0 ? "none outside Direct, github.com and unattributed" : parts.join(", ");
   let line = `${label} ${sessions} sessions / ${users} users (${detail})`;
   if (window?.start && window?.end) line += ` (window ${window.start} → ${window.end})`;
+  if (capped) line += ` — users capped at the property total of ${propertyUsers}`;
   if (unattributedSessions > 0) {
     line += ` — unattributed ${unattributedSessions} sessions / ${unattributedUsers} users ("(not set)")`;
   }
+  return line;
+}
+
+/**
+ * The seven sources an ask was actually handed to, printed whether or not they
+ * sent anything: `asked channels 7d: bitcointalk.org 5/2, x.com 2/2, …`.
+ *
+ * "The ask produced nothing" and "the ask was never measurable" are different
+ * claims, and only a line that lists every asked destination can tell them
+ * apart. `lopp.net` is here because it is the one merged, followed link; a zero
+ * on its own row is the reading that closed the linked-post experiment.
+ */
+export const ASKED_CHANNELS = [
+  "bitcointalk.org",
+  "x.com",
+  "t.co",
+  "facebook.com",
+  "theblock.co",
+  "lopp.net",
+  "chatgpt.com",
+];
+
+export function askedChannelsLine(rows, window, options = {}) {
+  const totalsIndex = sourceUserIndex(options.sourceTotals);
+  const sessionsBy = new Map();
+  const usersBy = new Map();
+  for (const row of rows) {
+    if (!(row.sessions > 0)) continue;
+    if (!ASKED_CHANNELS.includes(row.source)) continue;
+    sessionsBy.set(row.source, (sessionsBy.get(row.source) ?? 0) + row.sessions);
+    // One count per source, as above: max over rows, replaced by the source
+    // table when the report has one.
+    usersBy.set(row.source, Math.max(usersBy.get(row.source) ?? 0, row.users));
+  }
+
+  const days = reportDays({ window });
+  const label = days ? `asked channels ${days}d:` : "asked channels (window unknown):";
+  const parts = ASKED_CHANNELS.map((source) => {
+    const sessions = sessionsBy.get(source) ?? 0;
+    const users = totalsIndex.get(source) ?? usersBy.get(source) ?? 0;
+    return `${source} ${sessions}/${users}`;
+  });
+  const answered = parts.filter((part) => !part.endsWith(" 0/0"));
+  let line = `${label} ${parts.join(", ")}`;
+  if (answered.length === 0) line += " — none of them sent a visitor";
+  if (window?.start && window?.end) line += ` (window ${window.start} → ${window.end})`;
   return line;
 }
 
@@ -301,15 +422,22 @@ function printWindow(dir, wanted) {
       `referrals ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}. Run: npm run analytics -- --days=${wanted}`,
     );
     console.log(`named sources ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}.`);
+    console.log(`asked channels ${wanted}d: not measured — no ${wanted}-day GA4 report in ${dir}.`);
     return false;
   }
   const window = found.report?.window;
   const rows = namedSourceRows(found.report?.tables?.namedSources);
+  // The `(channel, sessionSource)` table is the only honest source of a user
+  // count (see sourceTotalRows); older reports do not carry it and the line
+  // falls back to one landing row per source.
+  const sourceTotals = sourceTotalRows(found.report?.tables?.sourceTotals);
+  const propertyUsers = Number(found.report?.totals?.current?.users);
   // External audience first: since 2026-11-14 it is the headline the report
   // leads with, and the referral/named-source lines are its detail.
-  console.log(externalAudienceLine(rows, window));
+  console.log(externalAudienceLine(rows, window, { sourceTotals, propertyUsers }));
   console.log(referralLine(referralRows(found.report?.tables?.referrals), window));
-  console.log(namedSourcesLine(rows, window));
+  console.log(namedSourcesLine(rows, window, { sourceTotals }));
+  console.log(askedChannelsLine(rows, window, { sourceTotals }));
   return true;
 }
 

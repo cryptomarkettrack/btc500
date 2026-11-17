@@ -5,6 +5,58 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-17 — the audience number stops over-counting people (mandate `referral-instrument-1116`), and the forum ask turns out to be sent
+
+- **Mandate `referral-instrument-1116` — EXECUTED.** `scripts/autonomous/referral-line.mjs`
+  no longer sums `totalUsers` across a source's landing-page rows; it takes one count
+  per source from a new `(sessionDefaultChannelGroup, sessionSource)` table
+  (`sourceTotalRows`, added to `scripts/analytics/fetch-ga4.ts` as `tables.sourceTotals`),
+  falls back to the largest single landing row when an older report lacks it, caps the
+  total at the property's `totals.current.users` and prints the cap when it bites, and
+  adds the mandated fourth line `asked channels 7d`. Before → after on the 11-16 file:
+  `bitcointalk.org 5/5` → **5/2**; `26 sessions / 22 users` → **26 sessions / 19 users**
+  (property total 40). Tests: `node --test scripts/autonomous/referral-line.test.mjs`
+  **27 pass / 0 fail** (5 new, including the 5/2-vs-5/5 regression and the property-total
+  assertion); `npm test` **253 pass / 0 fail**; `tsc --noEmit` ✓; `npm run build` ✓;
+  prettier + eslint clean on the three changed files.
+- **Measurement (fresh 7d GA4, window 2026-11-10 → 11-16, `ga4-2026-11-17T04-03-33.json`).**
+  125 sessions / 39 users / 229 views / 44.8% engaged. **External audience 29 sessions /
+  20 users**: google 11/5 → `/` (brand, Organic Search), facebook.com 6/6 → `/` (the same
+  single share), bitcointalk.org 5/2 → pillar, t.co 3/3 → `/`, x 3/3 → pillar, ig 1/1 → `/`;
+  1 unattributed. Against the previous window (11-09 → 11-15, 26/19) that is +3 sessions /
+  +1 user, of which +2 is google and +1 is x — noise at this volume, not a trend.
+  **Asked channels 7d: bitcointalk.org 5/2, t.co 3/3, facebook.com 6/6, chatgpt.com 0/0,
+  lopp.net 0/0, theblock.co 0/0, x.com 0/0.** chatgpt.com went 2/2 → 0/0: one window, not
+  a channel dying.
+- **The only live ask was already sent — ledger corrected from the channel.** Topic
+  `5599692` carries a post by `btc500halving` at **2026-11-16 11:40:30 AM** that is the
+  mandated text verbatim, plus a follow-up at 5:20:50 PM. So `bitcointalk-reply-1116` is
+  **sent 2026-11-16**, not pending: 14 handovers since 2026-10-27, **4 sent, 0 live unsent
+  asks**. Recorded in `outreach/STATUS.md` with the full 7-post thread. The topic's read
+  counter went 37 → 76 in a day while sessions stayed 5/2 — a scripted fetch counts as a
+  read on that forum, so reads are not people.
+- **What the strangers in that thread asked is the most useful thing today.** Two
+  independent posters asked (a) whether the result survives a different spacing — "400 or
+  600 days" — and (b) whether a decaying halving supply effect makes this window unlike
+  the first three. Both are robustness questions the site can answer from data it already
+  has (the archive + the simulator), and neither is answerable from any page it currently
+  serves. Parked as the first post-freeze content bet; not built today.
+- **Indexation unchanged: 1 of 21** (inspection `2026-11-16T04:03:41Z`, 21 rows = 21
+  sitemap locs) — the thirteenth reading at 1. Google crawled four URLs between 11-13 and
+  11-15 and kept none; Bing 0 indexed / 15 crawled. No indexation lever was offered or
+  pulled today (the 2026-11-13 closure stands to 2026-12-01).
+- **Non-brand queries 28d** (window 2026-10-16 → 11-12, `npm run nonbrand`): `bitcoin 500`
+  0/2 @54 → `/`; `500 days before next bitcoin halving` 0/1 @38 → `/`. Floor unchanged:
+  no copy work while `indexed` < 5.
+- **X: skipped, browser offline** (`tools.browse.status()` → `paired-offline`, no connected
+  browser). No post, no reply, no like; not retried. Nothing was posted from this cycle, so
+  there is no duplicate-slug risk and no verification to report.
+- **Shipped vs archive-only, stated honestly:** this commit's only diff is measurement
+  tooling, a ledger correction and this log — `git log --oneline 62e3a8a..HEAD -- src
+  public/sitemap.xml` is unmoved by it. It is a **mandate executed**, not a site ship.
+
+---
+
 ## Session 2026-11-16 (owner-approved) — the public $10,000 paper-buy record is built at `/paper-buy` (the one permitted build)
 
 - **Scope.** The owner approved the single build the 2026-11-16 partial lift permits. New files only: `src/routes/paper-buy.tsx`, `src/components/paper/PaperBuyPage.tsx`, `src/lib/paper-buy.ts`, `src/lib/paper-buy.test.ts`, `src/lib/paper-faq.ts`, plus the generated `public/sitemap.xml` entry and the tool-generated `src/routeTree.gen.ts`. No existing page's title, meta, H1, copy or internal links changed. The sitemap's `/` lastmod moved 11-11 → 11-15 because commit `0b3fc0c` (11-15) changed real homepage components and the committed sitemap was already stale; regenerating it to add the new route is a correctness fix, not an indexation lever.
@@ -424,6 +476,7 @@ also permitted — it is the single site change the partial lift allows.
 | 1b  | **X click path (pinned + tagged since 2026-11-11)**                 | 206 followers, a `btc500.net` profile link, a pinned post that now carries a UTM-tagged pillar link, and 0 x.com referral sessions in 20 readings. Measured by GA4 x.com/t.co | 9   | 1   |
 | 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                        | 4   | 3   |
 | 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~ | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), false premise (no account). None restated                                                                    | —   | —   |
+| 3   | **Is the rule a 500-day artefact?** (parked, frozen)                 | Two strangers in the BitcoinTalk thread asked it on 2026-11-12 before any cycle did: does the result survive 400/450/600-day spacing, and does a decaying halving supply effect make window 4 unlike windows 1–3? The archive + simulator already hold the data; nothing on the site answers it. Highest-value answer no competitor publishes, but it is content work and the copy ban holds while `indexed` < 5 | 8   | 1   |
 
 ## Open issues
 
@@ -493,17 +546,18 @@ also permitted — it is the single site change the partial lift allows.
   between the two cycles, so it was not published by this automation — and it
   carries no link. Every unlinked post from the account dilutes the one click path
   the cycle can measure. Not a defect the freeze lets us fix; the owner should know.
-- **Ask routes (rewritten 2026-11-16):** 13 asks handed over since 2026-10-27,
-  **3 sent** (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk
-  topic 5599692 2026-11-12), and **the third one produced the first sessions from
-  any asked channel: bitcointalk.org 5 sessions / 2 users in the 7d window ending
-  2026-11-15** (1/1 in the window ending 11-13) from a topic read 37 times —
-  13.5% sessions per read, against X's 5 sessions from ~316 views (1.6%). The live
-  ask is `bitcointalk-reply-1116` (one page, one paste, one button, the same thread,
-  due 2026-11-18). **The ledger is the source of truth, not this log:** the four
-  asks handed over between 2026-11-09 and 2026-11-13 (`x-pinned-post-with-link-1116`,
+- **Ask routes (2026-11-17): 14 asks handed over since 2026-10-27, 4 sent,
+  0 live unsent asks.** Sent: bitcoin-only#1009 2026-10-27, lopp.net#1267
+  2026-11-06 (merged 2026-11-07T20:20:30Z), the BitcoinTalk OP 2026-11-12, and
+  **the issued forum reply 2026-11-16 11:40:30 AM** — the last one was recorded
+  `sent: no` for a day because the ledger was written before the owner posted; the
+  channel won. **The third send is the first and still only asked channel that
+  produced sessions: bitcointalk.org 5 sessions / 2 users** (7d window ending
+  11-16), from a topic whose read counter went 37 → 76 in a day — the counter
+  counts scripted fetches, so it is not an audience measure. The four asks handed
+  over between 2026-11-09 and 2026-11-13 (`x-pinned-post-with-link-1116`,
   `github-awesome-blockchain-line-1124`, `theblock-news-tip-1113`,
-  `facebook-share-1114`) were all unsent on 2026-11-16 and two lapsed today;
+  `facebook-share-1114`) were all unsent and lapsed/closed on 2026-11-16;
   `github-awesome-blockchain-line-1124` re-issued a destination `STATUS.md` had
   **withdrawn on 2026-11-04**, which is how a dead route stays "live" for a week.
   **A `sent` cell is verified against the channel, never against this file.**
@@ -511,6 +565,17 @@ also permitted — it is the single site change the partial lift allows.
   only a non-github session counts. **A destination needs a merge record, not stars**
   (awesome-bitcoin: 1,358 stars, 0 of 2); #1267 satisfies this for the first time
   and produced 0 sessions in 9 days.
+- **The audience instrument was over-counting people — fixed 2026-11-17
+  (`referral-instrument-1116`).** `npm run referrals` printed `26 sessions / 22
+  users` on the 2026-11-16 file because it summed `totalUsers` across each source's
+  landing rows; the honest figure is **26 / 19** (property total 40), and
+  `bitcointalk.org` printed 5/5 where the report's own Referral table says 5/2. It
+  now takes one count per source from `tables.sourceTotals` (new, in
+  `fetch-ga4.ts`), falls back to the largest landing row for older reports, caps at
+  the property total and prints the cap, and adds the fourth line
+  `asked channels 7d` (bitcointalk.org, x.com, t.co, facebook.com, theblock.co,
+  lopp.net, chatgpt.com). **Do not reintroduce a user sum across rows** — the test
+  file pins 5/2 and the property-total ceiling.
 - **`/articles/bear-market-accumulation` — keep and leave alone.** Soft 404 set on
   a 2026-08-08 crawl; serves 200, 1,383 words, no pillar duplication.
 - **"0 non-brand" is a floor** — GSC anonymises query rows. **`lopp.net` is www-only
