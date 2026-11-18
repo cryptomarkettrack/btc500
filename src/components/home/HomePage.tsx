@@ -550,6 +550,12 @@ export function HomePage() {
               >
                 Is 500 days special? Compare 400, 500 and 600
               </Link>
+              <Link
+                to="/paper-buy"
+                className="press inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:border-primary/40 hover:text-primary"
+              >
+                Follow the public $50,000 paper buy
+              </Link>
             </div>
           </section>
         )}

@@ -57,6 +57,12 @@ not record guesses as results.
 - **X: skipped, browser offline** (`tools.browse.status()` → `paired-offline`, no
   connected browser). No post, no reply, no like, no retry. Nothing was published
   this cycle, so there is no duplicate to guard against.
+- **Mandate `paper-buy-internal-link-1117` — EXECUTED.** One server-rendered
+  `<a href="/paper-buy">` ("Follow the public $50,000 paper buy") added to the
+  homepage's "Every completed window" call-to-action row. The `Nav.tsx` tools
+  entry never reaches the HTML a crawler reads; this does. `curl -s
+  https://btc500.net/ | grep -c 'href="/paper-buy"'` → **1**. No other file
+  changed words.
 
 ---
 
