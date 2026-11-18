@@ -63,6 +63,14 @@ not record guesses as results.
   entry never reaches the HTML a crawler reads; this does. `curl -s
   https://btc500.net/ | grep -c 'href="/paper-buy"'` → **1**. No other file
   changed words.
+- **Mandate `soft-404-row-1117` — EXECUTED.** `/articles/bear-market-accumulation`
+  removed from `public/sitemap.xml` (23 → 22 locs, one row, no reorder) and
+  excluded in `scripts/sitemap.mjs` (`SITEMAP_EXCLUDED_ARTICLES`) so the next
+  regeneration cannot put it back. The page itself is untouched: still 200, still
+  indexable, still in `src/lib/articles.ts`. `sitemap:check` prints "up to date
+  (22 URLs)". Defect removal, not a lever. `src/lib/articles.test.ts` grew the
+  matching invariant: a soft-404 slug must stay a live article and stay out of
+  the sitemap, so the two files cannot drift apart silently.
 
 ---
 

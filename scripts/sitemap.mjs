@@ -30,6 +30,19 @@ const SITEMAP_PATH = join(ROOT, "public", "sitemap.xml");
 const EXCLUDED_ROUTES = new Set(["privacy", "terms", "embed"]);
 
 /**
+ * Article slugs that stay published and indexable but are left out of the
+ * sitemap, because Google reports them at a crawl status that says the sitemap
+ * entry is asking for the wrong thing.
+ *
+ * `bear-market-accumulation`: Google has it as "Soft 404" since at least
+ * 2026-08-08 (2026-11-17 review, mandate `soft-404-row-1117`). It is the only
+ * URL in the sitemap in an error state, so it was submitting an error page
+ * alongside 22 live ones. Removing the row is defect removal, not a ranking
+ * lever — the page itself is untouched and still indexable.
+ */
+const SITEMAP_EXCLUDED_ARTICLES = new Set(["bear-market-accumulation"]);
+
+/**
  * Component folders shared by every page — a change there is not a page change.
  *
  * src/components/home/ used to be listed here. It was wrong: those components
@@ -165,6 +178,7 @@ function collect() {
     if (name.startsWith("articles.")) {
       const slug = name.slice("articles.".length);
       if (archived.has(slug)) continue;
+      if (SITEMAP_EXCLUDED_ARTICLES.has(slug)) continue;
     }
     const routePath = join("src", "routes", file);
     const routeAbs = join(ROOT, routePath);

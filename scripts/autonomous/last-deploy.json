@@ -1,17 +1,30 @@
 {
-  "generated": "2026-11-17",
-  "summary": "no site change: the audience-measuring script was fixed (one user count per source, plus the asked-channels line) and the forum ask was verified as already sent",
+  "generated": "2026-11-18",
+  "summary": "three shipped asks: a 400/500/600-day spacing answer page with its dataset, one crawlable homepage link to the paper record, and the sitemap soft-404 row removed",
   "checks": [
     {
-      "path": "/",
-      "contains": "500 days before the next Bitcoin halving is 29 November 2026",
+      "path": "/halving-spacing",
+      "contains": "Does the 500-day rule survive 400 or 600 days?",
+      "status": 200
+    },
+    { "path": "/halving-spacing", "contains": "2011-bottom artefact", "status": 200 },
+    { "path": "/halving-spacing", "contains": "20.78x", "status": 200 },
+    {
+      "path": "/data/halving-spacing.json",
+      "contains": "btc500/halving-spacing@1",
       "status": 200
     },
     {
-      "path": "/paper-buy",
-      "contains": "Scheduled. $50,000 not deployed",
+      "path": "/",
+      "contains": "Is 500 days special? Compare 400, 500 and 600",
       "status": 200
     },
-    { "path": "/data/500-day-cycles.json", "contains": "btc500/500-day-cycles@1", "status": 200 }
+    { "path": "/", "contains": "href=\"/paper-buy\"", "status": 200 },
+    { "path": "/sitemap.xml", "contains": "https://btc500.net/halving-spacing", "status": 200 },
+    {
+      "path": "/articles/bear-market-accumulation",
+      "contains": "The Consensus Bottom Is a Trap",
+      "status": 200
+    }
   ]
 }

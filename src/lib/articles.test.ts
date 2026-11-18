@@ -45,6 +45,14 @@ const CONTRACTED_SLUGS = [
   "strongest-hands",
 ];
 
+/**
+ * Published, indexable, but deliberately not advertised in the sitemap because
+ * Google reports the URL at "Soft 404" — a sitemap row for it asks Google to
+ * fetch an error page. Kept in sync with `SITEMAP_EXCLUDED_ARTICLES` in
+ * `scripts/sitemap.mjs` (2026-11-17 review, mandate `soft-404-row-1117`).
+ */
+const SOFT_404_SLUGS = ["bear-market-accumulation"];
+
 const machineReadable = [
   ["src/content/llms.txt", read("../content/llms.txt")],
   ["src/content/llms-full.txt", read("../content/llms-full.txt")],
@@ -72,9 +80,23 @@ describe("archived articles", () => {
   it("keeps every live article in the sitemap", () => {
     for (const slug of articleSlugs) {
       if (isArchivedArticle(slug)) continue;
+      if (SOFT_404_SLUGS.includes(slug)) continue;
       assert.ok(
         sitemap.includes(`/articles/${slug}<`),
         `live article missing from sitemap: ${slug}`,
+      );
+    }
+  });
+
+  it("drops soft-404 rows without touching the page", () => {
+    // A soft-404 row is defect removal, not a ranking lever: the page must stay
+    // in the article list (so it stays reachable and indexable) while the
+    // sitemap stops asking Google to crawl an error.
+    for (const slug of SOFT_404_SLUGS) {
+      assert.ok(articleSlugs.includes(slug), `soft-404 slug is no longer a live article: ${slug}`);
+      assert.ok(
+        !sitemap.includes(`/articles/${slug}<`),
+        `soft-404 article still in sitemap: ${slug}`,
       );
     }
   });
