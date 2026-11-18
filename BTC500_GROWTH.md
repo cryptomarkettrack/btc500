@@ -5,6 +5,41 @@ not record guesses as results.
 
 ---
 
+## Results review 2026-11-18 (daily, streak 24) — `failing`
+
+- **Outcomes, all of them.** `indexed` **1/22** (inspection 2026-11-18T07:32Z, 22
+  rows = 22 `sitemap` locs) for the **28th** consecutive reading since
+  2026-10-22. GSC 7d (2026-11-09 → 11-15): **7 clicks / 21 impressions**, 10
+  brand impressions and 7 brand clicks on `btc500` at position 1.6, **2
+  non-brand impressions** (`500 days before next bitcoin halving` 0/1 @38,
+  `bitcoin 500` 0/1 @69), `positions4to20` **0**. Bing **0/22**. GA4 7d
+  (2026-11-11 → 11-17): 125 sessions / 40 users, **Direct 88/18**, github.com
+  7/1 (self-referral, §10(b)), **non-github non-Direct 30 sessions / 21 users**
+  against 29/20 the week before (+1/+1, noise); bitcointalk.org **5/2** for the
+  third consecutive window.
+- **Compliance: 4 of 4 shippable mandates executed, and it moved nothing.**
+  `spacing-answer-1117` (569fb38 — `/halving-spacing` 200,
+  `/data/halving-spacing.json` 500-day median 20.7838x, sitemap 22 locs),
+  `paper-buy-internal-link-1117` (bc47204 — `curl | grep -c 'href="/paper-buy"'`
+  → 1), `soft-404-row-1117` (7275365 — 23 → 22 locs, page still 200),
+  `btc-talk-send-measure-1117` (executed as measurement: 5/2 unchanged, so the
+  2026-11-16 reply moved nothing). `x-poster-node-1117` is owner-only, untouched,
+  due 2026-11-20.
+- **The input/output mismatch is the finding.** 8 runs, 8 `shipped`, 0 failures,
+  3 site changes, 0 new indexed pages, 0 non-brand clicks. The new URL is
+  `URL is unknown to Google` with `lastCrawl: never`; Bing fetched it
+  2026-11-18T04:17:34Z and declined it.
+- **Bing is closed as a tested surface (2026-11-18 review).** 0/22 six days
+  after a full 21-URL submission, with `/` and the pillar crawled again
+  2026-11-18T04:18:19Z / 04:19:07Z and declined. It is reading the same site
+  Google refuses; stop reading it daily.
+- **Strategy change, in `GROWTH_PROMPT.md`:** no new URL until `indexed` ≥ 2 or
+  2026-12-02; any future page needs an existing GSC impression row for the query
+  it answers; title/meta work permitted on `/` only. Row 0d is shipped and closed
+  as a lever. The 29 Nov paper record is the product; the countdown is inventory.
+
+---
+
 ## Session 2026-11-18 — the 400/500/600 spacing table the forum asked for, built from our own archive
 
 - **Mandate `spacing-answer-1117` — EXECUTED.** New route `/halving-spacing` +
@@ -481,6 +516,7 @@ since 2026-10-23.
 
 | date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-18 | failing | A full week executed and nothing moved: 8 runs / 8 shipped / 0 failures, **4 of 4 shippable mandates done**, and still `indexed` **1/22 for the 28th reading**, **0 non-brand clicks** in 27 days, Bing **0/22**, the new `/halving-spacing` **unknown to Google** (`lastCrawl: never`) and bitcointalk.org **5/2 for the third window in a row** — so the 11-16 forum reply produced nothing and the runner's "ask effect produced 5 sessions" credits a send that predates the ask. `/` is the only URL Google serves (10 brand impressions / 7 clicks @1.6) and carries all 7 clicks; the whole non-brand footprint is 2 impressions at 38 and 69. **Strategy changed:** no new URL until `indexed` ≥ 2 or 2026-12-02, a page needs an existing GSC impression row for its query, title/meta only on `/`; Bing closed as a tested surface; spacing page closed as a lever. Streak 24 |
 | 2026-11-17 | failing | `indexed` **1/22 for the 13th reading** (the runner's `2 → 1` regression is the 2026-11-03 → 11-04 drop still inside its 14-day window); Bing crawled `/` 2026-11-16T07:33:31Z and the pillar 2026-11-17T05:28:38Z and kept **0/22**; non-brand clicks 0 in 26 readings, the only non-brand impression at position 38; external audience **26/19 → 29 sessions / 20 users** but 95 of 125 sessions are us (Direct 86/18 + github 9/1); `bitcointalk.org 5/2` **predates** the 2026-11-16 11:40 reply, so ask-effect is unproven until a window starting 11-16; the X poster has **never run** (bash on a `.mjs`, 3 slots, 0 posts); `/paper-buy` has **zero crawlable inbound links** (`grep -c paper` = 0 on `/` and the pillar) and is `Discovered - currently not indexed` 12 days before entry; the forum OP promises **$10,000** while the page and the X post say **$50,000**. Fourth freeze output authorised: the 400/500/600 spacing answer. Streak 23 |
 | 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22 |
 | 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21 |
@@ -502,6 +538,10 @@ since 2026-10-23.
    may not be offered as an indexation fix. Prove the rest of the freeze per cycle
    with `git diff --stat <freeze-sha>..HEAD -- src public/sitemap.xml` — that diff
    must contain only the new record's files.
+   **Superseded in part on 2026-11-18** by `GROWTH_PROMPT.md` → "No new URL until
+   the served URL is answered": no new URL until `indexed` ≥ 2 or 2026-12-02, a
+   page needs an existing GSC impression row for the query it answers, and the
+   only title/meta work permitted on any page is `/`'s.
    0a. **The paper record is the post-buy-date product.** The countdown reads 13
    days on 2026-11-16 and is worth zero on 2026-11-30. From the buy date every
    cycle's report opens with `paper record: entry $X on 2026-11-29, day N, $Y now,
@@ -523,9 +563,13 @@ since 2026-10-23.
 2. **`runner-repairs-1114` (OWNER, 7th statement):** 2026-11-07 status row
    absent, `dirty_paths_note()` inline at `run-growth-cycle.sh:111/:197/:345`,
    no `status-note.sh`, `git add -A` at `run-review-cycle.sh:443/:450`.
-3. **`bing-verdict-1118` (due 2026-11-18)** — Bing indexed / crawled / unknown
-   for all 21 URLs against the 2026-11-12 full submission; if `indexed` is still 0
-   at six days, Bing leaves the list of untested surfaces.
+3. **`bing-verdict-1118` — READ 2026-11-18: 0/22, surface CLOSED.** Six days
+   after the full 21-URL submission, and after `/` (2026-11-18T04:18:19Z) and the
+   pillar (04:19:07Z) were crawled again and declined, indexed is still **0** of
+   **22**. Bing is reading the same pages Google refuses; it is not an untested
+   surface and must not be reported as one. Bing readiness stays a process check
+   (22 sitemap URLs, IndexNow accepted); the indexation signal is read weekly, not
+   daily.
 4. **Rules that fire soon:** 2026-11-19 — no crawl of `/` after 2026-11-12 → the
    daily post drops to twice a week, no new owner ask, weekly measurement + one
    link action only. `/` was last crawled **2026-11-05T07:50:37Z** (read
@@ -541,7 +585,7 @@ also permitted — it is the single site change the partial lift allows.
 
 | #   | Bet                                                                 | Why it can move the needle                                                                                                                                                    | I   | E   |
 | --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
-| 0d  | **Is the rule a 500-day artefact? — AUTHORISED 2026-11-17**         | Promoted from row 3 by the 2026-11-17 review as the freeze's fourth permitted output. Two strangers asked it in the only thread that has produced sessions; the opening post promised the table five days ago and nothing on the site answers it. 400/500/600 numbers are already computed from `public/btc-usd-max.csv` and the 500 row reproduces `/data/500-day-cycles.json` exactly. Measured by bitcointalk.org sessions and new-route landings, **not** by indexation |
+| 0d  | ~~Is the rule a 500-day artefact?~~ **SHIPPED 2026-11-18, CLOSED as a lever** | Built as `/halving-spacing` + `/data/halving-spacing.json` (569fb38) because two strangers asked it in the only thread that produced sessions. **Result so far: 0 landings, 0 Google crawl (`lastCrawl: never`), Bing fetched and declined 2026-11-18T04:17:34Z, bitcointalk.org still 5/2.** The 7-day test (a landing or a forum session for this page by 2026-11-25) is the last word on "content is the constraint"; if it fails, no further content is proposed until indexation moves | — | — |
 | 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**     | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk and only the owner can fix the post (ask `bitcointalk-spacing-correction-1117`). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0 | 10  | 1   |
 | 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measured as a post-merge crawl and a lopp.net session — the crawl came 48s after our own Request Indexing and the session never came; experiment **closed 2026-11-16**. Read as an input, not a result | 10  | 0   |
 | 1b  | ~~X click path (pinned + tagged)~~ — **DEMOTED 2026-11-17**         | The scheduled poster has never run: `net.btc500.x-post-{am,md,pm}.plist` execute `/bin/bash post-daily.mjs`, and every slot logs `const: command not found`. 3 slots × 30 days = 0 posts; the only post is the hand-made one of 2026-11-16, and x.com/t.co delivered 6 sessions / 6 users in 7d. A channel that cannot publish cannot be a bet until the plist is fixed (owner mandate) | 3   | 1   |

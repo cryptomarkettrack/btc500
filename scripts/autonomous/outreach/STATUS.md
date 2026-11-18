@@ -833,3 +833,35 @@ topic as its evidence.
 2026-11-16), **0 live unsent asks**. No new ask is issued by this cycle — the mandate
 list is the reviewer's, and a cycle that invents an ask while none is open is exactly
 the substitution the 2026-11-06 review deleted.
+
+## 2026-11-18 — the forum ask is narrowed, and the thread now has the answer on the site
+
+**Route re-verified today, in full.** `GET https://bitcointalk.org/index.php?topic=5599692.0`
+→ **HTTP 200**, title "500-day rule: entry Nov 29, 2026 - every completed window went
+underwater first", **9 posts**, "Read 103 times" (79 on 11-17), last post
+2026-11-17 10:20:43 AM. The opening post still says "a public **$10,000** paper buy";
+`https://btc500.net/paper-buy` still says **$50,000**, and the site now publishes the
+spacing table the thread asked for at `https://btc500.net/halving-spacing`. So the
+route is alive, the instruction is executable, and the payload exists.
+
+**`bitcointalk-spacing-correction-1117` (handed over 2026-11-17) is unsent and is
+restated narrower, not re-pasted — one handover, one shrink, per §10(c).** The 11-17
+version ran to nine lines with an explanatory paragraph before the table. The 11-18
+version is four lines and one link: the three spacing rows, then the correction. Same
+channel, same thread, same due date. Nothing new is prepared and no second destination
+is opened: this is the only live ask.
+
+**Ask state after this entry: 16 handovers since 2026-10-27, 4 sent, 1 live unsent**
+(`bitcointalk-spacing-correction-1118`, due 2026-11-20).
+
+**Two channels lapsed unsent, recorded as never tested, not as failed:**
+`theblock-news-tip-1113` reached its by-date 2026-11-17 with `sent: no`, and
+`facebook-share-1114` is due 2026-11-19 and unsent — if it is still unsent on 11-19 it
+goes `lapsed`, and the 6 sessions / 6 users that channel produced stays a one-off
+rather than a channel we can repeat. Neither is restated.
+
+**What this ask cannot fix.** `bitcointalk.org` has read **5 sessions / 2 users** in
+each of the last three 7-day windows, so a fourth post in the same thread is a
+two-user channel at best. It is issued because the thread asked a question the site
+now answers in public and the opening post carries a number that is wrong — not
+because five more reads will index 21 pages.

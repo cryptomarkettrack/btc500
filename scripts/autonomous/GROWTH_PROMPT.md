@@ -746,6 +746,36 @@ Evidence for the freeze: 5 runs and 4 shipped + 1 archive-only in the 7 days to
 0 referring domains. 18 of 21 URLs are declined or never fetched. Only an
 external link changes that, and only the owner can send one.
 
+### No new URL until the served URL is answered (review 2026-11-18)
+
+The 2026-11-18 review measured a week in which three site changes shipped
+(`/halving-spacing` plus its JSON, one homepage link, one sitemap row removed),
+8 cycles ran with 0 failures, and the results were: `indexed` **1/22** for the
+28th consecutive reading, **0** non-brand clicks, and the new page **unknown to
+Google** (`lastCrawl: never`) hours after it shipped. That ends the "one more
+page" hypothesis; it is now a rule, not a preference.
+
+Binding until either `indexed` reaches 2 or **2026-12-02**:
+
+- **No new URL, route, section or article.** The permitted output of a cycle is
+  (a) the `/paper-buy` dated line, (b) a mandate, (c) a measurement, (d) an asset
+  a named, live ask needs. Nothing else counts as work. An empty cycle that
+  reports the numbers and stops is compliant; a new page is not.
+- **A page may only be added if a Google Search Console impression row already
+  exists for the query it answers**, quoted from
+  `scripts/search-console/output/*.json` with the query, position and date. Our
+  own coined term is not demand. The only non-brand rows that exist today are
+  `500 days before next bitcoin halving` (0 clicks / 1 impression / position 38)
+  and `bitcoin 500` (0 / 1 / 69).
+- **Title and meta work is permitted on `/` and nowhere else.** `/` is the only
+  URL Google serves (`Submitted and indexed`, 10 brand impressions, 7 clicks,
+  position 1.6). The 2026-11-14 ban ("no copy work for non-brand clicks while
+  `indexed` < 5") was written for pages that are never served; this is the one
+  exception it missed. Every other page's title, meta and copy stay frozen.
+- If the served page's title change has produced no non-brand impression above
+  position 30 by **2026-12-02**, title and meta work stops permanently and the
+  site's only lever is distribution.
+
 ### Order of work — never skip ahead
 
 1. `preflight.json` notes (site down, stale archive, overdue last run).
