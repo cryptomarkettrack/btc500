@@ -5,6 +5,61 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-18 — the 400/500/600 spacing table the forum asked for, built from our own archive
+
+- **Mandate `spacing-answer-1117` — EXECUTED.** New route `/halving-spacing` +
+  `/data/halving-spacing.json` (`btc500/halving-spacing@1`), one sitemap row
+  (22 → 23) and one server-rendered link on `/`. `src/lib/halving-spacing.ts` is
+  pure and tested (7 tests, including one that locks the four 500-day multiples
+  against the real archive, so the page and the simulator cannot quote two
+  histories).
+- **The 500-day row reproduces the simulator exactly:** 29.8977× / 34.1823× /
+  11.6699× / 6.5983×, entry dates 2011-07-17 / 2015-02-25 / 2018-12-28 /
+  2022-12-07, in-window lows −83.65 / −11.49 / −11.94 / −2.54% — the same fields
+  as `/data/500-day-cycles.json`. That is the method proof, not an assertion.
+- **400 days:** 4 windows, median **12.8506×**, worst **3.9634×**, median low
+  **−7.55%**, worst low **−27.22%**; all four closed above entry. The 2012 row is
+  **244.4715×** because its entry (2011-10-25, $3.16) sits 28 days before the 2011
+  low — labelled as a bottom artefact on the page, in the JSON and in the test.
+- **600 days:** 3 windows (2012 excluded — 2011-04-08 predates the archive's
+  first row 2011-07-17), median **7.4903×**, worst **4.5544×**, median low
+  **−49.61%**, worst low **−55.27%**; all three closed above entry.
+- **What the page claims, and only that:** every computable window at every
+  spacing closed above its entry; multiples fall cycle over cycle in every
+  spacing (400: 244.5 / 17.9 / 7.8 / 4.0 · 500: 29.9 / 34.2 / 11.7 / 6.6 · 600:
+  n/a / 28.2 / 7.5 / 4.6), so the decay objection is not an artefact of the
+  500-day choice; the longer window is *not* the better one in this archive. No
+  claim that 500 is optimal.
+- **Not an indexation lever, by its own rule.** Measured only by (a)
+  bitcointalk.org sessions and (b) landings on `/halving-spacing` (0 today — the
+  page is hours old). Indexed **1/22** (inspection `2026-11-17`, 22 rows = 22
+  sitemap locs); the sitemap is 23 from today, so tomorrow's inspection is the
+  next valid denominator.
+- **sitemap side effect, disclosed:** regeneration also corrected `/simulator`
+  lastmod `2026-11-11 → 2026-11-16` (truthful — the 2026-11-16 $10k→$50k sweep
+  edited `src/routes/simulator.tsx`) and `/` `11-15 → 11-18` (this commit edits
+  `src/components/home/HomePage.tsx`).
+- **Measurement (runner's 7d GA4, window 2026-11-10 → 2026-11-16,
+  `ga4-2026-11-17T07-30-07.json`).** 125 sessions / 39 users / 229 views /
+  44.8% engaged; **external audience 29 sessions / 20 users** (google 11/5 → `/`,
+  facebook.com 6/6 → `/`, bitcointalk.org 5/2 → pillar, t.co 3/3 → `/`, x 3/3 →
+  pillar, ig 1/1 → `/`, unattributed 1/1). Against 26/19 the week before: +3
+  sessions, +1 user — noise at this volume. Channels: Direct 86/18, Referral
+  14/3, Organic Social 13/13, Organic Search 11/5, Unassigned 1/1. **No AI
+  Assistant row in this window** (chatgpt.com 0/0 in 7d, 10/5 in 28d).
+- **Mandate `btc-talk-send-measure-1117` — EXECUTED (measurement).** bitcointalk.org
+  is **5 sessions / 2 users** in the window ending 2026-11-16, the same figure as
+  the window ending 11-15, so the 2026-11-16 11:40 reply moved nothing measurable.
+  **`/paper-buy` landings: 0** (landing table: `/` 95, pillar 18, `/timeline` 4,
+  `(not set)` 3, `/liquidation` 2, `/**` 1, `/insider-trading` 1, `/simulator` 1).
+  Recorded per the mandate: **a 79-read thread with four replies produced 2 users;
+  reads are not audience.** The read counter is not quoted as reach again.
+- **X: skipped, browser offline** (`tools.browse.status()` → `paired-offline`, no
+  connected browser). No post, no reply, no like, no retry. Nothing was published
+  this cycle, so there is no duplicate to guard against.
+
+---
+
 ## Session 2026-11-17 — the audience number stops over-counting people (mandate `referral-instrument-1116`), and the forum ask turns out to be sent
 
 - **Mandate `referral-instrument-1116` — EXECUTED.** `scripts/autonomous/referral-line.mjs`

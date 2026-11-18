@@ -16,6 +16,8 @@ import {
 } from "@/lib/btc.functions";
 import { emptyDcaCycles, getDcaData } from "@/lib/dca.functions";
 import { unavailableSimulatorResult, getSimulatorData } from "@/lib/simulator.functions";
+import { getSpacingData } from "@/lib/spacing.functions";
+import { emptySpacingReport } from "@/lib/halving-spacing";
 import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
 import { getBtcPriceForDate } from "@/lib/historical-price.server";
 
@@ -92,6 +94,24 @@ export const simulatorPreviewQuery = queryOptions({
         "unknown",
         "Historical data could not be loaded.",
       );
+    }
+  },
+  staleTime: HOUR,
+  refetchInterval: HOUR,
+});
+
+/**
+ * The halving-spacing test (400 / 500 / 600 days), computed server-side from
+ * the shared daily-close archive. Same stale window as the simulator.
+ */
+export const spacingQuery = queryOptions({
+  queryKey: ["halving-spacing"],
+  queryFn: async () => {
+    try {
+      return await getSpacingData();
+    } catch (err) {
+      console.error("[halving-spacing] query failed:", err);
+      return emptySpacingReport();
     }
   },
   staleTime: HOUR,

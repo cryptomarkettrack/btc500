@@ -534,7 +534,7 @@ export function HomePage() {
               ))}
             </div>
 
-            <div className="mt-8">
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 to="/simulator"
                 onClick={() => trackCta("historical_returns", "/simulator")}
@@ -543,6 +543,12 @@ export function HomePage() {
                 <Calculator className="h-4 w-4" />
                 Calculate your returns
                 <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/halving-spacing"
+                className="press inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:border-primary/40 hover:text-primary"
+              >
+                Is 500 days special? Compare 400, 500 and 600
               </Link>
             </div>
           </section>

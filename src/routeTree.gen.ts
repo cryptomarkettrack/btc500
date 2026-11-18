@@ -19,6 +19,7 @@ import { Route as DcaRouteImport } from './routes/dca'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
+import { Route as HalvingSpacingRouteImport } from './routes/halving-spacing'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
@@ -46,6 +47,7 @@ import { Route as ArticlesSolarEclipseBitcoinHalvingRouteImport } from './routes
 import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.why-bitcoin-pumped'
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as Data500DayCyclesDotjsonRouteImport } from './routes/data.500-day-cycles[.]json'
+import { Route as DataHalvingSpacingDotjsonRouteImport } from './routes/data.halving-spacing[.]json'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -96,6 +98,11 @@ const EmbedKitRoute = EmbedKitRouteImport.update({
 const HalvingDatesRoute = HalvingDatesRouteImport.update({
   id: '/halving-dates',
   path: '/halving-dates',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HalvingSpacingRoute = HalvingSpacingRouteImport.update({
+  id: '/halving-spacing',
+  path: '/halving-spacing',
   getParentRoute: () => rootRouteImport,
 } as any)
 const InsiderTradingRoute = InsiderTradingRouteImport.update({
@@ -243,6 +250,12 @@ const Data500DayCyclesDotjsonRoute = Data500DayCyclesDotjsonRouteImport.update({
   path: '/data/500-day-cycles.json',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DataHalvingSpacingDotjsonRoute =
+  DataHalvingSpacingDotjsonRouteImport.update({
+    id: '/data/halving-spacing.json',
+    path: '/data/halving-spacing.json',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -255,6 +268,7 @@ export interface FileRoutesByFullPath {
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
+  '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -282,6 +296,7 @@ export interface FileRoutesByFullPath {
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
+  '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -294,6 +309,7 @@ export interface FileRoutesByTo {
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
+  '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -321,6 +337,7 @@ export interface FileRoutesByTo {
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
+  '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -334,6 +351,7 @@ export interface FileRoutesById {
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
   '/halving-dates': typeof HalvingDatesRoute
+  '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
@@ -361,6 +379,7 @@ export interface FileRoutesById {
   '/articles/why-bitcoin-pumped': typeof ArticlesWhyBitcoinPumpedRoute
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
+  '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -375,6 +394,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
+    | '/halving-spacing'
     | '/insider-trading'
     | '/liquidation'
     | '/llms-full.txt'
@@ -402,6 +422,7 @@ export interface FileRouteTypes {
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
+    | '/data/halving-spacing.json'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -414,6 +435,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
+    | '/halving-spacing'
     | '/insider-trading'
     | '/liquidation'
     | '/llms-full.txt'
@@ -441,6 +463,7 @@ export interface FileRouteTypes {
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
+    | '/data/halving-spacing.json'
   id:
     | '__root__'
     | '/'
@@ -453,6 +476,7 @@ export interface FileRouteTypes {
     | '/embed'
     | '/embed-kit'
     | '/halving-dates'
+    | '/halving-spacing'
     | '/insider-trading'
     | '/liquidation'
     | '/llms-full.txt'
@@ -480,6 +504,7 @@ export interface FileRouteTypes {
     | '/articles/why-bitcoin-pumped'
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
+    | '/data/halving-spacing.json'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -493,6 +518,7 @@ export interface RootRouteChildren {
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
   HalvingDatesRoute: typeof HalvingDatesRoute
+  HalvingSpacingRoute: typeof HalvingSpacingRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
   LiquidationRoute: typeof LiquidationRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
@@ -505,6 +531,7 @@ export interface RootRouteChildren {
   TimelineRoute: typeof TimelineRoute
   WhenToSellBitcoinAfterHalvingRoute: typeof WhenToSellBitcoinAfterHalvingRoute
   Data500DayCyclesDotjsonRoute: typeof Data500DayCyclesDotjsonRoute
+  DataHalvingSpacingDotjsonRoute: typeof DataHalvingSpacingDotjsonRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -577,6 +604,13 @@ declare module '@tanstack/react-router' {
       path: '/halving-dates'
       fullPath: '/halving-dates'
       preLoaderRoute: typeof HalvingDatesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/halving-spacing': {
+      id: '/halving-spacing'
+      path: '/halving-spacing'
+      fullPath: '/halving-spacing'
+      preLoaderRoute: typeof HalvingSpacingRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/insider-trading': {
@@ -768,6 +802,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Data500DayCyclesDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/data/halving-spacing.json': {
+      id: '/data/halving-spacing.json'
+      path: '/data/halving-spacing.json'
+      fullPath: '/data/halving-spacing.json'
+      preLoaderRoute: typeof DataHalvingSpacingDotjsonRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -825,6 +866,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,
   HalvingDatesRoute: HalvingDatesRoute,
+  HalvingSpacingRoute: HalvingSpacingRoute,
   InsiderTradingRoute: InsiderTradingRoute,
   LiquidationRoute: LiquidationRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
@@ -837,6 +879,7 @@ const rootRouteChildren: RootRouteChildren = {
   TimelineRoute: TimelineRoute,
   WhenToSellBitcoinAfterHalvingRoute: WhenToSellBitcoinAfterHalvingRoute,
   Data500DayCyclesDotjsonRoute: Data500DayCyclesDotjsonRoute,
+  DataHalvingSpacingDotjsonRoute: DataHalvingSpacingDotjsonRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
