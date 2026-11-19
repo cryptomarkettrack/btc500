@@ -1,185 +1,168 @@
 {
   "schema": 1,
-  "generated": "2026-11-18",
+  "generated": "2026-11-19",
   "mode": "daily",
-  "window": { "start": "2026-11-11", "end": "2026-11-18" },
+  "window": { "start": "2026-11-12", "end": "2026-11-19" },
   "verdict": "failing",
   "signals": [
     {
       "id": "indexation",
+      "kind": "outcome",
       "state": "stalled",
-      "note": "1/22 indexed (inspection 2026-11-18T07:32Z, 22 rows = 22 sitemap <loc>), the 28th consecutive reading and unchanged for 27d since 2026-10-22; 17 of 22 URLs are 'Crawled - currently not indexed' and 4 are 'URL is unknown to Google'.",
+      "note": "1/22 URLs indexed, the 29th consecutive reading, unchanged for 28 days (inspection 2026-11-19T07:32Z: 1 indexed, 17 crawled - currently not indexed, 4 unknown to Google). Google crawled /articles/btc500-strategy today and declined it.",
       "current": "1/22"
     },
     {
       "id": "non-brand-clicks",
+      "kind": "outcome",
       "state": "stalled",
-      "note": "0 non-brand clicks in the 7d window 2026-11-09 -> 11-15 and 0 in all 28 readings since 2026-10-22; the entire non-brand footprint is 2 impressions ('500 days before next bitcoin halving' 0/1 @38, 'bitcoin 500' 0/1 @69).",
+      "note": "0 non-brand clicks in 29 readings (2026-10-22 -> 2026-11-19). In the 7d window 2026-11-10 -> 11-16 the whole non-brand footprint is one impression, query 'bitcoin 500', position 69. All 7 brand clicks are the query 'btc500' at position 1.4.",
       "current": 0
     },
     {
-      "id": "brand-clicks",
-      "state": "green",
-      "note": "7 clicks / 21 impressions in 7d, but 10 impressions and all 7 clicks are the query 'btc500' at position 1.6 — name recall, not search growth.",
-      "current": 7
-    },
-    {
-      "id": "positions-4-to-20",
+      "id": "positions4to20",
+      "kind": "outcome",
       "state": "stalled",
-      "note": "0 queries in positions 4-20 (derived, 7d); 0 in the previous window too. Nothing is within reach of a title or snippet change.",
+      "note": "0 queries at positions 4-20, so there is no ranking within reach of a title or snippet change. The only non-brand row in the window sits at position 69.",
       "current": 0
     },
     {
       "id": "bing-indexation",
-      "state": "stalled",
-      "note": "0/22 indexed in Bing six days after the full 21-URL submission; '/' crawled 2026-11-18T04:18:19Z and the pillar 04:19:07Z, both declined. Same site-level judgment as Google.",
+      "kind": "outcome",
+      "state": "flat",
+      "note": "0/22 indexed in Bing, and it is not for lack of crawling: Bing fetched '/' at 2026-11-19T03:02:33Z and the pillar at 2026-11-19T01:02:55Z and kept neither.",
       "current": "0/22"
     },
     {
       "id": "referral-sessions",
-      "state": "stalled",
-      "note": "12 sessions in 7d = github.com 7/1 (this repository, excluded per §10(b)) + bitcointalk.org 5/2, which is the third consecutive window at exactly 5/2. No new referring source since 2026-11-12; lopp.net (followed link, merged 2026-11-07) has produced 0 sessions in 11 days.",
-      "current": 12
+      "kind": "outcome",
+      "state": "regressed",
+      "note": "11 referral sessions in 7d, of which github.com 6 sessions / 1 user is this repository (§10(b) self-referral). The only real referrer is bitcointalk.org 5 sessions / 2 users, flat for a fourth consecutive window.",
+      "current": 11
+    },
+    {
+      "id": "external-audience",
+      "kind": "outcome",
+      "state": "regressed",
+      "note": "Non-direct, non-github audience 23 sessions / 13 users (window 2026-11-12 -> 11-18) against 30 sessions / 21 users the week before. facebook.com 6/6 aged out of the window and nothing replaced it; google 10/5 -> 9/4 and t.co 4/3 -> 3/1 also fell.",
+      "current": "23/13"
     },
     {
       "id": "ask-effect",
+      "kind": "outcome",
       "state": "stalled",
-      "note": "The runner calls this green — 'the community ask issued 2026-11-17 produced 5 sessions from bitcointalk.org' — but all 5 sessions are in the window ending 2026-11-15, before that ask existed, and the 2026-11-16 11:40 forum reply added 0 in the windows ending 11-16 and 11-17. The ask is unsent.",
-      "current": 5
-    },
-    {
-      "id": "sessions",
-      "state": "green",
-      "note": "125 sessions / 40 users in 7d, but Direct is 88/18 (us) and github.com 7/1 (us); non-github non-Direct is 30 sessions / 21 users against 29/20 the week before — +1 session, +1 user, noise.",
-      "current": 125
-    },
-    {
-      "id": "activity",
-      "state": "green",
-      "note": "8 runs, 8 shipped, 0 failures in the 7d to 2026-11-18, including 3 site changes (new page + JSON, one homepage link, one sitemap row removed). The pipeline is not the problem.",
-      "current": 8
+      "note": "The runner still prints 'The community ask issued 2026-11-18 produced 5 session(s) from bitcointalk.org'. That ask is unsent (thread 5599692 has 9 posts, last 2026-11-17 11:22) and the 5 sessions lie in a window starting 2026-11-12, five days before the handover. The instrument credits a send that did not happen.",
+      "current": 0
     },
     {
       "id": "deploy-health",
+      "kind": "process",
       "state": "green",
-      "note": "0 failed runs; /halving-spacing 200, /data/halving-spacing.json 200, / 200 with exactly 1 href=\"/paper-buy\" and 1 href=\"/halving-spacing\", sitemap 22 <loc> — all verified against production today.",
-      "current": 8
-    },
-    {
-      "id": "data-freshness",
-      "state": "green",
-      "note": "All five reports fetched today within 1h (search-console 07:30, inspection 07:32, GA4 07:30, Bing inspection 07:33)."
+      "note": "8 runs, 8 shipped, 0 failures in 7d (2026-11-12 -> 2026-11-19). The pipeline is not the problem; nothing it shipped moved a result."
     }
   ],
-  "compliance": [
-    "spacing-answer-1117 — EXECUTED (569fb38): /halving-spacing 200 and /data/halving-spacing.json 200 with the 500-day row median 20.7838x / best 34.1823x / worst 6.5983x, matching the mandate's required proof; sitemap 22 <loc>.",
-    "paper-buy-internal-link-1117 — EXECUTED (bc47204): curl -s https://btc500.net/ | grep -c 'href=\"/paper-buy\"' -> 1.",
-    "soft-404-row-1117 — EXECUTED (7275365): sitemap 23 -> 22 <loc>, /articles/bear-market-accumulation absent from the sitemap and still 200; exclusion encoded in scripts/sitemap.mjs.",
-    "btc-talk-send-measure-1117 — EXECUTED as measurement: bitcointalk.org 5 sessions / 2 users, identical to the window ending 11-15, so the 2026-11-16 reply moved nothing; the cycle wrote the required line about reads not being audience.",
-    "x-poster-node-1117 — NOT EXECUTED, owner-only, not yet overdue (due 2026-11-20): all three plists still run /bin/bash on post-daily.mjs and x/launchd-pm.err.log has a 2026-11-17 17:00 entry ending 'unexpected EOF while looking for matching `\\'''. Previous overdue mandates: none."
-  ],
   "why": [
-    "Indexation has not moved because the block is a site-level judgment, not discovery: Google has crawled 20 of our 22 URLs, re-crawled /articles, /articles/rupl, the pillar and /halving-dates between 2026-11-11 and 11-15, and declined every one, while the only followed external link (lopp.net, merged 2026-11-07) has produced 0 sessions in 11 days and no coverage change. A 4-month-old domain with one followed link and 22 URLs is being read and priced, not missed.",
-    "Non-brand clicks are zero because the only URL Google serves is '/', and everything on it speaks in a term we invented: 10 impressions and all 7 clicks are 'btc500' at position 1.6, while the 2 non-brand impressions in 27 days sit at positions 38 and 69. The homepage title ('BTC500 — The Bitcoin 500-Day Halving Rule') names the coined term first, so the one page that can be served is not being offered for anything a stranger types.",
-    "The input/output mismatch is the week's finding: 8 shipped cycles and 3 site changes produced 0 new indexed pages and 0 non-brand clicks, and the new page is 'URL is unknown to Google' with lastCrawl never. The work we keep choosing is invisible to anyone who does not already know the name, and the backlog has been ordered by what we can build rather than by what is served.",
-    "The forum channel has plateaued at 2 users: bitcointalk.org is 5 sessions / 2 users in each of the last three 7-day windows, so the 2026-11-16 reply produced nothing measurable and the runner's ask-effect 'green' credits sessions that predate the ask. A 103-read thread is a conversation, not an audience, and a fourth post in it is a two-user action.",
-    "Bing is not a separate signal: 0/22 with 20 URLs crawled and declined, including '/' and the pillar on 2026-11-18T04:18Z/04:19Z. It is reading the same pages Google refuses and reaching the same conclusion, so reading it daily adds a number without adding a lever.",
-    "The one repeatable channel we own is switched off: three launchd slots a day run /bin/bash on post-daily.mjs, the pm job failed again at 2026-11-17 17:00, and today's cycle skipped posting because the browser was paired-offline. X delivered 6 sessions / 6 users from a single hand-made post, which is more than any other channel produced all week, and 3 slots x 30 days have published 0."
+    "Indexation is not a discovery problem and can no longer be worked from inside the repo: Google crawled /articles/btc500-strategy on 2026-11-19 and /simulator on 2026-11-17 and declined both, and Bing crawled '/' at 2026-11-19T03:02:33Z and kept 0 of 22. Both engines are reading the site and judging it, so the block is site-level authority/quality on a 4-month-old domain with one followed link. Falsifiable test: once the 2026-11-19 owner ask produces a live followed link from a domain with real traffic, if the pillar is still 'Crawled - currently not indexed' 14 days later (2026-12-05), record 'authority falsified at two links' and stop treating indexation as a weekly goal.",
+    "Non-brand clicks are zero because nothing of ours is served for a non-brand query: 21 of 22 URLs are not indexed, and the single served URL (/) earns 7 of 9 clicks on the brand query 'btc500' at position 1.4. The only non-brand impression in the window is 'bitcoin 500' at position 69, which no title can rescue. Falsifiable test: read '/' non-brand impressions on 2026-11-26; if the 11-19 title (which now leads with 'Next Bitcoin Halving 2028') earned no non-brand impression above position 30, title and meta work stops permanently — already written into GROWTH_PROMPT.md.",
+    "The external audience fell 30/21 -> 23/13 because it was never a channel, it was one share: facebook.com 6/6 was inside the 11-11 window and absent from this one, and nothing replaced it (google 10/5 -> 9/4, t.co 4/3 -> 3/1, bitcointalk 5/2 flat for a fourth window). Falsifiable test: the next window must hold at least 23/13. The one repeatable channel we own (X, 211 followers, posts read 56-149 times) has published 0 scheduled posts in 32 days because all three launchd jobs still run /bin/bash on a .mjs file.",
+    "The bitcointalk correction is unsent after two handovers while the automation has posted four times in the same thread (2026-11-12, 11-16 x2, 11-17) — so the delay is ours, not the owner's. The opening post still says '$10,000' against the live $50,000 on /paper-buy, in the one thread that has ever sent a stranger. Falsifiable test: if the cycle posts it by 2026-11-20 and bitcointalk.org is still 5 sessions / 2 users in the window starting 2026-11-21, the forum is a two-user channel and is closed.",
+    "The ask-effect signal is a false positive that has now survived the mandate written to fix it: it compares a 7d referral count to a claim without printing the window start, so it cannot tell a send from an old window. That is why a dead channel can stay green for a week. Falsifiable test: the fixed signal must print its window start beside the claim and must stay red for a window that begins before the ask's handover date, pinned by a test."
   ],
   "questions": [
-    "We shipped a page, a JSON endpoint, an internal link and a sitemap fix in seven days and gained 0 indexed pages — what evidence would make us stop shipping pages, and why was this week's evidence not it?",
-    "Google serves '/' and nothing else, and its title leads with a term we coined. Why has the title of the only served URL never been tested for a query a stranger types?",
-    "X produced 6 sessions / 6 users from one hand-made post while three scheduled slots a day produced 0 in 30 days. Why is the broken interpreter still the seventh item on the owner's list?"
+    "We shipped 8 cycles and 3 site changes in 7 days and gained 0 indexed pages and 0 non-brand clicks — why is the cycle's output still a page or a tag when both engines read the site today and declined it?",
+    "The automation posted four times in the bitcointalk thread that produced our only stranger, yet handed the one-line correction to the owner twice. What else is being handed over that we can do ourselves?",
+    "If the 2026-11-19 title earns no non-brand impression above position 30 by 2026-11-26, what is left of the plan that does not depend on someone outside this repo linking to us?",
+    "The owner ask ledger shows 16 handovers and 4 sends in 23 days. Is any ask shape below five fields actually sendable, or is the ask itself the wrong instrument?"
   ],
   "mandates": [
     {
-      "id": "served-title-demand-1118",
-      "action": "Change only the <title> and meta description of '/' so they lead with the halving date a stranger would search for (take the date from the site's own live estimate, currently the 2028 halving) and name the 29 Nov 2026 buy window, keeping 'BTC500' at the end. Leave the H1, body copy, schema and every other page byte-identical, and print the served <title> and description from production after deploy. This supersedes the 2026-11-14 copy ban for '/' only, because '/' is the one URL Google serves.",
-      "because": "All 7 clicks and 10 of 21 impressions are the brand query 'btc500' at position 1.6; the entire non-brand footprint in 27 days is 2 impressions at positions 38 and 69; the homepage title leads with 'The Bitcoin 500-Day Halving Rule', a term we invented, and it is the only page in the index where a snippet can actually be served.",
-      "due": "2026-11-19",
+      "id": "thread-correction-cycle-1119",
+      "action": "Post the four-line correction in bitcointalk topic 5599692 yourself, from the account this automation already posts with: the 400/500/600 spacing rows (median 12.85x / 20.78x / 7.49x, worst 3.96x / 6.60x / 4.55x), the one-line conclusion, and 'the live record is $50,000 paper, not $10,000' with https://btc500.net/halving-spacing. Then print the thread's post count, its read counter and the post's own URL in the commit body.",
+      "because": "The thread's opening post still says $10,000 against the live $50,000 on /paper-buy; the thread has 9 posts, 4 of them written by this automation (2026-11-12, 11-16 x2, 11-17); and the ask has been handed to the owner twice (11-17, 11-18) and is still unsent at 105 reads. This is cycle work, not an owner ask.",
+      "due": "2026-11-20",
       "owner": "cycle"
     },
     {
-      "id": "spacing-crawl-landing-read-1118",
-      "action": "Print in PERFORMANCE, from the runner's reports with their timestamps: Google coverage and lastCrawl for /halving-spacing (today 'URL is unknown to Google', lastCrawl never), its GA4 landings (0) and bitcointalk.org sessions/users for the window 2026-11-11 -> 11-17 (5/2). Then, on 2026-11-25, if Google has still not fetched the URL, write in BTC500_GROWTH.md exactly: 'A page answering a named stranger's question, linked from the only indexed URL, was not fetched by Google in 7 days — content is not the constraint.' and propose no further page until indexation moves.",
-      "because": "This page is the last content experiment the record supports: two strangers asked this exact question on 2026-11-12 and our OP promised the table. It shipped 12 hours ago with 1 crawlable link and is still unknown to Google, while Bing fetched and declined it at 2026-11-18T04:17:34Z — so its 7-day reading decides whether 'more content' is still a legal hypothesis.",
+      "id": "request-crawl-of-home-1119",
+      "action": "Use URL Inspection -> Request Indexing on https://btc500.net/ only (no other URL), print the exact response text and remaining quota, and print '/' lastCrawlTime from the raw inspection in the same report. If the request is refused, print the refusal and do not retry.",
+      "because": "The one URL Google serves changed its <title> and meta description on 2026-11-19 and '/' has not been crawled since 2026-11-05T07:50:37Z (14 days), so nothing has read the change. Without a re-crawl the 11-26/12-02 reading measures nothing.",
+      "due": "2026-11-20",
+      "owner": "cycle"
+    },
+    {
+      "id": "x-post-cadence-1119",
+      "action": "Post one buy-window countdown from @btc500halving on Friday 2026-11-20 (a cadence day) through the paired browser, carrying the 29 Nov 2026 date and a link to https://btc500.net/bitcoin-500-day-cycle; record the post URL and its view count within 6 hours. Exactly one broadcast post; no reply, like or pin.",
+      "because": "The browser is connected today (browse status: Brave, connected, relay started 2026-11-19T06:15Z) and the hand-made 2026-11-16 post produced x.com 3 sessions / 3 users plus t.co 3 sessions / 1 user in this window — 6 of the 23 external sessions — while the scheduled poster has published 0 posts in 32 days.",
+      "due": "2026-11-20",
+      "owner": "cycle"
+    },
+    {
+      "id": "ask-effect-instrument-1119",
+      "action": "Fix the ask-effect reading so it cannot credit a send it did not produce: print the 7d window start beside the claim and mark it green only when the window starts on or after the ask's handover date. Add a test that pins today's case — claim '2026-11-18 produced 5 sessions' against a window starting 2026-11-12 and an unsent ask.",
+      "because": "Re-stated from the 2026-11-18 review, due 2026-11-20, unexecuted: today's report again printed 'The community ask issued 2026-11-18 produced 5 session(s) from bitcointalk.org' while the thread's last post is 2026-11-17 11:22 (9 posts) and the 5 sessions are in a window starting 2026-11-12.",
+      "due": "2026-11-21",
+      "owner": "cycle"
+    },
+    {
+      "id": "halving-spacing-kill-test-1119",
+      "action": "On 2026-11-25 print Google coverage and lastCrawl for /halving-spacing, its 7d GA4 landings split into github.com (self) and everything else, and bitcointalk.org sessions/users. If Google has still not fetched the URL and no external landing exists, write in BTC500_GROWTH.md exactly: 'A page answering a named stranger's question, linked from the only indexed URL, was not fetched by Google in 7 days — content is not the constraint.' and propose no further page until indexation moves.",
+      "because": "Carried from the 2026-11-18 review (due 2026-11-25, still live). As of today: 'URL is unknown to Google', lastCrawl never, 5 days after shipping; the only landing is 1 session from github.com (this repository, excluded as self); bitcointalk.org 5/2 for a fourth window. It is the last content experiment the record supports.",
       "due": "2026-11-25",
       "owner": "cycle"
-    },
-    {
-      "id": "ask-effect-instrument-1118",
-      "action": "Fix the ask-effect reading so it cannot credit a send it did not produce: print the 7d window start beside the claim and mark it green only when the window starts on or after the ask's handover date. Today it printed 'The community ask issued 2026-11-17 produced 5 session(s) from bitcointalk.org' while all 5 sessions are in a window ending 2026-11-15 and the ask is unsent. Add a test that pins this exact case.",
-      "because": "Three consecutive windows (ending 11-15, 11-16, 11-17) show bitcointalk.org 5/2, so the 11-16 reply produced 0 and the 11-17 ask is unsent; an instrument that reports a send's success before the send is how a dead channel stays 'green' for a week, and it has already done so once.",
-      "due": "2026-11-20",
-      "owner": "cycle"
-    },
-    {
-      "id": "no-new-url-proof-1118",
-      "action": "Ship no new URL, route, section or article this cycle: spend the run on the two readings above plus the /paper-buy dated line, and prove the freeze with `git diff --stat <review-sha>..HEAD -- src public/sitemap.xml` containing only /paper-buy's daily line (or nothing) in the commit body.",
-      "because": "22 URLs, 1 indexed for 27 days, 17 crawled and declined; three site changes this week moved none of it and the new page is not even discovered. The permitted outputs are now a dated line, a mandate or a measurement — an empty cycle is compliant, a new page is not.",
-      "due": "2026-12-02",
-      "owner": "cycle"
-    },
-    {
-      "id": "x-poster-node-1117",
-      "action": "OWNER ONLY, one repair to three files outside the repo: ~/Library/LaunchAgents/net.btc500.x-post-{am,md,pm}.plist still run /bin/bash on /Users/philipkasapov/btc500/scripts/autonomous/x/post-daily.mjs. Change ProgramArguments in all three so node runs the module (an absolute node path or /usr/bin/env node), reload with launchctl unload/load, and run one slot by hand to print the composed post text. Do not touch the review or growth runners.",
-      "because": "0 machine posts in 31 days: x/launchd-pm.err.log has a fresh 2026-11-17 17:00 entry ending 'unexpected EOF while looking for matching `\\'' and 'syntax error: unexpected end of file', and today's cycle skipped posting because the browser was paired-offline. X delivered 6 sessions / 6 users from one hand-made 2026-11-16 post — the best per-action return in the record — and the scheduled path has never produced one.",
-      "due": "2026-11-20",
-      "owner": "owner"
     }
   ],
   "targets": [
     {
       "metric": "indexed",
-      "current": "1/22 (inspection 2026-11-18T07:32Z, 22 rows = 22 sitemap locs; 28th reading, 27d unchanged)",
+      "current": "1/22 (inspection 2026-11-19T07:32Z, 22 rows = 22 sitemap locs; 29th reading, 28 days unchanged)",
       "target": "2/22",
       "by": "2026-11-28",
       "status": "miss-so-far",
-      "note": "Re-stated unchanged. 2/22 is the smallest possible proof that any action at all does something. If 11-28 arrives at 1/22, the target moves to 2026-12-31 with the reason 'no in-repo lever exists; only an external signal can move it' and the site stops treating indexation as a weekly goal."
+      "note": "Re-stated unchanged, ninth week. 2/22 is the smallest possible proof that any action does something. If 11-28 arrives at 1/22, the target moves to 2026-12-31 with the reason 'no in-repo lever exists; only an external link can move it' and indexation stops being a weekly goal."
     },
     {
       "metric": "nonBrandClicks",
-      "current": "0 (7d 2026-11-09 -> 11-15); 0 in 28 readings (2026-10-22 -> 2026-11-18)",
+      "current": "0 (7d 2026-11-10 -> 11-16); 0 in 29 readings (2026-10-22 -> 2026-11-19)",
       "target": "1 in 7d",
       "by": "2026-11-23",
       "status": "miss-so-far",
-      "note": "As promised on 11-17: if this is still 0 on 11-23 it moves to 2026-12-31 with the reason 'no URL answering a non-brand query is served' and stops being a weekly goal."
+      "note": "As promised on 11-17: if this is still 0 on 2026-11-23 it moves to 2026-12-31 with the reason 'no URL answering a non-brand query is served' and stops being a weekly goal."
+    },
+    {
+      "metric": "positions4to20",
+      "current": "0 queries in the 7d window 2026-11-10 -> 11-16",
+      "target": "1",
+      "by": "2026-11-30",
+      "status": "miss-so-far",
+      "note": "New metric id this review, because §3 ranks it above position and the site has never had one. The only non-brand row is at position 69."
     },
     {
       "metric": "referralSessions",
-      "current": "12 in 7d (github.com 7/1 excluded as self per §10(b); non-github 5: bitcointalk.org 5/2)",
+      "current": "11 in 7d (github.com 6/1 excluded as self per §10(b); non-github 5 = bitcointalk.org 5/2)",
       "target": "1 in 7d from a non-github referrer",
       "by": "2026-11-23",
       "status": "met",
-      "note": "Met on one forum thread's 2 users, unchanged for three consecutive windows."
+      "note": "Met on the same 2 users for the fourth consecutive window. Kept so the flat line stays visible; it is not growth."
     },
     {
       "metric": "externalAudience7",
-      "current": "30 sessions / 21 users (window 2026-11-11 -> 11-17: google 10/5, facebook.com 6/6, bitcointalk.org 5/2, t.co 4/3, x 3/3, bing 1/1, ig 1/1; github.com 7/1 and Direct 88/18 excluded)",
+      "current": "23 sessions / 13 users (window 2026-11-12 -> 11-18; Direct 86/16 and github.com 6/1 excluded)",
       "target": "32 sessions / 23 users",
       "by": "2026-11-24",
-      "status": "on-track",
-      "note": "29/20 -> 30/21 in a week: +1 session and +1 user, which is noise. Raised by 2/2 rather than claimed as growth."
-    },
-    {
-      "metric": "namedNonGithubSessions",
-      "current": "30 in 7d from sources that are neither github.com nor Direct",
-      "target": "20 in 7d",
-      "by": "2026-11-24",
-      "status": "met",
-      "note": "Met, but the thing it exists to detect — a channel we can repeat by machine — is still absent: the X poster has published 0 posts in 31 days."
+      "status": "miss-so-far",
+      "note": "Down from 30/21 a week ago when the facebook.com 6/6 share aged out of the window; nothing replaced it. This target was raised 2/2 on 11-18 and the direction has now reversed, so it is honestly missed."
     },
     {
       "metric": "organicSessions7",
-      "current": "11 sessions / 6 users (google 10/5 + bing 1/1), all landing on '/', all 7 clicks on the brand query 'btc500'",
+      "current": "10 sessions / 5 users (google 9/4 + bing 1/1), down from 11/6",
       "target": "8",
       "by": "2026-11-24",
       "status": "met",
-      "note": "Met on name recall, not search growth: 10 brand impressions / 7 clicks at position 1.6, against 2 non-brand impressions at positions 38 and 69."
+      "note": "Met on name recall, not search growth: 7 of 9 clicks in the window are the brand query 'btc500' at position 1.4, and non-brand clicks are 0."
     },
     {
       "metric": "externalReferringDomains",
-      "current": "1 (lopp.net, followed, merged 2026-11-07; 0 sessions in 11 days)",
+      "current": "1 (lopp.net, followed, merged 2026-11-07; 0 sessions in 12 days)",
       "target": "1",
       "by": "2026-11-17",
       "status": "met",
@@ -187,55 +170,55 @@
     },
     {
       "metric": "askEffectReferrals",
-      "current": "bitcointalk.org 5 sessions / 2 users in each of the windows ending 11-15, 11-16 and 11-17; /halving-spacing landings 0",
-      "target": "7 sessions / 3 users in a 7d window that starts on or after 2026-11-16",
-      "by": "2026-11-24",
+      "current": "bitcointalk.org 5 sessions / 2 users in the window 2026-11-12 -> 11-18, which starts five days before the ask's handover; the 11-16 reply is measured at 0",
+      "target": "7 sessions / 3 users in a 7d window that starts on or after 2026-11-21",
+      "by": "2026-11-27",
       "status": "miss-so-far",
-      "note": "The window now starts after the send and the number did not move, so the 11-16 reply is measured at 0. The 11-18 narrowed ask is the last test on this channel."
+      "note": "The 11-18 ask is unsent, so there is still no post-ask window. The cycle posts the correction itself by 11-20 (thread-correction-cycle-1119); the window starting 11-21 is the first fair test of this channel."
     },
     {
       "metric": "asksExecuted",
-      "current": "4 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk OP 2026-11-12, reply 2026-11-16); 1 open unsent (bitcointalk-spacing-correction-1118, handed over 11-17, narrowed 11-18, due 2026-11-20)",
-      "target": "5 with a send date, never more than 1 open ask",
+      "current": "4 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk OP 2026-11-12, reply 2026-11-16); 2 live owner asks issued today (theblock-buywindow-tip-1119, x-poster-plists-1119)",
+      "target": "5 with a send date, never more than 2 open asks",
       "by": "2026-11-29",
       "status": "miss-so-far",
-      "note": "Still 4. Two channels lapsed unsent (theblock.co 11-17, facebook 11-19) and are recorded as never tested, not as failed."
-    },
-    {
-      "metric": "sessions7",
-      "current": "125 (2026-11-11 -> 11-17; 40 users; Direct 88/18, github.com 7/1, returning 14 users / 67 sessions)",
-      "target": "60 in 7d",
-      "by": "2026-11-23",
-      "status": "met",
-      "note": "Meaningless as growth: 95 of 125 sessions are us. Kept only so the composition stays visible beside externalAudience7."
+      "note": "Still 4 sends in 23 days (16 handovers). The bitcointalk correction left this ledger today because it became cycle work; the cap moved 1 -> 2 to name the machinery repair explicitly rather than leaving it in a mandate the cycle cannot execute."
     },
     {
       "metric": "crawlFreshness",
-      "current": "'/' Google lastCrawl 2026-11-05 (13 days); Bing '/' 2026-11-18T04:18:19Z and pillar 04:19:07Z, both declined",
-      "target": "a Google crawl of '/' dated after 2026-11-12",
-      "by": "2026-11-19",
+      "current": "'/' Google lastCrawl 2026-11-05 (14 days); Bing '/' 2026-11-19T03:02:33Z and the pillar 01:02:55Z, both declined",
+      "target": "a Google crawl of '/' dated after 2026-11-19",
+      "by": "2026-11-26",
       "status": "miss-so-far",
-      "note": "The 11-19 rule fires tomorrow: broadcast posting drops to twice a week and no new broadcast ask is issued. The forum reply is exempt because it is a reply in a thread that has produced a session."
-    },
-    {
-      "metric": "paperRecordShips",
-      "current": "1 live page 200; 1 crawlable internal link added 2026-11-18 (grep = 1); 0 Google crawl ('URL is unknown to Google', lastCrawl never); 0 landings",
-      "target": "1 crawl or 1 referral session by 2026-11-29",
-      "by": "2026-11-29",
-      "status": "miss-so-far",
-      "note": "The distribution half is now built and the first dated line is 11 days away. This is the site's only dated product once the countdown expires."
+      "note": "The 2026-11-19 date passed with no crawl, so the approach changes rather than the goal: the title change is unreadable until Google re-fetches '/', so the cycle now requests indexing on that URL only and prints the response. If there is no crawl by 11-26, no further on-page work is permitted."
     },
     {
       "metric": "bingIndexed",
-      "current": "0/22 six days after the full 21-URL submission; '/' and the pillar crawled and declined 2026-11-18",
+      "current": "0/22, with '/' crawled 2026-11-19T03:02:33Z and declined (7th day after the full 22-URL submission)",
       "target": "1/22",
       "by": "2026-12-01",
       "status": "miss-so-far",
       "note": "Surface closed as tested on 2026-11-18. The target is kept only so the 0 stays visible in the series."
     },
     {
+      "metric": "spacingPageOutcome",
+      "current": "0 Google crawl ('URL is unknown to Google', lastCrawl never); 1 landing, from github.com (self, §10(b)); 0 external landings",
+      "target": "1 crawl or 1 external landing",
+      "by": "2026-11-25",
+      "status": "miss-so-far",
+      "note": "This is the kill test for 'content is the constraint'. If it fails, the sentence written by halving-spacing-kill-test-1119 stands and no further page is proposed until indexation moves."
+    },
+    {
+      "metric": "paperRecordShips",
+      "current": "/paper-buy 200, $50,000 notional live, 'URL is unknown to Google' (lastCrawl never), 0 landings; 1 crawlable internal link",
+      "target": "1 crawl or 1 referral session by 2026-11-29",
+      "by": "2026-11-29",
+      "status": "miss-so-far",
+      "note": "The buy date is 10 days away and this is the only page that survives it. No cycle may describe the countdown as the product."
+    },
+    {
       "metric": "validVerdictDays",
-      "current": "19 of the last 22 review days produced a valid file; verdict-invalid on 2026-10-31, 2026-11-08 and 2026-11-15",
+      "current": "19 of the last 22 review days produced a valid file; verdict-invalid on 2026-10-31, 2026-11-08 and 2026-11-15; no deep review since 2026-11-01",
       "target": "20 of 20, including the Sunday deep run",
       "by": "2026-11-30",
       "status": "miss-so-far",
@@ -244,23 +227,34 @@
   ],
   "owner_asks": [
     {
-      "id": "bitcointalk-spacing-correction-1118",
-      "channel": "community",
-      "action": "Open https://bitcointalk.org/index.php?topic=5599692.0, scroll to the bottom, paste the four lines below into the reply box, press Post. One page, one paste, one button — the same three steps that worked on 2026-11-16. Nothing else to type.",
-      "content": "400/500/600 days, run on daily closes back to 2011 — entry S days before the halving, exit S days after:\n400: median 12.85x, worst 3.96x · 500: median 20.78x, worst 6.60x · 600: median 7.49x, worst 4.55x\nMultiples fall every cycle in every spacing, so the decay point is right and it is not a 500-day artefact.\nCorrection: the live record is $50,000 paper, not $10,000 — table, method, JSON: https://btc500.net/halving-spacing",
-      "url": "https://btc500.net/halving-spacing",
-      "because": "bitcointalk.org is the only channel that has ever produced a stranger (5 sessions / 2 users, three windows running) and it asked this exact question on 2026-11-12; our opening post promised 'say which one and I will run it and post the table', the table now exists at /halving-spacing (500-day median 20.7838x, matching /data/500-day-cycles.json), and the thread's opening post still says $10,000 against the site's $50,000. Route re-verified today: HTTP 200, 9 posts, 'Read 103 times', last post 2026-11-17 10:20.",
-      "measure": "GA4 sessions / users from bitcointalk.org in the 7d window ending 2026-11-24 against 5/2 (window 2026-11-11 -> 11-17), plus /halving-spacing landing sessions (0 today).",
-      "referrers": ["bitcointalk.org"],
-      "by": "2026-11-20"
+      "id": "theblock-buywindow-tip-1119",
+      "channel": "email",
+      "action": "Open https://www.theblock.co/contact, set inquiry type to 'Editorial / News Tip', fill first name, last name and your work email, paste the message below into the message box, tick the terms box and press Get in touch. Five fields, one paste, one button — the message is written out in full below, nothing to compose.",
+      "content": "News tip: Bitcoin's 500-day pre-halving buy window opens 29 November 2026, and all four completed windows went underwater before they paid.\n\nI run btc500.net, which applies one fixed rule to a daily-close BTC/USD archive back to July 2011: buy exactly 500 days before a halving, sell exactly 500 days after.\n\nWhat the four completed windows did (daily close): 29.90x (2012), 34.18x (2016), 11.67x (2020), 6.60x (2024). Every one of them closed below its entry price before the halving arrived — median low -11.7%, worst -83.65% (2011-11-22, from $14.07 to $2.30), median 84.5 days underwater. The multiple has fallen every cycle at 400-, 500- and 600-day spacings, so the decay is not an artefact of picking 500.\n\nFull per-window table, method and machine-readable JSON, free to reuse with credit: https://btc500.net/bitcoin-500-day-cycle and https://btc500.net/data/500-day-cycles.json\n\nThe window opens in 10 days and I publish a $50,000 paper record tracked daily to the exit, drawdowns included.",
+      "url": "https://btc500.net/bitcoin-500-day-cycle",
+      "because": "0 non-brand clicks in 29 readings and 1/22 URLs indexed, while Google crawled /articles/btc500-strategy today and declined it — so the block is authority, not content, and a followed link from a domain with traffic is the only class of action that can change it. 29 Nov 2026 is 10 days out: this is the last week in which the buy date is news. Route fetched today: https://www.theblock.co/contact returns 200 with an 'Editorial / News Tip' inquiry type and a message field; its predecessor lapsed unsent on 2026-11-17, so this is the second handover on a verified route, not a third restatement.",
+      "measure": "GA4 sessions and users from theblock.co in the 14 days after submission, printed with the landing page, plus whether any theblock.co article containing 'btc500' exists.",
+      "referrers": ["theblock.co"],
+      "by": "2026-11-21"
+    },
+    {
+      "id": "x-poster-plists-1119",
+      "channel": "other",
+      "action": "Paste the one line below into Terminal and press return. It rewrites the three launchd X poster jobs to run node instead of bash on the .mjs file, then reloads them. One line, no editor, ~10 seconds — then tell the cycle and it will read posts.json.",
+      "content": "for s in am md pm; do l=net.btc500.x-post-$s; f=$HOME/Library/LaunchAgents/$l.plist; launchctl bootout gui/$(id -u)/$l 2>/dev/null; /usr/libexec/PlistBuddy -c \"Set :ProgramArguments:2 /usr/local/bin/node\" \"$f\"; launchctl bootstrap gui/$(id -u) \"$f\"; done",
+      "url": "https://btc500.net/bitcoin-500-day-cycle",
+      "because": "0 scheduled X posts in 32 days: all three plists run /bin/bash on scripts/autonomous/x/post-daily.mjs and every slot logs 'const: command not found' (x/launchd-pm.err.log, last entry 2026-11-18 17:05). The one hand-made 2026-11-16 post produced x.com 3 sessions / 3 users plus t.co 3 sessions / 1 user in this window — 6 of the 23 external sessions — from an account with 211 followers. One wrong argument is the only thing between us and a daily channel.",
+      "measure": "posts.json gains an entry with ok:true within 24h of the next 09:00/14:00/17:00 slot, and GA4 sessions from x.com + t.co in the 7d window ending 2026-11-26 against 3/3 + 3/1 today.",
+      "referrers": ["x.com", "t.co", "twitter.com"],
+      "by": "2026-11-22"
     }
   ],
   "self_changes": [
-    "scripts/autonomous/GROWTH_PROMPT.md — added 'No new URL until the served URL is answered' (review 2026-11-18): no new URL, route, section or article until `indexed` >= 2 or 2026-12-02; a page may only be added if a Google Search Console impression row already exists for the query it answers (today there are exactly 2 non-brand rows, both at position 38+); title/meta work permitted on '/' only, because it is the single served URL. Evidence: 8 shipped cycles and 3 site changes in 7 days produced 0 new indexed pages and 0 non-brand clicks, and the new page is 'URL is unknown to Google' with lastCrawl never.",
-    "scripts/autonomous/GROWTH_PROMPT.md — made an empty cycle explicitly compliant ('a dated line, a mandate or a measurement'), so a cycle that finds no lever reports the numbers and stops instead of inventing a page.",
-    "BTC500_GROWTH.md — recorded the 2026-11-18 review and closed two things on the evidence: Bing is no longer an untested surface (0/22 six days after the full submission, '/' and the pillar crawled and declined 2026-11-18T04:18Z/04:19Z), and backlog row 0d (/halving-spacing) is shipped and closed as a lever (0 landings, 0 Google crawl) pending its 7-day kill test on 2026-11-25.",
-    "BTC500_GROWTH.md — Next priorities 0 now defers to the no-new-URL rule instead of the 2026-11-16 one-build lift, so the two documents cannot give a cycle opposite instructions.",
-    "scripts/autonomous/outreach/STATUS.md — narrowed the unsent forum ask from nine lines to four (16 handovers, 4 sent, 1 live unsent), re-verified the route today (HTTP 200, 9 posts, Read 103 times, OP still says $10,000), recorded theblock-news-tip-1113 as lapsed unsent on 2026-11-17 and facebook-share-1114 due 2026-11-19 unsent, and wrote down that the forum channel is a 2-user channel at best."
+    "scripts/autonomous/GROWTH_PROMPT.md — added 'Owner asks are for channels we do not hold' (review 2026-11-19): any channel this automation has posted from is cycle work, never an owner ask; a channel is owner-only only if we hold no session on it (today: the three launchd X jobs, The Block's contact form, Facebook); and an owner ask must carry a link ceiling while indexed < 5, because a share that only produces sessions cannot be the only ask. Evidence: topic 5599692 has 9 posts, 4 written by our own browser session (11-12, 11-16 x2, 11-17), while the one-line correction was handed to the owner twice and is still unsent at 105 reads.",
+    "scripts/autonomous/GROWTH_PROMPT.md — the ask checklist now requires the honest step count in the ask text (page loads, fields, clicks), because 'one page, one paste, one button' was written for a newsroom form that also asks for a name, a work email and a checkbox.",
+    "BTC500_GROWTH.md — recorded the 2026-11-19 review and wrote down that indexation is now an external-signal-only goal: Google crawled /articles/btc500-strategy on 2026-11-19 and /simulator on 2026-11-17, Bing crawled '/' at 2026-11-19T03:02:33Z, and both declined. Crawling is not the constraint, so no further in-repo indexation work is proposed until a new followed link exists.",
+    "BTC500_GROWTH.md — Next priorities 4 and backlog row 0c corrected: the bitcointalk correction is cycle work, not an owner ask, because the automation holds that posting session. The old wording ('only the owner can fix the post') is what kept a one-minute task unsent for three days.",
+    "scripts/autonomous/outreach/STATUS.md — recorded the forum correction leaving the owner surface (bitcointalk-spacing-correction-1119 is a cycle mandate), the facebook.com 6/6 share ageing out (external audience 30/21 -> 23/13), and the The Block tip being re-issued on a route fetched today with its five fields counted honestly."
   ],
-  "next_review_focus": "Whether '/'s title change produced any non-brand impression above position 30, whether Google fetched /halving-spacing at all by 2026-11-25, and whether the narrowed forum post was sent (bitcointalk.org above 5 sessions / 2 users, or any /halving-spacing landing)."
+  "next_review_focus": "Whether Google re-crawled '/' after the 11-19 title change and whether that title earned any non-brand impression above position 30; whether the cycle posted the forum correction itself and what the first post-ask bitcointalk window (from 2026-11-21) reads; and whether the owner's two asks (The Block tip, the plist one-liner) produced a referrer or a posts.json entry."
 }

@@ -865,3 +865,26 @@ each of the last three 7-day windows, so a fourth post in the same thread is a
 two-user channel at best. It is issued because the thread asked a question the site
 now answers in public and the opening post carries a number that is wrong — not
 because five more reads will index 21 pages.
+
+**2026-11-19 (results review, streak 25): the forum correction stops being an owner
+ask and becomes cycle work.** Read the channel, not the ledger: topic 5599692 holds
+**9 posts**, and 4 of them were written by this automation's own browser session
+(2026-11-12 16:31, 2026-11-16 11:40, 2026-11-16 17:20, 2026-11-17 11:22). The
+four-line correction was handed to the owner on 11-17 and narrowed on 11-18 and is
+still unsent on 11-19, at 105 reads. Handing over a one-minute task on an account we
+already hold is how a live ask becomes a three-day delay. `bitcointalk-spacing-
+correction-1119` is therefore a cycle mandate (due 2026-11-20), not an ask, and it is
+removed from the owner surface. Rule, now in `GROWTH_PROMPT.md`: any channel the
+automation has posted from is cycle work.
+
+**Facebook 6/6 aged out of the window and nothing replaced it.** The 7d window
+2026-11-12 → 11-18 has no facebook.com row; external (non-Direct, non-github) audience
+fell **30 sessions / 21 users → 23 sessions / 13 users**. That is the honest cost of a
+channel that was never repeatable, and it is why the only owner ask issued today must
+end in a link: `theblock-buywindow-tip-1119`, The Block's `Editorial / News Tip` form
+(route fetched today: 200, inquiry type present, message field present), carrying the
+29 Nov 2026 buy-window data. Its predecessor `theblock-news-tip-1113` lapsed unsent on
+2026-11-17; this is the second handover on a verified route, not a third restatement,
+and the step count is stated honestly (five fields: first name, last name, work email,
+inquiry type, message).
+

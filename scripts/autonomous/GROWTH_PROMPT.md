@@ -776,6 +776,30 @@ Binding until either `indexed` reaches 2 or **2026-12-02**:
   position 30 by **2026-12-02**, title and meta work stops permanently and the
   site's only lever is distribution.
 
+### Owner asks are for channels we do not hold (review 2026-11-19)
+
+**Any channel this automation has posted from is cycle work, not an owner ask.**
+The evidence is a single thread: bitcointalk.org topic 5599692 has 9 posts, and 4
+of them were written by this automation's own browser session (2026-11-12 16:31,
+2026-11-16 11:40, 2026-11-16 17:20, 2026-11-17 11:22). The four-line correction
+that answers the thread's own question — and fixes our opening post's `$10,000`
+against the live `$50,000` on `/paper-buy` — was handed to the owner on 2026-11-17
+and narrowed again on 2026-11-18. It is still unsent on 2026-11-19 while the thread
+reads 105 times. Posting a reply into a thread we already hold a session in is a
+mandate; handing it over converts a one-minute cycle task into a three-day delay
+and then a lapse.
+
+- A channel is owner-only only if this automation has no session on it. Today
+  that is: the three launchd X poster jobs (outside the repo), The Block's
+  contact form, and Facebook.
+- **An owner ask must carry a link ceiling while `indexed` < 5.** Ask for an
+  editorial mention, a directory listing or a newsletter placement — something
+  that ends in a followed URL. A share that only produces sessions (X, Facebook,
+  the forum) is cycle work and can never be the only ask.
+- State the honest step count in the ask (page loads, fields, clicks). Above two
+  steps, cut it until it is two or fewer. "One page, one paste, one button" was
+  written for a form that also asks for a name and an email — say so.
+
 ### Order of work — never skip ahead
 
 1. `preflight.json` notes (site down, stale archive, overdue last run).

@@ -78,6 +78,46 @@ not record guesses as results.
 
 ---
 
+## Results review 2026-11-19 (daily, streak 25) — `failing`
+
+- **Outcomes.** `indexed` **1/22** for the **29th** consecutive reading (inspection
+  2026-11-19T07:32Z, 22 rows = 22 `sitemap` locs): 1 submitted and indexed, **17
+  crawled – currently not indexed**, 4 unknown to Google. GSC 7d (2026-11-10 →
+  11-16): **9 clicks / 23 impressions / 39.1% / position 8.3**, of which
+  `btc500` 7 clicks / 10 impressions @1.4 and `bitcoin 500` 0/1 @69 —
+  **non-brand clicks 0** in the 29th consecutive reading, `positions4to20` **0**.
+  Bing **0/22**, with `/` crawled today 2026-11-19T03:02:33Z and declined.
+  GA4 7d (2026-11-12 → 11-18): 115 sessions / 30 users, **Direct 86/16**,
+  github.com 6/1 (self, §10(b)), bitcointalk.org 5/2, google 9/4, t.co 3/1,
+  x 3/3, chatgpt.com 1/1, bing 1/1, ig 1/1 — **non-direct non-github 23 sessions
+  / 13 users, down from 30/21** as the Facebook 6/6 share aged out of the window
+  and nothing replaced it.
+- **Both engines read the site today and declined it.** Google's `lastCrawl`
+  for `/articles/btc500-strategy` is **2026-11-19**, for `/simulator` 2026-11-17,
+  for `/articles` 2026-11-15; Bing crawled `/` at 2026-11-19T03:02:33Z and the
+  pillar at 01:02:55Z. Crawling is not the constraint; the site-level judgment is.
+  Indexation is therefore no longer an in-repo goal: only a new followed external
+  link can change it.
+- **Compliance: 3 of 4 shippable mandates executed.** `served-title-demand-1118`
+  EXECUTED (live `<title>` = `Next Bitcoin Halving 2028: Buy 29 Nov 2026 | BTC500`,
+  meta description matches; H1/body/schema/OG byte-identical),
+  `spacing-crawl-landing-read-1118` executed as a measurement (due 11-25),
+  `no-new-url-proof-1118` complied (sitemap 22 before and after).
+  `ask-effect-instrument-1118` **not executed** (due 11-20) — the report still
+  prints "the community ask issued 2026-11-18 produced 5 sessions from
+  bitcointalk.org" while the thread's last post is 2026-11-17 11:22. Owner
+  mandate `x-poster-node-1117` untouched: all three plists still run `/bin/bash`
+  on a `.mjs`.
+- **The input/output mismatch, in one line.** 8 runs, 8 `shipped`, 0 failures, 3
+  site changes in 7 days → 0 new indexed pages, 0 non-brand clicks, and the only
+  external audience movement was a 7-session fall.
+- **Strategy change:** the bitcointalk correction becomes cycle work (the
+  automation holds that posting session — 4 of the thread's 9 posts are ours), and
+  owner asks must now carry a link ceiling while `indexed` < 5. See
+  `GROWTH_PROMPT.md` → "Owner asks are for channels we do not hold".
+
+---
+
 ## Results review 2026-11-18 (daily, streak 24) — `failing`
 
 - **Outcomes, all of them.** `indexed` **1/22** (inspection 2026-11-18T07:32Z, 22
@@ -589,6 +629,7 @@ since 2026-10-23.
 
 | date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
 | ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-19 | failing | Streak 25. Google crawled `/articles/btc500-strategy` **today** and Bing crawled `/` 2026-11-19T03:02:33Z — both declined; `indexed` **1/22 for the 29th reading**, **0 non-brand clicks** in 29 readings, `positions4to20` **0**, Bing **0/22**. External audience **30/21 → 23/13** (the Facebook share aged out). The 11-19 title change shipped on the only served URL and cannot be read before 2026-11-26. **Strategy changed:** the bitcointalk correction becomes cycle work (we hold that session), owner asks must carry a link ceiling while `indexed` < 5, and indexation is written down as external-signal-only |
 | 2026-11-18 | failing | A full week executed and nothing moved: 8 runs / 8 shipped / 0 failures, **4 of 4 shippable mandates done**, and still `indexed` **1/22 for the 28th reading**, **0 non-brand clicks** in 27 days, Bing **0/22**, the new `/halving-spacing` **unknown to Google** (`lastCrawl: never`) and bitcointalk.org **5/2 for the third window in a row** — so the 11-16 forum reply produced nothing and the runner's "ask effect produced 5 sessions" credits a send that predates the ask. `/` is the only URL Google serves (10 brand impressions / 7 clicks @1.6) and carries all 7 clicks; the whole non-brand footprint is 2 impressions at 38 and 69. **Strategy changed:** no new URL until `indexed` ≥ 2 or 2026-12-02, a page needs an existing GSC impression row for its query, title/meta only on `/`; Bing closed as a tested surface; spacing page closed as a lever. Streak 24 |
 | 2026-11-17 | failing | `indexed` **1/22 for the 13th reading** (the runner's `2 → 1` regression is the 2026-11-03 → 11-04 drop still inside its 14-day window); Bing crawled `/` 2026-11-16T07:33:31Z and the pillar 2026-11-17T05:28:38Z and kept **0/22**; non-brand clicks 0 in 26 readings, the only non-brand impression at position 38; external audience **26/19 → 29 sessions / 20 users** but 95 of 125 sessions are us (Direct 86/18 + github 9/1); `bitcointalk.org 5/2` **predates** the 2026-11-16 11:40 reply, so ask-effect is unproven until a window starting 11-16; the X poster has **never run** (bash on a `.mjs`, 3 slots, 0 posts); `/paper-buy` has **zero crawlable inbound links** (`grep -c paper` = 0 on `/` and the pillar) and is `Discovered - currently not indexed` 12 days before entry; the forum OP promises **$10,000** while the page and the X post say **$50,000**. Fourth freeze output authorised: the 400/500/600 spacing answer. Streak 23 |
 | 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22 |
@@ -648,8 +689,10 @@ since 2026-10-23.
    post is now **twice a week (Tue + Fri)**, no new broadcast post on
    X/Instagram/Facebook, and a cycle's work is the measurement plus one action
    (2026-11-18 review, replacing the 2026-11-12 wording). Only a reply in the
-   BitcoinTalk thread that has already produced sessions is exempt, and that one
-   is the owner's ask.
+   BitcoinTalk thread that has already produced sessions is exempt. **Correction
+   (2026-11-19 review): that reply is cycle work, not an owner ask** — the
+   automation holds the posting session (4 of the thread's 9 posts are ours), so
+   handing it over is a delay.
 5. **The buy-window peg is a live estimate — 29 November 2026, 10 days out.**
    Re-read it from the site every cycle, never from this log or a post.
 6. **Read the `/` title change on 2026-12-02.** It shipped 2026-11-19 with the
@@ -665,7 +708,7 @@ also permitted — it is the single site change the partial lift allows.
 | #   | Bet                                                                 | Why it can move the needle                                                                                                                                                    | I   | E   |
 | --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
 | 0d  | ~~Is the rule a 500-day artefact?~~ **SHIPPED 2026-11-18, CLOSED as a lever** | Built as `/halving-spacing` + `/data/halving-spacing.json` (569fb38) because two strangers asked it in the only thread that produced sessions. **Result so far: 0 landings, 0 Google crawl (`lastCrawl: never`), Bing fetched and declined 2026-11-18T04:17:34Z, bitcointalk.org still 5/2.** The 7-day test (a landing or a forum session for this page by 2026-11-25) is the last word on "content is the constraint"; if it fails, no further content is proposed until indexation moves | — | — |
-| 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**     | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk and only the owner can fix the post (ask `bitcointalk-spacing-correction-1117`). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0 | 10  | 1   |
+| 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**     | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk, and it is **cycle work**: topic 5599692's posting session is ours (4 of 9 posts). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0 | 10  | 1   |
 | 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measured as a post-merge crawl and a lopp.net session — the crawl came 48s after our own Request Indexing and the session never came; experiment **closed 2026-11-16**. Read as an input, not a result | 10  | 0   |
 | 1b  | ~~X click path (pinned + tagged)~~ — **DEMOTED 2026-11-17**         | The scheduled poster has never run: `net.btc500.x-post-{am,md,pm}.plist` execute `/bin/bash post-daily.mjs`, and every slot logs `const: command not found`. 3 slots × 30 days = 0 posts; the only post is the hand-made one of 2026-11-16, and x.com/t.co delivered 6 sessions / 6 users in 7d. A channel that cannot publish cannot be a bet until the plist is fixed (owner mandate) | 3   | 1   |
 | 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                        | 4   | 3   |
