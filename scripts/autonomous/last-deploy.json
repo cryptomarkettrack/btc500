@@ -1,29 +1,15 @@
 {
-  "generated": "2026-11-18",
-  "summary": "three shipped asks: a 400/500/600-day spacing answer page with its dataset, one crawlable homepage link to the paper record, and the sitemap soft-404 row removed",
+  "generated": "2026-11-19",
+  "summary": "the one URL Google serves now leads with the next halving year and names the 29 Nov 2026 buy window in its title and meta description",
   "checks": [
     {
-      "path": "/halving-spacing",
-      "contains": "Does the 500-day rule survive 400 or 600 days?",
-      "status": 200
-    },
-    { "path": "/halving-spacing", "contains": "2011-bottom artefact", "status": 200 },
-    { "path": "/halving-spacing", "contains": "20.78x", "status": 200 },
-    {
-      "path": "/data/halving-spacing.json",
-      "contains": "btc500/halving-spacing@1",
+      "path": "/",
+      "contains": "Next Bitcoin Halving 2028: Buy 29 Nov 2026 | BTC500",
       "status": 200
     },
     {
       "path": "/",
-      "contains": "Is 500 days special? Compare 400, 500 and 600",
-      "status": 200
-    },
-    { "path": "/", "contains": "href=\"/paper-buy\"", "status": 200 },
-    { "path": "/sitemap.xml", "contains": "https://btc500.net/halving-spacing", "status": 200 },
-    {
-      "path": "/articles/bear-market-accumulation",
-      "contains": "The Consensus Bottom Is a Trap",
+      "contains": "Next Bitcoin halving: projected April 2028",
       "status": 200
     }
   ]

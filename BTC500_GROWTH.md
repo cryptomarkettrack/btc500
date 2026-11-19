@@ -5,6 +5,79 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-19 — the one served URL stops leading with a term we invented (mandate `served-title-demand-1118`)
+
+- **Mandate `served-title-demand-1118` — EXECUTED.** Only two tags on `/` changed:
+  `<title>` is now `Next Bitcoin Halving 2028: Buy 29 Nov 2026 | BTC500` (51 chars)
+  and the meta description is `Next Bitcoin halving: projected April 2028. BTC500
+  buys 500 days before it — 29 November 2026 — and sells 500 days after. Live
+  countdown and record.` H1, body copy, keywords, OG/Twitter tags, JSON-LD and
+  every other page are byte-identical (verified against the dev SSR: OG title
+  still `BTC500 — The Bitcoin 500-Day Halving Rule`, schema `name` unchanged).
+  Why: all 7 clicks and 10 of 21 impressions in 7d are the brand query `btc500`
+  at position 1.6; the whole non-brand footprint in 27 days is 2 impressions at
+  positions 38 and 69; the old title led with "The Bitcoin 500-Day Halving Rule",
+  a phrase this site coined.
+- **No literal date in the copy.** `src/lib/home-snippet.ts` (new, pure, 8 tests)
+  builds both strings from the live halving estimate (`halvingISO`) and the
+  `computeCycle` buy date the pillar uses; the title year and the month in the
+  description are derived, never typed. On the buy date the copy switches to
+  "Window Opened 29 Nov 2026"; after the halving it falls back to the old static
+  snippet rather than advertising a finished cycle; with no live estimate it
+  falls back too, so it can never print a second date. `daysUntilBuyDate` is the
+  one arithmetic helper, tested across the boundary.
+- **Loader fix required by the same change.** TanStack Start runs matched loaders
+  concurrently, so reading `halvingQuery` from the index loader returned an empty
+  cache (measured: `cached: [["simulator-preview"]]` in dev) while the pillar's
+  loader only worked because it awaited two network queries first.
+  `waitForHalvingSeed()` (new, in `src/lib/seed-halving.ts`) subscribes to the
+  query cache, gives up after the seeder's own 2s + 500ms budget and returns
+  `null` instead of the protocol estimate — the estimate projects the next
+  halving on 2028-04-17 (T-500 = 2026-12-04) while the live snapshot says
+  2028-04-12 (T-500 = 2026-11-29), and a title built from the estimate would have
+  printed a *second* buy date. The countdown itself prints 29 Nov 2026.
+- **Measurement** (runner's reports; nothing re-collected except the raw crawl
+  reads the review names). GSC 7d `2026-11-09 → 11-15`: 7 clicks / 21 impressions
+  / 33.3% / avg pos 10.6, of which `btc500` 7 clicks / 10 impressions @1.6;
+  non-brand rows are `500 days before next bitcoin halving` 0/1 @38 and
+  `bitcoin 500` 0/1 @69; `positions4to20` 0; 2 pages with impressions. GA4 7d
+  `2026-11-11 → 11-17`: 125 sessions / 40 users / 230 views / 45.6% engaged;
+  **external audience 30 sessions / 21 users** (google 10/5 → `/`, facebook.com
+  6/6 → `/`, bitcointalk.org 5/2 → pillar + `/timeline` `/simulator`
+  `/liquidation`, t.co 4/3 → `/`, x 3/3 → pillar, bing 1/1 → `/`, ig 1/1 → `/`);
+  channels Direct 88/18, Organic Social 14/13, Referral 12/3 (github.com 7/1 is
+  this repo, excluded), Organic Search 11/6. **No AI Assistant row in this
+  window** (chatgpt.com 0/0 in 7d, 10/8 in 28d).
+- **Mandate `spacing-crawl-landing-read-1118` — EXECUTED (measurement).** Raw URL
+  Inspection read at `2026-11-19T04:17Z`: `/halving-spacing` → coverage
+  `URL is unknown to Google`, `lastCrawlTime` **absent (never)**, five days after
+  it shipped with one crawlable link; `/paper-buy` → also *unknown to Google*,
+  never crawled; `/bitcoin-500-day-cycle` → `Crawled - currently not indexed`,
+  last crawl `2026-11-13T04:07:16Z`; `/` → `Submitted and indexed`,
+  `lastCrawlTime 2026-11-05T07:50:37Z`. GA4 landings on `/halving-spacing` in the
+  7d window: **0**. bitcointalk.org **5/2** for the window `2026-11-11 → 11-17`
+  (third consecutive window at 5/2, so the 11-16 reply moved nothing). The
+  2026-11-25 kill-test wording is not written yet — it is not due.
+- **The 2026-11-12 cadence rule FIRED today.** Its test: no crawl of `/` dated
+  after `2026-11-12` by `2026-11-19`. `/` was last crawled
+  `2026-11-05T07:50:37Z` (read today), so the rule applies: the daily X post
+  drops to **twice a week**, no new broadcast post on X/Instagram/Facebook, and
+  the cycle's work is the measurement plus one action. Cadence is now Tuesday and
+  Friday; next post 2026-11-20. No post, reply, like or pin was attempted today.
+  The browser was also `paired-offline` (`tools.browse.status()`), so X views
+  could not be read either; last read 2026-11-16: pinned 125 views / 3 likes.
+- **`ask-effect-instrument-1118` is due tomorrow (2026-11-20)** and was not
+  touched; `x-poster-node-1117` is owner-only and untouched (0 machine posts in
+  32 days). The one live ask (`bitcointalk-spacing-correction-1118`, due
+  2026-11-20) is still unsent and is the owner's to send — not re-prepared here.
+- **Freeze proof, stated honestly:** this commit changes `src/` on purpose —
+  the mandate names it and supersedes the copy ban for `/` only. No route was
+  added: sitemap `<loc>` count is 22 before and after; no new URL, section or
+  article. Validation: `npm test` **269 pass / 0 fail**, `tsc --noEmit` ✓,
+  `npm run build` ✓, prettier + eslint clean on the five changed files.
+
+---
+
 ## Results review 2026-11-18 (daily, streak 24) — `failing`
 
 - **Outcomes, all of them.** `indexed` **1/22** (inspection 2026-11-18T07:32Z, 22
@@ -570,13 +643,19 @@ since 2026-10-23.
    surface and must not be reported as one. Bing readiness stays a process check
    (22 sitemap URLs, IndexNow accepted); the indexation signal is read weekly, not
    daily.
-4. **Rules that fire soon:** 2026-11-19 — no crawl of `/` after 2026-11-12 → the
-   daily post drops to twice a week, no new owner ask, weekly measurement + one
-   link action only. `/` was last crawled **2026-11-05T07:50:37Z** (read
-   2026-11-16), so the rule is three days from firing. 2026-11-18 — X cadence
-   verdict (views/post vs t.co sessions).
-5. **The buy-window peg is a live estimate — 29 November 2026, 13 days out.**
+4. **The 2026-11-19 rule FIRED.** `/` last crawl `2026-11-05T07:50:37Z` (raw URL
+   Inspection read 2026-11-19T04:17Z), no crawl after 2026-11-12 → the daily X
+   post is now **twice a week (Tue + Fri)**, no new broadcast post on
+   X/Instagram/Facebook, and a cycle's work is the measurement plus one action
+   (2026-11-18 review, replacing the 2026-11-12 wording). Only a reply in the
+   BitcoinTalk thread that has already produced sessions is exempt, and that one
+   is the owner's ask.
+5. **The buy-window peg is a live estimate — 29 November 2026, 10 days out.**
    Re-read it from the site every cycle, never from this log or a post.
+6. **Read the `/` title change on 2026-12-02.** It shipped 2026-11-19 with the
+   halving year first and the buy window named. Measure: any non-brand impression
+   above position 30 for `/` by 2026-12-02. If there is none, title and meta work
+   stops permanently and distribution is the only lever left.
 
 ## Ranked backlog
 

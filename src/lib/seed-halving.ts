@@ -52,3 +52,45 @@ export async function seedHalving(queryClient: QueryClient): Promise<void> {
 
   queryClient.setQueryData(halvingQuery.queryKey, info);
 }
+
+/**
+ * Wait for the root loader's live halving seed.
+ *
+ * TanStack Start runs the loaders of matched routes concurrently, so a child
+ * loader that reads `halvingQuery` directly can run before `seedHalving()`
+ * resolves and see an empty cache. This waits for the seed (or for the
+ * timeout the seeder itself uses) and returns `null` rather than the
+ * deterministic protocol estimate, because the estimate projects the next
+ * halving five days later than the live snapshot does — a page-head date taken
+ * from it would be a *second* date on a site that must print one.
+ */
+export function waitForHalvingSeed(
+  queryClient: QueryClient,
+  timeoutMs = SEED_TIMEOUT_MS + 500,
+): Promise<HalvingInfo | null> {
+  const cached = queryClient.getQueryData<HalvingInfo>(halvingQuery.queryKey);
+  if (cached) return Promise.resolve(cached);
+
+  return new Promise<HalvingInfo | null>((resolve) => {
+    let settled = false;
+    let unsubscribe = () => {};
+
+    const finish = (value: HalvingInfo | null) => {
+      if (settled) return;
+      settled = true;
+      clearTimeout(timer);
+      unsubscribe();
+      resolve(value);
+    };
+
+    const timer = setTimeout(
+      () => finish(queryClient.getQueryData<HalvingInfo>(halvingQuery.queryKey) ?? null),
+      timeoutMs,
+    );
+
+    unsubscribe = queryClient.getQueryCache().subscribe(() => {
+      const value = queryClient.getQueryData<HalvingInfo>(halvingQuery.queryKey);
+      if (value) finish(value);
+    });
+  });
+}

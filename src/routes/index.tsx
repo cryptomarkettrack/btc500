@@ -11,6 +11,9 @@ import { FAQ_ITEMS } from "@/lib/faq";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
 import { simulatorPreviewQuery } from "@/lib/queries";
+import { waitForHalvingSeed } from "@/lib/seed-halving";
+import { computeCycle } from "@/lib/phase";
+import { buildHomeSnippet } from "@/lib/home-snippet";
 
 const homePageSchema = [
   generateWebPageSchema({
@@ -29,15 +32,27 @@ const homePageSchema = [
 ];
 
 export const Route = createFileRoute("/")({
-  head: () =>
-    generatePageHead({
+  head: (ctx) => {
+    // `loaderData` is typed `never` by this router version's self-referential
+    // inference, so the loader's shape is asserted here. It is populated before
+    // head runs (TanStack Start evaluates loaders first).
+    const data = ctx.loaderData as
+      | { halvingISO: string | null; buyDateISO: string | null }
+      | undefined;
+    // The two tags a stranger sees in a search result, built from the live
+    // halving estimate (the same one the countdown and the pillar use) rather
+    // than from a literal date. See src/lib/home-snippet.ts for why they lead
+    // with the halving year instead of a term this site coined.
+    const snippet = buildHomeSnippet({
+      halvingISO: data?.halvingISO ?? null,
+      buyDateISO: data?.buyDateISO ?? null,
+      nowISO: new Date().toISOString(),
+    });
+
+    return generatePageHead({
       path: "/",
-      // Brand first so the branded query keeps its position in the title, with the
-      // "Bitcoin 500-day halving rule" phrase directly behind it — the framing the
-      // 2026 halving-cycle coverage (CoinDesk, Yahoo, Binance) is putting on the topic.
-      title: "BTC500 — The Bitcoin 500-Day Halving Rule",
-      description:
-        "BTC500 is the Bitcoin 500-day rule: buy 500 days before the halving, sell 500 days after. Live countdown, the full record, and a free simulator.",
+      title: snippet.title,
+      description: snippet.description,
       keywords:
         "Bitcoin 500 day cycle, when is 500 days before the next bitcoin halving, Bitcoin halving countdown, BTC500, next Bitcoin halving, buy Bitcoin before halving, bitcoin 500 day rule, 500 day bitcoin strategy",
       ogTitle: "BTC500 — The Bitcoin 500-Day Halving Rule",
@@ -48,7 +63,8 @@ export const Route = createFileRoute("/")({
       twitterDescription:
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
       schema: homePageSchema,
-    }),
+    });
+  },
   loader: async ({ context }) => {
     // Seed the shared simulator payload before render so the SSR HTML carries the real
     // completed-window stats and the ledger estimate. Without this the two useQuery reads
@@ -57,6 +73,19 @@ export const Route = createFileRoute("/")({
     // one URL Google actually serves. The loader runs before render, so the hydrated client
     // agrees instead of refetching mid-hydration.
     await context.queryClient.ensureQueryData(simulatorPreviewQuery);
+
+    // The head needs the live T-500 date, so derive it from the same seeded
+    // halving snapshot the countdown renders and the pillar page uses — never a
+    // literal date. The seed runs in the root loader, concurrently with this one.
+    const halving = await waitForHalvingSeed(context.queryClient);
+    if (!halving) return { halvingISO: null, buyDateISO: null };
+
+    const cycle = computeCycle(
+      new Date(),
+      new Date(halving.nextHalvingDate),
+      new Date(halving.lastHalvingDate),
+    );
+    return { halvingISO: halving.nextHalvingDate, buyDateISO: cycle.buyDate.toISOString() };
   },
   // The halving countdown is seeded globally by the root loader from one cached
   // tip-height call (see src/lib/seed-halving.ts), so HTML and hydration agree.
