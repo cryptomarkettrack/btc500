@@ -78,6 +78,13 @@
       "sourceType": "github",
       "skillPath": "skills/improve/SKILL.md",
       "computedHash": "9e8fe9ea4f9a0e4155801d1624e38ca23798467bb88b447efaa5120f7b1fe802"
+    },
+    "board": {
+      "source": "vercel/board",
+      "commit": "f2930bf2a174ec41de2a2bcf07d1bbc537f16734",
+      "sourceType": "github",
+      "skillPath": "skills/board/SKILL.md",
+      "computedHash": "084261eb3c844cc8e8be3bc590dacd169d6ebbf08289c48a82ca128aca1ccbc3"
     }
   }
 }
