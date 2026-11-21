@@ -626,15 +626,100 @@ test("before any ask is issued there is nothing to measure", () => {
 
 test("a fresh ask is waited on, not judged", () => {
   const ask = { id: "x-post", channel: "x", referrers: ["x.com"], by: "2026-10-24" };
+  // The window has to start on the handover day for the wait to be the reason
+  // nothing shows up; a window that predates it is a different failure mode and
+  // has its own test below.
+  const ga4 = parseGa4(ga4Json({ window: { start: "2026-10-24", end: "2026-10-25", days: 7 } }));
   const signal = askEffectSignal({
     previousReview: { generated: "2026-10-24", asks: [ask] },
-    ga4: parseGa4(ga4Json()),
+    ga4,
     today: TODAY,
   });
   assert.equal(signal.state, "flat");
   assert.match(signal.evidence, /1d old/);
   assert.match(signal.evidence, /measurable after 2026-10-31/);
   assert.ok(THRESHOLDS.askMeasureDays >= 7);
+});
+
+test("a referral in a window that predates the handover is never credited", () => {
+  // The exact 2026-11-18 shape: the report claimed "the ask issued 2026-11-18
+  // produced 5 sessions from bitcointalk.org" from a window starting 2026-11-12,
+  // while the forum post that was the ask had not been sent at all.
+  const ask = {
+    id: "bitcointalk-spacing-correction-1118",
+    channel: "other",
+    referrers: ["bitcointalk.org"],
+    by: "2026-11-20",
+  };
+  const ga4 = parseGa4(
+    ga4Json({
+      window: { start: "2026-11-12", end: "2026-11-18", days: 7 },
+      tables: {
+        referrals: [
+          { dimensionValues: [{ value: "bitcointalk.org" }], metricValues: [{ value: "5" }] },
+        ],
+        channels: [],
+        landing: [],
+      },
+    }),
+  );
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-11-18", asks: [ask] },
+    ga4,
+    today: "2026-11-19",
+  });
+  assert.notEqual(signal.state, "green");
+  assert.equal(signal.state, "flat");
+  assert.equal(signal.current, 0);
+  // Both dates must be printed: the claim is only legible with its window.
+  assert.match(signal.evidence, /2026-11-12 → 2026-11-18/);
+  assert.match(signal.evidence, /before the handover/);
+  assert.match(signal.evidence, /2026-11-18/);
+  assert.doesNotMatch(signal.evidence, /produced 5 session/);
+});
+
+test("green needs a window that starts on or after the handover, and prints it", () => {
+  const ask = { id: "community-post", channel: "other", referrers: ["bitcointalk.org"] };
+  const ga4 = parseGa4(
+    ga4Json({
+      window: { start: "2026-11-19", end: "2026-11-25", days: 7 },
+      tables: {
+        referrals: [
+          { dimensionValues: [{ value: "bitcointalk.org" }], metricValues: [{ value: "4" }] },
+        ],
+        channels: [],
+        landing: [],
+      },
+    }),
+  );
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-11-19", asks: [ask] },
+    ga4,
+    today: "2026-11-26",
+  });
+  assert.equal(signal.state, "green");
+  assert.match(signal.evidence, /2026-11-19 → 2026-11-25/);
+});
+
+test("a report with no window cannot credit an ask either way", () => {
+  const ask = { id: "x-post", channel: "x", referrers: ["x.com"] };
+  const ga4 = parseGa4(
+    ga4Json({
+      window: undefined,
+      tables: {
+        referrals: [{ dimensionValues: [{ value: "x.com" }], metricValues: [{ value: "2" }] }],
+        channels: [],
+        landing: [],
+      },
+    }),
+  );
+  const signal = askEffectSignal({
+    previousReview: { generated: "2026-11-01", asks: [ask] },
+    ga4,
+    today: "2026-11-09",
+  });
+  assert.equal(signal.state, "unknown");
+  assert.match(signal.evidence, /does not state its window/);
 });
 
 test("an ask that produced a referral from its own channel is green", () => {

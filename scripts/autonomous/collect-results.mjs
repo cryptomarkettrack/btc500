@@ -871,13 +871,45 @@ export function askEffectSignal({ previousReview, ga4, today }) {
       ) && row.sessions > 0,
   );
   const age = Math.max(0, daysBetween(issued, today));
-  if (hit) {
+  // A referral row is evidence about one 7-day window, so the window is part of
+  // the claim. If the window opens before the ask was handed over it cannot
+  // contain the ask's effect, and a row inside it is somebody else's traffic.
+  // That is not a theory: on 2026-11-18 this line reported "the community ask
+  // issued 2026-11-18 produced 5 session(s) from bitcointalk.org" from a window
+  // starting 2026-11-12, five days before the ask existed and while it was
+  // unsent. Green therefore requires a window that starts on or after the
+  // handover; anything else is printed as not-yet-creditable, never as success
+  // and never as a measured zero.
+  const windowStart = ga4.window?.start ? String(ga4.window.start) : null;
+  const windowLabel = windowStart ? `${windowStart} → ${ga4.window?.end ?? "?"}` : null;
+  const windowCoversAsk = windowStart ? windowStart >= issued : false;
+  if (hit && windowCoversAsk) {
     return {
       id: "ask-effect",
       kind: "outcome",
       state: "green",
-      evidence: `The ${channel} ask issued ${issued} produced ${hit.sessions} session(s) from ${hit.source}.`,
+      evidence: `The ${channel} ask issued ${issued} produced ${hit.sessions} session(s) from ${hit.source} in the ${windowLabel} window.`,
       current: hit.sessions,
+    };
+  }
+  if (!windowStart) {
+    return {
+      id: "ask-effect",
+      kind: "outcome",
+      state: "unknown",
+      evidence: `The ${channel} ask issued ${issued} cannot be credited: the GA4 report does not state its window.`,
+    };
+  }
+  if (!windowCoversAsk) {
+    return {
+      id: "ask-effect",
+      kind: "outcome",
+      state: "flat",
+      evidence:
+        `The ${channel} ask issued ${issued} cannot be credited yet: the GA4 window ${windowLabel} ` +
+        `starts before the handover${hit ? `, and its ${hit.sessions} session(s) from ${hit.source} predate it` : ""}. ` +
+        `The first fair test is a window starting on or after ${issued}.`,
+      current: 0,
     };
   }
   if (age < THRESHOLDS.askMeasureDays) {
@@ -895,7 +927,8 @@ export function askEffectSignal({ previousReview, ga4, today }) {
     state: "stalled",
     evidence:
       `The ${channel} ask of ${issued} produced 0 referral sessions in ${age}d ` +
-      `(${needles.join(", ") || "no referrers listed"}) — restate it narrower or change channel.`,
+      `(${needles.join(", ") || "no referrers listed"}) in the ${windowLabel} window — ` +
+      `restate it narrower or change channel.`,
     current: 0,
   };
 }

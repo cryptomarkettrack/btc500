@@ -1,6 +1,6 @@
 {
-  "generated": "2026-11-19",
-  "summary": "the one URL Google serves now leads with the next halving year and names the 29 Nov 2026 buy window in its title and meta description",
+  "generated": "2026-11-21",
+  "summary": "no page changed today: the commit is the ask-effect instrument and the growth log, so the checks below prove production still serves the 29 Nov 2026 buy date and the spacing data the forum post now cites",
   "checks": [
     {
       "path": "/",
@@ -9,7 +9,17 @@
     },
     {
       "path": "/",
-      "contains": "Next Bitcoin halving: projected April 2028",
+      "contains": "29 November 2026",
+      "status": 200
+    },
+    {
+      "path": "/halving-spacing",
+      "contains": "Median low vs entry",
+      "status": 200
+    },
+    {
+      "path": "/data/halving-spacing.json",
+      "contains": "btc500/halving-spacing@1",
       "status": 200
     }
   ]

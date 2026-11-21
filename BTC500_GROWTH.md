@@ -5,6 +5,77 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-21 — the forum correction is posted at last, `/` is recrawled, and ask-effect stops crediting other people's traffic
+
+- **Mandate `thread-correction-cycle-1119` — EXECUTED (overdue since 11-20).** Posted
+  post **#10** in <https://bitcointalk.org/index.php?topic=5599692.msg67368100#msg67368100>
+  at **2026-11-21 07:52:15 AM** forum time (verified by re-reading the topic: 10 posts,
+  read counter **112**, last post is ours). Contents: the 400/500/600 rows from
+  `/data/halving-spacing.json` (median **12.85× / 20.78× / 7.49×**, worst
+  **3.96× / 6.60× / 4.55×**), the one-line conclusion (every window at every spacing
+  closed above its entry, so the decay is not an artefact of 500 and the longer window
+  was not the better one), the caveat (four windows; the 2012 400-day 244× is a
+  2011-bottom artefact), the page link, and the correction the mandate asked for:
+  **the live record is $50,000 paper, not $10,000**. Before posting the thread read
+  9 posts / "Read 111 times"; **no stranger has posted since 2026-11-17 11:22**.
+- **Mandate `request-crawl-of-home-1119` — EXECUTED, and the crawl had already
+  happened.** `/` raw inspection: coverage **Submitted and indexed**, **last crawl
+  "Nov 20, 2026, 4:18:58 AM"** in the console (Europe/Sofia display ≈
+  `2026-11-20T02:18:58Z`; the API row for the same URL reads `2026-11-21`), crawled as
+  Googlebot smartphone, fetch successful, indexing allowed — i.e. the **2026-11-19
+  title change has been read**, which was the whole point of the mandate. Request
+  Indexing clicked once on `/` and accepted: *"Indexing requested — URL was added to a
+  priority crawl queue. Submitting a page multiple times will not change its queue
+  position or priority."* No quota message (last refusal was 2026-11-12).
+  **`crawlFreshness` target (a Google crawl of `/` dated after 2026-11-19) is MET.**
+- **Mandate `ask-effect-instrument-1119` — EXECUTED in code.** `askEffectSignal()`
+  (`scripts/autonomous/collect-results.mjs`) now reads the GA4 report's own window and
+  **credits a referral only when that window starts on or after the ask's handover
+  date**; a hit inside an earlier window is printed as *not creditable yet* with both
+  dates, a report with no window is `unknown`, and the stalled line prints its window
+  too. Tests: the exact 2026-11-18 shape is pinned (ask generated 2026-11-18,
+  window `2026-11-12 → 2026-11-18`, bitcointalk.org 5 sessions → **not green, 0
+  credited**), plus green-with-window, no-window, and the fresh-ask case re-pointed at
+  a window that actually covers the handover. `node --test
+  scripts/autonomous/collect-results.test.mjs` → **33 pass / 0 fail**.
+- **Mandate `x-post-cadence-1119` — EXECUTED** (Friday's post was lost to the
+  2026-11-20 `site-down` run). One broadcast post,
+  <https://x.com/btc500halving/status/2124028752581771628> at
+  **2026-11-21T06:34:51Z**, verified on the profile 2 minutes later with the exact
+  text; 8 days read from `/` the same run, buy date **29 Nov 2026**, tagged link
+  `https://btc500.net/bitcoin-500-day-cycle?utm_source=x&utm_medium=social&utm_campaign=countdown-1121`.
+  Dedup read first: newest cycle post was 2026-11-16, no post carried `countdown-1121`.
+  No reply, no like, no pin (the 11-19 mandate forbids all three). Views at ~2h:
+  **40**, 0 likes on the new post; **pinned post 245 views / 3 likes** — still the
+  second poster's 2026-11-10 "Mark the date." with no link, and the pin defect is not
+  retried.
+- **Measurement — indexation, 30th consecutive reading.** Inspection
+  `2026-11-21T08:51:18Z`, **22 rows = 22 sitemap `<loc>`**: **1/22**
+  (1 submitted and indexed, 18 crawled-not-indexed, 1 discovered, 2 unknown). State
+  changes since 11-19: **`/halving-spacing` moved `URL is unknown to Google` →
+  `Discovered - currently not indexed`** (Google has now found the page, five days
+  after shipping it — the first movement on that URL at all), `/paper-buy` still
+  unknown, `/` lastCrawl 2026-11-21 vs the rest of the site 2026-08-15 → 2026-11-19.
+- **Measurement — search (`2026-11-12 → 11-18`, collected today, 46h stale otherwise).**
+  9 clicks / 21 impressions / 42.9% / avg position 9.2; queries `btc500` 6/8 @1.4 and
+  `bitcoin 500` 0/1 @69 → **non-brand clicks 0**, `positions4to20` **0**, 2 pages with
+  impressions. Same numbers as the 11-19 reading (the window moved, the level did not).
+- **Measurement — visitors (`2026-11-14 → 11-20`, GA4).** 122 sessions / 35 users /
+  297 views / 50.8% engaged. **External audience 25 sessions / 14 users**: google 10/4 →
+  `/`, t.co 5/3 → `/`, bitcointalk.org 4/1 → pillar, **chatgpt.com 3/3 → pillar (AI
+  Assistant is in the window again)**, bing 1/1 → `/`, ig 1/1 → `/`, x 1/1 → pillar;
+  github.com 8 (this repo, excluded). Against 23/13 the previous window: **+2 sessions /
+  +1 user — noise at this volume**, not a trend. Direct still the bulk of sessions.
+- **No small site change:** the only diff is the instrument plus this log — `git diff
+  --stat origin/main -- src public/sitemap.xml` empty, by design (the copy ban and the
+  no-new-URL rule stand; `indexed` is 1).
+- **Next (unchanged in priority):** (1) the two owner asks — The Block tip due today,
+  the launchd one-liner due tomorrow — are the only asks with a link ceiling left;
+  (2) read `/halving-spacing` again on 2026-11-25 for the kill test; (3) the paper
+  record's first dated line on 2026-11-29 is the product, the countdown is inventory.
+
+---
+
 ## Session 2026-11-19 — the one served URL stops leading with a term we invented (mandate `served-title-demand-1118`)
 
 - **Mandate `served-title-demand-1118` — EXECUTED.** Only two tags on `/` changed:
