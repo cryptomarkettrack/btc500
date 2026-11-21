@@ -6,7 +6,25 @@ import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
 export default tseslint.config(
-  { ignores: ["dist", ".output", ".vinxi"] },
+  {
+    ignores: [
+      "dist",
+      ".output",
+      ".vinxi",
+      ".tanstack",
+      ".wrangler",
+      ".taste-skill",
+      ".agents",
+      ".cline",
+      ".grok",
+      ".lovable",
+      ".opencode",
+      "plans",
+      "node_modules",
+      "public",
+      "scripts/**/output/**",
+    ],
+  },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],
@@ -36,5 +54,5 @@ export default tseslint.config(
       "@typescript-eslint/no-unused-vars": "off",
     },
   },
-  eslintPluginPrettier,
+  { ...eslintPluginPrettier, files: ["**/*.{ts,tsx,js,mjs,cjs}"] },
 );

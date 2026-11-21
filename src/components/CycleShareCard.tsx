@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import type { CycleInfo } from "@/lib/phase";
-import { formatDate, formatUsd } from "@/lib/format";
+import { formatDate } from "@/lib/format";
 import { BtcLogo } from "./BtcLogo";
 import { Btc500Hero } from "./Btc500Hero";
 

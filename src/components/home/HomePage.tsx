@@ -4,7 +4,6 @@ import {
   BookOpen,
   Flame,
   TrendingUp,
-  TrendingDown,
   ArrowRight,
   Target,
   Shield,

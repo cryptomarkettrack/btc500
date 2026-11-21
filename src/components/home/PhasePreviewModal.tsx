@@ -284,7 +284,6 @@ export function PhasePreviewModal({
                       buyDate={buyDate}
                       sellDate={sellDate}
                       currentPrice={currentPrice}
-                      investmentAmount={investmentAmount}
                       investment={investment}
                       onInvestmentChange={setInvestment}
                       pnlPercent={pnlPercent}
@@ -449,7 +448,6 @@ function PnlPanel({
   buyDate,
   sellDate,
   currentPrice,
-  investmentAmount,
   investment,
   onInvestmentChange,
   pnlPercent,
@@ -463,7 +461,6 @@ function PnlPanel({
   buyDate: string | null;
   sellDate: string | null;
   currentPrice: number | null;
-  investmentAmount: number;
   investment: string;
   onInvestmentChange: (v: string) => void;
   pnlPercent: number | null;

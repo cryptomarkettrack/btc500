@@ -2,8 +2,6 @@ import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import {
   DollarSign,
-  TrendingUp,
-  TrendingDown,
   Bitcoin,
   BarChart3,
   ArrowRight,
@@ -76,8 +74,6 @@ export function DcaComparisonPage() {
   // Summary stats
   const lumpSumWins = comparisons.filter((c) => c.winner === "lump-sum").length;
   const dcaWins = comparisons.filter((c) => c.winner === "dca").length;
-
-  const buyDaysDirty = investmentStr !== "" && (dcaBuyDaysStr === "" || dcaSellDaysStr === "");
 
   return (
     <div className="min-h-screen bg-background text-foreground">

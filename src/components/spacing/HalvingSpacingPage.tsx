@@ -89,7 +89,6 @@ export function HalvingSpacingPage() {
   const computed = report.windows.filter((w) => w.multiple != null);
   const unavailable = computed.length === 0;
   const spacings = report.spacings;
-  const windowsBelowEntry = computed.filter((w) => (w.lowVsEntryPercent ?? 0) < 0).length;
 
   const longestTested = computed.reduce<SpacingWindow | null>(
     (best, w) => (best == null || w.multiple! > best.multiple! ? w : best),

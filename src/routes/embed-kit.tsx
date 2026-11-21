@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Check, Code2, Copy, ExternalLink, LayoutTemplate, Sparkles } from "lucide-react";
+import { Check, Code2, Copy, ExternalLink, Sparkles } from "lucide-react";
 import {
   EMBED_THEMES,
   EMBED_WIDGETS,

@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { BookOpen, Clock } from "lucide-react";
 import { useNow } from "@/hooks/use-now";
 import { computeCycle } from "@/lib/phase";
-import { btcPriceQuery, halvingQuery } from "@/lib/queries";
+import { halvingQuery } from "@/lib/queries";
 
 interface ArticleProps {
   title: string;
@@ -23,7 +23,6 @@ const VWMA20 = 74_119.26;
 const UB = 83_872.39;
 const LB = 55_548.94;
 const RSI = 82.2;
-const ATR = 2_244;
 const TARGET85 = 85_000;
 const ENTRY_HIGH = 76_500;
 const ENTRY_MID = 75_000;

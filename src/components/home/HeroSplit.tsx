@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Calculator, LineChart, TrendingDown, TrendingUp } from "lucide-react";
+import { ArrowRight, Calculator, LineChart } from "lucide-react";
 import { Btc500Hero } from "@/components/Btc500Hero";
 import { trackCta } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";

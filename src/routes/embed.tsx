@@ -9,7 +9,6 @@ import {
   parseEmbedWidget,
   themeTokens,
   type EmbedTheme,
-  type EmbedWidget,
 } from "@/lib/embed";
 import type { CycleInfo } from "@/lib/phase";
 

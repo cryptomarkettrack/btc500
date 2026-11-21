@@ -41,13 +41,13 @@ export function AnimatedNumber({
   );
   const frameRef = useRef<number | null>(null);
   const startRef = useRef<number>(0);
+  const displayRef = useRef(displayValue);
   const fromRef = useRef(initialValue !== undefined ? initialValue : value);
   const toRef = useRef(value);
-  const initializedRef = useRef(initialValue === undefined);
   const duration = 5000; // ms — slow, dramatic countdown effect
 
   useEffect(() => {
-    fromRef.current = displayValue;
+    fromRef.current = displayRef.current;
     toRef.current = value;
     startRef.current = performance.now();
 
@@ -57,6 +57,7 @@ export function AnimatedNumber({
       // Ease out cubic
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = fromRef.current + (toRef.current - fromRef.current) * eased;
+      displayRef.current = current;
       setDisplayValue(current);
 
       if (progress < 1) {
