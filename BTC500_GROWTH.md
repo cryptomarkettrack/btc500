@@ -5,6 +5,53 @@ not record guesses as results.
 
 ---
 
+## Results review 2026-11-21 (daily, 28th non-improving) — the site lost 5 indexed pages in 13 days and has not recovered one
+
+- **The indexation series, read in full for the first time.** `indexed` was **6/33
+  on 2026-10-22**, **5/25** on 10-28, **3/21** on 10-29, **2/21** on 10-31,
+  **1/21** on 11-04, and has been **1/22 for 18 consecutive readings** to
+  2026-11-21. Part of that fall is the `sitemap-contraction` deletions (they
+  removed pages that were indexed); the rest is Google dropping
+  `/articles/bip-110-rejection` (indexed on 10-29, "Crawled - currently not
+  indexed" since, last crawl 2026-08-11) and `/articles/solar-eclipse-bitcoin-halving`
+  while both stayed live. The site has never regained a page.
+- **Both engines crawl and both decline.** Google last crawled `/` on
+  2026-11-20T02:18:58Z (after the 11-19 title change) and 18 of 22 pages are
+  "Crawled - currently not indexed"; Bing crawled `/` at 2026-11-21T08:44:33Z and
+  holds **0/22**. Indexing is ALLOWED, canonical is self, fetch is SUCCESSFUL.
+  Crawling is not the constraint.
+- **What moved, and what it is worth.** 7d GSC (2026-11-12 → 11-18): 9 clicks /
+  21 impressions / position 9.2, of which **6 clicks and 8 impressions are the
+  brand query `btc500` at 1.4** and **1 impression is non-brand** (`bitcoin 500`,
+  position 69). GA4 (2026-11-14 → 11-20): 122 sessions / 35 users, of which
+  **Direct 88/19** and **github.com 8/1 (self)** — outside audience is **25
+  sessions / 14 users**, against 23/13 a week ago. That is +2 sessions: noise.
+  `pagesWithImpressions` fell **6 → 2** since 2026-11-08.
+- **The one channel with a stranger in it is the forum, and it is one person.**
+  bitcointalk.org 4 sessions / 1 user in the window, for the fifth consecutive
+  window on the same user; 112 reads produced that. A fifth post in topic
+  5599692 (4 of its 10 posts are ours) is spam, not distribution.
+- **Strategy decision.** While `indexed` < 2 a cycle may only ship (a) the
+  `/paper-buy` dated line, (b) one external send on a channel with a measured
+  session yield, (c) measurement. Written into `GROWTH_PROMPT.md` today, with the
+  failed classes named: new URL, copy outside `/`, sitemap contraction, and a
+  third GitHub/directory submission. The 2026-11-29 entry is now the only dated
+  fact this site will own, and it is the whole of the next week's product.
+- **The ask surface is being cut, not expanded.** 16 handovers and 4 sends in 26
+  days, and both The Block link asks lapsed unsent (2026-11-17, 2026-11-21). The
+  channel is closed as `unexecutable`. The only ask kept is the X poster repair,
+  which was **wrong as written on 2026-11-19**: the plists run `/bin/bash` on a
+  `.mjs` *and* their `PATH` omits `/Users/philipkasapov/.local/bin`, so node
+  alone would have died at `spawn("browse")`. The corrected ask fixes both.
+- **Machinery, for the owner.** 2026-11-20 is recorded `site-down` (site=000)
+  but the site was not down: the attempt log shows `getaddrinfo ENOTFOUND
+  opencode.ai` and preflight `chart fetch failed` — this host lost DNS. The
+  12:39 review run that day completed and `https://btc500.net/` returns 200
+  today. The same day's review was push-blocked for `generated: 2026-11-19`,
+  the **4th day in 27 with no valid verdict** (10-31, 11-08, 11-15, 11-20).
+
+---
+
 ## Session 2026-11-21 — the forum correction is posted at last, `/` is recrawled, and ask-effect stops crediting other people's traffic
 
 - **Mandate `thread-correction-cycle-1119` — EXECUTED (overdue since 11-20).** Posted

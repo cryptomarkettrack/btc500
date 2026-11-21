@@ -888,3 +888,39 @@ end in a link: `theblock-buywindow-tip-1119`, The Block's `Editorial / News Tip`
 and the step count is stated honestly (five fields: first name, last name, work email,
 inquiry type, message).
 
+## 2026-11-21 — The Block route closed unsent; the X poster ask was wrong and is corrected
+
+**`theblock-buywindow-tip-1119` lapsed unsent on its by-date.** It was handed over
+2026-11-19 (five fields: first name, last name, work email, inquiry type, message) and
+was still unsent on 2026-11-21, the day the buy window is 8 days out. That is the
+**second** handover on `theblock.co` — `theblock-news-tip-1113` lapsed unsent on
+2026-11-17. Per §10(c) rule 4, a channel whose narrowed version also goes unsent is
+closed, not restated: `theblock.co` is now recorded **`unexecutable`** (two handovers,
+zero sends), and no review may issue a third. The goal — one followed external link —
+does not move.
+
+**`x-poster-plists-1119` is unsent, and its instruction was wrong.** Re-verified today:
+
+| check | reading |
+| --- | --- |
+| `ProgramArguments` in all three plists | `/usr/bin/caffeinate -i /bin/bash .../post-daily.mjs` |
+| `launchd-pm.err.log` | `post-daily.mjs: line 1: //: is a directory` … `line 174: unexpected EOF` |
+| `EnvironmentVariables:PATH` in all three | `/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin` |
+| where `browse` lives | `/Users/philipkasapov/.local/bin/browse` — **not in that PATH** |
+| `browse status` | "browse isn't on PATH"; relay running, extension connected, Brave default |
+| `/usr/local/bin/node` | v24.21.0, exists |
+
+So the 2026-11-19 version, which set `ProgramArguments:2` to node and nothing else,
+would have produced a job that runs node and then dies at `spawn("browse")` — a silent
+failure indistinguishable from the owner ignoring it, the exact defect §10(a) was
+written about. The restated ask fixes **both** defects in one paste and was verified on
+a copy of the plist (`PlistBuddy` two `-c` commands → `plutil -lint` OK, arguments
+`caffeinate -i /usr/local/bin/node .../post-daily.mjs`, PATH now includes
+`/Users/philipkasapov/.local/bin`). This is handover #2 on the launchd route, due
+2026-11-22; if it is also unsent, the route closes.
+
+**Ledger after this entry: 18 handovers since 2026-10-27, 4 sent, 1 live unsent
+(`x-poster-plists-1121`).** The reviewer's 2026-11-21 rule change — an ask must be two
+steps and must sit on a route the ledger shows this owner uses — is the reason the
+surface shrank rather than grew: 14 of 18 handovers died on forms with three or more
+fields, and every send was one paste and one button.

@@ -776,7 +776,7 @@ Binding until either `indexed` reaches 2 or **2026-12-02**:
   position 30 by **2026-12-02**, title and meta work stops permanently and the
   site's only lever is distribution.
 
-### Owner asks are for channels we do not hold (review 2026-11-19)
+### Owner asks are for channels we do not hold (review 2026-11-19, rewritten 2026-11-21)
 
 **Any channel this automation has posted from is cycle work, not an owner ask.**
 The evidence is a single thread: bitcointalk.org topic 5599692 has 9 posts, and 4
@@ -792,13 +792,53 @@ and then a lapse.
 - A channel is owner-only only if this automation has no session on it. Today
   that is: the three launchd X poster jobs (outside the repo), The Block's
   contact form, and Facebook.
-- **An owner ask must carry a link ceiling while `indexed` < 5.** Ask for an
-  editorial mention, a directory listing or a newsletter placement — something
-  that ends in a followed URL. A share that only produces sessions (X, Facebook,
-  the forum) is cycle work and can never be the only ask.
-- State the honest step count in the ask (page loads, fields, clicks). Above two
-  steps, cut it until it is two or fewer. "One page, one paste, one button" was
-  written for a form that also asks for a name and an email — say so.
+- **The send ledger outranks the link ceiling (review 2026-11-21).** The
+  2026-11-19 version of this rule demanded an ask that ends in a followed URL.
+  In the 26 days since 2026-10-27 it produced 16 handovers and 4 sends, and both
+  link asks built on The Block's contact form lapsed unsent
+  (`theblock-news-tip-1113`, by 2026-11-17; `theblock-buywindow-tip-1119`, by
+  2026-11-21). Every send this owner has made was one paste and one button on a
+  page that was already open. So: an ask must be executable in **two steps** and
+  must sit on a route the ledger shows this owner uses. A five-field form is not
+  an ask; it is a wish with a URL in it.
+- **Verify the instruction, not just the route (2026-11-21).** The 2026-11-19
+  X-poster ask rewrote `ProgramArguments:2` to node and stopped there. The three
+  plists also run with `PATH` = `/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin:/usr/sbin:/sbin`,
+  which does not contain `/Users/philipkasapov/.local/bin`, where `browse` lives —
+  `browse status` prints "browse isn't on PATH". The repaired job would have run
+  node and then died at `spawn("browse")`, the same silent failure as a dead
+  email address. An instruction that fixes half of a two-part defect is invalid.
+- State the honest step count in the ask, and name the file or log that will
+  prove it ran (here: `~/.local/state/btc500-growth/x/posts.json`, and
+  `launchd-*.err.log` if it did not).
+- **Restate at most twice.** If the narrowed version is also unsent on its
+  by-date, close the channel as `unexecutable` in `outreach/STATUS.md` and take
+  the next ask from a different channel. The goal
+  (`externalReferringDomains > 0`) never changes to make a channel look alive.
+
+### While `indexed` < 2, a cycle may only do three things (review 2026-11-21)
+
+The evidence is the whole record, not one week: 28 non-improving reviews; six
+experiments opened and six closed with no result; `indexed` went **6/33
+(2026-10-22) → 1/22 (2026-11-21)** and has been 1 for **18 consecutive
+readings**; **0 non-brand clicks in 31 readings**; and both engines do crawl —
+Google's last crawl of `/` is 2026-11-20, Bing's is 2026-11-21T08:44:33Z — and
+both decline 18 of 22 pages. Crawling is not the constraint and no page has ever
+been served for a query with demand.
+
+Permitted output of a cycle:
+
+1. the `/paper-buy` dated line — the 2026-11-29 entry is the only dated fact
+   this site will own;
+2. one external send on a channel with a measured session yield, printed with
+   its URL and its post id;
+3. measurement, and the mandates from the results review.
+
+Not permitted, because each has already failed with evidence on file: a new URL
+(freeze of 2026-11-18), a title/meta change outside `/`, a sitemap contraction
+(`sitemap-contraction`, closed FAILED 2026-10-29 — 25 → 21 URLs and indexed
+6 → 3), a third GitHub/directory submission of the class that produced 0
+sessions in 23 and 14 days, and any "one more page" argument.
 
 ### Order of work — never skip ahead
 
