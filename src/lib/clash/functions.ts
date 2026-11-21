@@ -1,7 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { getClashState, submitPrediction } from "./service";
+import { isDbConfigured } from "@/db/client";
+import { getPlayerId } from "./identity";
+import {
+  getClashState,
+  resolveDuePredictionsForUser,
+  SETTLE_BATCH_LIMIT,
+  submitPrediction,
+} from "./service";
 
 function logDatabaseCause(context: string, error: unknown): void {
   // Drizzle's DrizzleQueryError message omits the underlying Postgres error
@@ -31,6 +38,23 @@ const submitSchema = z.object({
   direction: z.enum(["UP", "DOWN"]),
   symbol: z.enum(["BTCUSDT"]),
   timeframe: z.enum(["15m"]),
+});
+
+/**
+ * Background settlement. Called after hydration rather than during SSR so an
+ * exchange API call never blocks the page. Idempotent, so retries are safe.
+ */
+export const settleMyPredictionsFn = createServerFn({ method: "POST" }).handler(async () => {
+  const empty = { resolved: 0, skipped: 0 };
+  if (!isDbConfigured()) return empty;
+  const playerId = await getPlayerId();
+  if (!playerId) return empty;
+  try {
+    return await resolveDuePredictionsForUser(playerId, Date.now(), SETTLE_BATCH_LIMIT);
+  } catch (error) {
+    logDatabaseCause("background settlement", error);
+    return empty;
+  }
 });
 
 export const submitPredictionFn = createServerFn({ method: "POST" })

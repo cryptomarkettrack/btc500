@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getRouteApi, useRouter } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { ArrowUpRight, ArrowDownRight, Clock, Info, Lock, Trophy } from "lucide-react";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useLocalTime } from "@/hooks/use-local-time";
-import { submitPredictionFn } from "@/lib/clash/functions";
+import { settleMyPredictionsFn, submitPredictionFn } from "@/lib/clash/functions";
 import type { ClashState } from "@/lib/clash/service";
 import type { Direction } from "@/lib/clash/rules";
 
@@ -111,7 +111,9 @@ export function ClashPage() {
   const state = route.useLoaderData();
   const router = useRouter();
   const submit = useServerFn(submitPredictionFn);
+  const settle = useServerFn(settleMyPredictionsFn);
   const { formatTime, timeZone } = useLocalTime();
+  const settleAttempts = useRef(0);
   // Seed the clock from the loader snapshot so SSR and the first client render
   // agree; only start ticking after hydration.
   const [nowMs, setNowMs] = useState(state.now);
@@ -133,6 +135,47 @@ export function ClashPage() {
     const id = setTimeout(() => router.invalidate(), delay);
     return () => clearTimeout(id);
   }, [state.target.closeTime, router]);
+
+  const hasPastPending = state.history.some(
+    (row) => row.status === "PENDING" && row.candleOpenTime < state.target.openTime,
+  );
+
+  // Settling in the background keeps page loads fast. Retry a few times
+  // because exchanges can publish the final candle slightly late.
+  useEffect(() => {
+    if (!state.player || !hasPastPending) {
+      settleAttempts.current = 0;
+      return;
+    }
+    if (settleAttempts.current >= 4) return;
+    const delay = settleAttempts.current === 0 ? 2_000 : 15_000;
+    const id = setTimeout(async () => {
+      settleAttempts.current += 1;
+      try {
+        const result = await settle();
+        if (result.resolved > 0) await router.invalidate();
+      } catch {
+        // A failed exchange call leaves rows pending; the next retry handles it.
+      }
+    }, delay);
+    return () => clearTimeout(id);
+  }, [state.player, hasPastPending, settle, router]);
+
+  // A prediction for the live candle settles shortly after it closes, even if
+  // the tab was idle at the boundary.
+  useEffect(() => {
+    if (!state.player) return;
+    const delay = Math.max(1_000, state.target.closeTime + 45_000 - Date.now());
+    const id = setTimeout(async () => {
+      try {
+        const result = await settle();
+        if (result.resolved > 0) await router.invalidate();
+      } catch {
+        // cron and the retry loop above remain as fallbacks.
+      }
+    }, delay);
+    return () => clearTimeout(id);
+  }, [state.target.closeTime, state.player, settle, router]);
 
   async function predict(direction: Direction) {
     setError(null);

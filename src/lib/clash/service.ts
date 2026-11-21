@@ -1,4 +1,4 @@
-import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
+import { and, count, desc, eq, inArray, lte, sql } from "drizzle-orm";
 
 import { getDb, isDbConfigured } from "@/db/client";
 import { candles, predictions, users } from "@/db/schema";
@@ -31,7 +31,7 @@ import {
 const HISTORY_LIMIT = 12;
 const HISTORY_STATS_LIMIT = 1_000;
 const LEADERBOARD_SCAN_LIMIT = 500;
-const ON_DEMAND_RESOLVE_LIMIT = 20;
+export const SETTLE_BATCH_LIMIT = 20;
 const CRON_RESOLVE_LIMIT = 200;
 
 interface Target {
@@ -71,6 +71,8 @@ export interface ClashState {
   stats: PlayerStats;
   leaderboard: LeaderboardView[];
   hasPredictedCurrent: boolean;
+  /** Past candles still awaiting settlement (drives background retries). */
+  pendingCount: number;
 }
 
 export interface SubmitInput {
@@ -164,21 +166,15 @@ export async function getClashState(): Promise<ClashState> {
     stats: EMPTY_STATS,
     leaderboard: [],
     hasPredictedCurrent: false,
+    pendingCount: 0,
   };
 
   if (!isDbConfigured()) return { ...base, available: false, reason: "database-not-configured" };
 
+  // Settlement is deliberately not part of this read: it makes external API
+  // calls and would stall every page load. The client triggers it in the
+  // background and refreshes when something resolves.
   const playerId = await getPlayerId();
-  if (playerId) {
-    // On-demand settlement: a returning player sees results without waiting
-    // for the daily cron. The resolver stays server-authoritative and
-    // idempotent; a failed exchange call simply leaves rows PENDING.
-    try {
-      await resolveDuePredictionsForUser(playerId, now, ON_DEMAND_RESOLVE_LIMIT);
-    } catch (error) {
-      console.error("[clash] on-demand settlement failed:", error);
-    }
-  }
 
   try {
     const db = getDb();
@@ -188,7 +184,7 @@ export async function getClashState(): Promise<ClashState> {
 
     if (!playerId) return { ...base, price, candles };
 
-    const [playerRows, historyRows, statsRows, aggregateRows] = await Promise.all([
+    const [playerRows, historyRows, statsRows, aggregateRows, pendingRows] = await Promise.all([
       db
         .select({ username: users.username, email: users.email, emailOptIn: users.emailOptIn })
         .from(users)
@@ -219,6 +215,10 @@ export async function getClashState(): Promise<ClashState> {
         .where(inArray(predictions.status, ["WON", "LOST", "VOID"]))
         .groupBy(users.id, users.username)
         .limit(LEADERBOARD_SCAN_LIMIT),
+      db
+        .select({ value: count() })
+        .from(predictions)
+        .where(and(eq(predictions.userId, playerId), eq(predictions.status, "PENDING"))),
     ]);
 
     const leaderboard = rankLeaderboard(
@@ -243,6 +243,7 @@ export async function getClashState(): Promise<ClashState> {
       hasPredictedCurrent: historyRows.some(
         (row) => row.candleOpenTime.getTime() === target.openTime,
       ),
+      pendingCount: Number(pendingRows[0]?.value ?? 0),
     };
   } catch (error) {
     if (isMissingSchemaError(error)) {
