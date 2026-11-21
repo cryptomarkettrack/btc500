@@ -1,4 +1,4 @@
-import type { ExchangeCandle } from "./binance";
+import type { ExchangeCandle } from "./market-data";
 
 export interface ChartCandle {
   candle: ExchangeCandle;

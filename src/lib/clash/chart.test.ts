@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { buildChartGeometry } from "./chart.ts";
-import type { ExchangeCandle } from "./binance.ts";
+import type { ExchangeCandle } from "./market-data.ts";
 
 function candle(openTime: number, open: number, close: number): ExchangeCandle {
   return {
@@ -15,6 +15,7 @@ function candle(openTime: number, open: number, close: number): ExchangeCandle {
     low: Math.min(open, close) - 10,
     close,
     final: true,
+    source: "kraken",
   };
 }
 

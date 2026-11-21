@@ -2,7 +2,13 @@ import { and, desc, eq, inArray, lte, sql } from "drizzle-orm";
 
 import { getDb, isDbConfigured } from "@/db/client";
 import { candles, predictions, users } from "@/db/schema";
-import { fetchCandle, fetchRecentCandles, type ExchangeCandle } from "./binance";
+import {
+  fetchCandle,
+  fetchCandleFromSource,
+  fetchRecentCandles,
+  PRICE_SOURCES,
+  type ExchangeCandle,
+} from "./market-data";
 import { getPlayerId, setPlayerCookie } from "./identity";
 import {
   CLASH_SYMBOL,
@@ -296,6 +302,7 @@ export async function submitPrediction(input: SubmitInput): Promise<SubmitResult
         direction: input.direction,
         candleOpenTime: new Date(target.openTime),
         entryPrice: String(candle.open),
+        priceSource: candle.source,
         status: "PENDING",
         points: 0,
       })
@@ -319,7 +326,7 @@ export async function submitPrediction(input: SubmitInput): Promise<SubmitResult
 
 type DueRow = Pick<
   typeof predictions.$inferSelect,
-  "id" | "userId" | "symbol" | "timeframe" | "direction" | "candleOpenTime"
+  "id" | "userId" | "symbol" | "timeframe" | "direction" | "candleOpenTime" | "priceSource"
 >;
 
 interface ResolveResult {
@@ -338,19 +345,38 @@ async function resolveRows(rows: DueRow[], now: number): Promise<ResolveResult> 
 
   const groups = new Map<
     string,
-    { symbol: string; timeframe: string; openTime: number; items: DueRow[] }
+    {
+      symbol: string;
+      timeframe: string;
+      openTime: number;
+      source: (typeof PRICE_SOURCES)[number];
+      items: DueRow[];
+    }
   >();
   for (const row of rows) {
     const openTime = row.candleOpenTime.getTime();
-    const key = `${row.symbol}|${row.timeframe}|${openTime}`;
+    const key = `${row.symbol}|${row.timeframe}|${openTime}|${row.priceSource}`;
     const existing = groups.get(key);
     if (existing) existing.items.push(row);
-    else groups.set(key, { symbol: row.symbol, timeframe: row.timeframe, openTime, items: [row] });
+    else
+      groups.set(key, {
+        symbol: row.symbol,
+        timeframe: row.timeframe,
+        openTime,
+        source: row.priceSource as (typeof PRICE_SOURCES)[number],
+        items: [row],
+      });
   }
 
   const db = getDb();
   for (const group of groups.values()) {
-    const candle = await fetchCandle(group.symbol, group.timeframe, group.openTime, now);
+    const candle = await fetchCandleFromSource(
+      group.source,
+      group.symbol,
+      group.timeframe,
+      group.openTime,
+      now,
+    );
     if (!candle || !candle.final) {
       result.skipped += group.items.length;
       continue;
@@ -364,6 +390,7 @@ async function resolveRows(rows: DueRow[], now: number): Promise<ResolveResult> 
         openTime: new Date(group.openTime),
         openPrice: String(candle.open),
         closePrice: String(candle.close),
+        priceSource: candle.source,
         resolvedAt: new Date(now),
       })
       .onConflictDoNothing();

@@ -44,6 +44,8 @@ export const predictions = pgTable(
     candleOpenTime: timestamp("candle_open_time", { withTimezone: true }).notNull(),
     // The target candle's official open, fetched server-side at submission.
     entryPrice: numeric("entry_price", { precision: 20, scale: 8 }),
+    // Settlement must use the same provider that supplied the entry price.
+    priceSource: text("price_source").notNull().default("binance"),
     status: text("status").notNull().default("PENDING"),
     points: integer("points").notNull().default(0),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
@@ -69,6 +71,7 @@ export const candles = pgTable(
     openTime: timestamp("open_time", { withTimezone: true }).notNull(),
     openPrice: numeric("open_price", { precision: 20, scale: 8 }).notNull(),
     closePrice: numeric("close_price", { precision: 20, scale: 8 }).notNull(),
+    priceSource: text("price_source").notNull().default("binance"),
     resolvedAt: timestamp("resolved_at", { withTimezone: true }).notNull().defaultNow(),
   },
   (table) => [primaryKey({ columns: [table.symbol, table.timeframe, table.openTime] })],

@@ -98,8 +98,8 @@ function RulesCard() {
           One prediction per 15-minute BTC/USDT candle, locked in at least 60s before it closes.
         </p>
         <p>
-          Settled from Binance&apos;s official candle open and close: +1 for correct, 0 for wrong, 0
-          for a flat candle (VOID).
+          Settled from verified exchange candle open and close: +1 for correct, 0 for wrong, 0 for a
+          flat candle (VOID).
         </p>
         <p>Free to play. No wagers, deposits or prizes.</p>
       </CardContent>
@@ -203,6 +203,7 @@ export function ClashPage() {
           liveOpenTime={state.target.openTime}
           formatTime={formatTime}
           timeZone={timeZone}
+          source={state.candles[0]?.source}
         />
       </div>
 

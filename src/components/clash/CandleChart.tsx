@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import type { TimeFormatter } from "@/hooks/use-local-time";
-import type { ExchangeCandle } from "@/lib/clash/binance";
+import type { ExchangeCandle } from "@/lib/clash/market-data";
 import { buildChartGeometry } from "@/lib/clash/chart";
 
 interface CandleChartProps {
@@ -11,10 +11,17 @@ interface CandleChartProps {
   liveOpenTime: number;
   formatTime: TimeFormatter;
   timeZone: string;
+  source?: string;
 }
 
 /** Lightweight SVG candlestick chart — no extra chart dependency or hydration gap. */
-export function CandleChart({ candles, liveOpenTime, formatTime, timeZone }: CandleChartProps) {
+export function CandleChart({
+  candles,
+  liveOpenTime,
+  formatTime,
+  timeZone,
+  source,
+}: CandleChartProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const [width, setWidth] = useState(800);
 
@@ -39,7 +46,7 @@ export function CandleChart({ candles, liveOpenTime, formatTime, timeZone }: Can
           <div>
             <CardTitle className="text-base">BTC / USDT · 15m candles</CardTitle>
             <CardDescription>
-              Recent Binance spot candles · times in {timeZone} · live candle in orange
+              Recent {source ?? "exchange"} candles · times in {timeZone} · live candle in orange
             </CardDescription>
           </div>
           <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
