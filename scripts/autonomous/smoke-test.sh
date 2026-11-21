@@ -26,7 +26,9 @@ PLIST="$HOME/Library/LaunchAgents/$LABEL.plist"
 DOMAIN="gui/$(id -u)"
 LOG="$STATE_DIR/smoke-$(date +%Y%m%d-%H%M%S).log"
 JOB_SCRIPT="$STATE_DIR/smoke-job.sh"
-WAIT_SECONDS="${BTC500_GROWTH_SMOKE_WAIT:-420}"
+# Budget: the job runs the runner dry-run plus the opencode handshake
+# (alarm 180s) plus slack, so wait comfortably longer than the job can take.
+WAIT_SECONDS="${BTC500_GROWTH_SMOKE_WAIT:-600}"
 
 if [[ "$(uname -s)" != "Darwin" ]]; then
   echo "This test uses launchd and only works on macOS." >&2

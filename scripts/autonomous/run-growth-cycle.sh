@@ -143,13 +143,14 @@ finish() {
     "${STATUS_NOTE:-none}" > "$STATUS_FILE"
 
   # Append-only history: last-status.txt is overwritten every run, this is not.
-  if [[ ! -f "$HISTORY_FILE" ]]; then
-    printf 'timestamp,status,model,head,tests,vercel,manifest,site,archive,note\n' > "$HISTORY_FILE"
-  fi
-  printf '%s,%s,%s,%s,%s,%s,%s,%s,%s,%s\n' \
+  # btc_append_history (lib.sh) writes the header when the file is missing and
+  # strips commas from every field, so a note containing a comma cannot shift
+  # the columns of the CSV.
+  btc_append_history "$HISTORY_FILE" \
+    "timestamp,status,model,head,tests,vercel,manifest,site,archive,note" \
     "$(date '+%Y-%m-%dT%H:%M:%S%z')" "$status" "$model" "$head" \
     "$TEST_STATE" "$VERCEL_STATE" "$MANIFEST_STATE" "$SITE_CODE" "$ARCHIVE_STATE" \
-    "$(printf '%s' "${STATUS_NOTE:-}" | tr -d ',')" >> "$HISTORY_FILE"
+    "${STATUS_NOTE:-}"
 
   rm -rf "$LOCK_DIR"
   log "Finished: status=$status model=$model head=$head tests=$TEST_STATE vercel=$VERCEL_STATE manifest=$MANIFEST_STATE site=$SITE_CODE archive=$ARCHIVE_STATE"

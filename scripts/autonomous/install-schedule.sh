@@ -28,7 +28,7 @@ DOMAIN="gui/$UID_NUM"
 JOB_NAMES=(growth review)
 
 usage() {
-  sed -n '2,24p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '10,15p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 require_macos() {
@@ -156,7 +156,11 @@ status_job() {
     if [[ -f "$plist" ]]; then
       any=1
       echo "== $label ($(job_field "$name" schedule)) =="
-      launchctl print "$DOMAIN/$label" 2>/dev/null | sed -n '1,20p' || echo "  Not loaded."
+      if launchctl print "$DOMAIN/$label" >/dev/null 2>&1; then
+        launchctl print "$DOMAIN/$label" 2>/dev/null | sed -n '1,20p'
+      else
+        echo "  Not loaded."
+      fi
       echo
     else
       echo "$label: not installed ($plist is missing)"

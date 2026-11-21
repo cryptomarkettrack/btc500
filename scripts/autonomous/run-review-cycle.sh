@@ -96,7 +96,6 @@ TEST_STATE="skipped"
 VERCEL_STATE="skipped"
 RUNNER_CHECK="none"
 STATUS_NOTE=""
-COLLECTED=0
 ASK_COUNT=0
 ASK_NOTIFY=""
 
@@ -443,7 +442,6 @@ if [[ -n "$DIRTY" ]]; then
     git add -A
     git commit -q -m "review: rejected verdict preserved by the runner ($RUNNER_CHECK)" \
       || log "WARN: could not commit the rejected verdict"
-    COLLECTED=1
     STATUS_NOTE="${STATUS_NOTE:+$STATUS_NOTE }rejected-${RUNNER_CHECK}"
     log "Committed the rejected verdict as evidence (check=$RUNNER_CHECK)"
   else
@@ -456,7 +454,6 @@ if [[ -n "$DIRTY" ]]; then
       git commit -q -m "review: ${VERDICT} — collected by the runner (agent exited without committing)" \
         || log "WARN: could not commit the review"
     fi
-    COLLECTED=1
     STATUS_NOTE="collected-uncommitted"
     log "Collected the reviewer's uncommitted work into a commit"
   fi
