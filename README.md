@@ -25,6 +25,7 @@ Package manager: **Bun** (also supports npm). Lockfiles for both are in the repo
 - Timeline / time machine for realized vs live cycles
 - Halving dates schedule from the canonical cycle model
 - Articles, news, bear-market meter, liquidation, and insider-trading views
+- Candle Clash (`/clash`): a free BTC/USDT candle forecasting game with server-settled results and a leaderboard. See [CLASH_SETUP.md](./CLASH_SETUP.md).
 
 ## Architecture
 
@@ -67,7 +68,7 @@ bun run dev   # http://localhost:3000
 
 ## Environment variables
 
-The web app does not require environment variables for countdown, prices, or historical pages.
+The web app does not require environment variables for countdown, prices, or historical pages. Candle Clash (`/clash`) additionally needs `DATABASE_URL`, `CLASH_COOKIE_SECRET` and `CRON_SECRET` — see [CLASH_SETUP.md](./CLASH_SETUP.md). Without them, the rest of the site works and the game shows a setup notice.
 
 Optional, scripts only:
 

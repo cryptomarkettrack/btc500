@@ -30,10 +30,11 @@ export const Route = createFileRoute("/privacy")({
 
 function PrivacyPage() {
   return (
-    <LegalPage title="Privacy Policy" updated="October 30, 2026">
+    <LegalPage title="Privacy Policy" updated="November 21, 2026">
       <p>
-        BTC500 (btc500.net) is a free informational website. We do not create user accounts, we do
-        not sell a subscription, and we do not ask for your name, wallet, or payment details.
+        BTC500 (btc500.net) is a free informational website. The research pages do not require an
+        account, and we never ask for your wallet or payment details. The optional Candle Clash game
+        asks for an email and username to rank players, as explained below.
       </p>
 
       <section>
@@ -54,15 +55,21 @@ function PrivacyPage() {
           Standard server logs (IP address, user agent, requested URL) may be processed by our
           hosting provider (Vercel) to operate and secure the site.
         </p>
+        <p>
+          <strong>Candle Clash</strong> stores the email and username you enter, together with your
+          predictions and results, in a PostgreSQL database hosted in connection with our Vercel
+          project. There is no password or signup. A signed, httpOnly cookie remembers your player
+          on this device. Your username (never your email) appears on the public leaderboard.
+        </p>
       </section>
 
       <section>
         <h2>What we do not collect</h2>
         <ul>
-          <li>No account registration or login</li>
-          <li>No email list on this site unless you write to us first</li>
+          <li>No account registration, password, or login on the research pages</li>
+          <li>No marketing emails unless you tick the opt-in box in Candle Clash</li>
           <li>No wallet addresses, API keys, or private keys</li>
-          <li>No payment information</li>
+          <li>No payment information or wagering</li>
         </ul>
       </section>
 
@@ -80,15 +87,27 @@ function PrivacyPage() {
         <h2>Cookies and similar tech</h2>
         <p>
           We do not set marketing, advertising or remarketing cookies, and we never grant Google
-          Analytics its advertising signals. Vercel Analytics is cookieless. The only cookies this
-          site can write are Google Analytics&rsquo; first-party <code>_ga</code> and
-          <code>_ga_&lt;id&gt;</code> cookies, and only after you press <em>Accept</em> in the
-          banner.
+          Analytics its advertising signals. Vercel Analytics is cookieless. Google Analytics&rsquo;
+          first-party <code>_ga</code> and <code>_ga_&lt;id&gt;</code> cookies are written only
+          after you press <em>Accept</em> in the banner. Candle Clash also sets one functional,
+          signed, httpOnly cookie named <code>clash_player</code> so it can recognise your player on
+          return visits; it is not used for advertising and expires after one year.
         </p>
         <p>
           To change your choice, clear this site&rsquo;s data in your browser settings; the banner
           then asks again on your next visit. You can also block analytics entirely with a browser
           extension or tracking-protection setting — every page and tool keeps working.
+        </p>
+      </section>
+
+      <section>
+        <h2>Candle Clash identity and email</h2>
+        <p>
+          The email you enter is used to identify your player record and ranking. It is not shown
+          publicly. The optional checkbox records your consent for occasional BTC500 product emails;
+          no emails are sent as part of the game today. You can withdraw that consent at any time by
+          emailing us. Because there is no verification step, Candle Clash leaderboards are not
+          resistant to someone else using your email address.
         </p>
       </section>
 

@@ -5,6 +5,16 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-21 — Candle Clash thin slice built locally (not pushed, no DB provisioned)
+
+- **Decision from owner:** integrate the game as `/clash` on btc500.net; Neon free tier with 15m only first; email + username with explicit opt-in and a signed cookie; thin vertical slice only. This deliberately overrides the retention strategy's "not a trading terminal / anti-casino" stance for the game surface, so `/clash` is `noindex` to keep it off the research SEO path.
+- **Implemented locally:** Drizzle schema + migration (`users`, `predictions`, `candles`) with uniqueness/updating constraints and indexes; Binance spot-kline fetcher that refuses non-final candles; HMAC-signed httpOnly player cookie; server-authoritative submit and idempotent settlement (conditional UPDATE, no interactive transaction); on-demand settlement for returning players plus a `CRON_SECRET`-protected `/api/cron/clash-resolve` (`0 3 * * *`, Hobby-compatible); UI with history, accuracy/streak and an all-time leaderboard. Privacy copy updated for the new identity/consent.
+- **Chart added after visual review:** the page was visually flat without a price chart, so `/clash` now opens with a responsive SVG candlestick chart of the last 40 Binance 15m candles (24 on narrow screens), with the live candle highlighted, a last-price marker and hover OHLC tooltips. Server- seeded countdown fixed a hydration mismatch. Validated by local browser screenshot; 294 tests pass.
+- **Validation:** 289 tests pass, typecheck clean, production build succeeds, lint clean on new files. Local runtime: `/clash` returns 200 with a graceful "not configured" notice when `DATABASE_URL` is absent; cron endpoint returns 401 without the secret.
+- **Blocked pending owner action:** Neon must be provisioned via Vercel Marketplace and `DATABASE_URL`, `CLASH_COOKIE_SECRET`, `CRON_SECRET` set; run `bun run db:migrate`; preview-deploy and test one full candle lifecycle. Per `src/AGENTS.md`, DB migrations and security-sensitive/new-infra changes need explicit approval before a production push — nothing has been pushed.
+
+---
+
 ## Session 2026-11-21 — Vercel usage audit: smaller deployments, fewer origin calls
 
 - **Baseline read from Vercel Usage (Oct 22 – Nov 21):** Deployment Storage **2.13 GB / 10 GB**, Functions Storage 154.72 MB, Fluid Active CPU **1h 1m / 4h**, Fluid Provisioned Memory 6.0 GB-hrs / 360, **23,077** function invocations, Build CPU 5h 18m. No Vercel Cron, no ISR. All 20 latest deployments are **production**: the growth runner pushes 4–5×/day and Vercel retains every one. Nothing is near a plan limit — this is cost/hygiene, not an incident.

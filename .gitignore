@@ -64,3 +64,4 @@ scripts/bing/output/
 # chrome profile used by the checker and the screenshots it takes.
 /.taste-skill/
 /taste-skill-consistency/
+.env*
