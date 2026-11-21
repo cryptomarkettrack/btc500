@@ -60,9 +60,12 @@ export default defineConfig({
   vite: {
     plugins: [historicalCsvPlugin()],
     build: {
-      // Emit source maps so large first-party bundles satisfy Lighthouse's
-      // "valid source maps" best-practice and debugging is possible in production.
-      sourcemap: true,
+      // Source maps are ~7.6 MB of every build output and Vercel stores that on
+      // every deployment (several a day). Keep them locally for debugging, but
+      // skip them on Vercel unless explicitly requested. The trade-off is that
+      // the live site no longer ships maps for Lighthouse's source-map audit;
+      // set BTC500_SOURCEMAPS=true on a build if you need that audit again.
+      sourcemap: process.env.BTC500_SOURCEMAPS === "true" || process.env.VERCEL !== "1",
       // NOTE: no `output.manualChunks` here. Vite 8 (rolldown) ignores it because
       // the Lovable/TanStack preset already defines `codeSplitting`; keeping a
       // dead copy only produced a build warning. Route-level splitting is handled

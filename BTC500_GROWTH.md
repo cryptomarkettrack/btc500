@@ -5,6 +5,16 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-21 — Vercel usage audit: smaller deployments, fewer origin calls
+
+- **Baseline read from Vercel Usage (Oct 22 – Nov 21):** Deployment Storage **2.13 GB / 10 GB**, Functions Storage 154.72 MB, Fluid Active CPU **1h 1m / 4h**, Fluid Provisioned Memory 6.0 GB-hrs / 360, **23,077** function invocations, Build CPU 5h 18m. No Vercel Cron, no ISR. All 20 latest deployments are **production**: the growth runner pushes 4–5×/day and Vercel retains every one. Nothing is near a plan limit — this is cost/hygiene, not an incident.
+- **Implemented locally (not pushed):** `.vercelignore` for local tooling/env/generated reports; two large OG PNGs losslessly recompressed (1,659,159 → 1,404,803 B and 1,258,715 → 958,346 B, `magick compare -metric AE` = 0, so pixels are unchanged); production source maps disabled on Vercel (`.vercel/output` **22 MB → 14 MB**, ~36% smaller per deploy) with `BTC500_SOURCEMAPS=true` as the opt-in; SSR HTML now gets `Cache-Control: public, max-age=0, s-maxage=60, stale-while-revalidate=600` through `src/lib/html-cache.ts` so the edge serves documents without invoking the function and its root-loader block-height fetch. Four unit tests cover which responses are cached.
+- **Prepared but deliberately not run:** `scripts/vercel/cleanup-deployments.mjs`. Dry-run by default, `--apply` required, keeps the N newest plus promoted/aliased/young deployments. Needs a `VERCEL_TOKEN`. Deleting deployments is irreversible (kills instant rollback and breaks deployment-URL links), so this needs an owner decision after reviewing the dry-run list.
+- **Validation:** typecheck, 276 tests, production build, Prettier all pass. `vite preview` cannot serve this build (`dist/server/server.js` missing — pre-existing), so the cache header was verified by unit test rather than a live HTTP response.
+- **Expected but unverified:** smaller deployments from the next deploy onward; fewer function invocations once edge caching is live. Confirm both against Vercel Usage after a full billing period. Also flagged to the owner: Vercel shows an incomplete billing address on the payment method.
+
+---
+
 ## Results review 2026-11-21 (daily, 28th non-improving) — the site lost 5 indexed pages in 13 days and has not recovered one
 
 - **The indexation series, read in full for the first time.** `indexed` was **6/33

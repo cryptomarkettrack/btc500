@@ -1,0 +1,32 @@
+# Local credentials and environment files — never upload these.
+.env
+.env.*
+!.env.example
+
+# Local agent / editor tooling. None of it is needed to build or serve the site.
+.agents/
+.cline/
+.grok/
+.lovable/
+.opencode/
+.taste-skill/
+plans/
+skills-lock.json
+
+# Generated reports and scratch state (also gitignored). These add thousands of
+# small files to every upload without ever reaching the build output.
+scripts/search-console/output/
+scripts/analytics/output/
+scripts/bing/output/
+scripts/autonomous/outreach/
+search-console/
+*.log
+.DS_Store
+
+# Build artifacts are recreated on Vercel; do not upload local ones.
+dist/
+.output/
+.vinxi/
+.tanstack/
+.nitro/
+.vercel/
