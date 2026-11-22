@@ -27,12 +27,6 @@
       "permanent": true
     }
   ],
-  "crons": [
-    {
-      "path": "/api/cron/clash-resolve",
-      "schedule": "0 3 * * *"
-    }
-  ],
   "headers": [
     {
       "source": "/(.*)",

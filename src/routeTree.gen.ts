@@ -15,7 +15,6 @@ import { Route as ArticlesRouteImport } from './routes/articles'
 import { Route as Bitcoin500DayCycleRouteImport } from './routes/bitcoin-500-day-cycle'
 import { Route as BitcoinEtfRouteImport } from './routes/bitcoin-etf'
 import { Route as BitcoinHalvingCalendarDoticsRouteImport } from './routes/bitcoin-halving-calendar[.]ics'
-import { Route as ClashRouteImport } from './routes/clash'
 import { Route as DcaRouteImport } from './routes/dca'
 import { Route as EmbedRouteImport } from './routes/embed'
 import { Route as EmbedKitRouteImport } from './routes/embed-kit'
@@ -49,7 +48,6 @@ import { Route as ArticlesWhyBitcoinPumpedRouteImport } from './routes/articles.
 import { Route as ArticlesWhyBtc500ExistsRouteImport } from './routes/articles.why-btc500-exists'
 import { Route as Data500DayCyclesDotjsonRouteImport } from './routes/data.500-day-cycles[.]json'
 import { Route as DataHalvingSpacingDotjsonRouteImport } from './routes/data.halving-spacing[.]json'
-import { Route as ApiCronClashResolveRouteImport } from './routes/api/cron/clash-resolve'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -82,11 +80,6 @@ const BitcoinHalvingCalendarDoticsRoute =
     path: '/bitcoin-halving-calendar.ics',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ClashRoute = ClashRouteImport.update({
-  id: '/clash',
-  path: '/clash',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const DcaRoute = DcaRouteImport.update({
   id: '/dca',
   path: '/dca',
@@ -263,11 +256,6 @@ const DataHalvingSpacingDotjsonRoute =
     path: '/data/halving-spacing.json',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiCronClashResolveRoute = ApiCronClashResolveRouteImport.update({
-  id: '/api/cron/clash-resolve',
-  path: '/api/cron/clash-resolve',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -276,7 +264,6 @@ export interface FileRoutesByFullPath {
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
-  '/clash': typeof ClashRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -310,7 +297,6 @@ export interface FileRoutesByFullPath {
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
   '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
-  '/api/cron/clash-resolve': typeof ApiCronClashResolveRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -319,7 +305,6 @@ export interface FileRoutesByTo {
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
-  '/clash': typeof ClashRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -353,7 +338,6 @@ export interface FileRoutesByTo {
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
   '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
-  '/api/cron/clash-resolve': typeof ApiCronClashResolveRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -363,7 +347,6 @@ export interface FileRoutesById {
   '/bitcoin-500-day-cycle': typeof Bitcoin500DayCycleRoute
   '/bitcoin-etf': typeof BitcoinEtfRoute
   '/bitcoin-halving-calendar.ics': typeof BitcoinHalvingCalendarDoticsRoute
-  '/clash': typeof ClashRoute
   '/dca': typeof DcaRoute
   '/embed': typeof EmbedRoute
   '/embed-kit': typeof EmbedKitRoute
@@ -397,7 +380,6 @@ export interface FileRoutesById {
   '/articles/why-btc500-exists': typeof ArticlesWhyBtc500ExistsRoute
   '/data/500-day-cycles.json': typeof Data500DayCyclesDotjsonRoute
   '/data/halving-spacing.json': typeof DataHalvingSpacingDotjsonRoute
-  '/api/cron/clash-resolve': typeof ApiCronClashResolveRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -408,7 +390,6 @@ export interface FileRouteTypes {
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/bitcoin-halving-calendar.ics'
-    | '/clash'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -442,7 +423,6 @@ export interface FileRouteTypes {
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
     | '/data/halving-spacing.json'
-    | '/api/cron/clash-resolve'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -451,7 +431,6 @@ export interface FileRouteTypes {
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/bitcoin-halving-calendar.ics'
-    | '/clash'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -485,7 +464,6 @@ export interface FileRouteTypes {
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
     | '/data/halving-spacing.json'
-    | '/api/cron/clash-resolve'
   id:
     | '__root__'
     | '/'
@@ -494,7 +472,6 @@ export interface FileRouteTypes {
     | '/bitcoin-500-day-cycle'
     | '/bitcoin-etf'
     | '/bitcoin-halving-calendar.ics'
-    | '/clash'
     | '/dca'
     | '/embed'
     | '/embed-kit'
@@ -528,7 +505,6 @@ export interface FileRouteTypes {
     | '/articles/why-btc500-exists'
     | '/data/500-day-cycles.json'
     | '/data/halving-spacing.json'
-    | '/api/cron/clash-resolve'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -538,7 +514,6 @@ export interface RootRouteChildren {
   Bitcoin500DayCycleRoute: typeof Bitcoin500DayCycleRoute
   BitcoinEtfRoute: typeof BitcoinEtfRoute
   BitcoinHalvingCalendarDoticsRoute: typeof BitcoinHalvingCalendarDoticsRoute
-  ClashRoute: typeof ClashRoute
   DcaRoute: typeof DcaRoute
   EmbedRoute: typeof EmbedRoute
   EmbedKitRoute: typeof EmbedKitRoute
@@ -557,7 +532,6 @@ export interface RootRouteChildren {
   WhenToSellBitcoinAfterHalvingRoute: typeof WhenToSellBitcoinAfterHalvingRoute
   Data500DayCyclesDotjsonRoute: typeof Data500DayCyclesDotjsonRoute
   DataHalvingSpacingDotjsonRoute: typeof DataHalvingSpacingDotjsonRoute
-  ApiCronClashResolveRoute: typeof ApiCronClashResolveRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -602,13 +576,6 @@ declare module '@tanstack/react-router' {
       path: '/bitcoin-halving-calendar.ics'
       fullPath: '/bitcoin-halving-calendar.ics'
       preLoaderRoute: typeof BitcoinHalvingCalendarDoticsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/clash': {
-      id: '/clash'
-      path: '/clash'
-      fullPath: '/clash'
-      preLoaderRoute: typeof ClashRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/dca': {
@@ -842,13 +809,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DataHalvingSpacingDotjsonRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/cron/clash-resolve': {
-      id: '/api/cron/clash-resolve'
-      path: '/api/cron/clash-resolve'
-      fullPath: '/api/cron/clash-resolve'
-      preLoaderRoute: typeof ApiCronClashResolveRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -902,7 +862,6 @@ const rootRouteChildren: RootRouteChildren = {
   Bitcoin500DayCycleRoute: Bitcoin500DayCycleRoute,
   BitcoinEtfRoute: BitcoinEtfRoute,
   BitcoinHalvingCalendarDoticsRoute: BitcoinHalvingCalendarDoticsRoute,
-  ClashRoute: ClashRoute,
   DcaRoute: DcaRoute,
   EmbedRoute: EmbedRoute,
   EmbedKitRoute: EmbedKitRoute,
@@ -921,7 +880,6 @@ const rootRouteChildren: RootRouteChildren = {
   WhenToSellBitcoinAfterHalvingRoute: WhenToSellBitcoinAfterHalvingRoute,
   Data500DayCyclesDotjsonRoute: Data500DayCyclesDotjsonRoute,
   DataHalvingSpacingDotjsonRoute: DataHalvingSpacingDotjsonRoute,
-  ApiCronClashResolveRoute: ApiCronClashResolveRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

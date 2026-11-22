@@ -18,7 +18,6 @@ import {
   CalendarClock,
   Landmark,
   CircleDollarSign,
-  Target,
 } from "lucide-react";
 import { BtcLogo } from "@/components/BtcLogo";
 import { useState } from "react";
@@ -40,12 +39,6 @@ type NavItem = {
 };
 
 const tools: NavItem[] = [
-  {
-    to: "/clash",
-    label: "Candle Clash",
-    description: "Free candle forecasting game",
-    icon: Target,
-  },
   {
     to: "/paper-buy",
     label: "$50k Paper Buy",

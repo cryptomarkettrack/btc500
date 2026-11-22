@@ -5,6 +5,15 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-22 — Candle Clash removed
+
+- **Owner decision:** remove the Candle Clash game entirely. It was a `noindex` retention experiment with no independent search demand and added a database, a cron job and three runtime dependencies to a research site that otherwise needs no backend.
+- **Removed:** `/clash` and `/api/cron/clash-resolve` routes, `src/components/clash/`, `src/lib/clash/`, `src/db/` (Neon client + Drizzle schema), `drizzle/` migrations and `drizzle.config.ts`, the Vercel cron, the Tools nav item, Candle Clash copy from the privacy policy, and all setup/test/docs references. Dropped `drizzle-orm`, `drizzle-kit` and `@neondatabase/serverless` from `package.json`.
+- **Deliberately left alone:** the historical 2026-11-21 log entry below (journal, not live configuration), and local `.env.local` values (gitignored; stale `DATABASE_URL`/`CLASH_COOKIE_SECRET`/`CRON_SECRET` are harmless but can be removed locally). No changes were made to the provisioned Neon database itself.
+- **Validation:** typecheck clean, 276 tests pass, production build succeeds, no lint errors in touched files (the repo's 512 pre-existing Prettier errors remain). Local dev server: `/clash` → 404, `/` and `/privacy` → 200, and neither page mentions Candle Clash.
+
+---
+
 ## Session 2026-11-21 — Candle Clash thin slice built locally (not pushed, no DB provisioned)
 
 - **Decision from owner:** integrate the game as `/clash` on btc500.net; Neon free tier with 15m only first; email + username with explicit opt-in and a signed cookie; thin vertical slice only. This deliberately overrides the retention strategy's "not a trading terminal / anti-casino" stance for the game surface, so `/clash` is `noindex` to keep it off the research SEO path.
