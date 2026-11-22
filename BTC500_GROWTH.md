@@ -11,6 +11,7 @@ not record guesses as results.
 - **Removed:** `/clash` and `/api/cron/clash-resolve` routes, `src/components/clash/`, `src/lib/clash/`, `src/db/` (Neon client + Drizzle schema), `drizzle/` migrations and `drizzle.config.ts`, the Vercel cron, the Tools nav item, Candle Clash copy from the privacy policy, and all setup/test/docs references. Dropped `drizzle-orm`, `drizzle-kit` and `@neondatabase/serverless` from `package.json`.
 - **Deliberately left alone:** the historical 2026-11-21 log entry below (journal, not live configuration), and local `.env.local` values (gitignored; stale `DATABASE_URL`/`CLASH_COOKIE_SECRET`/`CRON_SECRET` are harmless but can be removed locally). No changes were made to the provisioned Neon database itself.
 - **Validation:** typecheck clean, 276 tests pass, production build succeeds, no lint errors in touched files (the repo's 512 pre-existing Prettier errors remain). Local dev server: `/clash` → 404, `/` and `/privacy` → 200, and neither page mentions Candle Clash.
+- **Deployed and verified live:** commit `e75bbc8` pushed to `main`, Vercel production deployment READY for that commit. Live HTTPS check: `/clash` → 404, `/` → 200, `/privacy` → 200, zero Candle Clash mentions on the homepage or privacy page.
 
 ---
 
