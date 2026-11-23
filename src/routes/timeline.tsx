@@ -4,10 +4,15 @@ import { motion } from "framer-motion";
 import { Clock, Play, Pause, ArrowLeftRight } from "lucide-react";
 import { emptyTimelinePayload, type TimelineDay } from "@/lib/timeline.functions";
 import { timelineQuery } from "@/lib/queries";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
+import { AnswerSection } from "@/components/aeo/AnswerSection";
 import { CycleCard } from "@/components/timeline/CycleCard";
 import { InfoPanel } from "@/components/timeline/InfoPanel";
-import { TimelineExplainer, TIMELINE_FAQ } from "@/components/timeline/TimelineExplainer";
+import {
+  COMPLETED_WINDOWS,
+  TimelineExplainer,
+  TIMELINE_FAQ,
+} from "@/components/timeline/TimelineExplainer";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -50,6 +55,29 @@ function TimelinePending() {
   );
 }
 
+function TimelineAnswer() {
+  const window2020 = COMPLETED_WINDOWS.find((w) => w.cycle === "2020 Halving");
+  const window2024 = COMPLETED_WINDOWS.find((w) => w.cycle === "2024 Halving");
+  if (!window2020 || !window2024) return null;
+  return (
+    <AnswerSection
+      id="answer"
+      className="mx-auto max-w-3xl"
+      question="What happened to Bitcoin between the 2020 and 2024 halvings?"
+      answer={
+        <>
+          The BTC500 window for the 2020 halving bought at {window2020.buyPrice} on {window2020.buy}{" "}
+          and sold at {window2020.sellPrice} on {window2020.sell} — {window2020.total}. The next
+          window, into the 2024 halving, bought at {window2024.buyPrice} and sold at{" "}
+          {window2024.sellPrice} ({window2024.total}).
+        </>
+      }
+      detail="Those are daily closes from the same archive the timeline replays, not intraday extremes. Later cycles started from a higher price and produced smaller multiples. Four completed windows is a small sample; past performance does not guarantee future results."
+      source={{ href: "/data/500-day-cycles.json", label: "Download the dated dataset" }}
+    />
+  );
+}
+
 export const Route = createFileRoute("/timeline")({
   head: () =>
     generatePageHead({
@@ -64,7 +92,11 @@ export const Route = createFileRoute("/timeline")({
         "Replay Bitcoin history with the BTC500 strategy. Compare investments across halving cycles with real price data.",
       ogImageAlt: "BTC500 Time Machine — Interactive Bitcoin Halving Timeline",
       twitterDescription: "Replay Bitcoin history with the BTC500 strategy.",
-      schema: [timelinePageSchema, timelineFaqSchema],
+      schema: [
+        timelinePageSchema,
+        generateSpeakableSchema({ path: "/timeline", cssSelectors: [".lead"] }),
+        timelineFaqSchema,
+      ],
     }),
   loader: async ({ context }) => {
     try {
@@ -289,6 +321,8 @@ function Timeline() {
               realized results.
             </p>
           </motion.div>
+
+          <TimelineAnswer />
           <TimelineExplainer />
         </main>
       </div>
@@ -319,6 +353,8 @@ function Timeline() {
               timeline or press play to watch history unfold.
             </p>
           </motion.header>
+
+          <TimelineAnswer />
 
           {/* Info Panel */}
           <InfoPanel

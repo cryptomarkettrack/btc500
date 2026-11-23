@@ -7,7 +7,8 @@ import {
   SITE_URL,
   type ArticleMeta,
 } from "@/lib/articles";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
+import { AnswerSection } from "@/components/aeo/AnswerSection";
 import { Input } from "@/components/ui/input";
 import { Search } from "lucide-react";
 import { useState, useMemo } from "react";
@@ -64,7 +65,11 @@ export const Route = createFileRoute("/articles")({
       ogTitle: "Articles — BTC500 Strategy & Insights",
       ogDescription: "Learn about the BTC500 investment strategy and Bitcoin halving cycles.",
       ogImageAlt: "Articles — BTC500 Strategy & Insights",
-      schema: [articlesPageSchema, articlesListSchema],
+      schema: [
+        articlesPageSchema,
+        generateSpeakableSchema({ path: "/articles", cssSelectors: [".lead"] }),
+        articlesListSchema,
+      ],
     });
   },
   component: Articles,
@@ -139,6 +144,14 @@ function Articles() {
             if you want the methodology first.
           </p>
         </header>
+
+        <AnswerSection
+          id="answer"
+          question="Where can I read BTC500's original Bitcoin cycle research?"
+          answer={`BTC500 publishes ${getIndexableArticles().length} original, data-backed articles on the Bitcoin halving cycle — strategy guides, on-chain explainers and dated market notes — alongside downloadable daily-close data. Every article links back to the same archive used by the simulator.`}
+          detail="The research is free and unsigned up: no account, no paywall. Start with the 500-day cycle explainer for methodology, then use the search below to find a specific finding. Nothing here is financial advice."
+          source={{ href: "/data/500-day-cycles.json", label: "The dataset behind the research" }}
+        />
 
         {/* Search Bar */}
         <div className="mb-8 max-w-xl mx-auto">

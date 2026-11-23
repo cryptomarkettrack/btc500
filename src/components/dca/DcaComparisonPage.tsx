@@ -1,14 +1,8 @@
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import {
-  DollarSign,
-  Bitcoin,
-  BarChart3,
-  ArrowRight,
-  CalendarDays,
-  Calculator,
-} from "lucide-react";
+import { DollarSign, Bitcoin, BarChart3, ArrowRight, CalendarDays, Calculator } from "lucide-react";
 import { formatUsd } from "@/lib/format";
+import { AnswerSection } from "@/components/aeo/AnswerSection";
 import { dcaQuery, simulatorQuery } from "@/lib/queries";
 import { buildCycleComparisons, computeDcaTotals } from "@/lib/dca-compare";
 import { Input } from "@/components/ui/input";
@@ -93,6 +87,27 @@ export function DcaComparisonPage() {
               across multiple days? Compare the outcomes.
             </p>
           </header>
+
+          <AnswerSection
+            question="Is DCA better than buying at the BTC500 buy date?"
+            answer={
+              totals.lumpSumTotalReturn !== null && totals.dcaTotalReturn !== null ? (
+                <>
+                  Across {comparisons.length} completed windows, a lump-sum buy finished at{" "}
+                  <strong className="font-semibold">{formatUsd(totals.lumpSumTotalReturn)}</strong>{" "}
+                  versus{" "}
+                  <strong className="font-semibold">{formatUsd(totals.dcaTotalReturn)}</strong> when
+                  the same {formatUsd(investmentAmount)} was spread over {dcaBuyDays} buy days.
+                </>
+              ) : (
+                <>
+                  Both approaches use the same daily-close archive; a result is published only for
+                  windows where both buy and sell prices exist.
+                </>
+              )
+            }
+            detail={`Lump sum led in ${lumpSumWins} of ${comparisons.length} windows and DCA led in ${dcaWins}. ${investmentAmount > 0 ? "The same amount and the same dated windows are used in both columns." : ""} Four completed windows is a small sample; fees, taxes and slippage are excluded, and past performance does not guarantee future results.`}
+          />
 
           {/* Controls */}
           <div className="mx-auto grid w-full max-w-2xl gap-4 sm:grid-cols-3">

@@ -1,6 +1,33 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { AnswerSection } from "@/components/aeo/AnswerSection";
 import { LegalPage } from "@/components/LegalPage";
-import { CONTACT_EMAIL, SITE_URL, generatePageHead, generateWebPageSchema } from "@/lib/site";
+import {
+  CONTACT_EMAIL,
+  SITE_URL,
+  generateFaqSchema,
+  generatePageHead,
+  generateSpeakableSchema,
+  generateWebPageSchema,
+} from "@/lib/site";
+
+/** Visible answers on /about; the same list feeds FAQPage JSON-LD. */
+const ABOUT_FAQ = [
+  {
+    question: "Where does BTC500 get its Bitcoin price data?",
+    answer:
+      "Historical returns use Bitstamp daily closes in a bundled archive; the live price comes from Binance, CoinGecko, Coinbase and Kraken. Block height comes from public Bitcoin blockchain APIs, ETF flows from TFTC open series (SoSoValue and Farside), and insider filings from public SEC Form 4 data. Every figure on the site is derived from the same archive, and the full dataset is downloadable as JSON.",
+  },
+  {
+    question: "How does BTC500 calculate the buy and sell dates?",
+    answer:
+      "A halving happens every 210,000 blocks. BTC500 subtracts 500 calendar days from the estimated next-halving date for the buy date and adds 500 days to a known or estimated halving for the sell date. Both dates are rendered live from block height, so they move as average block time changes.",
+  },
+  {
+    question: "Who is BTC500 for?",
+    answer:
+      "Self-directed Bitcoin investors and researchers who want a fixed, auditable calendar rule and the historical data behind it. It is free educational software, not a fund, broker, advisory service or source of financial advice.",
+  },
+];
 
 const aboutSchema = [
   generateWebPageSchema({
@@ -13,6 +40,8 @@ const aboutSchema = [
       { name: "About", path: "/about" },
     ],
   }),
+  generateSpeakableSchema({ path: "/about", cssSelectors: [".lead"] }),
+  generateFaqSchema(ABOUT_FAQ),
   {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -76,6 +105,14 @@ function AboutPage() {
         Bitcoin 500 days before each halving and sell 500 days after. It is educational software,
         not a fund, broker, or advisory service.
       </p>
+
+      <AnswerSection
+        className="mt-8"
+        question="Where does BTC500 get its data and how are returns calculated?"
+        answer="BTC500 is free educational software built around one rule: buy Bitcoin 500 days before each halving and sell 500 days after. Its historical returns use Bitstamp daily closes, and its buy and sell dates are derived live from Bitcoin block height."
+        detail="The same bundled daily-close archive feeds the simulator, the cycle tables and the downloadable dataset, so the numbers cannot disagree between pages. Nothing here is financial advice."
+        source={{ href: "/data/500-day-cycles.json", label: "Download the dataset and citation" }}
+      />
 
       <section>
         <h2>What the site does</h2>
@@ -150,6 +187,18 @@ function AboutPage() {
           Self-directed Bitcoin investors who want a calendar rule they can audit. It is not for
           day-traders, leverage traders, or anyone looking for personalized financial advice.
         </p>
+      </section>
+
+      <section>
+        <h2>Questions about BTC500</h2>
+        <dl className="mt-4 space-y-5">
+          {ABOUT_FAQ.map((item) => (
+            <div key={item.question}>
+              <dt className="font-semibold text-foreground">{item.question}</dt>
+              <dd className="mt-1 text-sm leading-relaxed text-muted-foreground">{item.answer}</dd>
+            </div>
+          ))}
+        </dl>
       </section>
 
       <section>

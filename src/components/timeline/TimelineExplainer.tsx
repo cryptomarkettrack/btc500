@@ -36,7 +36,7 @@ export const TIMELINE_FAQ = [
   },
 ] as const;
 
-const COMPLETED_WINDOWS = [
+export const COMPLETED_WINDOWS = [
   {
     cycle: "2012 Halving",
     buy: "Jul 17, 2011",

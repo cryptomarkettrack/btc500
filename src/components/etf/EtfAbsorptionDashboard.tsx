@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "@tanstack/react-router";
+import { AnswerSection } from "@/components/aeo/AnswerSection";
 import {
   ArrowRight,
   Calculator,
@@ -109,6 +110,29 @@ export function EtfAbsorptionDashboard({
             not financial advice
           </p>
         </header>
+
+        <AnswerSection
+          className="mt-8"
+          question="Are Bitcoin ETFs buying more BTC than miners issue?"
+          answer={
+            data.rolling30d.ratio !== null ? (
+              <>
+                Over the last 30 sessions, US spot Bitcoin ETFs absorbed{" "}
+                <strong className="font-semibold">
+                  {Math.round(data.rolling30d.etfBtc).toLocaleString("en-US")} BTC
+                </strong>{" "}
+                against {Math.round(data.rolling30d.issuanceBtc).toLocaleString("en-US")} BTC of
+                miner issuance — {data.rolling30d.ratio.toFixed(2)}× issuance.
+              </>
+            ) : (
+              <>
+                ETF flow and daily miner issuance are converted from the same sessions, but a ratio
+                is published only once both values are available.
+              </>
+            )
+          }
+          detail="Flows are dollar inflows converted at that session's BTC close; issuance follows the halving schedule. Positive net flow is not a price forecast, and the board is not financial advice."
+        />
 
         <section className="mt-10 grid gap-4 lg:grid-cols-[1.2fr_0.8fr]">
           <VacuumCard

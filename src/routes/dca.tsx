@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { generatePageHead, generateWebPageSchema } from "@/lib/site";
+import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
 import { dcaQuery, simulatorQuery } from "@/lib/queries";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
@@ -42,7 +42,11 @@ export const Route = createFileRoute("/dca")({
       ogImageAlt: "DCA vs Lump Sum — BTC500 Strategy Comparison",
       twitterDescription:
         "Compare DCA vs lump sum investing with the BTC500 strategy across past halving cycles.",
-      schema: [dcaPageSchema, dcaFaqSchema],
+      schema: [
+        dcaPageSchema,
+        generateSpeakableSchema({ path: "/dca", cssSelectors: [".lead"] }),
+        dcaFaqSchema,
+      ],
     }),
   loader: async ({ context }) => {
     await Promise.allSettled([
