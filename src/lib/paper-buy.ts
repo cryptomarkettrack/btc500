@@ -9,11 +9,15 @@
  *   - Entry: the cycle's T-500 buy date, read from the site's live halving model.
  *     It is never a literal, because the halving date is a live estimate.
  *   - Entry price: that date's BTC/USD daily close from the bundled archive,
- *     using the same CSV-first + Bitstamp-tail fallback as the rest of the site.
+ *     using the same CSV-first + Bitstamp-tail fallback as the rest of the site,
+ *     and published only once that UTC day has closed (the tail fallback's
+ *     in-progress candle is the live mark, not a close).
  *   - Exit: T+500 after the halving, also live-derived and disclosed as an estimate.
  *
  * Honesty rules enforced by this module:
  *   - Before the entry date nothing is deployed: no price and no P&L exist.
+ *   - On the entry day itself the close is not final yet, so no entry price and
+ *     no P&L are published — a supplied value is discarded, never labelled.
  *   - If the entry close or the live mark is unavailable, the record says so and
  *     publishes no P&L. It never substitutes today's price for the entry price.
  *   - A paper result is not a guaranteed fill and not financial advice.
@@ -108,7 +112,13 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
   const daysSinceEntry = Math.max(0, paperDaysBetween(entry, today));
   const progress = totalWindowDays > 0 ? clamp01(daysSinceEntry / totalWindowDays) : 0;
 
-  const entryPrice = positive(input.entryPriceUSD);
+  // The entry price is a *daily close*, and a close does not exist until its
+  // UTC day has ended: Bitstamp (the tail fallback) returns today's in-progress
+  // candle, which is the live mark. A value handed in for the entry day itself
+  // is therefore dropped here rather than published as an entry price that
+  // would change once the day closes.
+  const entryDayComplete = today > entry;
+  const entryPrice = entryDayComplete ? positive(input.entryPriceUSD) : null;
   const currentPrice = positive(input.currentPriceUSD);
 
   let state: PaperRecordState;
@@ -117,6 +127,9 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
   if (today < entry) {
     state = "scheduled";
     statusNote = `No position is open. The ${paperMoney(PAPER_NOTIONAL_USD)} stays in the paper cash balance until the buy date.`;
+  } else if (!entryDayComplete) {
+    state = "awaiting-price";
+    statusNote = `The buy date is today. That day's BTC/USD close is only final at 00:00 UTC, so no entry price and no P&L are published yet — a live mark is never used as the entry price.`;
   } else if (entryPrice === null) {
     state = "awaiting-price";
     statusNote =

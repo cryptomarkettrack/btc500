@@ -1,25 +1,20 @@
 {
-  "generated": "2026-11-21",
-  "summary": "no page changed today: the commit is the ask-effect instrument and the growth log, so the checks below prove production still serves the 29 Nov 2026 buy date and the spacing data the forum post now cites",
+  "generated": "2026-11-23",
+  "summary": "paper-buy entry price published only after the entry day's UTC close; dated daily line for the 2026-11-29 entry",
   "checks": [
     {
-      "path": "/",
-      "contains": "Next Bitcoin Halving 2028: Buy 29 Nov 2026 | BTC500",
+      "path": "/paper-buy",
+      "contains": "not deployed. Entry November 29, 2026",
+      "status": 200
+    },
+    {
+      "path": "/paper-buy",
+      "contains": "The $50,000 is uninvested until",
       "status": 200
     },
     {
       "path": "/",
-      "contains": "29 November 2026",
-      "status": 200
-    },
-    {
-      "path": "/halving-spacing",
-      "contains": "Median low vs entry",
-      "status": 200
-    },
-    {
-      "path": "/data/halving-spacing.json",
-      "contains": "btc500/halving-spacing@1",
+      "contains": "Follow the public $50,000 paper buy",
       "status": 200
     }
   ]

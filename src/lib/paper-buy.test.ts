@@ -65,7 +65,7 @@ test("scheduled never publishes a mark even if a price is passed in", () => {
 
 test("awaiting-price: entry date passed but the daily close is missing", () => {
   const r = buildPaperRecord({
-    nowISO: "2026-11-29T18:00:00.000Z",
+    nowISO: "2026-11-30T18:00:00.000Z",
     buyDateISO: ENTRY,
     sellDateISO: EXIT,
     entryPriceUSD: null,
@@ -75,6 +75,40 @@ test("awaiting-price: entry date passed but the daily close is missing", () => {
   assert.equal(r.returnPercent, null);
   assert.equal(r.profitUSD, null);
   assert.match(r.dailyLine, /Entry date reached/);
+});
+
+test("entry day: a supplied price is the live mark, so no entry price is published", () => {
+  // Measured 2026-11-23: for a date that has not closed, Bitstamp returns the
+  // in-progress candle's close, which equals the live mark. Publishing it as
+  // the entry price would make the public record's entry move the next day.
+  const onEntryDay = buildPaperRecord({
+    nowISO: "2026-11-29T18:00:00.000Z",
+    buyDateISO: ENTRY,
+    sellDateISO: EXIT,
+    entryPriceUSD: 61_176.1,
+    currentPriceUSD: 61_176.1,
+  });
+  assert.equal(onEntryDay.state, "awaiting-price");
+  assert.equal(onEntryDay.entryPriceUSD, null);
+  assert.equal(onEntryDay.currentPriceUSD, null);
+  assert.equal(onEntryDay.btcHeld, null);
+  assert.equal(onEntryDay.returnPercent, null);
+  assert.match(onEntryDay.statusNote, /only final at 00:00 UTC/);
+  assert.match(onEntryDay.statusNote, /never used as the entry price/);
+  assert.match(onEntryDay.dailyLine, /^2026-11-29 — Entry date reached/);
+
+  // One second after that day's close exists, the same price is legitimate.
+  const afterClose = buildPaperRecord({
+    nowISO: "2026-11-30T00:00:01.000Z",
+    buyDateISO: ENTRY,
+    sellDateISO: EXIT,
+    entryPriceUSD: 61_176.1,
+    currentPriceUSD: 61_176.1,
+  });
+  assert.equal(afterClose.state, "live");
+  assert.equal(afterClose.entryPriceUSD, 61_176.1);
+  assert.equal(afterClose.daysSinceEntry, 1);
+  assert.match(afterClose.dailyLine, /^2026-11-30 — Day 1/);
 });
 
 test("awaiting-price: entry locked but the live feed is down", () => {

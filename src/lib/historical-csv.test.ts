@@ -8,6 +8,7 @@ import { addDays } from "./halvings.ts";
 import {
   isCoveredByDataset,
   assessPriceRange,
+  isClosedUtcDay,
   lookupHistoricalPrice,
   lookupHistoricalPriceRange,
   needsExternalFallback,
@@ -58,6 +59,18 @@ describe("coverage helpers", () => {
     assert.equal(needsExternalFallback("2024-04-20", null), false);
     assert.equal(needsExternalFallback("2026-08-15", "2026-07-11"), true);
     assert.equal(needsExternalFallback("2025-09-02", "2026-07-11"), false);
+  });
+
+  it("only treats a UTC day that has ended as a closed day", () => {
+    // The entry price of the paper buy is a daily close, and a close exists
+    // only after its UTC day ends. Measured 2026-11-23 04:05Z: Bitstamp's daily
+    // OHLC returned the in-progress candle for 2026-11-23 (close 61,176.10,
+    // the live mark), so a same-day request must not be published as a close.
+    assert.equal(isClosedUtcDay("2026-11-29", "2026-11-29T18:00:00.000Z"), false);
+    assert.equal(isClosedUtcDay("2026-11-29", "2026-11-29T00:00:00.000Z"), false);
+    assert.equal(isClosedUtcDay("2026-11-29", "2026-11-30T00:00:01.000Z"), true);
+    assert.equal(isClosedUtcDay("2026-11-22", "2026-11-23T04:05:40.854Z"), true);
+    assert.equal(isClosedUtcDay("2026-11-24", "2026-11-23T04:05:40.854Z"), false);
   });
 });
 

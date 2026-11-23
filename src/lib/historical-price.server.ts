@@ -11,6 +11,7 @@ import { fetchBtcPriceFromBitstamp, fetchBtcPricesFromBitstampRange } from "./bi
 import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
 import {
   assessPriceRange,
+  isClosedUtcDay,
   lookupHistoricalPrice,
   lookupHistoricalPriceRange,
   needsExternalFallback,
@@ -65,8 +66,17 @@ async function fetchRecentFallbackPrice(dateStr: string): Promise<number | null>
  * - before the first CSV day → last-resort blockchain.info
  * - after the last CSV day → short Bitstamp timeout
  * Dates inside the covered era never hit an exchange.
+ *
+ * Only a *closed* UTC day has a daily close. Asking for today (or a future
+ * date) returns null instead of the in-progress candle's close, because that
+ * value is the live mark and would be published as an entry price that moves.
  */
-export async function getHistoricalBtcPrice(dateStr: string): Promise<number | null> {
+export async function getHistoricalBtcPrice(
+  dateStr: string,
+  nowISO: string = new Date().toISOString(),
+): Promise<number | null> {
+  if (!isClosedUtcDay(dateStr, nowISO)) return null;
+
   const dataset = await loadHistoricalCsvDataset();
   const csvPrice = lookupHistoricalPrice(dataset, dateStr);
   if (csvPrice !== null) return csvPrice;

@@ -85,6 +85,17 @@ export function needsExternalFallback(dateStr: string, lastDate: string | null):
   return dateStr > lastDate;
 }
 
+/**
+ * True only when the UTC day `dateStr` has already ended, i.e. its daily close
+ * is final. Measured 2026-11-23: Bitstamp's daily OHLC endpoint returns the
+ * in-progress candle for today (close 61,176.10 at 04:05Z, the live mark), so a
+ * date that has not closed has no close to publish — and a date on or after
+ * today must never be served as one.
+ */
+export function isClosedUtcDay(dateStr: string, todayISO: string): boolean {
+  return dateStr.slice(0, 10) < todayISO.slice(0, 10);
+}
+
 function shiftIsoDay(dateStr: string, days: number): string {
   const d = new Date(`${dateStr}T00:00:00Z`);
   d.setUTCDate(d.getUTCDate() + days);
