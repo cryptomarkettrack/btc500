@@ -1,7 +1,17 @@
 {
   "generated": "2026-11-23",
-  "summary": "paper-buy entry price published only after the entry day's UTC close; dated daily line for the 2026-11-29 entry",
+  "summary": "answer blocks for the two diagnosed misses on /simulator and /bitcoin-500-day-cycle, plus the paper-buy entry-price honesty guard",
   "checks": [
+    {
+      "path": "/simulator",
+      "contains": "The short answer",
+      "status": 200
+    },
+    {
+      "path": "/bitcoin-500-day-cycle",
+      "contains": "The rule vs buy-and-hold and DCA",
+      "status": 200
+    },
     {
       "path": "/paper-buy",
       "contains": "not deployed. Entry November 29, 2026",
