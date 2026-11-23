@@ -77,11 +77,12 @@ CYCLE_DEADLINE="${BTC500_REVIEW_DEADLINE:-7200}"
 LOCK_WAIT="${BTC500_REVIEW_LOCK_WAIT:-5400}"
 FETCH_TIMEOUT="${BTC500_REVIEW_FETCH_TIMEOUT:-600}"
 
+# hy4 is the primary; two slots so a transient failure still gets a retry.
+# glm/minimax/mimo removed: "Model unavailable" / "Free usage limit reached".
 MODELS=(
+  "opencode/hy4-flash-free"
+  "opencode/hy4-flash-free"
   "opencode/deepseek-v4.1-flash-free"
-  "opencode/glm-5.3-flash-free"
-  "opencode/minimax-m3.1-flash-free"
-  "opencode/mimo-v2.6-flash-free"
   "opencode/flint-40b-free"
 )
 
@@ -102,6 +103,24 @@ ASK_NOTIFY=""
 # Shared: log, notify, acquire_lock, wait_for_stability, btc_validate,
 # btc_vercel_wait, btc_repo_slug. See lib.sh for the globals each expects.
 source "$SCRIPT_DIR/lib.sh"
+
+# Free-model quota check (shared cache with the growth cycle): probe the live
+# registry and order attempts by remaining free usage, hy4 first. Static free
+# MODELS above stay as the fallback if the selector fails.
+MODEL_FILE="$STATE_DIR/models.txt"
+if node "$SCRIPT_DIR/model-select.mjs" --out "$MODEL_FILE" --cache-hours 6 \
+    >>"$STATE_DIR/model-select.log" 2>&1 && [[ -s "$MODEL_FILE" ]]; then
+  ALL_MODELS=()
+  while IFS= read -r _model_line; do
+    [[ -n "$_model_line" ]] && ALL_MODELS+=("$_model_line")
+  done < "$MODEL_FILE"
+  if [[ ${#ALL_MODELS[@]} -gt 0 ]]; then
+    MODELS=("${ALL_MODELS[@]:0:6}")
+    log "Selected ${#MODELS[@]} free models from live probe (${MODELS[*]})"
+  fi
+else
+  log "Model selector unavailable; using static free-only list (${MODELS[*]})"
+fi
 
 status_message() {
   local status="$1" model="${SUCCESS_MODEL:-none}" head="${FINAL_HEAD:0:7}" msg
@@ -346,6 +365,35 @@ for model in "${MODELS[@]}"; do
 done
 
 FINAL_HEAD="$(git rev-parse HEAD)"
+
+# ------------------------------------------------------------ freshness guard ---
+# The reviewer has twice left yesterday's `generated` date in review-latest.json
+# (2026-11-20, 2026-11-22), which the validator correctly rejects. If this run
+# wrote the file but left a stale date, repair only that metadata field; if the
+# file was not touched at all, fail here instead of spending a deploy.
+FRESH_OUT="$(node -e '
+const fs = require("fs");
+const [file, today, start] = [process.argv[1], process.argv[2], Number(process.argv[3])];
+try {
+  const st = fs.statSync(file);
+  if (st.mtimeMs / 1000 < start - 5) {
+    console.log("review-latest.json was not written this run (mtime predates start)");
+    process.exit(1);
+  }
+  const j = JSON.parse(fs.readFileSync(file, "utf8"));
+  if (j.generated === today) { console.log("ok"); process.exit(0); }
+  const old = j.generated ?? "none";
+  j.generated = today;
+  fs.writeFileSync(file, JSON.stringify(j, null, 2) + "\n");
+  console.log(`generated ${old} -> ${today} (metadata repaired; verdict untouched)`);
+} catch (e) { console.log(e.message); process.exit(2); }
+' "$REVIEW_FILE" "$TODAY" "$START_EPOCH" 2>&1)"
+FRESH_RC=$?
+log "Freshness guard: $FRESH_OUT"
+if [[ $FRESH_RC -ne 0 ]]; then
+  STATUS_NOTE="review-latest.json stale: $(printf '%s' "$FRESH_OUT" | cut -c1-120)"
+  finish 1 no-review
+fi
 
 # ------------------------------------------------------------------- check ---
 

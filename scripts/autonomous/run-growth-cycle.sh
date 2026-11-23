@@ -42,13 +42,14 @@ OPENCODE_CMD="${BTC500_GROWTH_OPENCODE:-opencode}"
 SITE="${BTC500_GROWTH_SITE:-https://btc500.net}"
 DEPLOY_BRANCH="${BTC500_GROWTH_BRANCH:-main}"
 
-# Free OpenCode models only. DeepSeek is the primary; the rest are fallbacks for
-# a failed or unproductive attempt, not equal-weight choices.
+# Free OpenCode models only. hy4 is the primary and is listed twice: a second
+# attempt absorbs transient network/rate-limit blips before a fallback runs.
+# glm/minimax/mimo were removed after their attempt logs read "Model
+# unavailable" or "Free usage limit reached" on every try (2026-11-23).
 MODELS=(
+  "opencode/hy4-flash-free"
+  "opencode/hy4-flash-free"
   "opencode/deepseek-v4.1-flash-free"
-  "opencode/glm-5.3-flash-free"
-  "opencode/minimax-m3.1-flash-free"
-  "opencode/mimo-v2.6-flash-free"
   "opencode/flint-40b-free"
 )
 
@@ -92,6 +93,24 @@ mkdir -p "$STATE_DIR" "$ATTEMPT_DIR"
 # globals each one expects.
 source "$SCRIPT_DIR/lib.sh"
 
+# Free-model quota check: probe the live registry (cached 6h) and order the
+# attempt list by which free models can still run, with hy4 weighted first.
+# The static free-only MODELS above remain the fallback if the selector fails.
+MODEL_FILE="$STATE_DIR/models.txt"
+if node "$SCRIPT_DIR/model-select.mjs" --out "$MODEL_FILE" --cache-hours 6 \
+    >>"$STATE_DIR/model-select.log" 2>&1 && [[ -s "$MODEL_FILE" ]]; then
+  ALL_MODELS=()
+  while IFS= read -r _model_line; do
+    [[ -n "$_model_line" ]] && ALL_MODELS+=("$_model_line")
+  done < "$MODEL_FILE"
+  if [[ ${#ALL_MODELS[@]} -gt 0 ]]; then
+    MODELS=("${ALL_MODELS[@]:0:6}")
+    log "Selected ${#MODELS[@]} free models from live probe (${MODELS[*]})"
+  fi
+else
+  log "Model selector unavailable; using static free-only list (${MODELS[*]})"
+fi
+
 # Result of the current run; every finish() path reports these.
 SUCCESS_MODEL=""
 FINAL_HEAD=""
@@ -128,6 +147,7 @@ status_message() {
     no-commit)           echo "Model ${model##*/} finished without a commit. Archive ${ARCHIVE_STATE}." ;;
     dirty-tree)          echo "Working tree was left dirty at ${head} (${STATUS_NOTE:-no paths recorded}). Check the log." ;;
     site-down)           echo "Production homepage returned ${SITE_CODE}. Check btc500.net now." ;;
+    host-network)        echo "Could not reach production from this host (${NETWORK_ERROR:-network error}); this is not proven as a site outage. Check the Mac's network." ;;
     failed)              echo "Configuration or setup failure. Check the log." ;;
     *)                   echo "status=${status} vercel=${VERCEL_STATE} manifest=${MANIFEST_STATE}." ;;
   esac
@@ -444,15 +464,49 @@ if [[ "$ARCHIVE_STATE" == "refreshed-committed" && -n "$ARCHIVE_LAST_ROW" && "$A
 fi
 
 # ------------------------------------------------------------------- health ---
+# Owner mandate runner-transient-failure-retry (2026-11-21): the 2026-11-20
+# "site-down" was getaddrinfo ENOTFOUND on this Mac, not a production outage.
+# Retry three times with backoff, and classify a transport failure separately
+# from a real HTTP response. NETWORK_ERROR is consumed by status_message().
 
-SITE_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/" 2>/dev/null || echo 000)"
+NETWORK_ERROR=""
+
+health_code() {
+  local url="$1" attempt out err rc
+  NETWORK_ERROR=""
+  for attempt in 1 2 3; do
+    err="$(mktemp)"
+    out="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$url" 2>"$err")"
+    rc=$?
+    if [[ $rc -eq 0 ]]; then
+      rm -f "$err"
+      printf '%s' "$out"
+      return 0
+    fi
+    NETWORK_ERROR="$(tr '\n' ' ' < "$err" | cut -c1-200)"
+    rm -f "$err"
+    log "Health check attempt $attempt/$3 failed for $url (curl rc=$rc): $NETWORK_ERROR"
+    [[ $attempt -lt 3 ]] && sleep $((attempt * 2))
+  done
+  printf '000'
+  return 1
+}
+
+SITE_CODE="$(health_code "$SITE/")"
+SITE_NETWORK_ERROR="$NETWORK_ERROR"
 log "Health check: $SITE/ -> $SITE_CODE"
-SITEMAP_CODE="$(curl -sS -o /dev/null -m 20 -w '%{http_code}' "$SITE/sitemap.xml" 2>/dev/null || echo 000)"
+SITEMAP_CODE="$(health_code "$SITE/sitemap.xml")"
 log "Health check: $SITE/sitemap.xml -> $SITEMAP_CODE"
 
 # ------------------------------------------------------------------ report ----
 
 if [[ "$SITE_CODE" != "200" ]]; then
+  NETWORK_ERROR="$SITE_NETWORK_ERROR"
+  if [[ -n "$NETWORK_ERROR" ]]; then
+    STATUS_NOTE="host-network-${SITE_CODE}: ${NETWORK_ERROR:0:120}"
+    log "HEALTH UNVERIFIED: this host could not reach $SITE ($NETWORK_ERROR)"
+    finish 1 host-network
+  fi
   STATUS_NOTE="homepage-${SITE_CODE}"
   log "CRITICAL: production homepage is not 200 ($SITE_CODE)"
   finish 1 site-down
