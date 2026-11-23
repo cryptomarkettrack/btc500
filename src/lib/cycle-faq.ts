@@ -54,4 +54,9 @@ export const CYCLE_FAQ = [
     answer:
       "The table on this page lists the T-500, halving, and T+500 prices from BTC500’s historical archive for the 2012, 2016, 2020, and 2024 cycles. Completed T-500 to T+500 windows in that dataset finished higher than they started. Later windows started at a higher Bitcoin price and produced smaller multiples than the earliest ones. Past performance does not guarantee future results.",
   },
+  {
+    question: "Is the 500-day rule better than buy-and-hold or DCA?",
+    answer:
+      "The comparison table on this page puts the same $10,000 through the rule and through a single buy at the first T-500 held to the last T+500, using the same dated span and daily-close archive. It also shows what each T-500 entry did against an entry on the halving day. A dollar-cost average spreads entries across the window instead of picking one date; the DCA page runs that question on the same archive rather than assuming an answer here. Four completed windows cannot establish that any approach is better going forward, and none of this is financial advice.",
+  },
 ] as const;

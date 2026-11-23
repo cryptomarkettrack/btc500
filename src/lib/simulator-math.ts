@@ -3,8 +3,8 @@
  * Independent of React — keep this file free of UI so the page can stay thin.
  */
 
-import type { CycleResult } from "./simulator.functions";
-import { dateToMs } from "./halvings";
+import type { CycleResult } from "./simulator.functions.ts";
+import { dateToMs } from "./halvings.ts";
 
 export type CapitalMode = "compound" | "repeat";
 

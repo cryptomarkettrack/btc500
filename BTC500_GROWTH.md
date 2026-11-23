@@ -19,7 +19,7 @@ not record guesses as results.
   stale or lie.
 - **Dated line.** The daily line renders the scheduled state today
   (`2026-11-23 — Scheduled. $50,000 not deployed. Entry November 29, 2026 (T−500), 6
-  days away. Exit rule T+500 on August 25, 2029.`) and switches to the entry / exit
+days away. Exit rule T+500 on August 25, 2029.`) and switches to the entry / exit
   lines only once a close exists. The entry line for 2026-11-29 is therefore the
   first dated line the site can truthfully publish when the window opens.
 - **Visible link.** `/` already carries the single crawlable `/paper-buy` link
@@ -29,7 +29,8 @@ not record guesses as results.
   entry-day guards), `tsc --noEmit` ✓, `npm run build` ✓, prettier + eslint clean on
   the five changed files; local SSR of `/paper-buy` renders the scheduled daily
   line and `/` renders the paper link.
-- **Deploy:** commit `<SHA>` pushed to `main`; production checks pending post-deploy.
+- **Deploy:** commit `4c92a5bd6682aae7ad9c0790628cac581be2740e` pushed to `main`;
+  production checks pending post-deploy.
 
 ---
 
@@ -43,6 +44,20 @@ not record guesses as results.
 - **Validation:** `npm test` **294 pass / 0 fail** (was 287 before the 7 new AEO tests), all four `aeo:*` commands run clean, `aeo:audit` exits 0 with zero gaps. No typecheck/build run needed — no `src/` files changed.
 - **Pre-existing user work left untouched:** five modified files (`historical-csv*`, `historical-price.server.ts`, `paper-buy*`, an entry-day-close honesty fix) were present at session start and were not edited or staged.
 - **Next:** (1) record real AI-engine observations in the ledger for the 9 unmeasured prompts — it is a queue, not a claim; (2) rerun `npm run aeo` once a week and trend `history.json`; (3) after the gate lifts, ship the §7 repairs one at a time with a named diagnosis, then repeat the prompts to close the gap.
+
+---
+
+## Session 2026-11-23 (owner "run fixes") — two AEO repairs shipped on existing surfaces
+
+- **Owner directive:** "run fixes" — executed the two in-repo repairs queued in `AEO.md` §7. The third (EARN / independent coverage) is owner-only outreach and was not done.
+- **`claim-run-your-own-numbers` — DONE.** New pure `src/lib/aeo-answers.ts` (`buildCalculatorAnswer`) derives a $10,000 T+500 value for each completed window from the same `CycleResult[]` the simulator uses. `/simulator` now opens with an answer-first block (`id="answer"`, `.lead`) stating the per-window values, the median, the window count and the public-dataset citation. Live SSR read: "$298,977 in 2012 Halving, $341,823 in 2016 Halving, $116,699 …" — the same numbers as `/data/500-day-cycles.json`.
+- **`contest-vs-hodl-dca` — DONE.** Same module's `buildStrategyComparison` puts $10,000 through the compounded rule vs a single T-500 buy-and-hold over the identical dated span, plus a per-cycle T-500-vs-halving-day entry table. Added as a new section on the pillar (existing page) and one new `CYCLE_FAQ` item, so the visible answer and the FAQPage JSON-LD say the same thing. Live SSR read: "500-day rule, compounded $786,938,363 … Buy once at T-500, hold to the last T+500 $79,026,427"; the honest per-cycle table shows the halving-day entry beat T-500 in 2012 (33.65× vs 29.90×, −11%). DCA is linked to `/dca`, not assigned invented numbers.
+- **Freeze:** no new route, article, sitemap row or title/meta change. Only existing surfaces and answer copy on the two named pages; both changes came from a named gap diagnosis.
+- **Housekeeping:** `src/lib/simulator-math.ts` imports changed to explicit `.ts` extensions (two lines) — it was the one lib extensionless, which blocked direct `node --test` of the new pure helper; consistent with the rest of `src/lib`.
+- **Ledger:** both prompt records gained `FIX 2026-11-23` notes. The old observations remain misses — a fix is not a result until the prompt is retested. `AEO.md` §7 rewritten to record shipped vs outstanding.
+- **Validation:** `npm test` **301 pass / 0 fail** (7 new `aeo-answers` tests), `tsc --noEmit` ✓, `npm run build` ✓, prettier ✓ on all touched files. Local dev SSR (`127.0.0.1:5173`) confirmed `id="answer"` on `/simulator` with real values and `id="compare-heading"` on the pillar with the comparison table. No production verification — not pushed.
+- **Pre-existing user work untouched:** the five modified `historical-csv*`/`paper-buy*` files and the runner's staged `last-deploy.json` were not edited or staged.
+- **Next:** retest the two prompts in a real AI engine and record the observation; pursue `earn-independent-proof` (owner-only); do not call either fix a win on the old search-proxy observation.
 
 ---
 
@@ -115,11 +130,11 @@ not record guesses as results.
   days, and both The Block link asks lapsed unsent (2026-11-17, 2026-11-21). The
   channel is closed as `unexecutable`. The only ask kept is the X poster repair,
   which was **wrong as written on 2026-11-19**: the plists run `/bin/bash` on a
-  `.mjs` *and* their `PATH` omits `/Users/philipkasapov/.local/bin`, so node
+  `.mjs` _and_ their `PATH` omits `/Users/philipkasapov/.local/bin`, so node
   alone would have died at `spawn("browse")`. The corrected ask fixes both.
 - **Machinery, for the owner.** 2026-11-20 is recorded `site-down` (site=000)
   but the site was not down: the attempt log shows `getaddrinfo ENOTFOUND
-  opencode.ai` and preflight `chart fetch failed` — this host lost DNS. The
+opencode.ai` and preflight `chart fetch failed` — this host lost DNS. The
   12:39 review run that day completed and `https://btc500.net/` returns 200
   today. The same day's review was push-blocked for `generated: 2026-11-19`,
   the **4th day in 27 with no valid verdict** (10-31, 11-08, 11-15, 11-20).
@@ -145,20 +160,20 @@ not record guesses as results.
   `2026-11-20T02:18:58Z`; the API row for the same URL reads `2026-11-21`), crawled as
   Googlebot smartphone, fetch successful, indexing allowed — i.e. the **2026-11-19
   title change has been read**, which was the whole point of the mandate. Request
-  Indexing clicked once on `/` and accepted: *"Indexing requested — URL was added to a
+  Indexing clicked once on `/` and accepted: _"Indexing requested — URL was added to a
   priority crawl queue. Submitting a page multiple times will not change its queue
-  position or priority."* No quota message (last refusal was 2026-11-12).
+  position or priority."_ No quota message (last refusal was 2026-11-12).
   **`crawlFreshness` target (a Google crawl of `/` dated after 2026-11-19) is MET.**
 - **Mandate `ask-effect-instrument-1119` — EXECUTED in code.** `askEffectSignal()`
   (`scripts/autonomous/collect-results.mjs`) now reads the GA4 report's own window and
   **credits a referral only when that window starts on or after the ask's handover
-  date**; a hit inside an earlier window is printed as *not creditable yet* with both
+  date**; a hit inside an earlier window is printed as _not creditable yet_ with both
   dates, a report with no window is `unknown`, and the stalled line prints its window
   too. Tests: the exact 2026-11-18 shape is pinned (ask generated 2026-11-18,
   window `2026-11-12 → 2026-11-18`, bitcointalk.org 5 sessions → **not green, 0
   credited**), plus green-with-window, no-window, and the fresh-ask case re-pointed at
   a window that actually covers the handover. `node --test
-  scripts/autonomous/collect-results.test.mjs` → **33 pass / 0 fail**.
+scripts/autonomous/collect-results.test.mjs` → **33 pass / 0 fail**.
 - **Mandate `x-post-cadence-1119` — EXECUTED** (Friday's post was lost to the
   2026-11-20 `site-down` run). One broadcast post,
   <https://x.com/btc500halving/status/2124028752581771628> at
@@ -188,7 +203,7 @@ not record guesses as results.
   github.com 8 (this repo, excluded). Against 23/13 the previous window: **+2 sessions /
   +1 user — noise at this volume**, not a trend. Direct still the bulk of sessions.
 - **No small site change:** the only diff is the instrument plus this log — `git diff
-  --stat origin/main -- src public/sitemap.xml` empty, by design (the copy ban and the
+--stat origin/main -- src public/sitemap.xml` empty, by design (the copy ban and the
   no-new-URL rule stand; `indexed` is 1).
 - **Next (unchanged in priority):** (1) the two owner asks — The Block tip due today,
   the launchd one-liner due tomorrow — are the only asks with a link ceiling left;
@@ -202,8 +217,8 @@ not record guesses as results.
 - **Mandate `served-title-demand-1118` — EXECUTED.** Only two tags on `/` changed:
   `<title>` is now `Next Bitcoin Halving 2028: Buy 29 Nov 2026 | BTC500` (51 chars)
   and the meta description is `Next Bitcoin halving: projected April 2028. BTC500
-  buys 500 days before it — 29 November 2026 — and sells 500 days after. Live
-  countdown and record.` H1, body copy, keywords, OG/Twitter tags, JSON-LD and
+buys 500 days before it — 29 November 2026 — and sells 500 days after. Live
+countdown and record.` H1, body copy, keywords, OG/Twitter tags, JSON-LD and
   every other page are byte-identical (verified against the dev SSR: OG title
   still `BTC500 — The Bitcoin 500-Day Halving Rule`, schema `name` unchanged).
   Why: all 7 clicks and 10 of 21 impressions in 7d are the brand query `btc500`
@@ -227,7 +242,7 @@ not record guesses as results.
   `null` instead of the protocol estimate — the estimate projects the next
   halving on 2028-04-17 (T-500 = 2026-12-04) while the live snapshot says
   2028-04-12 (T-500 = 2026-11-29), and a title built from the estimate would have
-  printed a *second* buy date. The countdown itself prints 29 Nov 2026.
+  printed a _second_ buy date. The countdown itself prints 29 Nov 2026.
 - **Measurement** (runner's reports; nothing re-collected except the raw crawl
   reads the review names). GSC 7d `2026-11-09 → 11-15`: 7 clicks / 21 impressions
   / 33.3% / avg pos 10.6, of which `btc500` 7 clicks / 10 impressions @1.6;
@@ -243,7 +258,7 @@ not record guesses as results.
 - **Mandate `spacing-crawl-landing-read-1118` — EXECUTED (measurement).** Raw URL
   Inspection read at `2026-11-19T04:17Z`: `/halving-spacing` → coverage
   `URL is unknown to Google`, `lastCrawlTime` **absent (never)**, five days after
-  it shipped with one crawlable link; `/paper-buy` → also *unknown to Google*,
+  it shipped with one crawlable link; `/paper-buy` → also _unknown to Google_,
   never crawled; `/bitcoin-500-day-cycle` → `Crawled - currently not indexed`,
   last crawl `2026-11-13T04:07:16Z`; `/` → `Submitted and indexed`,
   `lastCrawlTime 2026-11-05T07:50:37Z`. GA4 landings on `/halving-spacing` in the
@@ -368,7 +383,7 @@ not record guesses as results.
   spacing closed above its entry; multiples fall cycle over cycle in every
   spacing (400: 244.5 / 17.9 / 7.8 / 4.0 · 500: 29.9 / 34.2 / 11.7 / 6.6 · 600:
   n/a / 28.2 / 7.5 / 4.6), so the decay objection is not an artefact of the
-  500-day choice; the longer window is *not* the better one in this archive. No
+  500-day choice; the longer window is _not_ the better one in this archive. No
   claim that 500 is optimal.
 - **Not an indexation lever, by its own rule.** Measured only by (a)
   bitcointalk.org sessions and (b) landings on `/halving-spacing` (0 today — the
@@ -401,7 +416,7 @@ not record guesses as results.
   `<a href="/paper-buy">` ("Follow the public $50,000 paper buy") added to the
   homepage's "Every completed window" call-to-action row. The `Nav.tsx` tools
   entry never reaches the HTML a crawler reads; this does. `curl -s
-  https://btc500.net/ | grep -c 'href="/paper-buy"'` → **1**. No other file
+https://btc500.net/ | grep -c 'href="/paper-buy"'` → **1**. No other file
   changed words.
 - **Mandate `soft-404-row-1117` — EXECUTED.** `/articles/bear-market-accumulation`
   removed from `public/sitemap.xml` (23 → 22 locs, one row, no reorder) and
@@ -462,7 +477,7 @@ not record guesses as results.
   there is no duplicate-slug risk and no verification to report.
 - **Shipped vs archive-only, stated honestly:** this commit's only diff is measurement
   tooling, a ledger correction and this log — `git log --oneline 62e3a8a..HEAD -- src
-  public/sitemap.xml` is unmoved by it. It is a **mandate executed**, not a site ship.
+public/sitemap.xml` is unmoved by it. It is a **mandate executed**, not a site ship.
 
 ---
 
@@ -494,16 +509,16 @@ not record guesses as results.
   `pageFetchState SUCCESSFUL`, `crawledAs MOBILE`,
   `coverageState "Crawled - currently not indexed"`, `indexingState INDEXING_ALLOWED`,
   `robotsTxtState ALLOWED`. `/` on the same line → `lastCrawlTime
-  2026-11-05T07:50:37Z` (11 days old, 6 days before the redesign),
+2026-11-05T07:50:37Z` (11 days old, 6 days before the redesign),
   `coverageState "Submitted and indexed"`, same fetch/crawlAs/robots values.
   **a successful Google fetch of the redesigned pillar produced no index.** The
   pillar is not a page waiting to be served; it is a page Google has read and
   declined, and no cycle may describe it otherwise before 2026-11-28.
 - **GSC → Sitemaps opened once (mandate's second half).** Screen: `/sitemap.xml |
-  Sitemap | Submitted Nov 11, 2026 | Last read Nov 11, 2026 | Success | Discovered
-  pages 21 | Discovered videos 0`, no error row. The API behind the same screen
+Sitemap | Submitted Nov 11, 2026 | Last read Nov 11, 2026 | Success | Discovered
+pages 21 | Discovered videos 0`, no error row. The API behind the same screen
   agrees: `lastSubmitted 2026-11-11T20:01:43Z`, `lastDownloaded
-  2026-11-11T20:07:46Z`, `warnings 0`, `errors 0`, contents web submitted 21,
+2026-11-11T20:07:46Z`, `warnings 0`, `errors 0`, contents web submitted 21,
   indexed 0. **"No referring sitemaps detected" is a field artifact, not a
   defect**: the per-URL `sitemap[]` array is empty for `/` too, and `/` is indexed.
   Open issue closed.
@@ -515,7 +530,7 @@ not record guesses as results.
   GSC 7d `2026-11-06 → 11-12`: 2 clicks / 13 impressions / 15.4% / avg pos 5.69,
   both clicks brand. GSC 28d `2026-10-16 → 11-12`: 12 / 61 / 19.7% / 14.36.
   Non-brand table 28d: `bitcoin 500` 0/2 @54 → `/`; `500 days before next bitcoin
-  halving` 0/1 @38 → `/`. **Floor: 1/21 indexed → no title/meta/snippet/copy work.**
+halving` 0/1 @38 → `/`. **Floor: 1/21 indexed → no title/meta/snippet/copy work.**
   GA4 7d `2026-11-08 → 11-14`: 124 sessions / 37 users / 214 views / 37.1% engaged;
   channels Direct 89/18, Referral 14/3, Organic Social 11/11, Organic Search 6/3,
   AI Assistant 2/2, Unassigned 2/2. **External audience 22 sessions / 19 users**
@@ -555,9 +570,9 @@ not record guesses as results.
   (`scripts/autonomous/referral-line.mjs`) prints, first, before the referral and
   named-source lines:
   `external audience 7d: 19 sessions / 16 users (facebook.com 6/6 → /, google
-  5/2 → /, t.co 3/3 → /, chatgpt.com 2/2 → /bitcoin-500-day-cycle, x 2/2 →
-  /bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle) (window
-  2026-11-07 → 2026-11-13) — unattributed 3 sessions / 3 users ("(not set)")`.
+5/2 → /, t.co 3/3 → /, chatgpt.com 2/2 → /bitcoin-500-day-cycle, x 2/2 →
+/bitcoin-500-day-cycle, bitcointalk.org 1/1 → /bitcoin-500-day-cycle) (window
+2026-11-07 → 2026-11-13) — unattributed 3 sessions / 3 users ("(not set)")`.
   Direct and github.com are excluded by name; `(not set)` is printed separately
   rather than added or dropped, so the number reconciles with the review's 19/16
   baseline. `users` is summed per source (the review's own arithmetic), stated in
@@ -572,7 +587,7 @@ not record guesses as results.
   table and the `non-brand-clicks` signal can never disagree about what brand is.
   Empty is printed as `non-brand queries: none visible in 28d (anonymised)`, never
   `0`. Eight tests; file added to `npm test` → **235 pass / 0 fail**, `tsc
-  --noEmit` clean.
+--noEmit` clean.
 - **The 28d GSC report was collected once** (mandate names a reading the runner
   does not take; the runner takes 7d): **12 clicks / 61 impressions / 19.7% / avg
   pos 14.4**, window **2026-10-16 → 11-12**. Property 61 vs byPage 105 vs query
@@ -604,7 +619,6 @@ not record guesses as results.
   → empty (see the commit body's MANDATES block).
 
 ---
-
 
 - **`inspection-denominator-1114` — EXECUTED in code, not in prose.**
   `datedReportIndex()` (`scripts/autonomous/collect-results.mjs`) now prefers the
@@ -674,7 +688,7 @@ not record guesses as results.
   first two are now instruments the cycle actually reads.
 - **Instrument defect found today:** `npm run referrals` prints **26 sessions / 22
   users** while the same GA4 file's `referrals` table says `bitcointalk.org 5
-  sessions / 2 users`. `externalAudienceLine()` sums users **per landing row**
+sessions / 2 users`. `externalAudienceLine()` sums users **per landing row**
   (bitcointalk lands on 4 pages → 5 "users"). Channel-level user sums are 41
   against a property total of 40, so 22 is arithmetic, not people. Honest figure:
   **26 sessions / 19 users**. Mandate `referral-instrument-1116`.
@@ -693,7 +707,7 @@ not record guesses as results.
   a stable URL** — which the 2026-11-12 BitcoinTalk topic already promises
   ("on Nov 29, 2026 the rule opens a public $10,000 paper buy, tracked daily to the
   exit (T+500, currently around Aug 2029)"). Nothing exists for it: `grep -rin
-  paper src/` returns no page and this log has never contained the word. **The
+paper src/` returns no page and this log has never contained the word. **The
   copy ban stays** (no title/meta/snippet/section/article/internal-link work while
   `indexed` < 5, today 1/21).
 - **The countdown expires 2026-11-29 and the site has no 11-30 product.** That is
@@ -819,19 +833,19 @@ since 2026-10-23.
 
 ## Review history
 
-| date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                      |
-| ---------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 2026-11-19 | failing | Streak 25. Google crawled `/articles/btc500-strategy` **today** and Bing crawled `/` 2026-11-19T03:02:33Z — both declined; `indexed` **1/22 for the 29th reading**, **0 non-brand clicks** in 29 readings, `positions4to20` **0**, Bing **0/22**. External audience **30/21 → 23/13** (the Facebook share aged out). The 11-19 title change shipped on the only served URL and cannot be read before 2026-11-26. **Strategy changed:** the bitcointalk correction becomes cycle work (we hold that session), owner asks must carry a link ceiling while `indexed` < 5, and indexation is written down as external-signal-only |
-| 2026-11-18 | failing | A full week executed and nothing moved: 8 runs / 8 shipped / 0 failures, **4 of 4 shippable mandates done**, and still `indexed` **1/22 for the 28th reading**, **0 non-brand clicks** in 27 days, Bing **0/22**, the new `/halving-spacing` **unknown to Google** (`lastCrawl: never`) and bitcointalk.org **5/2 for the third window in a row** — so the 11-16 forum reply produced nothing and the runner's "ask effect produced 5 sessions" credits a send that predates the ask. `/` is the only URL Google serves (10 brand impressions / 7 clicks @1.6) and carries all 7 clicks; the whole non-brand footprint is 2 impressions at 38 and 69. **Strategy changed:** no new URL until `indexed` ≥ 2 or 2026-12-02, a page needs an existing GSC impression row for its query, title/meta only on `/`; Bing closed as a tested surface; spacing page closed as a lever. Streak 24 |
+| date       | verdict | what it forced (one line each)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ---------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-11-19 | failing | Streak 25. Google crawled `/articles/btc500-strategy` **today** and Bing crawled `/` 2026-11-19T03:02:33Z — both declined; `indexed` **1/22 for the 29th reading**, **0 non-brand clicks** in 29 readings, `positions4to20` **0**, Bing **0/22**. External audience **30/21 → 23/13** (the Facebook share aged out). The 11-19 title change shipped on the only served URL and cannot be read before 2026-11-26. **Strategy changed:** the bitcointalk correction becomes cycle work (we hold that session), owner asks must carry a link ceiling while `indexed` < 5, and indexation is written down as external-signal-only                                                                                                                                                                                                                                                                                                                                   |
+| 2026-11-18 | failing | A full week executed and nothing moved: 8 runs / 8 shipped / 0 failures, **4 of 4 shippable mandates done**, and still `indexed` **1/22 for the 28th reading**, **0 non-brand clicks** in 27 days, Bing **0/22**, the new `/halving-spacing` **unknown to Google** (`lastCrawl: never`) and bitcointalk.org **5/2 for the third window in a row** — so the 11-16 forum reply produced nothing and the runner's "ask effect produced 5 sessions" credits a send that predates the ask. `/` is the only URL Google serves (10 brand impressions / 7 clicks @1.6) and carries all 7 clicks; the whole non-brand footprint is 2 impressions at 38 and 69. **Strategy changed:** no new URL until `indexed` ≥ 2 or 2026-12-02, a page needs an existing GSC impression row for its query, title/meta only on `/`; Bing closed as a tested surface; spacing page closed as a lever. Streak 24                                                                         |
 | 2026-11-17 | failing | `indexed` **1/22 for the 13th reading** (the runner's `2 → 1` regression is the 2026-11-03 → 11-04 drop still inside its 14-day window); Bing crawled `/` 2026-11-16T07:33:31Z and the pillar 2026-11-17T05:28:38Z and kept **0/22**; non-brand clicks 0 in 26 readings, the only non-brand impression at position 38; external audience **26/19 → 29 sessions / 20 users** but 95 of 125 sessions are us (Direct 86/18 + github 9/1); `bitcointalk.org 5/2` **predates** the 2026-11-16 11:40 reply, so ask-effect is unproven until a window starting 11-16; the X poster has **never run** (bash on a `.mjs`, 3 slots, 0 posts); `/paper-buy` has **zero crawlable inbound links** (`grep -c paper` = 0 on `/` and the pillar) and is `Discovered - currently not indexed` 12 days before entry; the forum OP promises **$10,000** while the page and the X post say **$50,000**. Fourth freeze output authorised: the 400/500/600 spacing answer. Streak 23 |
-| 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22 |
-| 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21 |
-| 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20 |
-| 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19                                     |
-| 2026-11-11 | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews). Streak 17                                                                        |
-| 2026-11-10 | failing | Page-quality causes excluded by measurement (200 / 3,007 words / canonical / robots / linked / not duplicate); both October articles lost by name. Streak 16                                                                                                        |
-| 2026-11-09 | failing | `externalReferringDomains` 0 → 1 (lopp.net, followed); no post-merge crawl. Streak 15                                                                                                                                                                               |
-| older      | failing | 11-07 runner mid-run edit (owner); 11-06 `shipped` redefined as a src/sitemap diff; 11-05 lift condition retired → gate only; 10-30 **full freeze** (a `5aad29f` copy change after three mandates forbade it). Streaks 14 → 12                                      |
+| 2026-11-16 | failing | External audience **19 → 26 sessions / 19 users** (google 5 → 9, bitcointalk 1 → 5) while `indexed` stays **1/21 for the 12th reading** and Bing keeps 0 of 15 crawled; the external-audience line over-counts users (22 vs 19) by summing per landing; **freeze partially lifted for one build — the $10,000 paper-buy record the BitcoinTalk topic already promises** — because the countdown expires 2026-11-29 and nothing exists for 11-30; 4 asks handed over since 11-09, 0 sent, 2 lapse today. Streak 22                                                                                                                                                                                                                                                                                                                                                                                                                                               |
+| 2026-11-14 | failing | Instrument honest (`1/21`, rows 21 of 21) and the audience is **19 external sessions / 16 users**; Bing crawled `/` 2026-11-13T23:23:57Z and kept nothing; Google's `/` not crawled since 11-05; 39 commits, 0 site lines since 11-12; PERFORMANCE gains the external-audience line; non-brand work banned until `indexed` ≥ 5. Streak 21                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+| 2026-11-13 | failing | Request Indexing succeeded, the pillar was crawled 2026-11-13T04:07:16Z and **declined**; Bing 0/21 after all 21 submitted; every indexation lever closed to 2026-12-01; collector's 4-row vs 21-row denominator; GitHub ask route closed `unexecutable`. Streak 20                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             |
+| 2026-11-12 | failing | sitemap's false 2026-10-29 lastmod for `/`; Request Indexing refused (quota 0); named-source ledger (t.co/facebook/chatgpt invisible to the Referral table); 2026-11-19 crawl rule replaces the 2026-11-20 stop rule. Streak 19                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| 2026-11-11 | failing | X reach measured (56/56/90/83/110 views/post); `AI Assistant` 3/3 the only stranger traffic; three surfaces, three buy dates; Request Indexing ordered (first time in 17 reviews). Streak 17                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 2026-11-10 | failing | Page-quality causes excluded by measurement (200 / 3,007 words / canonical / robots / linked / not duplicate); both October articles lost by name. Streak 16                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| 2026-11-09 | failing | `externalReferringDomains` 0 → 1 (lopp.net, followed); no post-merge crawl. Streak 15                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| older      | failing | 11-07 runner mid-run edit (owner); 11-06 `shipped` redefined as a src/sitemap diff; 11-05 lift condition retired → gate only; 10-30 **full freeze** (a `5aad29f` copy change after three mandates forbade it). Streaks 14 → 12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
 
 ## Next priorities
 
@@ -851,14 +865,14 @@ since 2026-10-23.
    0a. **The paper record is the post-buy-date product.** The countdown reads 13
    days on 2026-11-16 and is worth zero on 2026-11-30. From the buy date every
    cycle's report opens with `paper record: entry $X on 2026-11-29, day N, $Y now,
-   Z%` — the countdown is never described as the site's product again.
+Z%` — the countdown is never described as the site's product again.
    0b. **Readings:** `external-audience-line-1114` and
    `nonbrand-query-table-1114` were **executed in code on 2026-11-15** (`npm run
-   referrals` leads with the external-audience line — today `22 sessions / 19
-   users (window 2026-11-08 → 2026-11-14)`; `npm run nonbrand` prints the table +
+referrals` leads with the external-audience line — today `22 sessions / 19
+users (window 2026-11-08 → 2026-11-14)`; `npm run nonbrand` prints the table +
    floor); `pillar-verdict-1116` **executed 2026-11-16** — pillar crawl
    `2026-11-13T04:07:16Z` / `SUCCESSFUL` / `MOBILE` / `Crawled - currently not
-   indexed`, homepage `2026-11-05T07:50:37Z` indexed, Sitemaps screen `Success`,
+indexed`, homepage `2026-11-05T07:50:37Z` indexed, Sitemaps screen `Success`,
    21 discovered, 0 errors; `bing-verdict-1118` (due 2026-11-18) — Bing
    indexed/crawled/unknown for 21 URLs.
 1. **The post-merge crawl happened and did not move coverage.** What is left in
@@ -897,15 +911,15 @@ since 2026-10-23.
 Only rows 0–1b are permitted work under the freeze; since 2026-11-16 row 0c is
 also permitted — it is the single site change the partial lift allows.
 
-| #   | Bet                                                                 | Why it can move the needle                                                                                                                                                    | I   | E   |
-| --- | ------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
-| 0d  | ~~Is the rule a 500-day artefact?~~ **SHIPPED 2026-11-18, CLOSED as a lever** | Built as `/halving-spacing` + `/data/halving-spacing.json` (569fb38) because two strangers asked it in the only thread that produced sessions. **Result so far: 0 landings, 0 Google crawl (`lastCrawl: never`), Bing fetched and declined 2026-11-18T04:17:34Z, bitcointalk.org still 5/2.** The 7-day test (a landing or a forum session for this page by 2026-11-25) is the last word on "content is the constraint"; if it fails, no further content is proposed until indexation moves | — | — |
-| 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**     | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk, and it is **cycle work**: topic 5599692's posting session is ours (4 of 9 posts). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0 | 10  | 1   |
-| 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)     | First followed external link, pointing at the declined pillar. Measured as a post-merge crawl and a lopp.net session — the crawl came 48s after our own Request Indexing and the session never came; experiment **closed 2026-11-16**. Read as an input, not a result | 10  | 0   |
-| 1b  | ~~X click path (pinned + tagged)~~ — **DEMOTED 2026-11-17**         | The scheduled poster has never run: `net.btc500.x-post-{am,md,pm}.plist` execute `/bin/bash post-daily.mjs`, and every slot logs `const: command not found`. 3 slots × 30 days = 0 posts; the only post is the hand-made one of 2026-11-16, and x.com/t.co delivered 6 sessions / 6 users in 7d. A channel that cannot publish cannot be a bet until the plist is fixed (owner mandate) | 3   | 1   |
-| 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                      | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                        | 4   | 3   |
-| 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~ | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), false premise (no account). None restated                                                                    | —   | —   |
-| 3   | ~~Is the rule a 500-day artefact?~~ (promoted to **0d**)            | Was parked as content work; the 2026-11-17 review found the audience already asking it and the archive already holding the answer. Moved, not duplicated                       | —   | —   |
+| #   | Bet                                                                           | Why it can move the needle                                                                                                                                                                                                                                                                                                                                                                                                                                                                  | I   | E   |
+| --- | ----------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- | --- |
+| 0d  | ~~Is the rule a 500-day artefact?~~ **SHIPPED 2026-11-18, CLOSED as a lever** | Built as `/halving-spacing` + `/data/halving-spacing.json` (569fb38) because two strangers asked it in the only thread that produced sessions. **Result so far: 0 landings, 0 Google crawl (`lastCrawl: never`), Bing fetched and declined 2026-11-18T04:17:34Z, bitcointalk.org still 5/2.** The 7-day test (a landing or a forum session for this page by 2026-11-25) is the last word on "content is the constraint"; if it fails, no further content is proposed until indexation moves | —   | —   |
+| 0c  | **Public paper-buy record (SHIPPED 2026-11-16 at `/paper-buy`)**              | The 2026-11-12 BitcoinTalk topic promised it in public and nothing existed. **Notional is $50,000 on the page and in the 2026-11-16 X post, but the forum OP still says $10,000** — the contradiction is now the record's biggest credibility risk, and it is **cycle work**: topic 5599692's posting session is ours (4 of 9 posts). Has **0 crawlable inbound links**: `grep -c paper` on `/` and on the pillar returns 0                                                                 | 10  | 1   |
+| 0   | `lopp.net` → Charts & Metrics (**merged 2026-11-07T20:20:30Z**)               | First followed external link, pointing at the declined pillar. Measured as a post-merge crawl and a lopp.net session — the crawl came 48s after our own Request Indexing and the session never came; experiment **closed 2026-11-16**. Read as an input, not a result                                                                                                                                                                                                                       | 10  | 0   |
+| 1b  | ~~X click path (pinned + tagged)~~ — **DEMOTED 2026-11-17**                   | The scheduled poster has never run: `net.btc500.x-post-{am,md,pm}.plist` execute `/bin/bash post-daily.mjs`, and every slot logs `const: command not found`. 3 slots × 30 days = 0 posts; the only post is the hand-made one of 2026-11-16, and x.com/t.co delivered 6 sessions / 6 users in 7d. A channel that cannot publish cannot be a bet until the plist is fixed (owner mandate)                                                                                                     | 3   | 1   |
+| 1   | ~~CryptoQuant Quicktake~~ (demoted 2026-11-09)                                | Prepared 11-04, never sent, needs an account, followed status unverified — a second unverified queue behind the channel we already own                                                                                                                                                                                                                                                                                                                                                      | 4   | 3   |
+| 2   | ~~CoinDesk~~ / ~~awesome-bitcoin~~ / ~~awesome-blockchain~~ / ~~X~~           | Lapsed (429), withdrawn (0/2, nofollow), withdrawn (never sent), false premise (no account). None restated                                                                                                                                                                                                                                                                                                                                                                                  | —   | —   |
+| 3   | ~~Is the rule a 500-day artefact?~~ (promoted to **0d**)                      | Was parked as content work; the 2026-11-17 review found the audience already asking it and the archive already holding the answer. Moved, not duplicated                                                                                                                                                                                                                                                                                                                                    | —   | —   |
 
 ## Open issues
 
@@ -918,7 +932,7 @@ https://btc500.net/ | grep -c paper` → **0**; the same on
 - **The scheduled X poster has never run (2026-11-17).** Three launchd jobs run
   `/bin/bash .../post-daily.mjs`; `x/launchd-pm.err.log` ends in
   `post-daily.mjs: line 5: const: command not found` and `syntax error near
-  unexpected token '('`. 0 machine posts; the 2026-11-16 post
+unexpected token '('`. 0 machine posts; the 2026-11-16 post
   (`status/2122389869939040716`) was made by hand inside a cycle. Owner mandate
   `x-poster-node-1117`; no cycle may hand-patch the plists.
 - **The notional is $50,000 on the site and $10,000 in the thread (2026-11-17).**
@@ -1013,7 +1027,7 @@ https://btc500.net/ | grep -c paper` → **0**; the same on
   and produced 0 sessions in 9 days.
 - **The audience instrument was over-counting people — fixed 2026-11-17
   (`referral-instrument-1116`).** `npm run referrals` printed `26 sessions / 22
-  users` on the 2026-11-16 file because it summed `totalUsers` across each source's
+users` on the 2026-11-16 file because it summed `totalUsers` across each source's
   landing rows; the honest figure is **26 / 19** (property total 40), and
   `bitcointalk.org` printed 5/5 where the report's own Referral table says 5/2. It
   now takes one count per source from `tables.sourceTotals` (new, in

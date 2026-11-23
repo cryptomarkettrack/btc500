@@ -173,16 +173,28 @@ until `indexed` ≥ 2 or 2026-12-02) is respected by this loop:
 - Outreach is an owner action; the loop prepares the EARN target list, it does
   not post, pitch or publish on the owner's behalf.
 
-**Queued repairs, in priority order (do not ship yet — each needs a diagnosis
-and, for any page change, the gate to lift):**
+**Repairs shipped 2026-11-23 (owner directive "run fixes"; both are existing
+surfaces — no new URL, article or sitemap row):**
 
-1. `claim-run-your-own-numbers` — the simulator is not discovered for calculator
-   intent; strengthen the answer-first block and dataset citation on the
-   existing `/simulator` surface.
-2. `contest-vs-hodl-dca` — the 500-day-vs-hold/DCA comparison is the thinnest
-   answer surface; add a data-backed comparison to the existing pillar.
-3. `earn-independent-proof` — pursue the sources in §5; a single independent
-   citation that names BTC500 changes the offsite signal more than another page.
+1. `claim-run-your-own-numbers` — DONE. `/simulator` now opens with an
+   answer-first block (`#answer`) that derives $10,000's T+500 value for each
+   completed window from the live archive ($298,977 / $341,823 / $116,699 /
+   $65,983 at the time of writing), states the median, and links the public
+   dataset as the citation. Logic: `src/lib/aeo-answers.ts` (`buildCalculatorAnswer`).
+2. `contest-vs-hodl-dca` — DONE. The pillar gained a data-backed comparison:
+   the same $10,000 compounded through the rule vs a single buy-and-hold over
+   the same dated span, a per-cycle T-500-vs-halving-day entry table, and a
+   matching FAQ answer (so the visible copy and FAQPage schema agree). DCA is
+   linked to `/dca` rather than assigned invented numbers. Logic:
+   `buildStrategyComparison` in the same module.
+3. `earn-independent-proof` — NOT DONE (owner-only outreach). Pursue the sources
+   in §5; a single independent citation that names BTC500 changes the offsite
+   signal more than another page.
+
+Both fixes are recorded in the prompt ledger with `FIX 2026-11-23` notes. The
+old observations are still misses — a fix is not a result until the prompt is
+**retested**. Until an AI-engine observation exists, this stays a closed-loop
+hypothesis, not a win.
 
 ---
 

@@ -41,7 +41,7 @@
       "charts.bitcoin.com/bitcoin-halving.html",
       "liquidstate.tech/tools/halving-countdown"
     ],
-    "note": "Search-engine proxy: no btc500.net result. Calculator/return-tool intent is owned by dedicated tool sites. Our simulator exists but is not discovered for this query."
+    "note": "Search-engine proxy: no btc500.net result. Calculator/return-tool intent is owned by dedicated tool sites. Our simulator exists but is not discovered for this query. FIX 2026-11-23: answer-first block with $10,000 per-window values added to /simulator; awaiting retest."
   },
   {
     "questionId": "contest-vs-hodl-dca",
@@ -64,6 +64,6 @@
       "vaneck.com/us/en/blogs/digital-assets/matthew-sigel-bitcoin-halving-explained",
       "kumocast.io/research/bitcoin-halving-cycles"
     ],
-    "note": "Search-engine proxy: institutional research and cycle-analysis tools dominate. This is the EARN/CONTEST gap — independent sources that discuss the 500-day rule do not point at BTC500."
+    "note": "Search-engine proxy: institutional research and cycle-analysis tools dominate. This is the EARN/CONTEST gap — independent sources that discuss the 500-day rule do not point at BTC500. FIX 2026-11-23: data-backed rule-vs-buy-and-hold comparison, per-cycle entry table and a matching FAQ answer added to the pillar; awaiting retest."
   }
 ]

@@ -1,5 +1,6 @@
 import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { Link } from "@tanstack/react-router";
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
   ArrowRight,
@@ -12,6 +13,7 @@ import {
 } from "lucide-react";
 import { useNow } from "@/hooks/use-now";
 import { trackCta } from "@/lib/analytics";
+import { buildStrategyComparison } from "@/lib/aeo-answers";
 import { CYCLE_FAQ } from "@/lib/cycle-faq";
 import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { formatSignedPercent, observeCycles } from "@/lib/cycle-stats";
@@ -101,6 +103,7 @@ export function Bitcoin500DayCyclePage() {
         <WhatIsSection />
         <HistoricalSection cycles={simulator.cycles} />
         <ObservationsSection cycles={simulator.cycles} stats={stats} />
+        <ComparisonSection cycles={simulator.cycles} />
         <RiskSection risk={simulator.risk} />
         <TimingSection timing={simulator.timing} />
         <BuySection cycleBuyDate={cycle.buyDate} />
@@ -193,6 +196,131 @@ function TermCard({ term, title, body }: { term: string; title: string; body: st
       <h3 className="mt-2 text-lg font-semibold">{title}</h3>
       <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{body}</p>
     </div>
+  );
+}
+
+function ComparisonSection({ cycles }: { cycles: CycleResult[] }) {
+  const answer = useMemo(() => buildStrategyComparison(cycles), [cycles]);
+  const ruleValue = answer.ruleValue;
+  const holdValue = answer.holdValue;
+  const windows = answer.windows.filter(
+    (w) => w.ruleMultiple !== null && w.halvingEntryMultiple !== null,
+  );
+  if (ruleValue === null && windows.length === 0) return null;
+
+  return (
+    <motion.section
+      initial={{ y: 12, opacity: 0 }}
+      whileInView={{ y: 0, opacity: 1 }}
+      viewport={{ once: true, margin: "-80px" }}
+      transition={{ duration: 0.55, ease: EASE }}
+      className="mt-20"
+      aria-labelledby="compare-heading"
+    >
+      <h2 id="compare-heading" className="text-3xl font-bold tracking-tight sm:text-4xl">
+        The rule vs buy-and-hold and DCA
+      </h2>
+      <p className="mt-5 max-w-3xl text-sm leading-relaxed text-muted-foreground sm:text-base">
+        Does waiting for T-500 add anything over buying on the halving day or simply holding? The
+        same ${answer.amount.toLocaleString("en-US")} is used in every column, with the same dated
+        span and the same daily-close archive. These are historical observations, not a claim that
+        one approach wins next cycle.
+      </p>
+
+      {ruleValue !== null && holdValue !== null && (
+        <div className="mt-6 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-[24px] border border-primary/20 bg-card p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              500-day rule, compounded
+            </p>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">
+              {formatUsd(ruleValue)}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {answer.ruleMultiple?.toFixed(2)}× on the starting amount
+            </p>
+          </div>
+          <div className="rounded-[24px] border border-border/60 bg-card p-6">
+            <p className="text-xs font-semibold uppercase tracking-[0.16em] text-muted-foreground">
+              Buy once at T-500, hold to the last T+500
+            </p>
+            <p className="mt-2 text-3xl font-bold tracking-tight text-foreground">
+              {formatUsd(holdValue)}
+            </p>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {answer.holdMultiple?.toFixed(2)}× on the starting amount
+            </p>
+          </div>
+        </div>
+      )}
+
+      {ruleValue !== null && holdValue !== null && answer.ruleWins !== null && (
+        <p className="mt-4 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+          Over the same dated span,{" "}
+          {answer.ruleWins
+            ? "the compounded rule finished ahead"
+            : "the single buy-and-hold finished ahead"}
+          . That is one outcome from four completed windows, not a general rule.
+        </p>
+      )}
+
+      {windows.length > 0 && (
+        <div className="mt-8 overflow-x-auto">
+          <table className="w-full min-w-[640px] border-collapse text-left text-sm">
+            <caption className="sr-only">
+              Each T-500 entry compared with an entry on the halving day, held to the same T+500
+              exit
+            </caption>
+            <thead>
+              <tr className="border-b border-border/60 text-xs uppercase tracking-[0.14em] text-muted-foreground">
+                <th scope="col" className="py-3 pr-4 font-semibold">
+                  Cycle
+                </th>
+                <th scope="col" className="py-3 pr-4 font-semibold">
+                  T-500 entry
+                </th>
+                <th scope="col" className="py-3 pr-4 font-semibold">
+                  Halving-day entry
+                </th>
+                <th scope="col" className="py-3 pr-4 font-semibold">
+                  Difference
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {windows.map((w) => (
+                <tr key={w.label} className="border-b border-border/40">
+                  <th scope="row" className="py-3 pr-4 font-semibold text-foreground">
+                    {w.label}
+                  </th>
+                  <td className="py-3 pr-4 text-muted-foreground">{w.ruleMultiple?.toFixed(2)}×</td>
+                  <td className="py-3 pr-4 text-muted-foreground">
+                    {w.halvingEntryMultiple?.toFixed(2)}×
+                  </td>
+                  <td className="py-3 pr-4 text-muted-foreground">
+                    {w.entryAdvantagePercent === null
+                      ? "—"
+                      : formatSignedPercent(w.entryAdvantagePercent)}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      <p className="mt-6 max-w-3xl text-sm leading-relaxed text-muted-foreground">
+        Dollar-cost averaging spreads entries across the window instead of choosing one date. The{" "}
+        <Link to="/dca" className="font-semibold text-primary hover:underline">
+          DCA comparison
+        </Link>{" "}
+        runs that question on the same archive. Full numbers behind every column are in the{" "}
+        <a href={answer.sourcePath} className="font-semibold text-primary hover:underline">
+          public dataset
+        </a>
+        . {answer.caveat}
+      </p>
+    </motion.section>
   );
 }
 

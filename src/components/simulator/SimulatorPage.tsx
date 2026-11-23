@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { trackCta, trackToolUsed } from "@/lib/analytics";
+import { buildCalculatorAnswer, type CalculatorAnswer } from "@/lib/aeo-answers";
 import { formatBtc, formatCompactUsd, formatIsoDay, formatMultiple, formatUsd } from "@/lib/format";
 import { simulatorQuery } from "@/lib/queries";
 import { SIMULATOR_FAQ } from "@/lib/simulator-faq";
@@ -127,6 +128,7 @@ export function SimulatorPage({ search, onChange }: Props) {
     [data.cycles, resolved.amount, resolved.mode],
   );
   const avgMultiple = useMemo(() => averageCycleMultiple(data.cycles), [data.cycles]);
+  const calculatorAnswer = useMemo(() => buildCalculatorAnswer(data.cycles), [data.cycles]);
 
   const commitAmount = useCallback(
     (raw: string | number) => {
@@ -147,6 +149,7 @@ export function SimulatorPage({ search, onChange }: Props) {
       <main className="mx-auto max-w-6xl px-6 pb-24 pt-10 sm:pt-16">
         <div className="flex flex-col gap-8">
           <Header amount={resolved.amount} />
+          <AnswerBlock answer={calculatorAnswer} />
           <LoadStatusBanner status={data.status} missingCount={data.missingDates?.length ?? 0} />
           <Controls
             search={resolved}
@@ -208,6 +211,48 @@ function Header({ amount }: { amount: number }) {
         at T+500.
       </p>
     </header>
+  );
+}
+
+function AnswerBlock({ answer }: { answer: CalculatorAnswer }) {
+  const windows = answer.windows.filter((w) => w.value !== null);
+  if (!windows.length) return null;
+
+  return (
+    <section
+      id="answer"
+      aria-labelledby="answer-heading"
+      className="rounded-[24px] border border-primary/20 bg-card p-6 sm:p-8"
+    >
+      <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">
+        The short answer
+      </p>
+      <h2 id="answer-heading" className="mt-2 text-xl font-bold sm:text-2xl">
+        What ${answer.amount.toLocaleString("en-US")} bought at T-500
+      </h2>
+      <p className="lead mt-3 text-base leading-relaxed text-foreground">
+        A ${answer.amount.toLocaleString("en-US")} buy 500 days before each Bitcoin halving would
+        have closed at{" "}
+        {windows.map((w, i) => (
+          <span key={w.label}>
+            {i > 0 && (i === windows.length - 1 ? " and " : ", ")}
+            <strong className="font-semibold">{formatUsd(w.value ?? 0)}</strong> in {w.label}
+          </span>
+        ))}
+        {windows.length > 1 && answer.medianValue !== null
+          ? ` — a median of ${formatUsd(answer.medianValue)} — `
+          : " "}
+        at T+500.
+      </p>
+      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+        {answer.completed} completed window{answer.completed === 1 ? "" : "s"} from the daily-close
+        archive. Full prices, entry dates and the citation string are in the{" "}
+        <a href={answer.sourcePath} className="font-semibold text-primary hover:underline">
+          public dataset
+        </a>
+        . {answer.caveat}
+      </p>
+    </section>
   );
 }
 
