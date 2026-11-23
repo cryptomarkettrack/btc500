@@ -196,6 +196,23 @@ old observations are still misses — a fix is not a result until the prompt is
 **retested**. Until an AI-engine observation exists, this stays a closed-loop
 hypothesis, not a win.
 
+### Broader page coverage (owner directive "improve the other pages", same day)
+
+- The decision map grew from 12 to **19** decisions: halving schedule, cycle
+  replay, ETF absorption, DCA entry, the paper record, the calendar feed and
+  original research. `npm run aeo:audit` now reports **19/19 answer surfaces**
+  and **9/9 shared machine-readable surfaces**.
+- A shared `AnswerSection` component gives each page a direct first-sentence
+  answer, a method/caveat paragraph and a citation link. It is used on `/about`,
+  `/articles`, `/dca`, `/timeline`, `/bitcoin-etf`, `/halving-dates` and
+  `/simulator` (the last refactored onto the shared component).
+- Speakable selectors were added where they were missing (`/about`, `/articles`,
+  `/dca`, `/timeline`); `/about` also gained a visible FAQ plus FAQPage JSON-LD.
+- `/llms.txt` and `/llms-full.txt` no longer publish a second, stale "consensus"
+  buy date beside the live block-height estimate. Live read: **November 29,
+  2026** in both the key-facts and FAQ answers.
+- No new URL, article, sitemap row or title/meta change.
+
 ---
 
 ## 8. Files

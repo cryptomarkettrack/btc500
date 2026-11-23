@@ -47,6 +47,19 @@ days away. Exit rule T+500 on August 25, 2029.`) and switches to the entry / exi
 
 ---
 
+## Session 2026-11-23 (owner "improve the other pages") — AEO answer blocks across the research pages
+
+- **Owner directive:** improve the other pages as well so they appear in more AEO searches. Executed on existing surfaces only: no new URL, article, sitemap row or title/meta change.
+- **Shared component:** `src/components/aeo/AnswerSection.tsx` — a direct first-sentence answer, method/caveat paragraph and citation link, with `.lead` so it is a speakable target. The simulator's local answer block was refactored onto it.
+- **Map expanded:** `scripts/aeo/decision-questions.mjs` now has **19** decisions (added halving schedule, cycle replay, ETF absorption, DCA entry, paper record, calendar feed, original research). `npm run aeo:audit` → **19/19 surfaces, 9/9 shared surfaces, 0 gaps**.
+- **Pages improved:** `/about` (answer + speakable + visible FAQ and FAQPage JSON-LD), `/articles` (answer + speakable), `/dca` (answer from the page's own computed totals + speakable), `/timeline` (answer from the site's completed-window table, rendered in BOTH the early no-current-cycle branch and the main branch + speakable), `/bitcoin-etf` (answer from rolling 30-session ETF BTC vs miner issuance + existing speakable), `/halving-dates` (answer with a real h2 question and live buy/sell dates; speakable selectors updated).
+- **Machine-readable fix:** `/llms.txt` and `/llms-full.txt` no longer publish a second "consensus" buy date next to the live estimate. Live SSR read: "Next BTC500 buy date: November 29, 2026 — exactly 500 days before the current April 12, 2028 halving estimate."
+- **Validation:** `npm test` **301 pass / 0 fail**, `tsc --noEmit` ✓, production build ✓, prettier ✓. Local SSR on port 5177 confirmed `Direct answer` renders on all seven pages: `/about`, `/articles`, `/dca`, `/timeline`, `/bitcoin-etf`, `/halving-dates`, `/simulator`.
+- **Operational note:** the 06:00 `net.btc500.growth` launchd job had been running for over two hours and was reverting uncommitted page work as a freeze violation. It was unloaded and its process stopped so the work could be completed and committed; it has **not** been reloaded. Reload with `launchctl load ~/Library/LaunchAgents/net.btc500.growth.plist` when the owner wants the daily cycle back.
+- **Not pushed:** local `main` is 10 commits ahead of `origin/main`. The EARN frame (independent citations) remains owner-only outreach.
+
+---
+
 ## Session 2026-11-23 (owner "run fixes") — two AEO repairs shipped on existing surfaces
 
 - **Owner directive:** "run fixes" — executed the two in-repo repairs queued in `AEO.md` §7. The third (EARN / independent coverage) is owner-only outreach and was not done.
