@@ -48,8 +48,6 @@ scripts/bing/output/
 !scripts/autonomous/*.md
 !scripts/autonomous/outreach/*.md
 !.opencode/agents/*.md
-# Improvement plans (shadcn/improve skill) live in plans/ and must be committable.
-!plans/*.md
 # Root-level scratch directory only. Without the leading slash this pattern
 # also matched scripts/search-console/, which silently excluded the Search
 # Console tooling from every commit.
