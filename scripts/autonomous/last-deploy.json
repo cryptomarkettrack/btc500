@@ -1,10 +1,10 @@
 {
   "generated": "2026-11-23",
-  "summary": "answer blocks for the two diagnosed misses on /simulator and /bitcoin-500-day-cycle, plus the paper-buy entry-price honesty guard",
+  "summary": "answer-first blocks across the research pages, plus the paper-buy entry-price honesty guard",
   "checks": [
     {
       "path": "/simulator",
-      "contains": "The short answer",
+      "contains": "Direct answer",
       "status": 200
     },
     {
