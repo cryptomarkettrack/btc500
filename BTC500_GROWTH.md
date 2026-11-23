@@ -5,6 +5,47 @@ not record guesses as results.
 
 ---
 
+## Session 2026-11-23 — the paper entry price now waits for the close
+
+- **Mandate `buy-window-entry-record` — EXECUTED (code half).** The `/paper-buy`
+  record no longer publishes an entry price for a day that has not closed. New
+  `isClosedUtcDay()` (`src/lib/historical-csv.ts`) is true only for UTC days that
+  have already ended; `getHistoricalBtcPrice()` (`src/lib/historical-price.server.ts`)
+  returns `null` for an open day instead of handing back Bitstamp's in-progress
+  candle (which is the live mark). `buildPaperRecord()` (`src/lib/paper-buy.ts`)
+  drops a supplied entry price on the entry day itself and moves the record to
+  `awaiting-price` until the close is final at 00:00 UTC of the next day — a live
+  mark is never used as the entry price, so the 2026-11-29 entry line cannot go
+  stale or lie.
+- **Dated line.** The daily line renders the scheduled state today
+  (`2026-11-23 — Scheduled. $50,000 not deployed. Entry November 29, 2026 (T−500), 6
+  days away. Exit rule T+500 on August 25, 2029.`) and switches to the entry / exit
+  lines only once a close exists. The entry line for 2026-11-29 is therefore the
+  first dated line the site can truthfully publish when the window opens.
+- **Visible link.** `/` already carries the single crawlable `/paper-buy` link
+  ("Follow the public $50,000 paper buy"); repo-side confirmed, production
+  confirmed on the earlier run.
+- **Validation:** `npm test` **278 pass / 0 fail** (incl. the new closed-day and
+  entry-day guards), `tsc --noEmit` ✓, `npm run build` ✓, prettier + eslint clean on
+  the five changed files; local SSR of `/paper-buy` renders the scheduled daily
+  line and `/` renders the paper link.
+- **Deploy:** commit `<SHA>` pushed to `main`; production checks pending post-deploy.
+
+---
+
+## Session 2026-11-23 — Granola-style AEO loop built as measurement tooling (no site change)
+
+- **Owner directive:** implement Granola's AEO pattern (start from buyer decisions; diagnose every missed recommendation; fix existing pages first; technical work tied to buyer questions; study trusted sources; OWN/CLAIM/EARN/CONTEST; show up where buyers talk; measure Google and AI separately; repeat and close gaps) to grow BTC500 by search in AEO. Spec written to `AEO.md`.
+- **Built, all new files under `scripts/aeo/`:** `decision-questions.mjs` (12 buyer decisions, each with a Google query and an AI prompt, an owning file, an evidence file and an OWN/CLAIM/EARN/CONTEST frame), `map.mjs`, `audit.mjs`, `gap-report.mjs` (pure classifier), `gaps.mjs`, `measure.mjs`, `prompt-results.json` (ledger), `output/history.json` (generated), plus three test files. Added `aeo:map/audit/measure/gaps` and the aggregate `aeo` command to `package.json` and wired the measurement into `scripts/autonomous/GROWTH_PROMPT.md`.
+- **Freeze respected:** no new route, article, sitemap row, title, meta or page copy. The loop only audits and measures existing surfaces; `AEO.md` §7 queues repairs (simulator answer block, pillar vs hold/DCA comparison, EARN coverage) behind the gate. `npm run aeo:audit` reports 12/12 decision answer surfaces present and 9/9 shared answer-engine surfaces ready — the gap is source preference, not missing pages.
+- **Offsite consensus, observed 2026-11-23 with `websearch` and recorded honestly as `engine: "websearch"` proxies, not AI-engine answers:** BTC500 appears for `500 days before bitcoin halving strategy historical returns` (homepage + `/bear-market`), but CoinDesk, Reddit r/Bitcoin and Pantera-derived coverage dominate the trusted slots. For `bitcoin halving cycle historical returns tool` and `best bitcoin halving cycle analysis 2026`, BTC500 is absent; CoinGlass, Spark Money, BTC Cycle Lab, charts.bitcoin.com, Liquid State, Wells Fargo, Galaxy and VanEck own those intents. `aeo:gaps` turns these into an EARN target list.
+- **Baseline measured today:** Google 7d ending 2026-11-20 = 10 clicks / 25 impressions; AI Assistant 1-day snapshot 2026-11-22 = 1 session / 1 user (`chatgpt.com`), Google organic 0 in that snapshot; Bing AI citations 0 (last read 2026-11-12); ledger 1 present / 2 missed / 9 unmeasured. No targets fabricated from Granola's 4,600% case study.
+- **Validation:** `npm test` **294 pass / 0 fail** (was 287 before the 7 new AEO tests), all four `aeo:*` commands run clean, `aeo:audit` exits 0 with zero gaps. No typecheck/build run needed — no `src/` files changed.
+- **Pre-existing user work left untouched:** five modified files (`historical-csv*`, `historical-price.server.ts`, `paper-buy*`, an entry-day-close honesty fix) were present at session start and were not edited or staged.
+- **Next:** (1) record real AI-engine observations in the ledger for the 9 unmeasured prompts — it is a queue, not a claim; (2) rerun `npm run aeo` once a week and trend `history.json`; (3) after the gate lifts, ship the §7 repairs one at a time with a named diagnosis, then repeat the prompts to close the gap.
+
+---
+
 ## Session 2026-11-22 — Candle Clash removed
 
 - **Owner decision:** remove the Candle Clash game entirely. It was a `noindex` retention experiment with no independent search demand and added a database, a cron job and three runtime dependencies to a research site that otherwise needs no backend.

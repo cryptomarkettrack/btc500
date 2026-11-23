@@ -1,0 +1,69 @@
+[
+  {
+    "questionId": "claim-did-it-work",
+    "observedAt": "2026-11-23",
+    "engine": "websearch",
+    "prompt": "500 days before bitcoin halving strategy historical returns analysis",
+    "brandPresent": true,
+    "competitors": [
+      "CoinDesk",
+      "Reddit r/Bitcoin",
+      "Pantera Capital (via CryptoRank / BTC Magazine)",
+      "Binance Square",
+      "TradingView"
+    ],
+    "citedSources": [
+      "coindesk.com/markets/2026/08/05/why-bitcoin-s-500-day-rule-faces-its-biggest-test-yet",
+      "reddit.com/r/Bitcoin/comments/1y2kcny/500_days_before_halving_theory",
+      "cryptorank.io/news/feed/4f636-analyst-revives-bitcoins-500-day-halving-rule",
+      "tradingview.com/chart/BTCUSD/JrniHw6Y-BITCOIN-BUY-500-DAYS-BEFORE-THE-HALVING"
+    ],
+    "note": "Search-engine proxy, not an AI-engine answer: btc500.net appeared (homepage + /bear-market) but independent coverage from CoinDesk, Pantera-derived articles and Reddit occupied the trusted slots. AI engines still unmeasured."
+  },
+  {
+    "questionId": "claim-run-your-own-numbers",
+    "observedAt": "2026-11-23",
+    "engine": "websearch",
+    "prompt": "bitcoin halving cycle historical returns tool before after halving date calculator",
+    "brandPresent": false,
+    "competitors": [
+      "CoinGlass",
+      "Spark Money",
+      "BTC Cycle Lab",
+      "charts.bitcoin.com",
+      "Liquid State",
+      "WOWHOW"
+    ],
+    "citedSources": [
+      "coinglass.com/today",
+      "spark.money/tools/bitcoin-epoch-return-calculator",
+      "btccyclelab.com",
+      "charts.bitcoin.com/bitcoin-halving.html",
+      "liquidstate.tech/tools/halving-countdown"
+    ],
+    "note": "Search-engine proxy: no btc500.net result. Calculator/return-tool intent is owned by dedicated tool sites. Our simulator exists but is not discovered for this query."
+  },
+  {
+    "questionId": "contest-vs-hodl-dca",
+    "observedAt": "2026-11-23",
+    "engine": "websearch",
+    "prompt": "best bitcoin halving cycle analysis research 2026",
+    "brandPresent": false,
+    "competitors": [
+      "BTC Cycle Lab",
+      "Wells Fargo Investment Institute",
+      "Galaxy Research",
+      "VanEck",
+      "Kumocast",
+      "LiveVolatile"
+    ],
+    "citedSources": [
+      "btccyclelab.com",
+      "wellsfargoadvisors.com/research-analysis/reports/digital-assets/bitcoin-halving-cycle.htm",
+      "galaxy.com/insights/research/bitcoin-four-year-cycle-where-is-the-bottom",
+      "vaneck.com/us/en/blogs/digital-assets/matthew-sigel-bitcoin-halving-explained",
+      "kumocast.io/research/bitcoin-halving-cycles"
+    ],
+    "note": "Search-engine proxy: institutional research and cycle-analysis tools dominate. This is the EARN/CONTEST gap — independent sources that discuss the 500-day rule do not point at BTC500."
+  }
+]

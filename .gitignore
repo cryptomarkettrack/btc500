@@ -44,6 +44,7 @@ scripts/bing/output/
 *.sw?
 *.md
 !BTC500_GROWTH.md
+!AEO.md
 !scripts/autonomous/*.md
 !scripts/autonomous/outreach/*.md
 !.opencode/agents/*.md

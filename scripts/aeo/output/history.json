@@ -1,0 +1,46 @@
+[
+  {
+    "key": "2026-11-22_2026-11-22_2026-11-20",
+    "collected": "2026-11-23",
+    "ga4": {
+      "available": true,
+      "window": {
+        "start": "2026-11-22",
+        "end": "2026-11-22",
+        "days": 1,
+        "timeZone": "Europe/Sofia"
+      },
+      "totals": {
+        "sessions": 18,
+        "users": 7,
+        "newUsers": 1,
+        "views": 47,
+        "engagedSessions": 9,
+        "engagementRate": 0.5,
+        "avgDuration": 215.57625027777777
+      },
+      "ai": {
+        "sessions": 1,
+        "users": 1
+      },
+      "google": {
+        "sessions": 0,
+        "users": 0
+      },
+      "namedAiSources": [
+        "chatgpt.com"
+      ],
+      "channels": {
+        "Direct": 17,
+        "AI Assistant": 1
+      }
+    },
+    "gsc": {
+      "available": true,
+      "end": "2026-11-20",
+      "generated": "2026-11-23T04:00:54.389Z",
+      "clicks": 10,
+      "impressions": 25
+    }
+  }
+]

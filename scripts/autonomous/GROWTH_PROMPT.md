@@ -147,6 +147,36 @@ Rules:
 - A `lastmod` older than the commit behind its page is a blocker, not a
   detail: it is why Bing is not asked to look at a page that changed.
 
+### AEO — answer engines (measured separately from Google)
+
+Added 2026-11-23 by owner directive. `AEO.md` is the operating spec; the loop is
+**measurement and diagnosis only** and does not lift the freeze. The decision map
+lives in `scripts/aeo/decision-questions.mjs`; the observation ledger is
+`scripts/aeo/prompt-results.json`.
+
+```
+npm run aeo:map       # the buyer-decision questions -> Google query + AI prompt
+npm run aeo:audit     # which existing surfaces answer them (exit 1 on a gap)
+npm run aeo:gaps      # missed recommendations, gap type, EARN targets, unmeasured queue
+npm run aeo:measure   # Google vs AI scorecard, appends scripts/aeo/output/history.json
+npm run aeo           # all four
+```
+
+Rules that bind a cycle:
+
+- `chatgpt.com` / `AI Assistant` sessions are the recommendation surface; GSC
+  clicks and impressions are the ranking surface. **Never merge them or infer
+  one from the other.** Quote each number with its window — `ga4-latest.json`
+  may be a 1-day snapshot that cannot be compared to a 7-day GSC row.
+- A prompt with no observation in the ledger is `unmeasured`, not a miss. A
+  brand present once is not a win until the repeat confirms it. Missing reports
+  print `unavailable`, never `0`. Label proxy observations
+  (`engine: "websearch"`) as proxies, not AI-engine answers.
+- `aeo:audit` fixes **existing** surfaces first. No new URL, article or sitemap
+  row for AEO while the freeze stands; a page change needs a named gap diagnosis
+  and the gate to lift. `trustedSources` from `aeo:gaps` is an EARN target list
+  for owner outreach, not work the cycle posts or pitches itself.
+
 ## 3. Decide — the goal is #1, not busier
 
 ### The bar
