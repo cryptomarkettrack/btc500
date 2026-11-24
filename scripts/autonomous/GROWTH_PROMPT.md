@@ -219,6 +219,21 @@ changes, 0 new indexed pages and `indexed` 6/25 → 1/21. The runner's own
 `shipped` counter is an owner fix (`runner-honesty-1108`); this rule is the
 working document's guard and it binds today, not after the fix.
 
+**Added 2026-11-24 by that day's review: measurement and AEO tooling are
+archive-only, not ships.** A commit whose only diff is under `scripts/aeo/`,
+`scripts/autonomous/`, `AEO.md`, `BTC500_GROWTH.md` or the growth log is
+`archive-only`, whatever its test count: tests measure the tooling, not whether
+the site gained a visitor, an indexed page or a click. Evidence: the 7 days to
+2026-11-24 recorded 7 runs / 5 `shipped` and shipped an AEO decision map, an
+answer-section component and a paper-buy honesty fix (`npm test` 301 pass /
+0 fail), and the results were `indexed` **1/22** in all 14 daily readings
+2026-11-11 → 2026-11-24, **0** non-brand clicks in 33 readings, and the only
+non-github referrer still bitcointalk.org 1 session / 1 user. A tool that cannot
+change a stalled signal is not progress toward one. While the freeze stands and
+`indexed` < 2, a cycle may build no new measurement script: its permitted output
+stays the mandate-named action, the `/paper-buy` dated line, and the numbers the
+runner already collected.
+
 **Set by the 2026-10-28 review — work on a declined URL no longer counts as a
 ship.** A cycle whose only deliverable is copy, markup, titles or sections on a
 URL Google has already crawled and declined must record itself `archive-only`,
