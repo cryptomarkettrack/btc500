@@ -1,30 +1,35 @@
 {
-  "generated": "2026-11-23",
-  "summary": "answer-first blocks across the research pages, plus the paper-buy entry-price honesty guard",
+  "generated": "2026-11-24",
+  "summary": "archive-only cycle: daily X post and one verified reply; 2026-11-24 paper-buy line, homepage countdown and sitemap confirmed live; no site change",
   "checks": [
     {
-      "path": "/simulator",
-      "contains": "Direct answer",
-      "status": 200
-    },
-    {
-      "path": "/bitcoin-500-day-cycle",
-      "contains": "The rule vs buy-and-hold and DCA",
+      "path": "/paper-buy",
+      "contains": "2026-11-24 — Scheduled. $50,000 not deployed",
       "status": 200
     },
     {
       "path": "/paper-buy",
-      "contains": "not deployed. Entry November 29, 2026",
+      "contains": "Entry November 28, 2026 (T−500), 4 days away",
       "status": 200
     },
     {
-      "path": "/paper-buy",
-      "contains": "The $50,000 is uninvested until",
+      "path": "/",
+      "contains": "28 November 2026",
       "status": 200
     },
     {
       "path": "/",
       "contains": "Follow the public $50,000 paper buy",
+      "status": 200
+    },
+    {
+      "path": "/sitemap.xml",
+      "contains": "/paper-buy",
+      "status": 200
+    },
+    {
+      "path": "/data/500-day-cycles.json",
+      "contains": "\"schema\": \"btc500/500-day-cycles@1\"",
       "status": 200
     }
   ]
