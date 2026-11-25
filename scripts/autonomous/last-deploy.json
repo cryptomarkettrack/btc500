@@ -1,15 +1,15 @@
 {
-  "generated": "2026-11-24",
-  "summary": "archive-only cycle: daily X post and one verified reply; 2026-11-24 paper-buy line, homepage countdown and sitemap confirmed live; no site change",
+  "generated": "2026-11-25",
+  "summary": "archive-only cycle: spacing-page kill test executed and authority hypothesis falsified in the growth log; 2026-11-25 paper-buy line, homepage countdown and sitemap confirmed live; no site change",
   "checks": [
     {
       "path": "/paper-buy",
-      "contains": "2026-11-24 — Scheduled. $50,000 not deployed",
+      "contains": "2026-11-25 — Scheduled. $50,000 not deployed",
       "status": 200
     },
     {
       "path": "/paper-buy",
-      "contains": "Entry November 28, 2026 (T−500), 4 days away",
+      "contains": "Entry November 28, 2026 (T−500), 3 days away",
       "status": 200
     },
     {
