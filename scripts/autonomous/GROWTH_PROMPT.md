@@ -885,6 +885,37 @@ Not permitted, because each has already failed with evidence on file: a new URL
 6 → 3), a third GitHub/directory submission of the class that produced 0
 sessions in 23 and 14 days, and any "one more page" argument.
 
+### 2026-11-25 (this review): the "one more link / one more page" strategy is closed
+
+The kill test ordered on 2026-11-24 was executed on 2026-11-25 and it answered
+the strategy, not a page. All figures from the runner's 2026-11-25 reports and
+the 2026-11-25 growth log: `/halving-spacing` — shipped 2026-11-17 with one
+crawlable link — is still "URL is unknown to Google" with `lastCrawl: never`,
+and its only landing in the 7d GA4 window 2026-11-17 → 11-23 is 1 session /
+1 user from github.com (this repository). bitcointalk.org is 1 session /
+1 user, the same single forum user for the seventh window. One followed
+external link (jlopp/lopp.net#1267, merged 2026-11-07T20:20:30Z) produced no
+crawl of a new page and no stranger landing on one. The authority hypothesis is
+falsified for one followed link, so the 2026-11-09 rule's consequence — "name a
+second destination" — does not apply: with `indexed` **1/22** in 34 readings
+(2026-11-11 → 11-25) and **0** non-brand clicks in 34, no destination's single
+link has been shown to move either number, and 18 handovers / 4 sends in 29 days
+moved neither.
+
+Binding from 2026-11-25:
+
+- No cycle may propose a second destination, a new URL, or a "one more page"
+  argument until the 2026-11-29 `/paper-buy` entry line has been read on
+  2026-12-07. The buy window is the only dated fact this site owns; the
+  countdown is inventory.
+- The only owner ask that stays open is the launchd X-poster repair (outside the
+  repo): 0 scheduled posts in 33 days while one hand-made post produced
+  t.co 5 sessions / 3 users. No new ask may name a GitHub listing, an email form
+  or Facebook — all three are closed `unexecutable` in `outreach/STATUS.md`.
+- Record the falsification in `BTC500_GROWTH.md`; do not reopen the copy line to
+  "fix" indexation — page-quality causes were excluded by measurement on
+  2026-11-10.
+
 ### Order of work — never skip ahead
 
 1. `preflight.json` notes (site down, stale archive, overdue last run).
