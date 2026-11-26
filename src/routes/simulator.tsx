@@ -11,6 +11,7 @@ import {
   SITE_URL,
   generateDatasetSchema,
   generateFaqSchema,
+  generateGraphSchema,
   generatePageHead,
   generateSpeakableSchema,
   generateWebPageSchema,
@@ -63,14 +64,15 @@ const simulatorHowToSchema = {
 const simulatorAppSchema = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  name: "BTC500 Bitcoin Halving Simulator",
+  name: "Bitcoin Halving Simulator — 500-Day Cycle | BTC500",
   url: `${SITE_URL}/simulator`,
   applicationCategory: "FinanceApplication",
-  operatingSystem: "Any",
+  operatingSystem: "Web",
   browserRequirements: "Requires JavaScript",
   isAccessibleForFree: true,
   description:
-    "Free backtest of the Bitcoin 500-day cycle: buy 500 days before each halving and sell 500 days after, using historical daily prices.",
+    "What would $500, $1,000, or another investment have become if invested 500 days before a Bitcoin halving? Real historical prices. Not financial advice.",
+  provider: { "@id": `${SITE_URL}/#organization` },
   offers: {
     "@type": "Offer",
     price: "0",
@@ -86,7 +88,7 @@ const simulatorAppSchema = {
   ],
 };
 
-const simulatorPageSchema = [
+const simulatorPageSchema = generateGraphSchema([
   generateWebPageSchema({
     path: "/simulator",
     name: "Bitcoin Halving Simulator — 500-Day Cycle",
@@ -106,7 +108,7 @@ const simulatorPageSchema = [
     cssSelectors: [".lead"],
   }),
   simulatorHowToSchema,
-];
+]);
 
 export const Route = createFileRoute("/simulator")({
   validateSearch: (search: Record<string, unknown>): SimulatorSearch =>
@@ -114,6 +116,7 @@ export const Route = createFileRoute("/simulator")({
   head: () =>
     generatePageHead({
       path: "/simulator",
+      ogType: "product",
       title: "Bitcoin Halving Simulator — 500-Day Cycle | BTC500",
       description:
         "What would $500, $1,000, or another investment have become if invested 500 days before a Bitcoin halving? Real historical prices. Not financial advice.",

@@ -40,7 +40,13 @@ const EXCLUDED_ROUTES = new Set(["privacy", "terms", "embed"]);
  * alongside 22 live ones. Removing the row is defect removal, not a ranking
  * lever — the page itself is untouched and still indexable.
  */
-const SITEMAP_EXCLUDED_ARTICLES = new Set(["bear-market-accumulation"]);
+const SITEMAP_EXCLUDED_ARTICLES = new Set([
+  "bear-market-accumulation",
+  // 2026-11-26: high impressions, no engagement, and no live page topically
+  // close enough to justify a redirect. Listed here as well as in the archive
+  // set so a future archive cleanup cannot silently re-add the sitemap row.
+  "bitcoin-week-ahead",
+]);
 
 /**
  * Component folders shared by every page — a change there is not a page change.
@@ -51,10 +57,7 @@ const SITEMAP_EXCLUDED_ARTICLES = new Set(["bear-market-accumulation"]);
  * carried a lastmod of 2026-10-29 while its markup had changed, and both
  * Google and Bing read that date as "nothing to revisit here".
  */
-const SHARED_COMPONENT_PREFIXES = [
-  "src/components/ui/",
-  "src/components/route/",
-];
+const SHARED_COMPONENT_PREFIXES = ["src/components/ui/", "src/components/route/"];
 
 /** Components shared across pages that still do not change a single page's content. */
 const SHARED_COMPONENT_FILES = new Set([

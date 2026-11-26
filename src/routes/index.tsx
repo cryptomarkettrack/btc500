@@ -10,7 +10,8 @@ import {
 import { FAQ_ITEMS } from "@/lib/faq";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
-import { simulatorPreviewQuery } from "@/lib/queries";
+import { simulatorPreviewQuery, signalPriceQuery } from "@/lib/queries";
+import { SIGNAL_OG_IMAGE } from "@/lib/buy-signal";
 import { waitForHalvingSeed } from "@/lib/seed-halving";
 import { computeCycle } from "@/lib/phase";
 import { buildHomeSnippet } from "@/lib/home-snippet";
@@ -58,7 +59,8 @@ export const Route = createFileRoute("/")({
       ogTitle: "BTC500 — The Bitcoin 500-Day Halving Rule",
       ogDescription:
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
-      ogImageAlt: "BTC500 — Bitcoin 500-Day Halving countdown",
+      ogImage: SIGNAL_OG_IMAGE,
+      ogImageAlt: "BTC500 — live T-minus countdown card for the November 28, 2026 buy point",
       twitterTitle: "BTC500 — The Bitcoin 500-Day Halving Rule",
       twitterDescription:
         "One mechanical Bitcoin rule. Buy 500 days before the halving. Sell 500 days after. Follow the live cycle.",
@@ -73,6 +75,7 @@ export const Route = createFileRoute("/")({
     // one URL Google actually serves. The loader runs before render, so the hydrated client
     // agrees instead of refetching mid-hydration.
     await context.queryClient.ensureQueryData(simulatorPreviewQuery);
+    await context.queryClient.ensureQueryData(signalPriceQuery);
 
     // The head needs the live T-500 date, so derive it from the same seeded
     // halving snapshot the countdown renders and the pillar page uses — never a

@@ -19,6 +19,11 @@ export const ARCHIVED_ARTICLE_SLUGS = new Set<string>([
   "bitcoin-casino-searches",
   "clarity-act",
   "goldman-vs-blackrock",
+  // 2026-11-26: an August news brief with impressions but no engagement. Its
+  // route emits `noindex, follow` explicitly (this shared helper would emit
+  // `noindex, nofollow`). Listed here so internal links and the sitemap stop
+  // treating it as a live page; the article file stays in the repo.
+  "bitcoin-week-ahead",
 ]);
 
 /** True when the article should stay out of search indexes. */

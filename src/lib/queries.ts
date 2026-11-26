@@ -20,6 +20,7 @@ import { getSpacingData } from "@/lib/spacing.functions";
 import { emptySpacingReport } from "@/lib/halving-spacing";
 import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
 import { getBtcPriceForDate } from "@/lib/historical-price.server";
+import { getSignalPrice } from "@/lib/buy-signal.functions";
 
 const MINUTE = 60_000;
 const NETWORK_REFRESH_MS = 10 * 60_000;
@@ -45,6 +46,13 @@ export const btcPriceQuery = queryOptions({
   queryFn: () => getBtcPrice(),
   staleTime: MINUTE,
   refetchInterval: MINUTE,
+});
+
+/** Last daily close used by the 500-day signal cards (same archive as the backtest). */
+export const signalPriceQuery = queryOptions({
+  queryKey: ["signal-price"],
+  queryFn: () => getSignalPrice(),
+  staleTime: HOUR,
 });
 
 /** Entry (buy) price of the current cycle's T−500 date, for live P&L tracking. */

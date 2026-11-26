@@ -1,5 +1,13 @@
 # BTC500 — Complete Knowledge Base
 
+## Live Signal
+
+- Buy point: November 28, 2026
+- Halving: April 11, 2028, block 1,050,000
+- Rule: buy 500 days before halving, sell 500 days after
+- Current status: {{SIGNAL_STATUS}}
+- Backtest: 4 completed cycles (2012, 2016, 2020, 2024), 0 negative windows
+
 > Live at https://btc500.net — Free Bitcoin halving countdown and investment tools built around the BTC500 strategy: buy exactly 500 days before each Bitcoin halving and sell exactly 500 days after.
 
 **Site:** https://btc500.net
@@ -7,6 +15,29 @@
 **X/Twitter:** https://x.com/btc500halving
 **Instagram:** https://www.instagram.com/btc500halving
 **Method note:** the buy, halving and sell dates below are rendered live from Bitcoin's current block height; they move with block times, so this document has no fixed "last updated" date.
+
+## Direct Q&A
+
+Q: When is 500 days before the next Bitcoin halving?
+A: The current block-height estimate is {{BUY_DATE}} for an {{HALVING_DATE}} halving. Because the event is triggered at block 1,050,000, both the halving and the buy date move if blocks arrive faster or slower than ten minutes.
+
+Q: What is the Bitcoin 500-day rule?
+A: The Bitcoin 500-day rule is the fixed-window framework behind this page: buy Bitcoin 500 days before each halving and sell it 500 days after. The window spans about 1,000 days and is measured against the daily-close archive, not chosen by curve-fitting past returns.
+
+Q: Is BTC500 financial advice?
+A: No. BTC500 is free educational software and historical data tooling. Nothing on the site is financial advice.
+
+Q: When do you sell Bitcoin after a halving?
+A: Exactly 500 calendar days after the halving (T+500). The 2024 halving on April 20, 2024 had a BTC500 sell date of September 2, 2025. The current block-height estimate for the next sell date is {{SELL_DATE}}. Full reference: https://btc500.net/when-to-sell-bitcoin-after-halving
+
+Q: What is the BTC500 sell date?
+A: The current block-height estimate for the next sell date is {{SELL_DATE}}. Full reference: https://btc500.net/when-to-sell-bitcoin-after-halving
+
+Q: How many BTC500 windows have completed?
+A: Completed cycles in the simulator are 2012, 2016, 2020, and 2024; the 2024 window closed on 2 September 2025. Past performance does not guarantee future results.
+
+Q: Is BTC500 free to use?
+A: Yes. The countdown, simulator, timeline, liquidation dashboard, articles, and embed widgets are free. No account is required.
 
 ---
 

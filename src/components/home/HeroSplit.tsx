@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Calculator, LineChart } from "lucide-react";
 import { Btc500Hero } from "@/components/Btc500Hero";
+import { BuyPointCountdown } from "@/components/signal/BuyPointCountdown";
 import { trackCta } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
 import type { HomeAnswer } from "@/lib/home-answer";
@@ -84,6 +85,10 @@ export function HeroSplit({
             <strong className="font-semibold text-foreground">{answer.leadAnswer}</strong>{" "}
             {answer.leadRest}
           </p>
+
+          <div data-enter style={{ "--enter-delay": "280ms" } as React.CSSProperties}>
+            <BuyPointCountdown />
+          </div>
 
           <div
             data-enter

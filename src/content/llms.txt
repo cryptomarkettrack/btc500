@@ -1,5 +1,13 @@
 # BTC500
 
+## Live Signal
+
+- Buy point: November 28, 2026
+- Halving: April 11, 2028, block 1,050,000
+- Rule: buy 500 days before halving, sell 500 days after
+- Current status: {{SIGNAL_STATUS}}
+- Backtest: 4 completed cycles (2012, 2016, 2020, 2024), 0 negative windows
+
 > Free Bitcoin halving countdown and investment tools built around the BTC500 strategy: buy exactly 500 days before each Bitcoin halving and sell exactly 500 days after.
 
 Site: https://btc500.net

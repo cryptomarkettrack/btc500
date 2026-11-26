@@ -19,6 +19,7 @@
  */
 
 import type { HalvingInfo } from "./btc.functions.ts";
+import { daysToBuyPoint } from "./buy-signal.ts";
 import { computeCycle } from "./phase.ts";
 import { formatLongDate } from "./pillar-snippet.ts";
 
@@ -28,6 +29,7 @@ export const LLMS_TOKENS = [
   "SELL_DATE",
   "BUY_DATE_ISO",
   "SELL_DATE_ISO",
+  "SIGNAL_STATUS",
 ] as const;
 
 export type LlmsToken = (typeof LLMS_TOKENS)[number];
@@ -55,7 +57,17 @@ export function llmsTokenValues(
     SELL_DATE: formatLongDate(cycle.sellDate),
     BUY_DATE_ISO: isoDay(cycle.buyDate),
     SELL_DATE_ISO: isoDay(cycle.sellDate),
+    SIGNAL_STATUS: signalStatus(now),
   };
+}
+
+/** Computed at render/build time from the fixed UTC buy point, never hardcoded. */
+function signalStatus(now: Date): string {
+  const days = daysToBuyPoint(now);
+  if (days === 0) return "Buy window opens today";
+  if (days > 0) return `${days} ${days === 1 ? "day" : "days"} until the buy point`;
+  const since = Math.abs(days);
+  return `Buy window open — ${since} ${since === 1 ? "day" : "days"} since the buy point`;
 }
 
 /** Replace every `{{TOKEN}}` in a template. Unknown tokens throw, never leak. */

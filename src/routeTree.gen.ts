@@ -21,6 +21,7 @@ import { Route as EmbedKitRouteImport } from './routes/embed-kit'
 import { Route as HalvingDatesRouteImport } from './routes/halving-dates'
 import { Route as HalvingSpacingRouteImport } from './routes/halving-spacing'
 import { Route as InsiderTradingRouteImport } from './routes/insider-trading'
+import { Route as IsNowTheBuyPointRouteImport } from './routes/is-now-the-buy-point'
 import { Route as LiquidationRouteImport } from './routes/liquidation'
 import { Route as LlmsFullDottxtRouteImport } from './routes/llms-full[.]txt'
 import { Route as LlmsDottxtRouteImport } from './routes/llms[.]txt'
@@ -31,6 +32,7 @@ import { Route as SimulatorRouteImport } from './routes/simulator'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as TimelineRouteImport } from './routes/timeline'
 import { Route as WhenToSellBitcoinAfterHalvingRouteImport } from './routes/when-to-sell-bitcoin-after-halving'
+import { Route as ApiOgRouteImport } from './routes/api.og'
 import { Route as ArticlesBearMarketAccumulationRouteImport } from './routes/articles.bear-market-accumulation'
 import { Route as ArticlesBip110RejectionRouteImport } from './routes/articles.bip-110-rejection'
 import { Route as ArticlesBitcoin80kBreakoutRouteImport } from './routes/articles.bitcoin-80k-breakout'
@@ -110,6 +112,11 @@ const InsiderTradingRoute = InsiderTradingRouteImport.update({
   path: '/insider-trading',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IsNowTheBuyPointRoute = IsNowTheBuyPointRouteImport.update({
+  id: '/is-now-the-buy-point',
+  path: '/is-now-the-buy-point',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LiquidationRoute = LiquidationRouteImport.update({
   id: '/liquidation',
   path: '/liquidation',
@@ -161,6 +168,11 @@ const WhenToSellBitcoinAfterHalvingRoute =
     path: '/when-to-sell-bitcoin-after-halving',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiOgRoute = ApiOgRouteImport.update({
+  id: '/api/og',
+  path: '/api/og',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ArticlesBearMarketAccumulationRoute =
   ArticlesBearMarketAccumulationRouteImport.update({
     id: '/bear-market-accumulation',
@@ -270,6 +282,7 @@ export interface FileRoutesByFullPath {
   '/halving-dates': typeof HalvingDatesRoute
   '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
+  '/is-now-the-buy-point': typeof IsNowTheBuyPointRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
@@ -280,6 +293,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -311,6 +325,7 @@ export interface FileRoutesByTo {
   '/halving-dates': typeof HalvingDatesRoute
   '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
+  '/is-now-the-buy-point': typeof IsNowTheBuyPointRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
@@ -321,6 +336,7 @@ export interface FileRoutesByTo {
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -353,6 +369,7 @@ export interface FileRoutesById {
   '/halving-dates': typeof HalvingDatesRoute
   '/halving-spacing': typeof HalvingSpacingRoute
   '/insider-trading': typeof InsiderTradingRoute
+  '/is-now-the-buy-point': typeof IsNowTheBuyPointRoute
   '/liquidation': typeof LiquidationRoute
   '/llms-full.txt': typeof LlmsFullDottxtRoute
   '/llms.txt': typeof LlmsDottxtRoute
@@ -363,6 +380,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/timeline': typeof TimelineRoute
   '/when-to-sell-bitcoin-after-halving': typeof WhenToSellBitcoinAfterHalvingRoute
+  '/api/og': typeof ApiOgRoute
   '/articles/bear-market-accumulation': typeof ArticlesBearMarketAccumulationRoute
   '/articles/bip-110-rejection': typeof ArticlesBip110RejectionRoute
   '/articles/bitcoin-80k-breakout': typeof ArticlesBitcoin80kBreakoutRoute
@@ -396,6 +414,7 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/halving-spacing'
     | '/insider-trading'
+    | '/is-now-the-buy-point'
     | '/liquidation'
     | '/llms-full.txt'
     | '/llms.txt'
@@ -406,6 +425,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/timeline'
     | '/when-to-sell-bitcoin-after-halving'
+    | '/api/og'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -437,6 +457,7 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/halving-spacing'
     | '/insider-trading'
+    | '/is-now-the-buy-point'
     | '/liquidation'
     | '/llms-full.txt'
     | '/llms.txt'
@@ -447,6 +468,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/timeline'
     | '/when-to-sell-bitcoin-after-halving'
+    | '/api/og'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -478,6 +500,7 @@ export interface FileRouteTypes {
     | '/halving-dates'
     | '/halving-spacing'
     | '/insider-trading'
+    | '/is-now-the-buy-point'
     | '/liquidation'
     | '/llms-full.txt'
     | '/llms.txt'
@@ -488,6 +511,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/timeline'
     | '/when-to-sell-bitcoin-after-halving'
+    | '/api/og'
     | '/articles/bear-market-accumulation'
     | '/articles/bip-110-rejection'
     | '/articles/bitcoin-80k-breakout'
@@ -520,6 +544,7 @@ export interface RootRouteChildren {
   HalvingDatesRoute: typeof HalvingDatesRoute
   HalvingSpacingRoute: typeof HalvingSpacingRoute
   InsiderTradingRoute: typeof InsiderTradingRoute
+  IsNowTheBuyPointRoute: typeof IsNowTheBuyPointRoute
   LiquidationRoute: typeof LiquidationRoute
   LlmsFullDottxtRoute: typeof LlmsFullDottxtRoute
   LlmsDottxtRoute: typeof LlmsDottxtRoute
@@ -530,6 +555,7 @@ export interface RootRouteChildren {
   TermsRoute: typeof TermsRoute
   TimelineRoute: typeof TimelineRoute
   WhenToSellBitcoinAfterHalvingRoute: typeof WhenToSellBitcoinAfterHalvingRoute
+  ApiOgRoute: typeof ApiOgRoute
   Data500DayCyclesDotjsonRoute: typeof Data500DayCyclesDotjsonRoute
   DataHalvingSpacingDotjsonRoute: typeof DataHalvingSpacingDotjsonRoute
 }
@@ -620,6 +646,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof InsiderTradingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/is-now-the-buy-point': {
+      id: '/is-now-the-buy-point'
+      path: '/is-now-the-buy-point'
+      fullPath: '/is-now-the-buy-point'
+      preLoaderRoute: typeof IsNowTheBuyPointRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/liquidation': {
       id: '/liquidation'
       path: '/liquidation'
@@ -688,6 +721,13 @@ declare module '@tanstack/react-router' {
       path: '/when-to-sell-bitcoin-after-halving'
       fullPath: '/when-to-sell-bitcoin-after-halving'
       preLoaderRoute: typeof WhenToSellBitcoinAfterHalvingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/og': {
+      id: '/api/og'
+      path: '/api/og'
+      fullPath: '/api/og'
+      preLoaderRoute: typeof ApiOgRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/articles/bear-market-accumulation': {
@@ -868,6 +908,7 @@ const rootRouteChildren: RootRouteChildren = {
   HalvingDatesRoute: HalvingDatesRoute,
   HalvingSpacingRoute: HalvingSpacingRoute,
   InsiderTradingRoute: InsiderTradingRoute,
+  IsNowTheBuyPointRoute: IsNowTheBuyPointRoute,
   LiquidationRoute: LiquidationRoute,
   LlmsFullDottxtRoute: LlmsFullDottxtRoute,
   LlmsDottxtRoute: LlmsDottxtRoute,
@@ -878,6 +919,7 @@ const rootRouteChildren: RootRouteChildren = {
   TermsRoute: TermsRoute,
   TimelineRoute: TimelineRoute,
   WhenToSellBitcoinAfterHalvingRoute: WhenToSellBitcoinAfterHalvingRoute,
+  ApiOgRoute: ApiOgRoute,
   Data500DayCyclesDotjsonRoute: Data500DayCyclesDotjsonRoute,
   DataHalvingSpacingDotjsonRoute: DataHalvingSpacingDotjsonRoute,
 }

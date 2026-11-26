@@ -21,8 +21,12 @@ export const FAQ_ITEMS = [
   },
   {
     question: "When is 500 days before the next Bitcoin halving?",
+    answer: "November 28, 2026.",
+  },
+  {
+    question: "Buy Bitcoin 500 days before halving",
     answer:
-      "The BTC500 buy date is the calendar day 500 days before the next estimated Bitcoin halving. Because the halving is triggered by block height (1,050,000), that buy date moves if blocks come in faster or slower than ten minutes. The live date is on the BTC500 homepage countdown and the halving-dates schedule.",
+      "The rule buys exactly 500 days before the halving; for the 2028 cycle, that is November 28, 2026.",
   },
   {
     question: "How does the Bitcoin halving work?",

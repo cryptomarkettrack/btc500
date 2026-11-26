@@ -66,7 +66,19 @@ export const Route = createFileRoute("/articles/bitcoin-week-ahead")({
       ...head,
       // FAQ schema is appended to `meta` (not `scripts`): TanStack Router does
       // not render head().scripts, so this article FAQ markup was previously lost.
-      meta: [...head.meta, { "script:ld+json": faqSchema }],
+      //
+      // 2026-11-26: this August news brief has impressions but no engagement and
+      // is not a useful destination for its queries. Keep the article in the
+      // repo for history, but take it out of the index with `noindex, follow`
+      // (not a 301: there is no equivalent live page to transfer signals to).
+      // The generic helper emits `noindex, nofollow`, so replace those two tags
+      // here rather than changing noIndex behaviour for every archived article.
+      meta: [
+        ...head.meta.filter((tag) => tag.name !== "robots" && tag.name !== "googlebot"),
+        { "script:ld+json": faqSchema },
+        { name: "robots", content: "noindex, follow" },
+        { name: "googlebot", content: "noindex, follow" },
+      ],
     };
   },
   component: BitcoinWeekAheadPage,

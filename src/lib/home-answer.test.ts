@@ -16,11 +16,13 @@ describe("buildHomeAnswer", () => {
 
     assert.equal(answer.phase, "before");
     assert.equal(answer.dateLabel, "28 November 2026");
-    assert.match(answer.h1, /^500 days before the next Bitcoin halving is 28 November 2026$/);
-    assert.ok(answer.h1Html.includes("28 November 2026"));
+    assert.equal(answer.usDate, "November 28, 2026");
+    assert.equal(answer.h1, "Bitcoin 500-Day Rule: The Buy Point Is November 28, 2026");
+    assert.ok(answer.h1Html.includes("November 28, 2026"));
     assert.ok(answer.h1Html.includes("text-primary"));
-    assert.ok(answer.leadAnswer.includes("500 days before the next Bitcoin halving"));
-    assert.ok(answer.leadAnswer.includes("28 November 2026"));
+    assert.ok(answer.leadAnswer.includes("500 days before"));
+    assert.ok(answer.lead.includes("November 28, 2026"));
+    assert.ok(answer.lead.includes("block 1,050,000"));
   });
 
   it("puts the query and the date inside the first 40 words of the page", () => {
@@ -31,8 +33,8 @@ describe("buildHomeAnswer", () => {
     });
     // The eyebrow renders above the lead paragraph, so it counts.
     const firstForty = `${answer.eyebrow} ${answer.lead}`.split(/\s+/).slice(0, 40).join(" ");
-    assert.ok(firstForty.toLowerCase().includes("500 days before the next bitcoin halving"));
-    assert.ok(firstForty.includes("28 November 2026"));
+    assert.ok(firstForty.toLowerCase().includes("500-day rule buys bitcoin"));
+    assert.ok(firstForty.includes("November 28, 2026"));
   });
 
   it("keeps the halving estimate on the subline so the H1 stays one sentence", () => {
@@ -53,9 +55,9 @@ describe("buildHomeAnswer", () => {
       nowISO: "2026-11-28T00:00:00.000Z",
     });
     assert.equal(answer.phase, "after");
-    assert.ok(answer.h1.startsWith("The 500-day Bitcoin window opened on 28 November 2026"));
+    assert.ok(answer.h1.startsWith("Bitcoin 500-Day Rule: The Buy Point Was November 28, 2026"));
     assert.ok(!answer.h1.includes("next Bitcoin halving"));
-    assert.ok(answer.lead.toLowerCase().includes("500 days before the next bitcoin halving"));
+    assert.ok(answer.lead.toLowerCase().includes("500 days before"));
   });
 
   it("falls back to a dateless H1 when the model gives no date", () => {
@@ -66,6 +68,7 @@ describe("buildHomeAnswer", () => {
     });
     assert.equal(answer.phase, "unknown");
     assert.equal(answer.dateLabel, null);
+    assert.equal(answer.usDate, null);
     assert.ok(!/\b20\d\d\b/.test(answer.h1));
     assert.ok(!/\b20\d\d\b/.test(answer.lead));
   });

@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnswerSection } from "@/components/aeo/AnswerSection";
 import { LegalPage } from "@/components/LegalPage";
 import {
+  AUTHOR_JOB_TITLE,
+  AUTHOR_NAME,
   CONTACT_EMAIL,
   SITE_URL,
   generateFaqSchema,
@@ -42,6 +44,15 @@ const aboutSchema = [
   }),
   generateSpeakableSchema({ path: "/about", cssSelectors: [".lead"] }),
   generateFaqSchema(ABOUT_FAQ),
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "@id": `${SITE_URL}/#author`,
+    name: AUTHOR_NAME,
+    jobTitle: AUTHOR_JOB_TITLE,
+    worksFor: { "@id": `${SITE_URL}/#organization` },
+    url: `${SITE_URL}/about`,
+  },
   {
     "@context": "https://schema.org",
     "@type": "AboutPage",
@@ -203,6 +214,10 @@ function AboutPage() {
 
       <section>
         <h2>Contact</h2>
+        <p>
+          <strong>Methodology and content responsibility:</strong> {AUTHOR_NAME} —{" "}
+          {AUTHOR_JOB_TITLE}. Corrections: <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+        </p>
         <p>
           Email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>. Follow{" "}
           <a href="https://x.com/btc500halving" rel="noopener noreferrer me">

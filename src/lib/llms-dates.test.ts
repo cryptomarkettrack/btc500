@@ -24,6 +24,7 @@ describe("llms date tokens", () => {
     assert.equal(values.SELL_DATE, "August 25, 2029");
     assert.equal(values.BUY_DATE_ISO, "2026-11-29");
     assert.equal(values.SELL_DATE_ISO, "2029-08-25");
+    assert.equal(values.SIGNAL_STATUS, "16 days until the buy point");
   });
 
   it("renders both documents with no token left behind", () => {

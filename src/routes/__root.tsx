@@ -76,6 +76,8 @@ const organizationSchema = {
     "Bitcoin cycle timing",
   ],
   sameAs: [...SOCIAL_PROFILES],
+  // The Person entity itself is defined on /about so the graph has one owner.
+  member: { "@id": `${SITE_URL}/#author` },
   contactPoint: {
     "@type": "ContactPoint",
     email: CONTACT_EMAIL,

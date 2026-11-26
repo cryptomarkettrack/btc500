@@ -31,8 +31,13 @@ import {
   halvingQuery,
   btcPriceQuery,
   simulatorPreviewQuery,
+  signalPriceQuery,
   buyPriceQuery,
 } from "@/lib/queries";
+import { toBacktestRows } from "@/lib/buy-signal";
+import { BacktestTable } from "@/components/signal/BacktestTable";
+import { SignalContextStrip } from "@/components/signal/SignalContextStrip";
+import { SignalShareRow } from "@/components/signal/SignalShareRow";
 import { useNow } from "@/hooks/use-now";
 import { FAQ_ITEMS } from "@/lib/faq";
 import { DataTape } from "@/components/home/DataTape";
@@ -53,6 +58,9 @@ export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(btcPriceQuery);
   const simulatorRes = useQuery(simulatorPreviewQuery);
+  const signalRes = useQuery(signalPriceQuery);
+  const signal = signalRes.data ?? { price: null, date: null, source: "unavailable" };
+  const backtestRows = toBacktestRows(simulatorRes.data?.cycles ?? []);
   const now = useNow(60_000);
   const cycleShareCardRef = useRef<HTMLDivElement>(null);
   const [previewOpen, setPreviewOpen] = useState(false);
@@ -164,6 +172,10 @@ export function HomePage() {
         isProfit={isProfit}
         isHolding={isHolding}
       />
+
+      <div className="mx-auto max-w-6xl px-6">
+        <SignalContextStrip signal={signal} />
+      </div>
 
       <DataTape
         price={priceRes.data?.price ?? null}
@@ -290,13 +302,9 @@ export function HomePage() {
               <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-success">
                 02 / Live position — P&L tracker
               </p>
-              <h2
-                className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
-              >
-                Bought on <span className="text-primary">{formatDate(cycle.buyDate)}</span>{" "}
-                (T−500) · selling{" "}
-                <span className="text-success">{formatDate(cycle.sellDate)}</span>{" "}
-                (T+500)
+              <h2 className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl">
+                Bought on <span className="text-primary">{formatDate(cycle.buyDate)}</span> (T−500)
+                · selling <span className="text-success">{formatDate(cycle.sellDate)}</span> (T+500)
               </h2>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
                 Position is open. P&L is marked live against today's BTC price — green in profit,
@@ -315,24 +323,18 @@ export function HomePage() {
                 <div className="mt-2 text-2xl font-bold text-foreground">
                   {buyPrice != null ? formatUsd(buyPrice) : "—"}
                 </div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  BTC price at entry
-                </p>
+                <p className="mt-1 text-[11px] text-muted-foreground">BTC price at entry</p>
               </div>
 
               <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
                 <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
                   BTC now
                 </div>
-                <div className="mt-1 text-sm font-semibold text-muted-foreground">
-                  Live mark
-                </div>
+                <div className="mt-1 text-sm font-semibold text-muted-foreground">Live mark</div>
                 <div className="mt-2 text-2xl font-bold text-foreground">
                   {currentPrice != null ? formatUsd(currentPrice) : "—"}
                 </div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Current price
-                </p>
+                <p className="mt-1 text-[11px] text-muted-foreground">Current price</p>
               </div>
 
               <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
@@ -345,9 +347,7 @@ export function HomePage() {
                 <div className="mt-2 text-2xl font-bold text-foreground">
                   {formatUsd(INVESTMENT)}
                 </div>
-                <p className="mt-1 text-[11px] text-muted-foreground">
-                  Capital deployed at entry
-                </p>
+                <p className="mt-1 text-[11px] text-muted-foreground">Capital deployed at entry</p>
               </div>
 
               <div
@@ -363,9 +363,7 @@ export function HomePage() {
                   Current P&L
                 </div>
                 <div className="mt-1 text-sm font-semibold text-muted-foreground">
-                  {positionValue != null
-                    ? `Position value ${formatUsd(positionValue)}`
-                    : "—"}
+                  {positionValue != null ? `Position value ${formatUsd(positionValue)}` : "—"}
                 </div>
                 <div className="mt-2 flex items-baseline gap-1">
                   <span
@@ -703,6 +701,27 @@ export function HomePage() {
               <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
+        </section>
+
+        {/* ===== LIVE SIGNAL RECORD + SHARE ===== */}
+        <section className="pt-20 sm:pt-24" aria-labelledby="signal-record-heading">
+          <p className="font-data text-[11px] font-semibold uppercase tracking-[0.18em] text-primary">
+            Live signal / The 500-day record
+          </p>
+          <h2
+            id="signal-record-heading"
+            className="mt-3 text-3xl leading-tight font-semibold tracking-[-0.02em] text-balance sm:text-4xl"
+          >
+            What happened the last four times
+          </h2>
+          <p className="mt-4 max-w-2xl text-base leading-relaxed text-muted-foreground">
+            All four completed 500-day windows ended in positive territory. Every price below is a
+            daily close from the BTC500 archive — absent prints render as —.
+          </p>
+          <div className="mt-8">
+            <BacktestTable rows={backtestRows} />
+          </div>
+          <SignalShareRow />
         </section>
 
         {/* ===== FAQ ===== */}

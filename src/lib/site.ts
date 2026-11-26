@@ -30,6 +30,13 @@ export const HOME_LAST_REVIEWED = "2026-10-29";
 export const SITE_DATE_MODIFIED = HOME_LAST_REVIEWED;
 export const LOGO_URL = `${SITE_URL}/icons/icon-512.png`;
 export const CONTACT_EMAIL = "btc500halving@gmail.com";
+/**
+ * Named person responsible for methodology and content, supplied by the site
+ * owner on 2026-11-26. Keep in sync with the visible line on /about and the
+ * Person entity linked from the global Organization through #author.
+ */
+export const AUTHOR_NAME = "Philip Kasapov";
+export const AUTHOR_JOB_TITLE = "Senior Software Engineer";
 
 /** Primary brand social profiles (also used in Organization schema). */
 export const SOCIAL_PROFILES = [
@@ -51,7 +58,7 @@ export interface PageHeadOptions {
   ogDescription?: string;
   ogImage?: string;
   ogImageAlt?: string;
-  ogType?: "website" | "article";
+  ogType?: "website" | "article" | "product";
   twitterTitle?: string;
   twitterDescription?: string;
   noIndex?: boolean;
@@ -262,6 +269,25 @@ export function generatePageHead({
     meta,
     links,
   };
+}
+
+/**
+ * Wrap a route's page-specific schemas in a single `@graph` script tag.
+ *
+ * WebSite, Organization and the site-wide WebApplication live in __root.tsx and
+ * are emitted on every URL; they must not be re-declared on a deep page. Use
+ * `{ "@id": `${SITE_URL}/#organization` }` to reference them from a graph node.
+ */
+export function generateGraphSchema(schemas: ReadonlyArray<unknown>) {
+  const nodes = schemas.flatMap((schema) => {
+    const node = schema as Record<string, unknown>;
+    if (Array.isArray(node["@graph"])) return node["@graph"] as Record<string, unknown>[];
+    const withoutContext = { ...node };
+    delete withoutContext["@context"];
+    return [withoutContext];
+  });
+
+  return { "@context": "https://schema.org", "@graph": nodes };
 }
 
 export function generateFaqSchema(items: ReadonlyArray<{ question: string; answer: string }>) {

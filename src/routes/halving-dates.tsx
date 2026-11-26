@@ -14,15 +14,20 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { generatePageHead, generateSpeakableSchema, generateWebPageSchema } from "@/lib/site";
+import {
+  generateGraphSchema,
+  generatePageHead,
+  generateSpeakableSchema,
+  generateWebPageSchema,
+  SITE_URL,
+} from "@/lib/site";
 import { buildHalvingCycles } from "@/lib/halvings";
 import { CALENDAR_PATH } from "@/lib/halving-calendar";
 import { estimateFromHalvingInfo, estimateHalvingInfo } from "@/lib/btc.functions";
 import { halvingQuery, simulatorQuery } from "@/lib/queries";
 
 const PATH = "/halving-dates";
-const TITLE =
-  "Bitcoin Halving Dates 2012–2028 | Countdown, Schedule & BTC500 Buy/Sell Windows";
+const TITLE = "Bitcoin Halving Dates 2012–2028 | Countdown, Schedule & BTC500 Buy/Sell Windows";
 const DESCRIPTION =
   "Every Bitcoin halving date from 2012 to 2028 with block heights, block rewards and BTC price. The next halving is estimated for April 2028 at block 1,050,000. Buy 500 days before, sell 500 days after — see historical returns for each cycle.";
 
@@ -62,14 +67,61 @@ const FAQ: { q: string; a: string }[] = [
   },
 ];
 
-const faqSchema = {
+/** Live values used by the two FAQ answers that quote the current estimate. */
+interface FaqLiveDates {
+  buyDate: string;
+  halvingDate: string;
+  sellDate: string;
+  block: number;
+}
+
+/** One source for the visible answer and its FAQPage `acceptedAnswer.text`. */
+function faqAnswerText(item: { q: string; a: string }, live?: FaqLiveDates): string {
+  if (!live) return item.a;
+
+  const liveNote =
+    item.q === "When is 500 days before the next Bitcoin halving?"
+      ? `Right now that is ${live.buyDate} (estimated), 500 days before the estimated halving on ${live.halvingDate}. The matching sell date is ${live.sellDate}.`
+      : item.q === "When is the next Bitcoin halving?"
+        ? `The current estimate is ${live.halvingDate} at block ${live.block.toLocaleString()}.`
+        : null;
+
+  return liveNote ? `${item.a} ${liveNote}` : item.a;
+}
+
+function buildFaqSchema(live?: FaqLiveDates) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: FAQ.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: faqAnswerText(item, live) },
+    })),
+  };
+}
+
+/**
+ * Describes the schedule table as a dataset; it does not replace table rows.
+ * /about states no licence for the site's own data, so no `license` is emitted.
+ */
+const halvingDatesDatasetSchema = {
   "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: FAQ.map((item) => ({
-    "@type": "Question",
-    name: item.q,
-    acceptedAnswer: { "@type": "Answer", text: item.a },
-  })),
+  "@type": "Dataset",
+  name: "Bitcoin Halving Dates",
+  description: DESCRIPTION,
+  url: `${SITE_URL}${PATH}`,
+  creator: { "@id": `${SITE_URL}/#organization` },
+  publisher: { "@id": `${SITE_URL}/#organization` },
+  temporalCoverage: "2012/2028",
+  variableMeasured: [
+    { "@type": "PropertyValue", name: "Halving date" },
+    { "@type": "PropertyValue", name: "Block height" },
+    { "@type": "PropertyValue", name: "Block reward" },
+    { "@type": "PropertyValue", name: "BTC500 buy date" },
+    { "@type": "PropertyValue", name: "BTC500 sell date" },
+  ],
+  isAccessibleForFree: true,
 };
 
 const halvingDatesSchema = generateWebPageSchema({
@@ -90,8 +142,21 @@ export const Route = createFileRoute("/halving-dates")({
     // HTML so crawlers see the actual cycle returns (not "—" placeholders).
     // The halving snapshot is seeded by the root loader (live tip height).
     await Promise.allSettled([context.queryClient.ensureQueryData(simulatorQuery)]);
+
+    // The FAQ schema and the visible FAQ must quote the same live estimate.
+    const halving = context.queryClient.getQueryData(halvingQuery.queryKey);
+    if (!halving) return null;
+    const schedule = buildHalvingCycles(Date.now(), estimateFromHalvingInfo(halving));
+    const nextCycle =
+      schedule.find((cycle) => cycle.dateKind === "estimated") ?? schedule[schedule.length - 1]!;
+    return {
+      buyDate: formatDate(nextCycle.tMinus500),
+      halvingDate: formatDate(nextCycle.date),
+      sellDate: formatDate(nextCycle.tPlus500),
+      block: nextCycle.block,
+    } satisfies FaqLiveDates;
   },
-  head: () =>
+  head: (ctx) =>
     generatePageHead({
       path: PATH,
       title: TITLE,
@@ -105,14 +170,15 @@ export const Route = createFileRoute("/halving-dates")({
       twitterTitle: "Bitcoin Halving Dates — Complete Schedule 2012–2028",
       twitterDescription:
         "Every Bitcoin halving date, block height, block reward and the BTC500 buy/sell windows.",
-      schema: [
+      schema: generateGraphSchema([
         halvingDatesSchema,
-        faqSchema,
+        halvingDatesDatasetSchema,
+        buildFaqSchema((ctx.loaderData as FaqLiveDates | null | undefined) ?? undefined),
         generateSpeakableSchema({
           path: PATH,
           cssSelectors: [".lead", "#answer", "#buy-date-answer"],
         }),
-      ],
+      ]),
       publishedTime: "2026-08-15",
       modifiedTime: "2026-10-22",
     }),
@@ -171,6 +237,7 @@ function SectionHeading({ id, children }: { id?: string; children: ReactNode }) 
 function HalvingDates() {
   const halvingRes = useQuery(halvingQuery);
   const simulatorRes = useQuery(simulatorQuery);
+  const faqLive = Route.useLoaderData() as FaqLiveDates | null | undefined;
 
   const info = halvingRes.data ?? estimateHalvingInfo();
   const schedule = buildHalvingCycles(Date.now(), estimateFromHalvingInfo(info));
@@ -521,23 +588,14 @@ function HalvingDates() {
             </SectionHeading>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
-            {FAQ.map((item) => {
-              const liveNote =
-                item.q === "When is 500 days before the next Bitcoin halving?"
-                  ? `Right now that is ${formatDate(nextCycle.tMinus500)} (estimated), 500 days before the estimated halving on ${formatDate(nextCycle.date)}. The matching sell date is ${formatDate(nextCycle.tPlus500)}.`
-                  : item.q === "When is the next Bitcoin halving?"
-                    ? `The current estimate is ${formatDate(nextCycle.date)} at block ${nextCycle.block.toLocaleString()}.`
-                    : null;
-              return (
-                <div key={item.q}>
-                  <h3 className="font-semibold text-foreground">{item.q}</h3>
-                  <p className="mt-1 text-muted-foreground">
-                    {item.a}
-                    {liveNote ? ` ${liveNote}` : ""}
-                  </p>
-                </div>
-              );
-            })}
+            {FAQ.map((item) => (
+              <div key={item.q}>
+                <h3 className="font-semibold text-foreground">{item.q}</h3>
+                <p className="mt-1 text-muted-foreground">
+                  {faqAnswerText(item, faqLive ?? undefined)}
+                </p>
+              </div>
+            ))}
           </CardContent>
         </Card>
 
