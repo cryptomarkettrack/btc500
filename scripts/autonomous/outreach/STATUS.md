@@ -948,3 +948,47 @@ owner-asks file is unchanged and remains due 2026-12-02. No restatement or secon
 window 2026-11-18 → 11-24, which starts before the handover and cannot credit the ask.
 The first fair window (2026-11-24 → 11-30) is not available until after 2026-11-30;
 no earlier window is credited. No non-github X-session effect is claimed today.
+
+## 2026-11-26 — results review: the launchd route does not exist; closed unexecutable
+
+**Channel check, not ledger check.** `x-poster-plist-reload-1123` has been carried
+forward since 2026-11-23 as the only live ask. Read against the machine today:
+
+| check | reading (2026-11-26) |
+| --- | --- |
+| `~/Library/LaunchAgents/net.btc500.x-post-{am,md,pm}.plist` | **all three absent** — `ls -la ~/Library/LaunchAgents/` lists only Google updater/keystone and `da.smisul.sendpostbot.plist` |
+| `find ~/Library/LaunchAgents /Library/LaunchAgents -iname '*btc500*'` | **empty** |
+| `launchctl list | grep -i btc500` | **empty** — no job is loaded |
+| `~/.local/state/btc500-growth/x/posts.json` | ends 2026-11-04, last entries `ok: false` (`agent-desktop … --headed`, "compose box not cleared") |
+| `/Users/philipkasapov/.local/bin/browse` | exists (so the old PATH defect diagnosis was real, but moot) |
+
+The issued one-liner uses `PlistBuddy -c "Set …" "$f"` on those three paths. Editing
+files that do not exist cannot reload a job that is not loaded: the instruction is
+unexecutable, and its failure would be indistinguishable from the owner ignoring it
+(exactly the defect sections 10(a) and 10(c) were written for). This is handover #3
+on the launchd route (11-19, 11-21, 11-23) and the narrowed version fails on a
+**missing route**, not on willingness. **`x-poster-plist-reload-1123` is closed
+`unexecutable`, not restated a fourth time, and its 2026-12-02 due date is void.**
+The goal `externalReferringDomains > 0` does not move.
+
+**Replacement ask, from the only section-10(a)-valid channel left: `lopp-paper-buy-line-1129`**
+(channel `github`, due 2026-11-29). Route verified today rather than assumed:
+
+- `https://www.lopp.net/bitcoin-information/trading.html` → HTTP 200, 21,536 bytes;
+  existing BTC500 anchor at **line 107**, `rel="noopener"`, **0 `rel="nofollow"`**.
+- `GET /repos/jlopp/lopp.net` → pushed **2026-11-22T18:32:49Z**, 252 stars,
+  `archived: false`, issues open.
+- Outside contributions merged inside 14 days: **#1275** merged 2026-11-19,
+  **#1274** merged 2026-11-15, **#1269** merged 2026-11-11. Our own **#1267** was
+  sent 2026-11-06 and merged 2026-11-07T20:20:30Z — 2 sends, 2 accepted, on this repo.
+- Instruction: one page, one paste, one button (accept prefilled title/message).
+  Verbatim text is in `review-latest.json → owner_asks[0].content`. Payload is the
+  29 Nov 2026 $50,000 paper-buy entry, the only dated fact the site owns.
+- Measure: GA4 referral sessions from `lopp.net` in the first 7d window starting
+  on or after **2026-11-29**, with user count and landings on `/paper-buy`.
+  No earlier window is credited.
+
+**Ask state after this entry: 14 prior handovers, 4 sends, 0 live unsent asks from
+the old ledger; 1 new live ask (`lopp-paper-buy-line-1129`).** This is not a fresh
+destination invented to look busy — it is the only channel the ledger proves this
+owner can finish in two steps, on a page verified open today.

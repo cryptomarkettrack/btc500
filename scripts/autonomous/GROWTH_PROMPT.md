@@ -916,6 +916,34 @@ Binding from 2026-11-25:
   "fix" indexation — page-quality causes were excluded by measurement on
   2026-11-10.
 
+### 2026-11-26 (this review): 2026-11-28 is a read, not an action; dead routes are closed
+
+Two rules collided and a cycle hitting 2026-11-28 would have broken whichever it
+picked. The 2026-11-09 section orders "name a second destination" if no post-merge
+crawl exists by 2026-11-28; the 2026-11-25 section forbids a second destination
+until the 2026-11-29 `/paper-buy` entry line is read on 2026-12-07. Both were
+written before the answer existed. The authority hypothesis was already falsified
+on 2026-11-16 (one crawl, 48s after our own Request Indexing, coverage unchanged)
+and again on 2026-11-25 (`/halving-spacing`: 0 crawls, 0 external landings, one
+github.com self-landing). Binding:
+
+- **On 2026-11-28 no cycle names a second destination and no cycle re-runs the
+  falsification.** Read the date, record that it is already decided, and continue
+  the freeze. The only unread test is the 29 Nov entry line on 2026-12-07.
+- **A route that is proven absent is closed, not restated.** The last "live" owner
+  ask, `x-poster-plist-reload-1123`, was carried forward on 2026-11-23, 11-25 and
+  11-26 while its three `net.btc500.x-post-*.plist` files do not exist,
+  `launchctl list` has no btc500 job and `posts.json` ends 2026-11-04 with
+  `ok: false`. An instruction that edits files which are not there fails the same
+  way a dead email address does (§§10(a), 10(c)). It is recorded `unexecutable` in
+  `outreach/STATUS.md` and its 2026-12-02 date is void; the goal
+  `externalReferringDomains > 0` never changes to make the channel look alive.
+- **When a channel dies, the reviewer issues one ask on a channel §10(a) allows**
+  (a route verified on the day of issue, or one the ledger proves this owner has
+  used). Today that is GitHub: `lopp-paper-buy-line-1129`, one page, one paste, one
+  button, verified HTTP 200 / 0 nofollow / outside PR #1275 merged 2026-11-19. A
+  cycle prepares no second destination while it is unsent.
+
 ### Order of work — never skip ahead
 
 1. `preflight.json` notes (site down, stale archive, overdue last run).

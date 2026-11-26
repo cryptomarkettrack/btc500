@@ -1,124 +1,127 @@
 {
   "schema": 1,
-  "generated": "2026-11-25",
+  "generated": "2026-11-26",
   "mode": "daily",
-  "window": { "start": "2026-11-18", "end": "2026-11-25" },
+  "window": { "start": "2026-11-19", "end": "2026-11-26" },
   "verdict": "failing",
   "signals": [
     {
       "id": "indexation",
       "state": "stalled",
-      "note": "1/22 indexed on the 2026-11-25 inspection — unchanged for 34 daily readings (2026-11-11 → 11-25); 18 crawled-not-indexed, 3 unknown to Google."
+      "note": "1/22 for the 35th consecutive daily reading (2026-11-11 -> 11-26): 18 crawled-not-indexed, 3 unknown to Google, only '/' indexed. Baseline was 6/33 on 2026-10-22; the site has never regained a page."
     },
     {
       "id": "bing-indexation",
       "state": "flat",
-      "note": "0/22 indexed on 2026-11-25 (19 crawled-not-indexed, 3 unknown); surface closed as tested on 2026-11-18, target kept only to keep the 0 visible."
+      "note": "0/22 indexed in Bing (20 crawled-not-indexed, 2 unknown); '/' crawled 2026-11-26T00:35:32Z and declined. No movement since the 2026-11-12 baseline of 0/21."
     },
     {
       "id": "non-brand-clicks",
       "state": "stalled",
-      "note": "0 non-brand clicks in the 7d window 2026-11-16 → 11-22 and 0 in all 34 readings since 2026-10-22 — never once in the recorded history."
+      "note": "0 non-brand clicks in all 35 readings (2026-10-22 -> 11-26). In the 7d window 2026-11-17 -> 11-23 the only non-brand row is 'bitcoin 500' at 0 clicks / 1 impression / position 42."
+    },
+    {
+      "id": "positions4to20",
+      "state": "stalled",
+      "note": "0 queries in positions 4-20 in the 7d window 2026-11-17 -> 11-23 (floor: query rows are anonymised). Nothing sits in the band a title or snippet change could move."
     },
     {
       "id": "impressions",
       "state": "green",
-      "note": "17 impressions in 7d 2026-11-16 → 11-22, up from 11 on 2026-11-11, but only 1 is non-brand ('bitcoin 500' at position 42); 7 belong to the brand query 'btc500'."
+      "note": "17 impressions in 7d 2026-11-17 -> 11-23, up from 13 on 2026-11-12, but 9 of the 17 are the brand query 'btc500' and only 1 is non-brand (@42). The rise is brand, not discovery."
     },
     {
       "id": "sessions",
       "state": "green",
-      "note": "148 sessions / 58 users in GA4 7d 2026-11-18 → 11-24, up from 77 sessions on 2026-11-11; 99 of the 148 are Direct."
+      "note": "148 sessions / 58 users in 7d 2026-11-18 -> 11-24, up from 90 sessions on 2026-11-12; 99 are Direct and 8 Organic Search. This is returning/self traffic, not new search demand."
     },
     {
       "id": "referral-sessions",
       "state": "green",
-      "note": "13 referral sessions but 12 are github.com (this repository, §10(b)) and 1 is bitcointalk.org — one non-github session from the same single forum user for a seventh window; not growth, and not allowed to satisfy mayClaimImproving."
+      "note": "13 referral sessions: github.com 12 (this repository and the owner's browser - self, per section 10(b)) + bitcointalk.org 1 (the same single forum user for a seventh window). Just 1 non-github session; not growth."
     },
     {
       "id": "ask-effect",
       "state": "flat",
-      "note": "0 credited: the ask handed over 2026-11-24 cannot be credited until a GA4 7d window starts on or after 2026-11-24; the current window 2026-11-18 → 11-24 starts before the handover."
+      "note": "0 credited. The latest GA4 window 2026-11-18 -> 11-24 starts before the 2026-11-23 handover; the first fair window starts on or after 2026-11-25 and is not yet available."
     },
     {
       "id": "deploy-health",
       "state": "regressed",
-      "note": "2 failed runs in 7d 2026-11-18 → 11-25 (site-down, validation-failed) — the one signal that mechanically blocks mayClaimImproving."
+      "note": "2 failed runs in 7d: site-down 2026-11-20 (the attempt log shows host DNS ENOTFOUND opencode.ai, not a site outage) and validation-failed 2026-11-22. This single regressed signal is the only reason mayClaimImproving is false."
     },
     {
       "id": "cycle-yield",
       "state": "green",
-      "note": "7 runs, 5 shipped, 2 failures in 7d; the 5 shipped cycles produced 0 new indexed pages, 0 non-brand clicks and no new external audience."
+      "note": "5 cycles shipped in 7d 2026-11-19 -> 11-26 with 3 green outcome signals, yet 0 new indexed pages and 0 non-brand clicks - activity, not outcome."
     },
     {
       "id": "data-freshness",
       "state": "green",
-      "note": "All five reports fetched within 36h of 2026-11-25T07:33Z; no stale or missing source."
+      "note": "All 5 source reports fetched within 24.1 hours; measurement data is fresh. The blocker is the regressed deploy-health process signal, not staleness."
     }
   ],
   "why": [
-    "Indexation is stuck at 1/22 for 34 readings because both engines crawl and decline: Google holds 18 of 22 URLs as 'Crawled - currently not indexed' and Bing has 0/22 with '/' crawled 2026-11-24; every in-repo lever (contraction, titles, Request Indexing, IndexNow, one followed link) has been executed and failed.",
-    "The 2026-11-25 kill test falsified the last hypothesis: /halving-spacing shipped 2026-11-17 with one crawlable link and is still 'URL is unknown to Google', lastCrawl never, with 1 landing from github.com (self) and 0 external — one followed link (lopp.net#1267, merged 2026-11-07) produced no crawl of a new page and no stranger landing on one.",
-    "Non-brand clicks are 0 in 34 readings because no URL answering a query with demand is served: the only non-brand impression is 'bitcoin 500' at position 42 and positions4to20 is 0 (a floor — query rows are anonymised).",
-    "The 13 'referral sessions' are not growth: 12 are github.com (this repository and the owner's own browser) and 1 is bitcointalk.org from the same single forum user for the seventh window; §10(b) forbids letting this satisfy mayClaimImproving even though the runner's arithmetic scores it green.",
-    "deploy-health regressed with 2 failed runs in 7d (site-down was a DNS ENOTFOUND, validation-failed was local checks), and this single process signal is what mechanically blocks mayClaimImproving — the hardening code landed in 80e2561 but shipped with no test and is owner-only machinery that neither the cycle nor this review may edit.",
-    "Input is not output: 7 runs shipped 5 cycles in 7d and moved none of the outcome numbers — 0 new indexed pages, 0 non-brand clicks, and one external referring domain that is the same single user."
+    "Stage 'crawled but declined' in both engines: Google has crawled 18 of 22 URLs and keeps 1 ('/', 35th reading at 1/22); Bing crawled '/' at 2026-11-26T00:35:32Z and keeps 0/22. Page-quality causes were excluded by measurement on 2026-11-10 (200, 3,007 words, self-canonical, robots/indexing ALLOWED, linked from '/', not a duplicate), so this is a site-level authority judgment on a domain three months old, not a page defect. Falsifiable test: the one followed external link (jlopp/lopp.net#1267, merged 2026-11-07T20:20:30Z) produced no independent recrawl of a new page and no stranger landing on one - recorded 'authority hypothesis falsified for one followed link' on 2026-11-16 and again on 2026-11-25. The only unread test left is the 2026-11-29 /paper-buy entry line, read on 2026-12-07.",
+    "Stage 'indexed but no impressions / impressions but no clicks': only '/' is served; 9 of 17 impressions are the brand query 'btc500' @2.7, while the sole non-brand query 'bitcoin 500' has 1 impression @42 and positions4to20 is 0. No URL is served for a query with demand, so a non-brand click cannot occur. Falsifiable test already on file: the 2026-11-19 title/meta change on '/' must produce a non-brand impression above position 30 by 2026-12-02, or title and meta work stops permanently.",
+    "deploy-health is machinery, not the site: 2026-11-20 was recorded site-down although the attempt log shows getaddrinfo ENOTFOUND opencode.ai on this host, and 2026-11-22 was a local validation failure; both count as deploy regressions and are the sole blocker of mayClaimImproving. Falsifiable test: the owner runs the hardening test that feeds a DNS failure then HTTP 200 and a review file dated yesterday, with both passing, by 2026-11-28.",
+    "Everything flat at once means distribution, not content, is the bottleneck: 5 shipped cycles in 7d produced 0 new indexed pages and 0 non-brand clicks. Every owner-only route the ledger tried is failed or unexecutable - 3 GitHub listings, 4 newsroom email forms, Facebook - and the last 'live' one is not real: 2026-11-26 verified that the three net.btc500.x-post-{am,md,pm}.plist files do not exist in ~/Library/LaunchAgents, launchctl list shows no btc500 job, and posts.json ends 2026-11-04 with ok:false entries. Falsifiable test: close that route with the channel evidence, issue one section-10(a)-verified GitHub ask, and read lopp.net referrals in the window starting 2026-11-29."
   ],
   "questions": [
-    "What action can move indexed off 1/22 now that contraction, titles, Request Indexing, IndexNow and one followed external link have all been executed and the 2026-11-25 kill test found no crawl of the new page?",
-    "Why do 5 shipped cycles in 7d produce 0 indexed pages and 0 non-brand clicks — is the backlog still choosing work that cannot be measured?",
-    "If a second destination is named after the falsification, what evidence says its single link will do what lopp.net's did not?"
+    "Five cycles shipped in 7 days produced 0 indexed pages and 0 non-brand clicks - why does the cycle's one permitted action remain an X reply when the 29 Nov paper-buy entry line is two days away?",
+    "The only 'live' owner ask pointed at three launchd plist files that do not exist on disk - how many earlier asks were handed over on routes nobody re-verified before promising them?",
+    "Both engines crawl and decline. If one followed link and one new page have both been falsified, what evidence would make us stop treating 'one more link or one more page' as a lever?"
   ],
   "mandates": [
     {
       "id": "deploy-health-runner-retry",
-      "action": "Owner: finish and test the growth/review runner hardening started in commit 80e2561. Confirm the three-attempt health-check backoff records a DNS/local-network failure as host-network rather than site-down, and that run-review-cycle.sh refuses to write review-latest.json unless generated equals date +%F. Add a test that feeds 000 then 200 and a test that submits a review file dated yesterday; show both passing.",
-      "because": "2 failed runs in 7d: site-down on 2026-11-20 was actually DNS ENOTFOUND opencode.ai, and validation-failed on 2026-11-22 was local checks. This single regressed signal is what blocks mayClaimImproving. Code half landed in 80e2561 but no test file; runner files may not be edited by the cycle or this review.",
+      "action": "Owner: finish and test the growth/review runner hardening started in commit 80e2561. Show a test feeding a DNS/local-network failure then HTTP 200 recording host-network rather than site-down, and a test submitting a review-latest.json dated yesterday being refused. Both must pass. The reviewer and cycle may not edit run-*.sh, install-schedule.sh or .opencode/agents/*.",
+      "because": "2 failed runs in 7d: site-down 2026-11-20 was host DNS ENOTFOUND opencode.ai, and validation-failed 2026-11-22 was local checks. This single regressed process signal is the only reason rule.mayClaimImproving is false; the code half landed in 80e2561 but no test file did. Runner files are owner-only machinery.",
       "due": "2026-11-28",
       "owner": "owner"
     },
     {
       "id": "indexation-stop-page-work",
-      "action": "Keep the freeze: ship no new URL, article, sitemap row, title, meta, snippet, section, internal link or redirect, and name no second destination. Spend the cycle only on measurement, the /paper-buy dated line and one external send; record the outcome in outreach/STATUS.md.",
-      "because": "1/22 indexed for 34 consecutive daily readings (2026-11-11 → 11-25); the 2026-11-25 kill test found /halving-spacing still 'URL is unknown to Google' with 0 external landings and its only click from this repo; both engines crawl and decline (Bing 0/22). All in-repo levers have been executed and failed.",
+      "action": "Keep the freeze: ship no new URL, article, sitemap row, title, meta, snippet, section, internal link or redirect and name no second destination. Spend the cycle on measurement, the 29 Nov /paper-buy entry line and one external send; record the outcome in outreach/STATUS.md. On 2026-11-28 do not perform the old 'name a second destination' consequence - the falsification was already written on 2026-11-16 and 2026-11-25, so that date is a read, not an action.",
+      "because": "1/22 indexed in 35 consecutive daily readings (2026-11-11 -> 11-26), 0 non-brand clicks in 35, Bing 0/22. /halving-spacing has 0 crawls and 0 external landings; all in-repo levers were executed and failed, and page-quality causes were excluded on 2026-11-10.",
       "due": "2026-11-30",
       "owner": "cycle"
     },
     {
       "id": "buy-window-entry-demand-test",
-      "action": "Publish the dated entry line on /paper-buy at the 2026-11-29 open (entry date, entry price from that day's close, $50,000 notional, visible crawlable link above the fold on /) and read the result; if /paper-buy still has 0 non-brand impressions by 2026-12-07, record the demand hypothesis false and stop page work.",
-      "because": "0 non-brand clicks in 34 readings; /paper-buy is still 'URL is unknown to Google' with lastCrawl never; the only page tied to a searchable event. The 2026-11-23 target of 1 non-brand click in 7d missed.",
-      "due": "2026-11-28",
+      "action": "At the 2026-11-29 open publish the dated /paper-buy entry line (entry date and price from that day's close, $50,000 notional, crawlable link above the fold on '/') and read it. If /paper-buy still has 0 non-brand impressions by 2026-12-07, record the demand hypothesis false in BTC500_GROWTH.md and stop page work on it.",
+      "because": "0 non-brand clicks in 35 readings; /paper-buy is still 'URL is unknown to Google' with lastCrawl never; it is the only page tied to a searchable, dated event and the last unread test. The 2026-11-23 target of 1 non-brand click in 7d missed.",
+      "due": "2026-11-29",
       "owner": "cycle"
     },
     {
-      "id": "ask-effect-fair-window-1124",
-      "action": "When the first GA4 7d window starting on or after 2026-11-24 is available, read x.com/t.co/twitter.com sessions and users, record in outreach/STATUS.md whether the X-poster repair ask fired, and credit no earlier window.",
-      "because": "ask-effect is 0: the 2026-11-24 handover cannot be credited from the window 2026-11-18 → 11-24, which starts before it. 0 scheduled X posts in 33 days while the one hand-made 2026-11-16 post produced t.co 5 sessions / 3 users.",
-      "due": "2026-11-30",
+      "id": "ask-effect-fair-window-1129",
+      "action": "When the first GA4 7d window starting on or after 2026-11-29 is available, read x.com/t.co/twitter.com and lopp.net sessions and users, record in outreach/STATUS.md whether the 2026-11-26 lopp.net ask and the cycle's X sends fired, and credit no earlier window.",
+      "because": "ask-effect is 0: the current window 2026-11-18 -> 11-24 starts before the 2026-11-23 handover, and the last verified X send (2026-11-26) cannot be credited from a window that ends before it. 0 scheduled X posts since 2026-11-04 while one hand-made post produced t.co 5 sessions / 3 users.",
+      "due": "2026-12-02",
       "owner": "cycle"
     }
   ],
   "targets": [
     {
       "metric": "indexed",
-      "current": "1/22 (inspection 2026-11-25: 18 crawled-not-indexed, 3 unknown; indexed=1 in all 34 daily readings 2026-11-11 → 11-25)",
+      "current": "1/22 in all 35 daily readings 2026-11-11 -> 11-26 (18 crawled-not-indexed, 3 unknown); baseline 6/33 on 2026-10-22",
       "target": "2/22",
       "by": "2026-11-28",
       "status": "miss-so-far",
-      "note": "Re-stated, thirteenth week. 2/22 is the smallest proof that any action does something. The 2026-11-25 kill test closed the last lever: no in-repo action and one followed link cannot move it. If 2026-11-28 arrives at 1/22, move the target to 2026-12-31 with the reason 'no lever remains; only a second destination with a measured audience could move it, and the falsification does not justify naming one' — indexation stops being a weekly goal."
+      "note": "Re-stated, fourteenth week. 2/22 is the smallest proof any action does something. If 2026-11-28 arrives at 1/22, move the target to 2026-12-31 with the reason 'no in-repo lever remains; only another followed destination with a measured audience could move it, and the falsifications do not justify proposing one' - indexation stops being a weekly goal."
     },
     {
       "metric": "nonBrandClicks",
-      "current": "0 in the 7d window 2026-11-16 → 11-22; 0 in all 34 readings (2026-10-22 → 2026-11-25)",
+      "current": "0 in the 7d window 2026-11-17 -> 11-23; 0 in all 35 readings 2026-10-22 -> 11-26",
       "target": "1 in 7d",
       "by": "2026-12-31",
       "status": "miss-so-far",
-      "note": "Re-stated; no URL answering a non-brand query is served. The 2026-11-29 /paper-buy entry line is the only dated test left."
+      "note": "Re-stated; no URL answering a non-brand query is served. The 2026-11-29 /paper-buy entry line is the only dated test left, read on 2026-12-07."
     },
     {
       "metric": "positions4to20",
-      "current": "0 queries in the 7d window 2026-11-16 → 11-22 (floor: query rows are anonymised); only non-brand row 'bitcoin 500' 0/1 @42; brand 'btc500' 1/7 @2.9",
+      "current": "0 queries in the 7d window 2026-11-17 -> 11-23 (floor: query rows anonymised); only non-brand row 'bitcoin 500' 0/1 @42",
       "target": "1",
       "by": "2026-11-30",
       "status": "miss-so-far",
@@ -126,23 +129,23 @@
     },
     {
       "metric": "referralSessions",
-      "current": "13 in 7d 2026-11-18 → 11-24: github.com 12 (self, §10(b)) + bitcointalk.org 1 (the same single forum user); 1 non-github session",
-      "target": "1 in 7d from a non-github referrer",
-      "by": "2026-12-01",
-      "status": "met",
-      "note": "Met only on the same bitcointalk.org user for a seventh window — not growth, and not allowed to satisfy mayClaimImproving."
+      "current": "13 in 7d 2026-11-18 -> 11-24: github.com 12 (self, section 10(b)) + bitcointalk.org 1 (the same single forum user, seventh window)",
+      "target": "1 in 7d from a non-github referrer that is not the bitcointalk.org user",
+      "by": "2026-12-02",
+      "status": "miss-so-far",
+      "note": "Tightened: the same bitcointalk.org user for seven windows is not growth and cannot satisfy mayClaimImproving. The lopp.net ask issued today is the candidate."
     },
     {
       "metric": "asksExecuted",
-      "current": "4 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk OP 2026-11-12, reply 2026-11-16); 18 handovers; 1 live ask (X-poster reload, due 2026-12-02)",
+      "current": "4 with a send date (bitcoin-only#1009 2026-10-27, lopp.net#1267 2026-11-06, BitcoinTalk OP 2026-11-12, reply 2026-11-16); 0 scheduled X posts since 2026-11-04; 1 new GitHub ask issued 2026-11-26",
       "target": "5 with a send date, never more than 2 open asks",
       "by": "2026-11-29",
       "status": "miss-so-far",
-      "note": "Still 4 sends in 29 days; the X-poster reload is the one live hand-over and its effect is not yet creditable."
+      "note": "Still 4 sends in 30 days. The launchd X-poster route was closed unexecutable today: its three plist files do not exist."
     },
     {
       "metric": "bingIndexed",
-      "current": "0/22 (19 crawled-not-indexed, 3 unknown); '/' crawled 2026-11-24 and declined",
+      "current": "0/22 (20 crawled-not-indexed, 2 unknown); '/' crawled 2026-11-26T00:35:32Z and declined",
       "target": "1/22",
       "by": "2026-12-01",
       "status": "miss-so-far",
@@ -150,44 +153,46 @@
     },
     {
       "metric": "paperRecordShips",
-      "current": "/paper-buy 200, $50,000 notional, 'URL is unknown to Google' (lastCrawl never); entry line awaits the 2026-11-29 close",
-      "target": "a dated entry line at the 2026-11-29 open, plus 1 crawl or 1 referral session",
+      "current": "/paper-buy returns 200, $50,000 notional, 'URL is unknown to Google' (lastCrawl never); entry line awaits the 2026-11-29 close",
+      "target": "a dated entry line at the 2026-11-29 open, plus 1 crawl or 1 referral session to /paper-buy",
       "by": "2026-11-29",
       "status": "miss-so-far",
-      "note": "The buy date is 4 days away and this is the only page that survives the 2026-11-25 falsification."
-    },
-    {
-      "metric": "spacingPageOutcome",
-      "current": "0 crawl, 0 external landing, 1 github.com (self) landing — kill test executed 2026-11-25; authority hypothesis falsified for one followed link",
-      "target": "1 crawl or 1 external landing",
-      "by": "2026-11-25",
-      "status": "miss-so-far",
-      "note": "The kill test due 2026-11-25 ran and decided against the page; no further page is proposed until indexed moves off 1/22. Mandate spacing-kill-test-1125 is therefore dropped as executed, not forgotten."
+      "note": "The buy date is 3 days away and this is the only page that survives the 2026-11-25 falsification."
     },
     {
       "metric": "validVerdictDays",
       "current": "24 of 30 review days valid since 2026-10-25; review-history.csv runner_check=fail on 2026-10-26, 10-31, 11-08, 11-15, 11-20 and 11-22; no deep review since 2026-11-01",
-      "target": "every review day 2026-11-25 → 2026-12-01 valid, including the Sunday deep run on 2026-11-29",
-      "by": "2026-12-01",
+      "target": "every review day 2026-11-26 -> 2026-12-02 valid, including the Sunday deep run on 2026-11-29",
+      "by": "2026-12-02",
       "status": "miss-so-far",
       "note": "The next deep day is 2026-11-29; the runner's freshness guard is part of the owner mandate due 2026-11-28."
+    },
+    {
+      "metric": "askEffect",
+      "current": "0 credited; GA4 window 2026-11-18 -> 11-24 starts before the 2026-11-23 handover",
+      "target": "1 credited referral session in the first 7d window starting on or after 2026-11-29",
+      "by": "2026-12-02",
+      "status": "miss-so-far",
+      "note": "Too early, with a date: the first fair window is not available until after 2026-11-30. Mandate ask-effect-fair-window-1129 owns the read."
     }
   ],
   "owner_asks": [
     {
-      "id": "x-poster-plist-reload-1123",
-      "channel": "other",
-      "action": "Live ask, carried forward (not lapsed, due 2026-12-02), one paste and one return. Open Terminal, paste the line in content, press return — it reloads the three scheduled X poster launchd jobs with the corrected node path and PATH. Then tell the cycle so it can read posts.json.",
-      "content": "for s in am md pm; do l=net.btc500.x-post-$s; f=$HOME/Library/LaunchAgents/$l.plist; launchctl bootout gui/$(id -u)/$l 2>/dev/null; /usr/libexec/PlistBuddy -c \"Set :ProgramArguments:2 /usr/local/bin/node\" -c \"Set :EnvironmentVariables:PATH /usr/local/bin:/opt/homebrew/bin:/Users/philipkasapov/.local/bin:/usr/bin:/bin:/usr/sbin:/sbin\" \"$f\"; launchctl bootstrap gui/$(id -u) \"$f\"; done",
-      "url": "https://btc500.net/bitcoin-500-day-cycle",
-      "because": "0 scheduled X posts in 33 days: all three plists run /bin/bash on post-daily.mjs (launchd-pm.err.log: 'line 174: unexpected EOF while looking for matching') and their PATH omits /Users/philipkasapov/.local/bin, where browse lives; the one hand-made 2026-11-16 post produced t.co 5 sessions / 3 users. With GitHub listings, email forms and Facebook all closed unexecutable, this is the only owner-only channel left with a measured session yield.",
-      "measure": "posts.json gains an entry with ok:true within 24h of the next 09:00/14:00/17:00 slot, and GA4 sessions from x.com/t.co/twitter.com in the first 7d window starting on or after 2026-11-24",
-      "referrers": ["x.com", "t.co", "twitter.com"],
-      "by": "2026-12-02"
+      "id": "lopp-paper-buy-line-1129",
+      "channel": "github",
+      "action": "One page, one paste, one button: open https://github.com/jlopp/lopp.net/edit/master/bitcoin-information/trading.html, paste the line in content directly after the existing BTC500 line (file line 107 as fetched 2026-11-26), then press 'Propose changes' and accept the prefilled title and message. Do not open an issue and do not write anything else.",
+      "content": "<li><a href=\"https://btc500.net/paper-buy\" title=\"BTC500 paper buy\" target=\"_blank\" rel=\"noopener\">BTC500 public $50,000 paper buy</a> - live record, entry 29 Nov 2026 (T-500), exit T+500</li>",
+      "url": "https://btc500.net/paper-buy",
+      "because": "0 non-brand clicks in 35 readings and 1/22 indexed for 35; the 3 green outcome signals are brand impressions, Direct sessions and a github.com self-referral. The launchd X-poster ask was closed unexecutable today (no plist files exist), so this is the only section-10(a)-verified channel left: GitHub, ledger-proven 2 of 2 sends, and lopp.net verified today at HTTP 200 with 0 rel=nofollow, outside PR #1275 merged 2026-11-19 and our #1267 merged 2026-11-07. The payload is the 29 Nov buy-window record, the only dated fact this site owns.",
+      "measure": "GA4 referral sessions from lopp.net in the first 7d window starting on or after 2026-11-29, with user count and landings on /paper-buy; credit no earlier window.",
+      "referrers": ["lopp.net"],
+      "by": "2026-11-29"
     }
   ],
   "self_changes": [
-    "GROWTH_PROMPT.md — added a dated 2026-11-25 rule closing the 'one more link / one more page' strategy. It records that the 2026-11-25 kill test falsified the authority hypothesis for one followed link (/halving-spacing: 0 crawls, lastCrawl never, 1 github.com self-landing, 0 external landings) with indexed 1/22 in 34 readings and 0 non-brand clicks in 34, so the 2026-11-09 rule's 'name a second destination' consequence does not apply. Binding: no second destination, new URL or 'one more page' argument until the 2026-11-29 /paper-buy entry line is read on 2026-12-07; no new ask to GitHub listings, email forms or Facebook (all closed unexecutable); the only open owner ask is the launchd X-poster repair. Reason: 18 handovers / 4 sends in 29 days moved neither indexation nor non-brand clicks, and 5 shipped cycles in the last 7d moved neither."
+    "outreach/STATUS.md — closed the launchd X-poster owner ask as unexecutable with channel evidence verified 2026-11-26: the three net.btc500.x-post-{am,md,pm}.plist files do not exist in ~/Library/LaunchAgents, `launchctl list | grep -i btc500` is empty, and posts.json ends 2026-11-04 with ok:false entries. The one-line paste edits files that are not there, so its failure would be indistinguishable from indifference (sections 10(a) and 10(c)); the goal externalReferringDomains > 0 is unchanged. Recorded the replacement GitHub ask above.",
+    "outreach/STATUS.md — issued one section-10(a)-verified ask on jlopp/lopp.net for a second line pointing at /paper-buy. Route verified today, not assumed: trading.html HTTP 200 with the existing BTC500 anchor at line 107 and 0 rel=nofollow, repo pushed 2026-11-22, not archived, issues open, outside PR #1275 merged 2026-11-19, and our own #1267 sent 2026-11-06 and merged 2026-11-07. One page, one paste, one button, with the honest step count stated.",
+    "GROWTH_PROMPT.md — added the 2026-11-26 rule resolving the collision between the 2026-11-09 consequence 'name a second destination on 2026-11-28' and the 2026-11-25 rule 'no second destination until the 2026-11-29 paper-buy entry is read on 2026-12-07'. The authority hypothesis was already falsified on 2026-11-16 and again on 2026-11-25, so 2026-11-28 is a read, not an action: no cycle names a destination that day. When a channel dies on verified evidence, the reviewer closes it unexecutable and issues one ask on a section-10(a)-verified channel."
   ],
-  "next_review_focus": "Whether the 2026-11-29 /paper-buy entry line produced any crawl or non-brand impression by the 2026-12-07 reading, whether deploy-health still blocks mayClaimImproving, and whether the X-poster repair ask fired in a fair GA4 window."
+  "next_review_focus": "Whether the 2026-11-29 /paper-buy entry line produced a crawl or a non-github referral session, and whether the lopp.net buy-window line was opened - with 1/22 indexed and 0 non-brand clicks as the unchanged baseline."
 }
