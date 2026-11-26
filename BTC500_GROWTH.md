@@ -220,4 +220,6 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 
 **Checks:** `npm run typecheck`, `npm test` (306 pass), `npm run build`, `npm run sitemap:check`, scoped ESLint/Prettier all pass. Local runtime verified: homepage H1/countdown, article robots tag, sitemap absence, 7 landing sections, FAQ schema text parity, valid PNG.
 
-**Deployment blocker:** My `/is-now-the-buy-point` schema imports `generateGraphSchema` from `src/lib/site.ts`, which is still an uncommitted working-tree change. Do not push only the task files — commit that dependency (or coordinate with its owner) first, then deploy and verify `https://btc500.net/api/og`.
+**Deployment:** Pushed to `main` as `ffca15e` with owner approval (all working-tree changes committed together, so the `generateGraphSchema` dependency shipped). Vercel production deployment `dpl_548qhkmgZtKDHkd3ptgBFMKqFCzT` reached READY and is aliased to `btc500.net`. Verified live: homepage H1, `og:image`/`twitter:image` = `https://btc500.net/api/og`, `/api/og` returns a valid 1200×630 PNG showing "T-minus 2 days" and the $60,374 last close, `/articles/bitcoin-week-ahead` serves `noindex, follow` and is absent from the sitemap, `/is-now-the-buy-point` has all 7 sections plus the 4-question FAQPage graph, and `llms.txt` starts with the computed Live Signal block.
+
+**Measure after 7/28 days:** clicks on the two ranked 500-day queries, CTR on the homepage, indexing of `/is-now-the-buy-point`, and whether the dead article stops receiving impressions.
