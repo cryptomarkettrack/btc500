@@ -21,9 +21,10 @@ import { estimateFromHalvingInfo, estimateHalvingInfo } from "@/lib/btc.function
 import { halvingQuery, simulatorQuery } from "@/lib/queries";
 
 const PATH = "/halving-dates";
-const TITLE = "When Is the Next Bitcoin Halving? Dates 2012–2028 | BTC500";
+const TITLE =
+  "Bitcoin Halving Dates 2012–2028 | Countdown, Schedule & BTC500 Buy/Sell Windows";
 const DESCRIPTION =
-  "The next Bitcoin halving is estimated for April 2028 at block 1,050,000. Every halving date since 2012 with block heights, block rewards, BTC price at the halving and the BTC500 buy and sell windows.";
+  "Every Bitcoin halving date from 2012 to 2028 with block heights, block rewards and BTC price. The next halving is estimated for April 2028 at block 1,050,000. Buy 500 days before, sell 500 days after — see historical returns for each cycle.";
 
 /** Visible FAQ. The FAQPage schema below is generated from this same list. */
 const FAQ: { q: string; a: string }[] = [

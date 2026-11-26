@@ -241,11 +241,11 @@ export const articles: ArticleMeta[] = [
   {
     id: "bitcoin-week-ahead",
     slug: "bitcoin-week-ahead",
-    title: "Bitcoin This Week (Aug 24–31): Jackson Hole & PCE",
+    title: "Bitcoin Weekly Outlook — BTC500 Cycle Strategy",
     description:
-      "Week of Aug 24–31, 2026: Bitcoin near $77,000 after the 19–20 August breakout, Kansas City Fed’s Jackson Hole Economic Symposium (Aug 27–29), July Core PCE on Friday — plus the BTC500 buy window, then projected for Nov 30.",
+      "Weekly BTC500 cycle outlook: market events, ETF flows, and the fixed buy date (500 days before the halving). Updated each week with fresh context while the calendar rule stays unchanged.",
     keywords:
-      "Bitcoin this week August 24-31 2026, Bitcoin weekly outlook, Jackson Hole Economic Symposium Bitcoin, Kansas City Fed Jackson Hole, Bitcoin Core PCE, Bitcoin inflation data, Bitcoin ETF flows, Bitcoin 77000, Bitcoin breakout August 2026, Bitcoin week ahead, BTC500 cycle, Kevin Warsh Bitcoin, Bitcoin key events",
+      "Bitcoin weekly outlook, BTC500 cycle, Bitcoin strategy, halving cycle",
     date: "August 17, 2026",
     dateISO: "2026-08-17",
     dateModified: "August 24, 2026",

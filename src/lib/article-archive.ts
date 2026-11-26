@@ -12,7 +12,6 @@
  * When adding dated commentary, add the slug here at the same time.
  */
 export const ARCHIVED_ARTICLE_SLUGS = new Set<string>([
-  "bitcoin-week-ahead",
   "doctor-profit-bitcoin-october-2026",
   "bitcoin-80k-breakout",
   "is-the-bottom-in",
