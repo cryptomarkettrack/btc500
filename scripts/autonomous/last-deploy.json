@@ -1,17 +1,7 @@
 {
-  "generated": "2026-11-25",
-  "summary": "archive-only cycle: spacing-page kill test executed and authority hypothesis falsified in the growth log; 2026-11-25 paper-buy line, homepage countdown and sitemap confirmed live; no site change",
+  "generated": "2026-11-26",
+  "summary": "archive-only cycle: Thursday X post and one verified simulator-fact reply shipped; measurement reported; freeze and dated paper-buy line confirmed live; no site change",
   "checks": [
-    {
-      "path": "/paper-buy",
-      "contains": "2026-11-25 — Scheduled. $50,000 not deployed",
-      "status": 200
-    },
-    {
-      "path": "/paper-buy",
-      "contains": "Entry November 28, 2026 (T−500), 3 days away",
-      "status": 200
-    },
     {
       "path": "/",
       "contains": "28 November 2026",
@@ -20,6 +10,21 @@
     {
       "path": "/",
       "contains": "Follow the public $50,000 paper buy",
+      "status": 200
+    },
+    {
+      "path": "/paper-buy",
+      "contains": "2026-11-26 — Scheduled. $50,000 not deployed",
+      "status": 200
+    },
+    {
+      "path": "/paper-buy",
+      "contains": "Entry November 28, 2026 (T−500), 2 days away",
+      "status": 200
+    },
+    {
+      "path": "/paper-buy",
+      "contains": "Exit rule T+500 on August 24, 2029",
       "status": 200
     },
     {

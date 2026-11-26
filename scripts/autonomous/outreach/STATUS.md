@@ -924,3 +924,27 @@ a copy of the plist (`PlistBuddy` two `-c` commands → `plutil -lint` OK, argum
 steps and must sit on a route the ledger shows this owner uses — is the reason the
 surface shrank rather than grew: 14 of 18 handovers died on forms with three or more
 fields, and every send was one paste and one button.
+
+## 2026-11-26 — the cycle's one external send, and the ask verified against its channel
+
+**One external send executed by the cycle (mandate `indexation-stop-page-work`).** A
+reply was posted into @DivysQueen's "new Bitcoin clock" cycle top/bottom-calling thread
+(https://x.com/DivysQueen/status/2125643176052433301, 172 views at read) carrying the
+live simulator fact: all four completed T-500→T+500 windows finished higher, but every
+one first fell below its entry, median low −11.72% and worst −83.65% in 2012
+(`/data/500-day-cycles.json`, generated 2026-11-26T04:03:18Z). Reply
+https://x.com/btc500halving/status/2125802848801747131 was read back under the parent;
+the parent was liked (2 → 3, "Liked"). This is a channel this automation already holds,
+so it is cycle work, not a new owner ask. No second destination was named, and no page,
+title, meta or sitemap row changed.
+
+**Live ask `x-poster-plist-reload-1123` — still unsent, verified against the channel, not
+the ledger (2026-11-26 read).** `~/.local/state/btc500-growth/x/posts.json` ends at
+2026-11-04 with `ok: false` entries (`agent-desktop … --headed` failures); there is no
+entry with `ok: true` after the 2026-11-23 handover. The one-line Terminal paste in the
+owner-asks file is unchanged and remains due 2026-12-02. No restatement or second ask.
+
+**Mandate `ask-effect-fair-window-1124` — too early.** The latest GA4 7-day report is
+window 2026-11-18 → 11-24, which starts before the handover and cannot credit the ask.
+The first fair window (2026-11-24 → 11-30) is not available until after 2026-11-30;
+no earlier window is credited. No non-github X-session effect is claimed today.
