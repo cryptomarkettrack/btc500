@@ -276,3 +276,15 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 **Change (this commit):** Coinbase is now the first WebSocket provider, Kraken second, Binance third. A provider that refuses the handshake *or* opens but stays silent for 7 s is rotated past immediately, with a short exponential backoff across full cycles. Added a pure Kraken v2 ticker parser and tests. Total 315 tests pass; typecheck, build and scoped lint clean.
 
 **Verification:** committed as `af2e488` and pushed to `main`; Vercel deployment `dpl_AFtoBM8fz23LRWsqU6sWCZ2tX83S` reached READY and is aliased to `btc500.net`. Verified live: hero showed `live · Coinbase`, the P&L moved from −$114 to −$112 as the mark went $59,700 → $59,702, and `/paper-buy` showed `$59,705` with `Live spot · Coinbase stream`. A blocked Coinbase rotates to Kraken within ~7 s (open-but-silent) or ~1 s (handshake failure), then Binance. The server-polled price remains the last-resort fallback, so a browser with all three sockets blocked still shows a current (if slower) price and P&L.
+
+---
+
+## 2026-11-28 (follow-up 3) — no per-visitor price polling once the stream is live
+
+**Owner question:** Are prices coming from the frontend, and will 1,000 concurrent visitors blow up the server?
+
+**Answer:** SSR still seeds one price snapshot per isolate (30-second server cache + in-flight coalescing), and the halving/entry/history queries are cached for minutes to a day, so those are bounded by isolate count, not visitor count. After hydration the browser streams from the exchange directly. The remaining leak was the 1-minute `btcPriceQuery` poll continuing on every client even while the WebSocket was streaming.
+
+**Change (this commit):** `refetchInterval` on the live price query now reads a ref updated by the stream hook — polling stops as soon as a ticker frame arrives and resumes only during an outage. The final buy-point entry query no longer polls at all. Result: with a healthy stream, 1,000 visitors add no per-minute price RPCs to our server; they only open their own exchange sockets.
+
+**Checks:** typecheck, 315 tests, build and scoped lint pass. To verify after deploy: capture the homepage network for >60 s and confirm no repeating server-function price requests while the hero reads `live · Coinbase`.

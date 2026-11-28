@@ -58,11 +58,16 @@ const PhasePreviewModal = lazy(() =>
 
 export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
-  const priceRes = useQuery(btcPriceQuery);
   // The exchange ticker is opened by the visitor's browser, not proxied through
-  // the server: each tick re-marks the P&L locally. The polled price below is
-  // the seed and the fallback if the stream cannot connect.
+  // the server: each tick re-marks the P&L locally. Keep the server poll only
+  // while the stream is down, so 1,000 visitors don't produce 1,000 RPCs/minute.
+  const streamingRef = useRef(false);
+  const priceRes = useQuery({
+    ...btcPriceQuery,
+    refetchInterval: () => (streamingRef.current ? false : 60_000),
+  });
   const liveBtc = useLiveBtcPrice(priceRes.data?.price ?? null);
+  streamingRef.current = liveBtc.streaming;
   const btcPrice = liveBtc.price;
   const simulatorRes = useQuery(simulatorPreviewQuery);
   const signalRes = useQuery(signalPriceQuery);

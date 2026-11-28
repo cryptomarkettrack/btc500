@@ -69,10 +69,15 @@ function SectionHeading({ id, children }: { id?: string; children: React.ReactNo
 export function PaperBuyPage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const now = useNow(60_000);
-  const priceRes = useQuery(btcPriceQuery);
   // Browser-to-exchange ticker: the mark and P&L move on the client without a
-  // server round trip. The polled price is the seed and fallback only.
+  // server round trip. Poll the server only while the stream is unavailable.
+  const streamingRef = useRef(false);
+  const priceRes = useQuery({
+    ...btcPriceQuery,
+    refetchInterval: () => (streamingRef.current ? false : 60_000),
+  });
   const liveBtc = useLiveBtcPrice(priceRes.data?.price ?? null);
+  streamingRef.current = liveBtc.streaming;
   const btcPrice = liveBtc.price;
   const simulatorRes = useQuery(simulatorQuery);
   const ledgerRef = useRef<HTMLDivElement>(null);

@@ -87,8 +87,8 @@ export const buyPointPriceQuery = (buyPointISO: string) =>
         return null;
       }
     },
+    // The hourly bar is final — no client poll after the first fetch.
     staleTime: HOUR,
-    refetchInterval: HOUR,
   });
 
 export const simulatorQuery = queryOptions({
