@@ -225,11 +225,11 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 **Measure after 7/28 days:** clicks on the two ranked 500-day queries, CTR on the homepage, indexing of `/is-now-the-buy-point`, and whether the dead article stops receiving impressions.
 ---
 
-## 2026-11-28 — Homepage leads with live paper P&L (uncommitted)
+## 2026-11-28 — Homepage leads with live paper P&L
 
 **Owner ask:** Now that the T−500 buy point has passed, rebuild the homepage around tracking live P&L. Every visit should show the current P&L immediately, with a big number leading the page.
 
-**Implemented (working tree, not committed or deployed):**
+**Implemented and deployed:**
 - `src/lib/live-pnl.ts` + tests: pure, passed-in model for the $50,000 paper position (entry at the buy timestamp, live mark, unrealized $ and %, hours/days held, quotable daily line). No entry mark or no live price → no P&L published.
 - `src/lib/bitstamp-fetcher.ts`, `historical-price.server.ts`, `price-cache.ts`, `queries.ts`: hourly BTC/USD close at the exact `BUY_POINT_ISO` (2026-11-28T00:00Z), cached for a day. Unlike a daily close, that hourly bar is final on the buy day itself, so the position can be marked on the first visit after the window opens.
 - `src/routes/index.tsx`: the loader now seeds the live price and the buy-point entry price (alongside the existing queries) in parallel with `allSettled`, so the P&L number is present in the SSR HTML and a provider failure cannot fail the page.
@@ -241,6 +241,8 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 
 **Checks:** `npm run typecheck`, `npm test` (311 pass, incl. 5 new P&L tests), `npm run build` and ESLint on all changed files all pass. Local dev SSR HTML contains the marked P&L; desktop and 390px mobile screenshots verified the number leads the first screen. No new browser console errors (only the pre-existing dev-only `data-tsd-source` hydration notice).
 
-**Live local mark at verification:** entry $59,837 (00:00 UTC hourly close) → spot $59,870 = +$28 / +0.06%. The magnitude is small; the change is about honest, immediate visibility, not a claim of performance.
+**Local mark at verification:** entry $59,837 (00:00 UTC hourly close) → spot $59,870 = +$28 / +0.06%. The magnitude is small; the change is about honest, immediate visibility, not a claim of performance.
 
-**Next actions:** review diff, commit, push to `main`, verify Vercel deploy and the live homepage, then watch return visits/engagement and GSC CTR for the homepage in 7/28 days. Do not claim a traffic improvement without data.
+**Deployment:** committed as `459ea3a` and pushed to `main`. Vercel deployment `dpl_45L7rECroC9VmbpGQTzRdh7V1hzU` reached READY and is aliased to `btc500.net`. Verified live HTML at `https://btc500.net/` contains the marked P&L block (at check time −$16 / −0.03%, entry $59,837, mark $59,817) and the updated post-buy meta description.
+
+**Next actions:** watch return visits/engagement and GSC CTR for the homepage in 7/28 days. Do not claim a traffic improvement without data.
