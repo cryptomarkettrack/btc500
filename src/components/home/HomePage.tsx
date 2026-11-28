@@ -16,6 +16,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { computeCycle, daysBetween, formatUsd, formatDate } from "@/lib/phase";
+import { buildLivePnl } from "@/lib/live-pnl";
 import { buildHomeAnswer } from "@/lib/home-answer";
 import { ShareButton } from "@/components/ShareButton";
 import { CycleShareCard } from "@/components/CycleShareCard";
@@ -30,11 +31,11 @@ import { HOME_LAST_REVIEWED } from "@/lib/site";
 import {
   halvingQuery,
   btcPriceQuery,
+  buyPointPriceQuery,
   simulatorPreviewQuery,
   signalPriceQuery,
-  buyPriceQuery,
 } from "@/lib/queries";
-import { toBacktestRows } from "@/lib/buy-signal";
+import { BUY_POINT_ISO, BUY_POINT_LABEL, toBacktestRows } from "@/lib/buy-signal";
 import { BacktestTable } from "@/components/signal/BacktestTable";
 import { SignalContextStrip } from "@/components/signal/SignalContextStrip";
 import { SignalShareRow } from "@/components/signal/SignalShareRow";
@@ -71,12 +72,9 @@ export function HomePage() {
     new Date(halving.lastHalvingDate),
   );
 
-  // Entry price of the current cycle's T−500 buy date — only fetched once the
-  // buy date has passed and the position is open.
-  const buyPriceRes = useQuery({
-    ...buyPriceQuery(cycle.buyDate.toISOString().slice(0, 10)),
-    enabled: cycle.phase === "wait-sell",
-  });
+  // The entry mark is the hourly BTC/USD close at the exact T−500 buy
+  // timestamp. Seeded in the route loader so the P&L is in the served HTML.
+  const buyPointPriceRes = useQuery(buyPointPriceQuery(BUY_POINT_ISO));
 
   // The page Google actually serves (see the 2026-10-28 review) has to answer
   // "when is 500 days before the next bitcoin halving" itself: the H1 and the
@@ -87,25 +85,32 @@ export function HomePage() {
     nowISO: now.toISOString(),
   });
 
-  const isBuyActive = now >= cycle.buyDate && now < cycle.nextHalving;
+  // The published buy point is a passed UTC instant, so the position is open
+  // on the buy day itself — not only once the exact estimated halving-derived
+  // timestamp has rolled over. Everything below reads from that same anchor.
+  const isPositionOpen = now.getTime() >= Date.parse(BUY_POINT_ISO) && now < cycle.sellDate;
+  const isBuyActive = isPositionOpen && now < cycle.nextHalving;
   const isSellActive = now >= cycle.nextHalving && now < cycle.sellDate;
 
   const buyDays = Math.max(0, cycle.daysUntilBuy);
   const sellDays = cycle.daysUntilSell;
 
-  // P&L tracker: once the T−500 buy date has passed, the position is open and
-  // the page focuses on live P&L (buy date → now → sell date).
-  const isHolding = cycle.phase === "wait-sell";
-  const buyPrice = buyPriceRes.data ?? null;
-  const currentPrice = priceRes.data?.price ?? null;
-  const INVESTMENT = 50_000;
-  const pnlPercent =
-    buyPrice != null && currentPrice != null && buyPrice > 0
-      ? (currentPrice - buyPrice) / buyPrice
-      : null;
-  const pnlAmount = pnlPercent != null ? INVESTMENT * pnlPercent : null;
-  const positionValue = pnlAmount != null ? INVESTMENT + pnlAmount : null;
-  const isProfit = pnlAmount != null && pnlAmount >= 0;
+  // One live P&L model feeds the hero, the detail card and the sticky bar, so
+  // the three can never disagree about the entry, the mark or the sign.
+  const pnl = buildLivePnl({
+    nowISO: now.toISOString(),
+    entryPriceUSD: buyPointPriceRes.data ?? null,
+    currentPriceUSD: priceRes.data?.price ?? null,
+  });
+  const showingPnL = isPositionOpen && pnl.state === "open";
+  const isHolding = isPositionOpen;
+  const buyPrice = pnl.entryPriceUSD;
+  const currentPrice = pnl.currentPriceUSD;
+  const INVESTMENT = pnl.notionalUSD;
+  const pnlPercent = pnl.returnFraction;
+  const pnlAmount = pnl.profitUSD;
+  const positionValue = pnl.valueUSD;
+  const isProfit = pnl.isProfit;
 
   // Archived articles are served with `noindex, nofollow`, so a link to one
   // carries no signal and tells Google the page behind it should not be
@@ -167,10 +172,8 @@ export function HomePage() {
         isSellActive={isSellActive}
         buyDays={buyDays}
         sellDays={sellDays}
-        pnlAmount={pnlAmount}
-        pnlPercent={pnlPercent}
-        isProfit={isProfit}
-        isHolding={isHolding}
+        pnl={pnl}
+        isPositionOpen={isPositionOpen}
       />
 
       <div className="mx-auto max-w-6xl px-6">
@@ -307,8 +310,9 @@ export function HomePage() {
                 · selling <span className="text-success">{formatDate(cycle.sellDate)}</span> (T+500)
               </h2>
               <p className="mt-4 text-base leading-relaxed text-muted-foreground">
-                Position is open. P&L is marked live against today's BTC price — green in profit,
-                red in loss. Hold to the sell date.
+                Position is open. The entry is the BTC/USD hourly close at the T−500 buy timestamp
+                (00:00 UTC, {BUY_POINT_LABEL}); the mark is the live spot price. Green in profit,
+                red in loss. Paper only — hold to the sell date.
               </p>
             </div>
 
@@ -323,7 +327,9 @@ export function HomePage() {
                 <div className="mt-2 text-2xl font-bold text-foreground">
                   {buyPrice != null ? formatUsd(buyPrice) : "—"}
                 </div>
-                <p className="mt-1 text-[11px] text-muted-foreground">BTC price at entry</p>
+                <p className="mt-1 text-[11px] text-muted-foreground">
+                  Hourly close at buy timestamp
+                </p>
               </div>
 
               <div className="lift rounded-2xl border border-white/10 bg-[var(--panel)] p-6">
@@ -391,7 +397,7 @@ export function HomePage() {
                     }}
                   >
                     {pnlPercent != null
-                      ? `${pnlPercent >= 0 ? "+" : ""}${(pnlPercent * 100).toFixed(1)}%`
+                      ? `${pnlPercent >= 0 ? "+" : ""}${(pnlPercent * 100).toFixed(2)}%`
                       : "—"}
                   </span>
                 </div>
@@ -405,7 +411,11 @@ export function HomePage() {
               </div>
             </div>
 
-            <div className="mt-8">
+            <p className="font-data mt-6 rounded-xl border border-white/10 bg-[var(--panel)] px-4 py-3 text-[11px] leading-relaxed text-muted-foreground">
+              {pnl.quote}
+            </p>
+
+            <div className="mt-8 flex flex-wrap items-center gap-3">
               <Link
                 to="/simulator"
                 onClick={() => trackCta("pnl_tracker", "/simulator")}
@@ -413,6 +423,13 @@ export function HomePage() {
               >
                 <Calculator className="h-4 w-4" />
                 Backtest this window
+                <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link
+                to="/paper-buy"
+                className="press inline-flex items-center gap-2 rounded-full border border-white/15 px-5 py-2.5 text-sm font-semibold hover:border-primary/40 hover:text-primary"
+              >
+                Open the public paper ledger
                 <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -752,19 +769,21 @@ export function HomePage() {
         {/* ===== PREVIEW / SHARE / EMBED ===== */}
         <section className="pt-20 sm:pt-24">
           <div className="flex flex-col items-center gap-4">
-            <button
-              type="button"
-              onClick={() => setPreviewOpen(true)}
-              className="press inline-flex items-center gap-2.5 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground"
-            >
-              <span className="relative flex h-2.5 w-2.5">
-                <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
-              </span>
-              <Eye className="h-4 w-4" />
-              Preview the homepage after the buy window
-              <Sparkles className="h-4 w-4" />
-            </button>
+            {!isPositionOpen && (
+              <button
+                type="button"
+                onClick={() => setPreviewOpen(true)}
+                className="press inline-flex items-center gap-2.5 rounded-full border border-primary/40 bg-primary/10 px-6 py-3 text-sm font-semibold text-primary hover:bg-primary hover:text-primary-foreground"
+              >
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="pulse-dot absolute inline-flex h-full w-full rounded-full bg-primary opacity-60" />
+                  <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-primary" />
+                </span>
+                <Eye className="h-4 w-4" />
+                Preview the homepage after the buy window
+                <Sparkles className="h-4 w-4" />
+              </button>
+            )}
             <ShareButton captureRef={cycleShareCardRef} />
             <Link
               to="/embed-kit"
@@ -810,16 +829,18 @@ export function HomePage() {
         </Suspense>
       )}
 
-      {/* Mobile sticky CTA — live countdown, always one tap from the simulator */}
+      {/* Mobile sticky CTA — the live P&L once open, the countdown before that */}
       <StickyCta
         label={
-          isBuyActive
-            ? "Buy window open"
-            : cycle.phase === "done"
-              ? `${cycle.daysUntilNextCycleBuy}d to buy`
-              : cycle.phase === "wait-sell"
-                ? `${sellDays}d to sell`
-                : `${buyDays}d to buy`
+          showingPnL
+            ? `${pnl.isProfit ? "+" : "−"}${formatUsd(Math.abs(pnl.profitUSD!))} P&L`
+            : isBuyActive
+              ? "Buy window open"
+              : cycle.phase === "done"
+                ? `${cycle.daysUntilNextCycleBuy}d to buy`
+                : cycle.phase === "wait-sell"
+                  ? `${sellDays}d to sell`
+                  : `${buyDays}d to buy`
         }
       />
     </div>

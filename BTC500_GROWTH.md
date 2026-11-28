@@ -223,3 +223,24 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 **Deployment:** Pushed to `main` as `ffca15e` with owner approval (all working-tree changes committed together, so the `generateGraphSchema` dependency shipped). Vercel production deployment `dpl_548qhkmgZtKDHkd3ptgBFMKqFCzT` reached READY and is aliased to `btc500.net`. Verified live: homepage H1, `og:image`/`twitter:image` = `https://btc500.net/api/og`, `/api/og` returns a valid 1200×630 PNG showing "T-minus 2 days" and the $60,374 last close, `/articles/bitcoin-week-ahead` serves `noindex, follow` and is absent from the sitemap, `/is-now-the-buy-point` has all 7 sections plus the 4-question FAQPage graph, and `llms.txt` starts with the computed Live Signal block.
 
 **Measure after 7/28 days:** clicks on the two ranked 500-day queries, CTR on the homepage, indexing of `/is-now-the-buy-point`, and whether the dead article stops receiving impressions.
+---
+
+## 2026-11-28 — Homepage leads with live paper P&L (uncommitted)
+
+**Owner ask:** Now that the T−500 buy point has passed, rebuild the homepage around tracking live P&L. Every visit should show the current P&L immediately, with a big number leading the page.
+
+**Implemented (working tree, not committed or deployed):**
+- `src/lib/live-pnl.ts` + tests: pure, passed-in model for the $50,000 paper position (entry at the buy timestamp, live mark, unrealized $ and %, hours/days held, quotable daily line). No entry mark or no live price → no P&L published.
+- `src/lib/bitstamp-fetcher.ts`, `historical-price.server.ts`, `price-cache.ts`, `queries.ts`: hourly BTC/USD close at the exact `BUY_POINT_ISO` (2026-11-28T00:00Z), cached for a day. Unlike a daily close, that hourly bar is final on the buy day itself, so the position can be marked on the first visit after the window opens.
+- `src/routes/index.tsx`: the loader now seeds the live price and the buy-point entry price (alongside the existing queries) in parallel with `allSettled`, so the P&L number is present in the SSR HTML and a provider failure cannot fail the page.
+- `src/components/home/HeroSplit.tsx`: the hero now opens with a large P&L number (`clamp(3.25rem,11vw,6rem)`), signed %, entry/mark line and progress through the 1,000-day window. The H1/answer stays underneath for the ranked 500-day query; the expired "preview the buy window" button is hidden once the position is open.
+- `src/components/home/HomePage.tsx`: one P&L model feeds the hero, detail card and mobile sticky bar; detail card now discloses the hourly-close entry method and links to the public paper ledger.
+- `src/lib/home-snippet.ts`: post-buy meta description now advertises the live $50,000 paper P&L instead of the countdown.
+
+**Hypothesis:** A returning visitor's intent after the buy date is "how is the position doing?" Leading with a live, honest number should increase repeat visits, time on page and shareability while keeping the SEO answer in the H1 below.
+
+**Checks:** `npm run typecheck`, `npm test` (311 pass, incl. 5 new P&L tests), `npm run build` and ESLint on all changed files all pass. Local dev SSR HTML contains the marked P&L; desktop and 390px mobile screenshots verified the number leads the first screen. No new browser console errors (only the pre-existing dev-only `data-tsd-source` hydration notice).
+
+**Live local mark at verification:** entry $59,837 (00:00 UTC hourly close) → spot $59,870 = +$28 / +0.06%. The magnitude is small; the change is about honest, immediate visibility, not a claim of performance.
+
+**Next actions:** review diff, commit, push to `main`, verify Vercel deploy and the live homepage, then watch return visits/engagement and GSC CTR for the homepage in 7/28 days. Do not claim a traffic improvement without data.

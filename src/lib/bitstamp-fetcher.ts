@@ -76,6 +76,45 @@ export async function fetchBtcPriceFromBitstamp(dateStr: string): Promise<number
 }
 
 /**
+ * BTC/USD close of the hourly candle that starts at `iso`. Used to mark the
+ * public paper position at the exact T−500 buy timestamp: unlike a daily close,
+ * an hourly bar is already final on the buy day itself, so the P&L can be shown
+ * on the first visit after the window opens. Returns null for an in-progress or
+ * missing hour; never throws.
+ */
+export async function fetchBtcPriceAtHour(iso: string): Promise<number | null> {
+  const logTag = `[fetchBtcPriceAtHour ${iso}]`;
+  const ms = Date.parse(iso);
+  if (!Number.isFinite(ms)) {
+    console.error(`${logTag} invalid timestamp`);
+    return null;
+  }
+
+  const hourMs = Math.floor(ms / 3_600_000) * 3_600_000;
+  const targetSeconds = Math.floor(hourMs / 1000);
+  const url = `https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=3600&limit=24&start=${targetSeconds - 3_600}&end=${targetSeconds + 3_600}`;
+
+  try {
+    const r = await fetchWithTimeout(url, {}, BITSTAMP_TIMEOUT_MS);
+    if (!r.ok) {
+      console.error(`${logTag} Bitstamp returned status ${r.status}`);
+      return null;
+    }
+    const ohlc = parseBitstampBody(await r.json());
+    const candle = ohlc?.find((c) => parseInt(c.timestamp, 10) === targetSeconds);
+    const close = candle ? parseFloat(candle.close) : NaN;
+    if (!Number.isFinite(close) || close <= 0) {
+      console.error(`${logTag} no completed hourly candle at the requested time`);
+      return null;
+    }
+    return close;
+  } catch (err) {
+    console.error(`${logTag} threw:`, err);
+    return null;
+  }
+}
+
+/**
  * Daily closes for an inclusive date range. One request, 5s timeout, never throws.
  * Callers must only use this for the post-CSV recent tail.
  */

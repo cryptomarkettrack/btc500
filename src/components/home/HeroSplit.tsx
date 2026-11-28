@@ -6,6 +6,8 @@ import { trackCta } from "@/lib/analytics";
 import { formatUsd } from "@/lib/format";
 import type { HomeAnswer } from "@/lib/home-answer";
 import type { CycleInfo } from "@/lib/phase";
+import type { LivePnl } from "@/lib/live-pnl";
+import { BUY_POINT_LABEL } from "@/lib/buy-signal";
 
 interface HeroSplitProps {
   answer: HomeAnswer;
@@ -16,18 +18,16 @@ interface HeroSplitProps {
   isSellActive: boolean;
   buyDays: number;
   sellDays: number;
-  /** Live position P&L (only meaningful once past T−500 / holding). */
-  pnlAmount: number | null;
-  pnlPercent: number | null;
-  isProfit: boolean | null;
-  /** Whether the position is open (buy date passed, sell date not yet). */
-  isHolding: boolean;
+  /** Live paper position, passed in already computed from the buy point onward. */
+  pnl: LivePnl;
+  /** The T−500 instant is in the past and the T+500 exit has not fired yet. */
+  isPositionOpen: boolean;
 }
 
 /**
- * The hero, dealt by taste-skill as a split: the words on the left, the real
- * thing — the live cycle map — on the right, both whole on the first screen.
- * It enters once on load (data-enter) and never again.
+ * The first screen. Once the T−500 buy point has passed the page leads with the
+ * live P&L — the number a returning visitor came to check — and the calendar
+ * answer follows underneath. Before the buy point the countdown keeps the lead.
  */
 export function HeroSplit({
   answer,
@@ -38,18 +38,21 @@ export function HeroSplit({
   isSellActive,
   buyDays,
   sellDays,
-  pnlAmount,
-  pnlPercent,
-  isProfit,
-  isHolding,
+  pnl,
+  isPositionOpen,
 }: HeroSplitProps) {
-  const accent =
-    isHolding && pnlAmount == null
-      ? "var(--muted-foreground)"
-      : isSellActive
-        ? "var(--success)"
-        : "var(--primary)";
-  const showingPnL = isHolding && pnlAmount != null && pnlPercent != null;
+  const showingPnL =
+    isPositionOpen &&
+    pnl.state === "open" &&
+    pnl.profitUSD !== null &&
+    pnl.returnFraction !== null &&
+    pnl.entryPriceUSD !== null &&
+    pnl.currentPriceUSD !== null;
+  const pnlColor = pnl.isProfit ? "var(--success)" : "var(--destructive)";
+  const pnlSign = pnl.isProfit ? "+" : "−";
+  const accent = showingPnL ? pnlColor : isSellActive ? "var(--success)" : "var(--primary)";
+  const windowTotal = pnl.daysHeld + cycle.daysUntilSell;
+  const windowProgress = windowTotal > 0 ? (pnl.daysHeld / windowTotal) * 100 : 0;
 
   return (
     <section
@@ -59,8 +62,93 @@ export function HeroSplit({
       <div className="hero-ground" aria-hidden="true" />
 
       <div className="relative mx-auto grid max-w-6xl grid-cols-1 gap-12 px-6 pt-8 pb-16 sm:pt-12 lg:grid-cols-12 lg:gap-10 lg:pt-16 lg:pb-24">
-        {/* ---- words ---- */}
+        {/* ---- words: P&L first once the position is open ---- */}
         <div className="lg:col-span-6 lg:pt-4">
+          {showingPnL ? (
+            <div
+              data-enter
+              style={{ "--enter-delay": "40ms" } as React.CSSProperties}
+              className="mb-7 -mt-1 border-b border-white/10 pb-7 sm:mb-9"
+              aria-label="Live paper position P&L"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <i
+                  className="pulse-dot h-1.5 w-1.5 rounded-full"
+                  style={{ background: pnlColor }}
+                />
+                <span className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                  Live P&amp;L · {formatUsd(pnl.notionalUSD)} paper buy
+                </span>
+                <span
+                  className="font-data rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em]"
+                  style={{ color: pnlColor, borderColor: pnlColor }}
+                >
+                  Position open
+                </span>
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-end gap-x-5 gap-y-1">
+                <span
+                  suppressHydrationWarning
+                  className="font-data text-[clamp(3.25rem,11vw,6rem)] leading-[0.85] font-semibold tracking-[-0.055em] tabular-nums"
+                  style={{ color: pnlColor }}
+                >
+                  {pnlSign}
+                  {formatUsd(Math.abs(pnl.profitUSD!))}
+                </span>
+                <span
+                  suppressHydrationWarning
+                  className="font-data pb-1 text-2xl font-semibold tabular-nums sm:text-3xl"
+                  style={{ color: pnlColor }}
+                >
+                  {pnlSign}
+                  {(Math.abs(pnl.returnFraction!) * 100).toFixed(2)}%
+                </span>
+              </div>
+
+              <p
+                suppressHydrationWarning
+                className="mt-4 max-w-xl text-sm leading-relaxed text-muted-foreground"
+              >
+                Bought <strong className="font-semibold text-foreground">{BUY_POINT_LABEL}</strong>{" "}
+                at {formatUsd(pnl.entryPriceUSD!)} · BTC now {formatUsd(pnl.currentPriceUSD!)} · day{" "}
+                {pnl.daysHeld.toLocaleString()} of {windowTotal.toLocaleString()} held.
+              </p>
+
+              <div
+                className="mt-4 h-1 w-full max-w-md overflow-hidden rounded-full bg-white/10"
+                role="progressbar"
+                aria-label="Progress through the 500-day holding window"
+                aria-valuenow={Math.round(windowProgress)}
+                aria-valuemin={0}
+                aria-valuemax={100}
+              >
+                <div
+                  className="h-full rounded-full transition-[width] duration-1000 ease-out"
+                  style={{ background: pnlColor, width: `${Math.max(windowProgress, 1)}%` }}
+                />
+              </div>
+              <p className="font-data mt-2 text-[10px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                Unrealized · marked live · paper only, not financial advice
+              </p>
+            </div>
+          ) : isPositionOpen ? (
+            <div
+              data-enter
+              style={{ "--enter-delay": "40ms" } as React.CSSProperties}
+              className="mb-7 border-b border-white/10 pb-7"
+            >
+              <p className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                Live P&amp;L · {formatUsd(pnl.notionalUSD)} paper buy
+              </p>
+              <div
+                className="mt-3 h-14 w-56 animate-pulse rounded-xl bg-muted"
+                aria-label="P&L loading"
+              />
+              <p className="mt-2 text-xs text-muted-foreground">{pnl.statusNote}</p>
+            </div>
+          ) : null}
+
           <p
             data-enter
             style={{ "--enter-delay": "60ms" } as React.CSSProperties}
@@ -72,7 +160,11 @@ export function HeroSplit({
           <h1
             data-enter
             style={{ "--enter-delay": "140ms" } as React.CSSProperties}
-            className="mt-5 text-[2.6rem] leading-[1.02] font-semibold tracking-[-0.03em] text-balance sm:text-6xl lg:text-[4.1rem]"
+            className={`mt-5 font-semibold tracking-[-0.03em] text-balance ${
+              showingPnL
+                ? "text-3xl leading-[1.08] sm:text-4xl lg:text-[3.25rem]"
+                : "text-[2.6rem] leading-[1.02] sm:text-6xl lg:text-[4.1rem]"
+            }`}
             dangerouslySetInnerHTML={{ __html: answer.h1Html }}
           />
 
@@ -86,9 +178,11 @@ export function HeroSplit({
             {answer.leadRest}
           </p>
 
-          <div data-enter style={{ "--enter-delay": "280ms" } as React.CSSProperties}>
-            <BuyPointCountdown />
-          </div>
+          {!isPositionOpen && (
+            <div data-enter style={{ "--enter-delay": "280ms" } as React.CSSProperties}>
+              <BuyPointCountdown />
+            </div>
+          )}
 
           <div
             data-enter
@@ -139,9 +233,7 @@ export function HeroSplit({
                 <i
                   className="pulse-dot h-1.5 w-1.5 rounded-full"
                   aria-hidden="true"
-                  style={{
-                    background: showingPnL ? "var(--success)" : "var(--primary)",
-                  }}
+                  style={{ background: accent }}
                 />
                 live
               </span>
@@ -152,36 +244,34 @@ export function HeroSplit({
               {showingPnL ? (
                 <div>
                   <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Current P&L
+                    Unrealized P&amp;L
                   </div>
                   <div className="mt-1 flex items-baseline gap-1">
                     <span
                       suppressHydrationWarning
-                      className="font-data text-5xl font-semibold leading-none tracking-tighter sm:text-6xl"
-                      style={{
-                        color: isProfit ? "var(--success)" : "var(--destructive)",
-                      }}
+                      className="font-data text-4xl font-semibold leading-none tracking-tighter tabular-nums sm:text-5xl"
+                      style={{ color: pnlColor }}
                     >
-                      {isProfit ? "+" : "−"}
-                      {formatUsd(Math.abs(pnlAmount))}
+                      {pnlSign}
+                      {formatUsd(Math.abs(pnl.profitUSD!))}
                     </span>
                     <span
-                      className="ml-1 text-xl font-semibold"
-                      style={{
-                        color: isProfit ? "var(--success)" : "var(--destructive)",
-                      }}
+                      suppressHydrationWarning
+                      className="ml-1 text-lg font-semibold tabular-nums"
+                      style={{ color: pnlColor }}
                     >
-                      {pnlPercent >= 0 ? "+" : ""}${(pnlPercent * 100).toFixed(1)}%
+                      {pnlSign}
+                      {(Math.abs(pnl.returnFraction!) * 100).toFixed(2)}%
                     </span>
                   </div>
                 </div>
-              ) : isHolding && pnlAmount == null ? (
+              ) : isPositionOpen ? (
                 <div>
                   <div className="font-data text-[10px] font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                    Current P&L
+                    Unrealized P&amp;L
                   </div>
-                  <div className="mt-1 h-12 w-48 rounded-full bg-muted animate-pulse" />
-                  <div className="mt-2 h-4 w-24 rounded-full bg-muted/50 animate-pulse" />
+                  <div className="mt-1 h-12 w-48 animate-pulse rounded-full bg-muted" />
+                  <div className="mt-2 h-4 w-24 animate-pulse rounded-full bg-muted/50" />
                 </div>
               ) : (
                 <div>
@@ -221,19 +311,18 @@ export function HeroSplit({
                 compact
                 countdown={
                   <div
-                    className={`w-full text-center ${showingPnL ? "text-success" : ""}`}
+                    className="w-full text-center"
                     style={{
                       fontFamily: '"Space Grotesk", system-ui, sans-serif',
                       fontSize: "13px",
                       letterSpacing: "0.18em",
                       textTransform: "uppercase",
                       marginBottom: "4px",
+                      color: showingPnL ? pnlColor : undefined,
                     }}
                   >
                     {showingPnL
-                      ? `Position ${
-                          isProfit ? "in profit" : "underwater"
-                        } — P&L ${isProfit ? "+" : "−"}${formatUsd(Math.abs(pnlAmount))} (${(pnlPercent * 100).toFixed(1)}%)`
+                      ? `P&L ${pnlSign}${formatUsd(Math.abs(pnl.profitUSD!))} (${pnlSign}${(Math.abs(pnl.returnFraction!) * 100).toFixed(2)}%) · ${pnl.daysHeld.toLocaleString()} days held`
                       : `${countdownLabel}: ${countdownValue} days`}
                   </div>
                 }

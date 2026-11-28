@@ -19,7 +19,7 @@ import { unavailableSimulatorResult, getSimulatorData } from "@/lib/simulator.fu
 import { getSpacingData } from "@/lib/spacing.functions";
 import { emptySpacingReport } from "@/lib/halving-spacing";
 import { emptyTimelinePayload, getTimelineData } from "@/lib/timeline.functions";
-import { getBtcPriceForDate } from "@/lib/historical-price.server";
+import { getBtcPriceAt, getBtcPriceForDate } from "@/lib/historical-price.server";
 import { getSignalPrice } from "@/lib/buy-signal.functions";
 
 const MINUTE = 60_000;
@@ -64,6 +64,26 @@ export const buyPriceQuery = (buyDate: string) =>
         return await getBtcPriceForDate({ data: { date: buyDate } });
       } catch (err) {
         console.error("[buy-price] query failed:", err);
+        return null;
+      }
+    },
+    staleTime: HOUR,
+    refetchInterval: HOUR,
+  });
+
+/**
+ * Entry mark for the live P&L: the hourly BTC/USD close at the exact T−500 buy
+ * timestamp. The bar is final as soon as the buy hour ends, so a visitor entering
+ * on the buy day already sees a marked position instead of an empty placeholder.
+ */
+export const buyPointPriceQuery = (buyPointISO: string) =>
+  queryOptions({
+    queryKey: ["buy-point-price", buyPointISO],
+    queryFn: async () => {
+      try {
+        return await getBtcPriceAt({ data: { iso: buyPointISO } });
+      } catch (err) {
+        console.error("[buy-point-price] query failed:", err);
         return null;
       }
     },

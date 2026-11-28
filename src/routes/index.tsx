@@ -10,8 +10,13 @@ import {
 import { FAQ_ITEMS } from "@/lib/faq";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { HomePage } from "@/components/home/HomePage";
-import { simulatorPreviewQuery, signalPriceQuery } from "@/lib/queries";
-import { SIGNAL_OG_IMAGE } from "@/lib/buy-signal";
+import {
+  btcPriceQuery,
+  buyPointPriceQuery,
+  simulatorPreviewQuery,
+  signalPriceQuery,
+} from "@/lib/queries";
+import { BUY_POINT_ISO, SIGNAL_OG_IMAGE } from "@/lib/buy-signal";
 import { waitForHalvingSeed } from "@/lib/seed-halving";
 import { computeCycle } from "@/lib/phase";
 import { buildHomeSnippet } from "@/lib/home-snippet";
@@ -74,8 +79,16 @@ export const Route = createFileRoute("/")({
     // "Completed-window data is loading." — the defect the 2026-10-29 review flagged on the
     // one URL Google actually serves. The loader runs before render, so the hydrated client
     // agrees instead of refetching mid-hydration.
-    await context.queryClient.ensureQueryData(simulatorPreviewQuery);
-    await context.queryClient.ensureQueryData(signalPriceQuery);
+    // Seed the two marks behind the live P&L as well. Without this the served
+    // HTML would contain an empty P&L placeholder and the visitor would see the
+    // number only after hydration — the opposite of the point of the new hero.
+    // A failed upstream must never fail the page, so settle all of them.
+    await Promise.allSettled([
+      context.queryClient.ensureQueryData(simulatorPreviewQuery),
+      context.queryClient.ensureQueryData(signalPriceQuery),
+      context.queryClient.ensureQueryData(btcPriceQuery),
+      context.queryClient.ensureQueryData(buyPointPriceQuery(BUY_POINT_ISO)),
+    ]);
 
     // The head needs the live T-500 date, so derive it from the same seeded
     // halving snapshot the countdown renders and the pillar page uses — never a

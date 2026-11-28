@@ -7,7 +7,11 @@
  */
 
 import { createServerFn } from "@tanstack/react-start";
-import { fetchBtcPriceFromBitstamp, fetchBtcPricesFromBitstampRange } from "./bitstamp-fetcher";
+import {
+  fetchBtcPriceAtHour,
+  fetchBtcPriceFromBitstamp,
+  fetchBtcPricesFromBitstampRange,
+} from "./bitstamp-fetcher";
 import { fetchBtcPriceFromBlockchain } from "./blockchain-price";
 import {
   assessPriceRange,
@@ -152,4 +156,26 @@ export const getBtcPriceForDate = createServerFn({ method: "GET" })
   .validator((data: { date: string }) => data)
   .handler(async ({ data }): Promise<number | null> => {
     return getHistoricalBtcPrice(data.date);
+  });
+
+/**
+ * Server function: BTC/USD close of the hourly candle containing a timestamp.
+ * Used for the exact T−500 buy instant so the live P&L can be marked on the buy
+ * day without waiting for that day's final daily close. Cached for a day: an
+ * elapsed hourly bar never changes. Returns null when no price is available.
+ */
+export const getBtcPriceAt = createServerFn({ method: "GET" })
+  .validator((data: { iso: string }) => data)
+  .handler(async ({ data }): Promise<number | null> => {
+    if (!Number.isFinite(Date.parse(data.iso))) return null;
+    try {
+      return await fetchWithCache(
+        CacheKeys.hourlyPrice(data.iso),
+        () => fetchBtcPriceAtHour(data.iso),
+        { ttl: TTL.HISTORICAL_PRICE, staleWhileRevalidate: false },
+      );
+    } catch (err) {
+      console.error(`[historical-price] hourly mark failed for ${data.iso}:`, err);
+      return null;
+    }
   });

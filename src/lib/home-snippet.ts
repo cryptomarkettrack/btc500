@@ -128,7 +128,7 @@ export function buildHomeSnippet(input: {
     buyLabelShort,
     buyLabelLong,
     title: `Next Bitcoin Halving ${halvingYear}: Window Opened ${buyLabelShort} | BTC500`,
-    description: `The next Bitcoin halving is projected for ${halvingMonthYear}. The BTC500 buy window opened ${buyLabelLong}, 500 days before it. Live public record and countdown.`,
+    description: `The BTC500 buy window opened ${buyLabelLong}, 500 days before the ${halvingMonthYear} halving. Track the live $50,000 paper P&L and the dated record.`,
   };
 }
 

@@ -197,6 +197,9 @@ export const CacheKeys = {
   /** Historical BTC price for a specific date (YYYY-MM-DD) */
   historicalPrice: (dateStr: string) => `btc:historical:${dateStr}`,
 
+  /** BTC/USD hourly close at an exact timestamp (T−500 buy point) */
+  hourlyPrice: (iso: string) => `btc:hourly:${iso}`,
+
   /** Historical BTC price range (start-end) */
   historicalRange: (startDate: string, endDate: string) =>
     `btc:historical-range:${startDate}:${endDate}`,
