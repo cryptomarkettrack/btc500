@@ -28,3 +28,15 @@ export function parseCoinbaseTickerPrice(raw: string): number | null {
     return null;
   }
 }
+
+/** Kraken v2 `ticker` channel: last price is `data[0].last`. */
+export function parseKrakenTickerPrice(raw: string): number | null {
+  try {
+    const data = JSON.parse(raw) as { channel?: unknown; data?: Array<{ last?: unknown }> };
+    if (data?.channel !== "ticker") return null;
+    const price = Number(data.data?.[0]?.last);
+    return Number.isFinite(price) && price > 0 ? price : null;
+  } catch {
+    return null;
+  }
+}

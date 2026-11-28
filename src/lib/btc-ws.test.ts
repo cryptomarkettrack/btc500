@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-import { parseBinanceTickerPrice, parseCoinbaseTickerPrice } from "./btc-ws.ts";
+import {
+  parseBinanceTickerPrice,
+  parseCoinbaseTickerPrice,
+  parseKrakenTickerPrice,
+} from "./btc-ws.ts";
 
 describe("browser WebSocket ticker parsers", () => {
   it("reads the last price from a Binance ticker frame", () => {
@@ -21,6 +25,21 @@ describe("browser WebSocket ticker parsers", () => {
       price: "59890.12",
     });
     assert.equal(parseCoinbaseTickerPrice(frame), 59_890.12);
+  });
+
+  it("reads the last price from a Kraken v2 ticker frame", () => {
+    const frame = JSON.stringify({
+      channel: "ticker",
+      type: "snapshot",
+      data: [{ symbol: "BTC/USD", last: 59_696.0 }],
+    });
+    assert.equal(parseKrakenTickerPrice(frame), 59_696);
+    assert.equal(
+      parseKrakenTickerPrice(
+        JSON.stringify({ method: "subscribe", result: { channel: "ticker" } }),
+      ),
+      null,
+    );
   });
 
   it("ignores unrelated frames, malformed JSON and non-positive prices", () => {

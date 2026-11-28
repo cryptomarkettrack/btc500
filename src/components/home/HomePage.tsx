@@ -806,7 +806,7 @@ export function HomePage() {
 
         <p className="pt-16 text-center text-xs text-muted-foreground">
           Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price
-          streams from Binance (Coinbase fallback) in your browser, with a server snapshot as the
+          streams from Coinbase, Kraken or Binance in your browser, with a server snapshot as the
           fallback. Last reviewed {HOME_LAST_REVIEWED}.
         </p>
       </main>

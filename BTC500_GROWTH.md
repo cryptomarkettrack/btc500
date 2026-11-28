@@ -266,3 +266,13 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 **Checks:** typecheck, 314 tests including new WS-parser tests, production build, ESLint on all changed files — all pass. Browser verification: hero showed `live · Binance`, P&L moved from −$50 to −$49 as the mark ticked $59,777 → $59,778; `/paper-buy` showed `$59,778` with `Live spot · Binance stream`. No new console errors.
 
 **Next:** commit, push, verify Vercel and the live pages; then check that streamed prices stay consistent across browsers (they should, both read the same exchange feed) and that the reconnect fallback works if an exchange blocks the socket.
+
+---
+
+## 2026-11-28 (follow-up 2) — exchange fallback when Binance is blocked
+
+**Owner report:** Binance appears blocked on btc500.net for at least one visitor. The original fallback existed but waited through two failed Binance attempts (up to ~30 s) before rotating.
+
+**Change (this commit):** Coinbase is now the first WebSocket provider, Kraken second, Binance third. A provider that refuses the handshake *or* opens but stays silent for 7 s is rotated past immediately, with a short exponential backoff across full cycles. Added a pure Kraken v2 ticker parser and tests. Total 315 tests pass; typecheck, build and scoped lint clean.
+
+**Verification plan:** after deploy, the hero window bar should read `live · Coinbase` on a normal connection; a blocked Coinbase should move to `live · Kraken` within seconds, then Binance. The server-polled price remains the last-resort fallback, so a browser with all three sockets blocked still shows a current (if slower) price and P&L.

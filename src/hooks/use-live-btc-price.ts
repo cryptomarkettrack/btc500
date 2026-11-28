@@ -1,5 +1,9 @@
 import { useEffect, useRef, useState } from "react";
-import { parseBinanceTickerPrice, parseCoinbaseTickerPrice } from "@/lib/btc-ws";
+import {
+  parseBinanceTickerPrice,
+  parseCoinbaseTickerPrice,
+  parseKrakenTickerPrice,
+} from "@/lib/btc-ws";
 
 /**
  * Browser-side BTC/USD price stream.
@@ -18,24 +22,32 @@ interface Provider {
   parse: (raw: string) => number | null;
 }
 
+// Coinbase leads because Binance's stream is geo-blocked for part of the
+// audience; a blocked provider is rotated past automatically.
 const PROVIDERS: readonly Provider[] = [
-  {
-    name: "Binance",
-    url: "wss://stream.binance.com:9443/ws/btcusdt@ticker",
-    parse: parseBinanceTickerPrice,
-  },
   {
     name: "Coinbase",
     url: "wss://ws-feed.exchange.coinbase.com",
     subscribe: { type: "subscribe", product_ids: ["BTC-USD"], channels: ["ticker"] },
     parse: parseCoinbaseTickerPrice,
   },
+  {
+    name: "Kraken",
+    url: "wss://ws.kraken.com/v2",
+    subscribe: { method: "subscribe", params: { channel: "ticker", symbol: ["BTC/USD"] } },
+    parse: parseKrakenTickerPrice,
+  },
+  {
+    name: "Binance",
+    url: "wss://stream.binance.com:9443/ws/btcusdt@ticker",
+    parse: parseBinanceTickerPrice,
+  },
 ];
 
 /** At most one React update per this many ms — the ticker prints about 1/s. */
 const MIN_UPDATE_MS = 900;
-const OPEN_TIMEOUT_MS = 5_000;
-const SILENCE_TIMEOUT_MS = 12_000;
+const OPEN_TIMEOUT_MS = 4_000;
+const SILENCE_TIMEOUT_MS = 7_000;
 const MAX_RECONNECT_MS = 30_000;
 
 export interface LivePrice {
@@ -70,12 +82,16 @@ export function useLiveBtcPrice(seedPrice: number | null, enabled = true): LiveP
 
     const scheduleReconnect = (delivered: boolean) => {
       if (disposed) return;
-      failures = delivered ? 0 : failures + 1;
-      if (failures >= 2) {
-        providerIndex = (providerIndex + 1) % PROVIDERS.length;
+      if (delivered) {
+        // The provider worked; retry it quickly after a transient disconnect.
         failures = 0;
+      } else {
+        // A provider that opens but stays silent is just as blocked as one that
+        // refuses the handshake: rotate immediately to the next exchange.
+        failures += 1;
+        providerIndex = (providerIndex + 1) % PROVIDERS.length;
       }
-      const delay = Math.min(MAX_RECONNECT_MS, 1_000 * 2 ** failures) + Math.random() * 400;
+      const delay = Math.min(MAX_RECONNECT_MS, 500 * 2 ** failures) + Math.random() * 400;
       reconnectTimer = setTimeout(connect, delay);
     };
 
