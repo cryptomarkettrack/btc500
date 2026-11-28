@@ -287,4 +287,4 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 
 **Change (this commit):** `refetchInterval` on the live price query now reads a ref updated by the stream hook — polling stops as soon as a ticker frame arrives and resumes only during an outage. The final buy-point entry query no longer polls at all. Result: with a healthy stream, 1,000 visitors add no per-minute price RPCs to our server; they only open their own exchange sockets.
 
-**Checks:** typecheck, 315 tests, build and scoped lint pass. To verify after deploy: capture the homepage network for >60 s and confirm no repeating server-function price requests while the hero reads `live · Coinbase`.
+**Checks:** typecheck, 315 tests, build and scoped lint pass. Deployed as `0119f85` → Vercel `dpl_BZrZFL5yhmKQpFLWnbYRFv3uZtKs` (READY, aliased to `btc500.net`). Verified over a 75-second browser network capture with the hero showing `live · Coinbase`: exactly one same-origin XHR/Fetch (the Vercel analytics view) and zero price/server-function requests. One visitor therefore adds no recurring server price traffic while the stream is healthy.
