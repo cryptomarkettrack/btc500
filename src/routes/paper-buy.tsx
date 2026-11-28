@@ -3,7 +3,8 @@ import { PaperBuyPage } from "@/components/paper/PaperBuyPage";
 import { RoutePending } from "@/components/route/RoutePending";
 import { RouteDataError, RouteNotFound } from "@/components/route/RouteDataError";
 import { PAPER_FAQ } from "@/lib/paper-faq";
-import { btcPriceQuery, simulatorQuery } from "@/lib/queries";
+import { btcPriceQuery, buyPointPriceQuery, simulatorQuery } from "@/lib/queries";
+import { BUY_POINT_ISO } from "@/lib/buy-signal";
 import {
   generateFaqSchema,
   generatePageHead,
@@ -57,6 +58,8 @@ export const Route = createFileRoute("/paper-buy")({
     await Promise.allSettled([
       context.queryClient.ensureQueryData(btcPriceQuery),
       context.queryClient.ensureQueryData(simulatorQuery),
+      // The live tracker's entry mark, so the P&L is server-rendered too.
+      context.queryClient.ensureQueryData(buyPointPriceQuery(BUY_POINT_ISO)),
     ]);
   },
   component: PaperBuyPage,

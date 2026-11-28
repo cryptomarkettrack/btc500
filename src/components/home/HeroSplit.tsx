@@ -22,6 +22,9 @@ interface HeroSplitProps {
   pnl: LivePnl;
   /** The T−500 instant is in the past and the T+500 exit has not fired yet. */
   isPositionOpen: boolean;
+  /** Browser-side exchange stream feeding the live mark. */
+  isStreaming: boolean;
+  streamProvider: string | null;
 }
 
 /**
@@ -40,6 +43,8 @@ export function HeroSplit({
   sellDays,
   pnl,
   isPositionOpen,
+  isStreaming,
+  streamProvider,
 }: HeroSplitProps) {
   const showingPnL =
     isPositionOpen &&
@@ -235,7 +240,7 @@ export function HeroSplit({
                   aria-hidden="true"
                   style={{ background: accent }}
                 />
-                live
+                {isStreaming ? `live · ${streamProvider ?? "stream"}` : "live"}
               </span>
             </div>
 

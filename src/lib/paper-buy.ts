@@ -18,8 +18,10 @@
  *   - Before the entry date nothing is deployed: no price and no P&L exist.
  *   - On the entry day itself the close is not final yet, so no entry price and
  *     no P&L are published — a supplied value is discarded, never labelled.
- *   - If the entry close or the live mark is unavailable, the record says so and
- *     publishes no P&L. It never substitutes today's price for the entry price.
+ *   - The live BTC mark is shown whenever the feed has one, including on the
+ *     entry day; it is not a P&L input. If the entry close or the live mark is
+ *     unavailable, the record says so and publishes no P&L. It never
+ *     substitutes today's price for the entry price.
  *   - A paper result is not a guaranteed fill and not financial advice.
  */
 
@@ -119,6 +121,10 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
   // would change once the day closes.
   const entryDayComplete = today > entry;
   const entryPrice = entryDayComplete ? positive(input.entryPriceUSD) : null;
+  // The live BTC spot price is independent of the entry close: it is available
+  // on the buy day and before entry, and the ledger now publishes it as the live
+  // mark. It is still never used as an entry price or to compute P&L before the
+  // official daily close exists.
   const currentPrice = positive(input.currentPriceUSD);
 
   let state: PaperRecordState;
@@ -166,7 +172,8 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
   if (state === "scheduled") {
     dailyLine = `${today} — Scheduled. ${paperMoney(PAPER_NOTIONAL_USD)} not deployed. Entry ${paperLongDate(entry)} (T−500), ${daysToEntry} days away. Exit rule T+500 on ${paperLongDate(exit)}.`;
   } else if (state === "awaiting-price") {
-    dailyLine = `${today} — Entry date reached (${paperLongDate(entry)}). ${statusNote}`;
+    const mark = currentPrice !== null ? ` Live BTC ${paperMoney(currentPrice)}.` : "";
+    dailyLine = `${today} — Entry date reached (${paperLongDate(entry)}).${mark} ${statusNote}`;
   } else if (state === "closed") {
     dailyLine = `${today} — Rule closed. Entry ${paperMoney(entryPrice!)} on ${paperLongDate(entry)}. Final mark ${paperMoney(currentPrice!)}. ${paperPercent(returnPercent!)} (${profitUSD! >= 0 ? "+" : "−"}${paperMoney(Math.abs(profitUSD!))}).`;
   } else {
@@ -185,7 +192,7 @@ export function buildPaperRecord(input: PaperRecordInput): PaperRecord {
     totalWindowDays,
     progress,
     entryPriceUSD: canMark ? entryPrice : null,
-    currentPriceUSD: canMark ? currentPrice : null,
+    currentPriceUSD: currentPrice,
     btcHeld,
     valueUSD,
     profitUSD,

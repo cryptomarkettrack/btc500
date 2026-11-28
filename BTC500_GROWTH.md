@@ -246,3 +246,23 @@ Changes are ready for deployment to Vercel. The git working tree contains only t
 **Deployment:** committed as `459ea3a` and pushed to `main`. Vercel deployment `dpl_45L7rECroC9VmbpGQTzRdh7V1hzU` reached READY and is aliased to `btc500.net`. Verified live HTML at `https://btc500.net/` contains the marked P&L block (at check time −$16 / −0.03%, entry $59,837, mark $59,817) and the updated post-buy meta description.
 
 **Next actions:** watch return visits/engagement and GSC CTR for the homepage in 7/28 days. Do not claim a traffic improvement without data.
+
+---
+
+## 2026-11-28 (follow-up) — Browser-side BTC ticker + live mark on /paper-buy
+
+**Owner ask:** How often does the price refresh, why did localhost and btc500.net show different prices, and can the browser open its own WebSocket so the P&L changes live without going through our backend?
+
+**Answer / finding:** The server-fetched price (`btcPriceQuery`) has a 1-minute query stale/refetch interval and a 30-second instance-local server cache. Localhost and production are separate isolates that fetched at different moments from different providers, so different numbers were expected. The published daily-close entry rule was also hiding the live BTC price on `/paper-buy` while its daily close was pending.
+
+**Implemented in this change:**
+- `src/hooks/use-live-btc-price.ts`: the visitor's browser opens Binance `btcusdt@ticker` directly (Coinbase `ticker` as fallback) and re-marks the P&L locally. No price is sent to or fetched again from our backend. Updates are throttled to 900 ms (~one ticker frame/second), with open/silence watchdogs, provider rotation and exponential reconnect backoff. The SSR price is only the seed and the fallback if WebSockets fail.
+- `src/lib/btc-ws.ts` + tests: pure parsers for the two wire formats.
+- `/` and `/paper-buy`: both P&L views, the price fields, the mobile sticky bar and the share card now read the streamed price. The hero window bar shows `live · Binance` and the paper-buy price field names the stream when connected.
+- `paper-buy.ts`: the live BTC spot price is now always published when the feed has one; it is still never used as the daily-close entry or as a P&L input for the official ledger. The entry-day daily line now includes the live mark.
+- `/paper-buy`: a clearly labelled "live tracker · provisional" P&L uses the same 00:00 UTC hourly-close entry as the homepage until the final daily close publishes, so the two pages agree and the published methodology is unchanged.
+- Route loaders on both pages seed the buy-point entry mark so the streamed P&L starts from server-rendered numbers.
+
+**Checks:** typecheck, 314 tests including new WS-parser tests, production build, ESLint on all changed files — all pass. Browser verification: hero showed `live · Binance`, P&L moved from −$50 to −$49 as the mark ticked $59,777 → $59,778; `/paper-buy` showed `$59,778` with `Live spot · Binance stream`. No new console errors.
+
+**Next:** commit, push, verify Vercel and the live pages; then check that streamed prices stay consistent across browsers (they should, both read the same exchange feed) and that the reconnect fallback works if an exchange blocks the socket.

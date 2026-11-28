@@ -40,6 +40,7 @@ import { BacktestTable } from "@/components/signal/BacktestTable";
 import { SignalContextStrip } from "@/components/signal/SignalContextStrip";
 import { SignalShareRow } from "@/components/signal/SignalShareRow";
 import { useNow } from "@/hooks/use-now";
+import { useLiveBtcPrice } from "@/hooks/use-live-btc-price";
 import { FAQ_ITEMS } from "@/lib/faq";
 import { DataTape } from "@/components/home/DataTape";
 import { ProofBand } from "@/components/home/ProofBand";
@@ -58,6 +59,11 @@ const PhasePreviewModal = lazy(() =>
 export function HomePage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const priceRes = useQuery(btcPriceQuery);
+  // The exchange ticker is opened by the visitor's browser, not proxied through
+  // the server: each tick re-marks the P&L locally. The polled price below is
+  // the seed and the fallback if the stream cannot connect.
+  const liveBtc = useLiveBtcPrice(priceRes.data?.price ?? null);
+  const btcPrice = liveBtc.price;
   const simulatorRes = useQuery(simulatorPreviewQuery);
   const signalRes = useQuery(signalPriceQuery);
   const signal = signalRes.data ?? { price: null, date: null, source: "unavailable" };
@@ -100,7 +106,7 @@ export function HomePage() {
   const pnl = buildLivePnl({
     nowISO: now.toISOString(),
     entryPriceUSD: buyPointPriceRes.data ?? null,
-    currentPriceUSD: priceRes.data?.price ?? null,
+    currentPriceUSD: btcPrice,
   });
   const showingPnL = isPositionOpen && pnl.state === "open";
   const isHolding = isPositionOpen;
@@ -166,7 +172,7 @@ export function HomePage() {
       <HeroSplit
         answer={answer}
         cycle={cycle}
-        price={priceRes.data?.price ?? null}
+        price={btcPrice}
         countdownValue={countdownValue}
         countdownLabel={countdownLabel}
         isSellActive={isSellActive}
@@ -174,6 +180,8 @@ export function HomePage() {
         sellDays={sellDays}
         pnl={pnl}
         isPositionOpen={isPositionOpen}
+        isStreaming={liveBtc.streaming}
+        streamProvider={liveBtc.provider}
       />
 
       <div className="mx-auto max-w-6xl px-6">
@@ -181,7 +189,7 @@ export function HomePage() {
       </div>
 
       <DataTape
-        price={priceRes.data?.price ?? null}
+        price={btcPrice}
         nextHalving={cycle.nextHalving}
         height={halving.height}
         buyDays={buyDays}
@@ -262,7 +270,7 @@ export function HomePage() {
         <section className="pt-20 sm:pt-24" aria-label="The live cycle window">
           <CommandCenter
             cycle={cycle}
-            price={priceRes.data?.price ?? null}
+            price={btcPrice}
             height={halving.height}
             nextHalvingBlock={halving.nextHalvingBlock}
             lastHalvingBlock={halving.lastHalvingBlock}
@@ -797,8 +805,9 @@ export function HomePage() {
         </section>
 
         <p className="pt-16 text-center text-xs text-muted-foreground">
-          Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price from
-          Binance, CoinGecko, Coinbase & Kraken. Last reviewed {HOME_LAST_REVIEWED}.
+          Data refreshes automatically. Halving estimate from Bitcoin block height · BTC price
+          streams from Binance (Coinbase fallback) in your browser, with a server snapshot as the
+          fallback. Last reviewed {HOME_LAST_REVIEWED}.
         </p>
       </main>
 
@@ -806,11 +815,7 @@ export function HomePage() {
 
       {/* Hidden share card for social media image generation */}
       <div style={{ position: "absolute", left: -9999, top: 0, pointerEvents: "none" }}>
-        <CycleShareCard
-          ref={cycleShareCardRef}
-          cycle={cycle}
-          price={priceRes.data?.price ?? null}
-        />
+        <CycleShareCard ref={cycleShareCardRef} cycle={cycle} price={btcPrice} />
       </div>
 
       {/* Preview modal — shows how the homepage looks after the 500-days-before-halving day.
@@ -821,7 +826,7 @@ export function HomePage() {
             open={previewOpen}
             onOpenChange={setPreviewOpen}
             cycle={cycle}
-            currentPrice={priceRes.data?.price ?? null}
+            currentPrice={btcPrice}
             buyPrice={lastCompletedCycle?.buyPrice ?? null}
             buyDate={lastCompletedCycle?.buyDate ?? null}
             sellDate={lastCompletedCycle?.sellDate ?? null}

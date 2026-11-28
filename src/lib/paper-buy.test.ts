@@ -25,7 +25,7 @@ test("paperIsoDay and paperDaysBetween use whole UTC days", () => {
   assert.ok(forward >= 999 && forward <= 1001);
 });
 
-test("scheduled: nothing deployed, no price and no P&L before the entry date", () => {
+test("scheduled: nothing deployed and no P&L before the entry date", () => {
   const r = buildPaperRecord({
     nowISO: "2026-11-16T12:00:00.000Z",
     buyDateISO: ENTRY,
@@ -38,7 +38,8 @@ test("scheduled: nothing deployed, no price and no P&L before the entry date", (
   assert.equal(r.daysSinceEntry, 0);
   assert.equal(r.progress, 0);
   assert.equal(r.entryPriceUSD, null);
-  assert.equal(r.currentPriceUSD, null);
+  // The market price is public even before entry; only the position mark is absent.
+  assert.equal(r.currentPriceUSD, 100_000);
   assert.equal(r.btcHeld, null);
   assert.equal(r.valueUSD, null);
   assert.equal(r.profitUSD, null);
@@ -49,7 +50,7 @@ test("scheduled: nothing deployed, no price and no P&L before the entry date", (
   assert.equal(r.notionalUSD, PAPER_NOTIONAL_USD);
 });
 
-test("scheduled never publishes a mark even if a price is passed in", () => {
+test("scheduled shows the live BTC price but never publishes a position mark or P&L", () => {
   const r = buildPaperRecord({
     nowISO: "2026-11-28T00:00:00.000Z",
     buyDateISO: ENTRY,
@@ -58,6 +59,7 @@ test("scheduled never publishes a mark even if a price is passed in", () => {
     currentPriceUSD: 95_000,
   });
   assert.equal(r.state, "scheduled");
+  assert.equal(r.currentPriceUSD, 95_000);
   assert.equal(r.returnPercent, null);
   assert.equal(r.valueUSD, null);
   assert.equal(r.daysToEntry, 1);
@@ -90,12 +92,14 @@ test("entry day: a supplied price is the live mark, so no entry price is publish
   });
   assert.equal(onEntryDay.state, "awaiting-price");
   assert.equal(onEntryDay.entryPriceUSD, null);
-  assert.equal(onEntryDay.currentPriceUSD, null);
+  // The live mark is shown; it is simply never used as the entry price.
+  assert.equal(onEntryDay.currentPriceUSD, 61_176.1);
   assert.equal(onEntryDay.btcHeld, null);
   assert.equal(onEntryDay.returnPercent, null);
   assert.match(onEntryDay.statusNote, /only final at 00:00 UTC/);
   assert.match(onEntryDay.statusNote, /never used as the entry price/);
   assert.match(onEntryDay.dailyLine, /^2026-11-29 — Entry date reached/);
+  assert.match(onEntryDay.dailyLine, /Live BTC \$61,176/);
 
   // One second after that day's close exists, the same price is legitimate.
   const afterClose = buildPaperRecord({

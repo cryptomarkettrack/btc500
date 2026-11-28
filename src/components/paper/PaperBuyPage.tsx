@@ -16,8 +16,17 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ShareButton } from "@/components/ShareButton";
 import { useNow } from "@/hooks/use-now";
+import { useLiveBtcPrice } from "@/hooks/use-live-btc-price";
 import { computeCycle } from "@/lib/phase";
-import { btcPriceQuery, buyPriceQuery, halvingQuery, simulatorQuery } from "@/lib/queries";
+import {
+  btcPriceQuery,
+  buyPointPriceQuery,
+  buyPriceQuery,
+  halvingQuery,
+  simulatorQuery,
+} from "@/lib/queries";
+import { BUY_POINT_ISO, BUY_POINT_LABEL } from "@/lib/buy-signal";
+import { buildLivePnl } from "@/lib/live-pnl";
 import { PAPER_FAQ } from "@/lib/paper-faq";
 import {
   PAPER_NOTIONAL_USD,
@@ -61,6 +70,10 @@ export function PaperBuyPage() {
   const { data: halving } = useSuspenseQuery(halvingQuery);
   const now = useNow(60_000);
   const priceRes = useQuery(btcPriceQuery);
+  // Browser-to-exchange ticker: the mark and P&L move on the client without a
+  // server round trip. The polled price is the seed and fallback only.
+  const liveBtc = useLiveBtcPrice(priceRes.data?.price ?? null);
+  const btcPrice = liveBtc.price;
   const simulatorRes = useQuery(simulatorQuery);
   const ledgerRef = useRef<HTMLDivElement>(null);
 
@@ -84,8 +97,27 @@ export function PaperBuyPage() {
     buyDateISO,
     sellDateISO,
     entryPriceUSD: buyPriceRes.data ?? null,
-    currentPriceUSD: priceRes.data?.price ?? null,
+    currentPriceUSD: btcPrice,
   });
+
+  // The published ledger waits for the entry day's final daily close. The live
+  // tracker uses the hourly close at the exact buy timestamp instead, so the
+  // visitor sees a marked position today; both are labelled as different
+  // methods and neither claims a guaranteed fill.
+  const buyPointPriceRes = useQuery(buyPointPriceQuery(BUY_POINT_ISO));
+  const live = buildLivePnl({
+    nowISO: now.toISOString(),
+    entryPriceUSD: buyPointPriceRes.data ?? null,
+    currentPriceUSD: btcPrice,
+  });
+  const showLive =
+    record.profitUSD === null &&
+    live.state === "open" &&
+    live.profitUSD !== null &&
+    live.returnFraction !== null &&
+    live.entryPriceUSD !== null &&
+    live.currentPriceUSD !== null;
+  const liveReturnPercent = live.returnFraction !== null ? live.returnFraction * 100 : null;
 
   const completed = simulatorRes.data?.cycles.filter((c) => c.returnMultiplier !== null) ?? [];
   const dataUnavailable =
@@ -117,7 +149,9 @@ export function PaperBuyPage() {
             — 500 days before the estimated halving — and exits 500 days after it, on{" "}
             <strong className="text-foreground">{paperLongDate(sellDateISO)}</strong>. The entry
             price is that date&apos;s BTC/USD close and the P&amp;L ledger marks the position every
-            day. Nothing here is real money or a forecast.
+            day. Until that close is final, a clearly labelled live tracker uses the 00:00 UTC
+            hourly close instead, and the live BTC price is shown throughout. Nothing here is real
+            money or a forecast.
           </p>
           <p className="mt-3 text-xs text-muted-foreground">
             Educational paper performance · not financial advice.
@@ -132,29 +166,39 @@ export function PaperBuyPage() {
               <div className="flex flex-wrap items-start justify-between gap-4">
                 <div>
                   <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
-                    Unrealized P&amp;L · {paperMoney(PAPER_NOTIONAL_USD)} paper
+                    {showLive
+                      ? `Live P&L · ${paperMoney(PAPER_NOTIONAL_USD)} paper · hourly buy mark`
+                      : `Unrealized P&L · ${paperMoney(PAPER_NOTIONAL_USD)} paper`}
                   </div>
                   <div
                     className={`mt-2 text-5xl font-bold tracking-tight tabular-nums ${
-                      record.profitUSD == null
-                        ? ""
-                        : record.profitUSD >= 0
+                      showLive
+                        ? live.profitUSD! >= 0
                           ? "text-success"
                           : "text-destructive"
+                        : record.profitUSD == null
+                          ? ""
+                          : record.profitUSD >= 0
+                            ? "text-success"
+                            : "text-destructive"
                     }`}
                   >
-                    {record.profitUSD !== null
-                      ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
-                      : record.state === "scheduled"
-                        ? record.daysToEntry
-                        : "—"}
+                    {showLive
+                      ? `${live.profitUSD! >= 0 ? "+" : "−"}${paperMoney(Math.abs(live.profitUSD!))}`
+                      : record.profitUSD !== null
+                        ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
+                        : record.state === "scheduled"
+                          ? record.daysToEntry
+                          : "—"}
                   </div>
                   <div className="mt-1 text-sm text-muted-foreground">
-                    {record.returnPercent !== null
-                      ? `${paperPercent(record.returnPercent)} on ${paperMoney(PAPER_NOTIONAL_USD)} · ${paperMoney(record.valueUSD!)} value`
-                      : record.state === "scheduled"
-                        ? "days until the buy date · P&L starts at entry"
-                        : "no mark published yet"}
+                    {showLive
+                      ? `${paperPercent(liveReturnPercent!)} on ${paperMoney(PAPER_NOTIONAL_USD)} · mark ${paperMoney(live.currentPriceUSD!)} · ${record.daysSinceEntry} days held`
+                      : record.returnPercent !== null
+                        ? `${paperPercent(record.returnPercent)} on ${paperMoney(PAPER_NOTIONAL_USD)} · ${paperMoney(record.valueUSD!)} value`
+                        : record.state === "scheduled"
+                          ? "days until the buy date · P&L starts at entry"
+                          : "no mark published yet"}
                   </div>
                 </div>
                 <Badge
@@ -196,13 +240,17 @@ export function PaperBuyPage() {
                   hint="Fixed at entry"
                 />
                 <Field
-                  label="Live mark"
+                  label="BTC / USD now"
                   value={
                     record.currentPriceUSD !== null
                       ? paperMoney(record.currentPriceUSD)
                       : "Unavailable"
                   }
-                  hint="Site's live BTC price feed"
+                  hint={
+                    liveBtc.streaming
+                      ? `Live spot · ${liveBtc.provider ?? "exchange"} stream`
+                      : "Live spot · site price feed"
+                  }
                 />
               </dl>
 
@@ -218,47 +266,67 @@ export function PaperBuyPage() {
                     <h3 className="text-sm font-semibold">Profit &amp; loss</h3>
                   </div>
                   <Badge variant="outline" className="text-[10px] text-muted-foreground">
-                    {record.state === "scheduled"
-                      ? "Not open yet"
-                      : record.state === "awaiting-price"
-                        ? "Mark pending"
-                        : "Live paper P&L"}
+                    {showLive
+                      ? "Live tracker · provisional"
+                      : record.state === "scheduled"
+                        ? "Not open yet"
+                        : record.state === "awaiting-price"
+                          ? "Daily close pending"
+                          : "Live paper P&L"}
                   </Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:grid-cols-4">
                   <Field
-                    label="Unrealized P&L"
+                    label={showLive ? "Live P&L (hourly entry)" : "Unrealized P&L"}
                     value={
-                      record.profitUSD !== null
-                        ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
-                        : "—"
+                      showLive
+                        ? `${live.profitUSD! >= 0 ? "+" : "−"}${paperMoney(Math.abs(live.profitUSD!))}`
+                        : record.profitUSD !== null
+                          ? `${record.profitUSD >= 0 ? "+" : "−"}${paperMoney(Math.abs(record.profitUSD))}`
+                          : "—"
                     }
                   />
                   <Field
                     label="Return"
-                    value={record.returnPercent !== null ? paperPercent(record.returnPercent) : "—"}
+                    value={
+                      showLive
+                        ? paperPercent(liveReturnPercent!)
+                        : record.returnPercent !== null
+                          ? paperPercent(record.returnPercent)
+                          : "—"
+                    }
                   />
                   <Field
                     label="Position value"
-                    value={record.valueUSD !== null ? paperMoney(record.valueUSD) : "—"}
+                    value={
+                      showLive
+                        ? paperMoney(live.valueUSD!)
+                        : record.valueUSD !== null
+                          ? paperMoney(record.valueUSD)
+                          : "—"
+                    }
                   />
                   <Field
                     label="Deployed"
                     value={
-                      record.state === "scheduled"
-                        ? `${paperMoney(PAPER_NOTIONAL_USD)} cash`
-                        : record.btcHeld !== null
-                          ? `${record.btcHeld.toFixed(6)} BTC`
-                          : "—"
+                      showLive
+                        ? `${live.btcHeld!.toFixed(6)} BTC`
+                        : record.state === "scheduled"
+                          ? `${paperMoney(PAPER_NOTIONAL_USD)} cash`
+                          : record.btcHeld !== null
+                            ? `${record.btcHeld.toFixed(6)} BTC`
+                            : "—"
                     }
                   />
                 </div>
                 <p className="mt-4 text-xs leading-relaxed text-muted-foreground">
-                  {record.state === "scheduled"
-                    ? `The ${paperMoney(PAPER_NOTIONAL_USD)} is uninvested until ${paperLongDate(buyDateISO)}. No P&L exists before entry — this is not a live trade.`
-                    : record.returnPercent !== null
-                      ? `P&L = ${paperMoney(PAPER_NOTIONAL_USD)} × (mark ÷ entry close − 1). Mark ${paperMoney(record.currentPriceUSD!)} against entry ${paperMoney(record.entryPriceUSD!)}. Paper result, not a guaranteed fill.`
-                      : record.statusNote}
+                  {showLive
+                    ? `Live tracker = ${paperMoney(PAPER_NOTIONAL_USD)} × (mark ÷ 00:00 UTC hourly close − 1). Entry ${paperMoney(live.entryPriceUSD!)} on ${BUY_POINT_LABEL}, mark ${paperMoney(live.currentPriceUSD!)}. The published daily-close ledger is still pending and may lock a different close at 00:00 UTC. Paper result, not a guaranteed fill.`
+                    : record.state === "scheduled"
+                      ? `The ${paperMoney(PAPER_NOTIONAL_USD)} is uninvested until ${paperLongDate(buyDateISO)}. No P&L exists before entry — this is not a live trade.`
+                      : record.returnPercent !== null
+                        ? `P&L = ${paperMoney(PAPER_NOTIONAL_USD)} × (mark ÷ entry close − 1). Mark ${paperMoney(record.currentPriceUSD!)} against entry ${paperMoney(record.entryPriceUSD!)}. Paper result, not a guaranteed fill.`
+                        : record.statusNote}
                 </p>
               </div>
 
